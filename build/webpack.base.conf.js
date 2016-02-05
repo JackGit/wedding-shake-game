@@ -1,4 +1,4 @@
-var path = require('path')
+var path = require('path');
 
 module.exports = {
   entry: {
@@ -51,4 +51,4 @@ module.exports = {
   eslint: {
     formatter: require('eslint-friendly-formatter')
   }
-}
+};

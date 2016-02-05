@@ -3,14 +3,9 @@
 var webpack = require('webpack');
 
 module.exports = {
-    entry: {
-        player: './public/javascripts/src/components/player/main.js',
-        admin: './public/javascripts/src/components/admin/main.js'
-    },
+    entry: './src/main.js',
     output: {
-        path: './public/javascripts/build',
-        filename: '[name].bundle.js',
-        publicPath: 'javascripts/build/'
+        filename: './dist/bundle.js',
     },
     devtool: 'source-map',
     module: {

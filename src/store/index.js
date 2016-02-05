@@ -1,95 +1,196 @@
 var Vue = require('vue');
 var Vuex = require('vuex').default;
+var api = require('../api/api.js');
 
 Vue.use(Vuex);
 Vue.config.debug = true;
 
-/**
- * refer SAO: com.citi.sao.XXXComponent = {}; to manage state and related actions for different pages
- */
 module.exports = window.store = new Vuex.Store({
     state: {
-        app: {
-            mask: false
-        },
-        interactionPage: {
-            message: ''
-        },
-        welcomePage: {
-            message: ''
-        },
-        pages: {
-            interaction: {
-                message: ''
-            },
-            welcome: {
-                message: ''
+        mask: false,
+        playerList: [],
+
+        player: {
+            userName: '',
+            userId: '',
+            userType: '',
+            shakeCount: 0,
+            welcomeView: {
+                userNameFormMessage: '',
             }
+        },
+
+        dashboard: {
+
         }
     },
     actions: {
+        selectUserType: function(store, type) {
+            console.log('store.actions.selectUserType', type);
+            store.dispatch('SELECT_USER_TYPE', type);
+        },
+        start: function(store, data) {
+            return new Promise(function(resolve, reject) {
+                console.log('store.actions.joinGame', data);
+                var request = {
+                    userName: data.userName,
+                    userType: data.userType
+                };
+
+                if(!data.userName) {
+                    store.dispatch('PLAYER_WELCOME_USER_NAME_FORM_MESSAGE', 'please input correct user name');
+                    return;
+                } else {
+                    store.dispatch('PLAYER_WELCOME_USER_NAME_FORM_MESSAGE', '');
+                    store.actions.showMask();
+
+                    api.createUser(request).then(function(data) {
+                        store.dispatch('PLAYER_USER_CREATED_SUCCESSFULLY', data.user);
+                        localStorage.userId = data.user.objectId;
+                        localStorage.userName = data.user.userName;
+                        localStorage.userType = data.user.userType;
+
+                        store.actions.hideMask();
+                        resolve(data.user);
+                    }, function(error) {
+                        store.actions.hideMask();
+                        console.log('store.actions.joinGame error', error);
+                        reject(error);
+                    })
+                }
+            });
+        },
+        joinGame: function(store, userId) {
+            var request = {
+                userId: userId,
+                userStatus: 'JOINED'
+            };
+
+            console.log('store.actions.joinGame', userId);
+
+            api.updateUser(request).then(function() {
+                console.log('store.actions.joinGame update userStatus successfully');
+                socket.emit('join', userId);
+            }, function(error) {
+
+            });
+        },
+        leaveGame: function(store, userId) {
+            var request = {
+                userId: userId,
+                userStatus: ''
+            };
+
+            console.log('store.actions.leaveGame', userId);
+
+            api.updateUser(request).then(function() {
+                console.log('store.actions.leaveGame update userStatus successfully');
+                socket.emit('leave', userId);
+            }, function(error) {
+
+            });
+        },
+        inputUserName: function(store, userName) {
+            store.dispatch('PLAYER_INPUT_USER_NAME', userName);
+        },
+        getPlayerList: function(store) {
+            return new Promise(function(resolve, reject) {
+                api.listUser().then(function(data) {
+                    store.dispatch('GET_PLAYER_LIST', data.userList);
+                    resolve(data.userList);
+                }, function(error) {
+                    reject(error);
+                    console.log('store.actions.getPlayerList error', error);
+                })
+            });
+        },
+        shake: function(store) {
+            store.dispatch('PLAYER_SHAKE_COUNT');
+            socket.emit('shake', {
+                userId: store.state.player.userId,
+                shakeCount: store.state.player.shakeCount
+            });
+        },
+        updateOtherShakeData: function(store, data) {
+            store.dispatch('UPDATE_OTHER_SHAKE_DATA', data);
+        },
         showMask: function(store) {
             store.dispatch('SHOW_MASK');
         },
         hideMask: function(store) {
             store.dispatch('HIDE_MASK');
         },
-        loadWelcomePageData: function(store, request) {
-            store.state.app.mask = true;
-            setTimeout(function() {
-                store.dispatch('LOAD_WELCOME_PAGE_DATA', 'welcome page data');
-                store.state.app.mask = false;
-            }, 1000);
 
-        },
-        loadPageData: function(store, name, query) {
-            console.log('store.actions.loadPageData', name, query);
-            return new Promise(function(resolve) {
-                store.actions.showMask();
-                setTimeout(function() {
-                    store.dispatch('INIT_PAGE_DATA', name, query);
-                    resolve();
-                    store.actions.hideMask();
-                }, 1000);
-            });
+        // socket will call these
+        playerJoin: function(store, userId) {
+            console.log('store.actions.playerJoin', userId);
 
-        },
-        loadInteractionPageData: function(store, request, showMask) {
-            /*store.state.app.mask = true;
-
-            setTimeout(function() {
-                store.dispatch('LOAD_INTERACTION_PAGE_DATA', 'loaded data for interaction page');
-                store.state.app.mask = false;
-            }, 2000);*/
-
-            return new Promise(function(resolve) {
-                store.state.app.mask = true;
-                console.log('promise working on it');
-                setTimeout(function() {
-                    store.dispatch('LOAD_INTERACTION_PAGE_DATA', 'loaded data for interaction page');
-                    store.state.app.mask = false;
-                    console.log('promise returned');
-                    resolve();
-                }, 2000);
+            api.getUser({userId: userId}).then(function(data) {
+                store.dispatch('PLAYER_JOIN', data.user);
+            }, function(error) {
 
             });
-        }
+        },
+        playerLeave: function(store, userId) {
+            console.log('store.actions.playerLeave', userId);
+            store.dispatch('PLAYER_LEAVE', userId);
+        },
+
+
     },
     mutations: {
         SHOW_MASK: function(state) {
-            state.app.mask = true;
+            state.mask = true;
         },
         HIDE_MASK: function(state) {
-            state.app.mask = false;
+            state.mask = false;
         },
-        LOAD_INTERACTION_PAGE_DATA: function(state, message) {
-            state.interactionPage.message = message;
+        PLAYER_INPUT_USER_NAME: function(state, userName) {
+            state.player.userName = userName;
         },
-        LOAD_WELCOME_PAGE_DATA: function(state, message) {
-            state.welcomePage.message = message;
+        SELECT_USER_TYPE: function(state, type) {
+            state.player.userType = type;
         },
-        INIT_PAGE_DATA: function(state, page, data) {
-            state.pages[page] = data;
+        PLAYER_WELCOME_USER_NAME_FORM_MESSAGE: function(state, message) {
+            state.player.welcomeView.userNameFormMessage = message;
+        },
+        PLAYER_USER_CREATED_SUCCESSFULLY: function(state, user) {
+            console.log('store.mutations.PLAYER_USER_CREATED_SUCCESSFULLY', user);
+            state.player.userName = user.userName;
+            state.player.userType = user.userType;
+            state.player.userId = user.objectId;
+        },
+        GET_PLAYER_LIST: function(state, playerList) {
+            console.log('store.mutations.GET_PLAYER_LIST', playerList);
+            state.playerList = playerList;
+        },
+        PLAYER_SHAKE_COUNT: function(state) {
+            state.player.shakeCount ++;
+        },
+        UPDATE_OTHER_SHAKE_DATA: function(state, data) {
+            var userId = data.userId,
+                count = data.shakeCount,
+                i;
+
+            for(i = 0; i < state.playerList.length; i ++) {
+                if(state.playerList[i].objectId === userId) {
+                    state.playerList[i].shakeCount = count;
+                    return;
+                }
+            }
+        },
+        PLAYER_JOIN: function(state, player) {
+            var exist = state.playerList.filter(function(p) {
+                return p.objectId === player.objectId;
+            }).length !== 0;
+
+            if(!exist)
+                state.playerList.push(player);
+        },
+        PLAYER_LEAVE: function(state, userId) {
+            state.playerList = state.playerList.filter(function(p) {
+                return p.objectId !== userId;
+            })
         }
     }
 });

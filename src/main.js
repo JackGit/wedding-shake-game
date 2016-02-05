@@ -7,53 +7,52 @@ Vue.use(VueRouter);
 
 var App = require('./app.vue');
 var router = new VueRouter();
-var store= require('./store');
+var store = require('./store');
 
-var SPA = {
-    install: function(Vue, options) {
-        Vue.prototype.$callservice = function(url, request, options) {
-            store.actions.showMask();
-            return new Promise(function(resolve, reject) {
-                Vue.http.post(url, request).then(function(response) {
-                    store.actions.hideMask();
-                    resolve(response);
-                }, function(error) {
-                    store.actions.hideMask();
-                    reject(error);
-                });
-            });
-        };
+var socket = io();
+window.socket = socket;
+
+// add for socket support.
+// io is a global variable while include socket.io.js
+/* Vue.use({
+    install: function(Vue) {
+        if(io)
+            Vue.prototype.$socket = socket;
+        else
+            console.error('init $socket failed');
     }
-};
+});*/
 
-Vue.use(SPA);
+socket.on('join', function(userId) {
+    store.actions.playerJoin(userId);
+});
+
+socket.on('leave', function(userId) {
+    store.actions.playerLeave(userId);
+});
+
+socket.on('shake', function(message) {
+    store.actions.updateOtherShakeData(message);
+});
 
 router.map({
-    '/welcome': {
+    '/player': {
         name: 'welcome',
-        component: require('./components/welcome-page.vue')
+        component: require('./components/player/welcome.vue')
     },
-    '/interaction': {
-        name: 'interaction',
-        component: require('./components/interaction-page.vue')
+    '/player/:playerId': {
+        name: 'lobby',
+        component: require('./components/player/lobby.vue')
     },
-    '/end': {
-        name: 'end',
-        component: require('./components/end-page.vue')
+    '/dashboard': {
+        name: 'dashboard',
+        component: require('./components/dashboard/dashboard.vue')
     }
 });
 
-router.redirect({'/': '/welcome'});
-
-router.beforeEach(function(transition) {
-    console.log('before each');
-    //store.state.app.mask = true;
-    transition.next();
+router.redirect({
+   '/': '/player'
 });
 
-router.afterEach(function() {
-   console.log('after each');
-    //store.state.app.mask = false;
-});
 
 router.start(App, '#app');
