@@ -13,7 +13,7 @@
             <span @click="selectUserType('BRIDE')" :class="[userType === 'BRIDE' ? 'selected' : '']">Bride Guest</span>
             <span @click="selectUserType('GROOM')" :class="[userType === 'GROOM' ? 'selected' : '']">Groom Guest</span>
         </div>
-        <button @click="start()">Join Game</button>
+        <button @click="joinGame()">Join Game</button>
     </div>
 </template>
 

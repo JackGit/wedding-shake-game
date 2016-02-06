@@ -23,18 +23,6 @@ window.socket = socket;
     }
 });*/
 
-socket.on('join', function(userId) {
-    store.actions.playerJoin(userId);
-});
-
-socket.on('leave', function(userId) {
-    store.actions.playerLeave(userId);
-});
-
-socket.on('shake', function(message) {
-    store.actions.updateOtherShakeData(message);
-});
-
 router.map({
     '/player': {
         name: 'welcome',

@@ -3,7 +3,7 @@ var AV = require('avoscloud-sdk');
 // AV Objects
 var Player = AV.Object.extend('Player');
 var Room = AV.Object.extend('Room');
-
+var Game = AV.Object.extend('Game');
 
 module.exports = function(app, io) {
     var router = app;
@@ -36,11 +36,13 @@ module.exports = function(app, io) {
         var userId = req.body.userId,
             userName = req.body.userName,
             userStatus = req.body.userStatus,
+            shakeCount = req.body.shakeCount,
             playerQueryObj = new AV.Query('Player');
 
         playerQueryObj.get(userId).try(function(player) {
             if(userName !== undefined) player.set('userName', userName);
             if(userStatus !== undefined) player.set('userStatus', userStatus);
+            if(shakeCount !== undefined) player.set('shakeCount', shakeCount);
             return player.save();
         }).try(function(response) {
             res.send({
@@ -305,36 +307,10 @@ module.exports = function(app, io) {
     router.post('/game/room/listPlayers', function(req, res) {});
 
     router.post('/game/rankings', function(req, res) {});
-    router.post('/game/controls', function(req, res) {
-        var roomQueryObj = new AV.Query('Room'),
-            roomId = req.body.roomId,
-            control = req.body.control;
+    router.post('/game/controls/start', function(req, res) {
 
-        roomQueryObj.get(roomId).then(function(room) {
-            if(control === 'START')
-                room.status = 'PLAYING';
-            if(control === 'STOP')
-                room.status = 'WAITING';
+    });
+    router.post('/game/controls/stop', function(req, res) {
 
-            room.save().then(function(response) {
-                res.send({
-                    statusCode: 0,
-                    message: '',
-                    room: response
-                });
-            }, function(error) {
-                res.send({
-                    statusCode: 1,
-                    message: 'cannot save room',
-                    error: error
-                });
-            });
-        }, function(error) {
-            res.send({
-                statusCode: 1,
-                message: 'cannot get room by id ' + roomId,
-                error: error
-            });
-        });
     });
 };

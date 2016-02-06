@@ -28,5 +28,12 @@ module.exports = {
     },
     getUser: function(request) {
         return callservice('/game/user/get', request);
+    },
+
+    startGame: function() {
+        return callservice('/game/controls/start', {});
+    },
+    stopGame: function(gameId) {
+        return callservice('/game/controls/stop', {gameId: gameId});
     }
 };

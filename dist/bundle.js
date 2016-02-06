@@ -69,18 +69,6 @@
 	    }
 	});*/
 	
-	socket.on('join', function(userId) {
-	    store.actions.playerJoin(userId);
-	});
-	
-	socket.on('leave', function(userId) {
-	    store.actions.playerLeave(userId);
-	});
-	
-	socket.on('shake', function(message) {
-	    store.actions.updateOtherShakeData(message);
-	});
-	
 	router.map({
 	    '/player': {
 	        name: 'welcome',
@@ -92,7 +80,7 @@
 	    },
 	    '/dashboard': {
 	        name: 'dashboard',
-	        component: __webpack_require__(51)
+	        component: __webpack_require__(52)
 	    }
 	});
 	
@@ -14437,16 +14425,104 @@
 	Vue.use(Vuex);
 	Vue.config.debug = true;
 	
+	function keepLocal(user) {
+	    localStorage.userId = user.objectId;
+	    localStorage.userName = user.userName;
+	    localStorage.userType = user.userType;
+	}
+	
+	// socket is global var defined in main.js
+	function listenPlayerSocketMessage(enable) {
+	    console.log('listenPlayerSocketMessage', enable);
+	
+	    if(enable) {
+	        socket.on('join', function(userId) {
+	            store.actions.playerJoin(userId);
+	        });
+	        socket.on('leave', function(userId) {
+	            store.actions.playerLeave(userId);
+	        });
+	        socket.on('shake', function(message) {
+	            store.actions.updateOtherShakeData(message);
+	        });
+	    } else {
+	        socket.off('join');
+	        socket.off('leave');
+	        socket.off('shake');
+	    }
+	}
+	
+	/*
+	    game (room) status:
+	
+	        INIT -> JOINING -> PLAYING -> END
+	
+	
+	    WELCOME PAGE
+	        1. user not sign up
+	            1.1 sign up
+	            1.2 click JOIN
+	                - if game is STOPPED, which not allow player to join
+	                    player will be routed to END page
+	                - if game is READY, which allow player to join
+	                    player will be routed to READY page to wait game start
+	                - if game is STARTED, which not allow player to join, but will recieve play data
+	                    player will be routed to VISIT PAGE
+	        2. user signed up
+	            pre-fill form data, and allow player to click JOIN
+	
+	    READY PAGE
+	        1. show game rules, and joined players
+	        2. if game status change to STARTED, it will count down and then route player to SHAKE page
+	        3. if game status change to STOPPED, player will be routed to END PAGE
+	
+	    SHAKE PAGE
+	        1. allow user to shake
+	        2. if game end, status change to STOPPED, player will be routed to RANKING page
+	
+	    END PAGE
+	        1. will display: game is not started yet, and this is the last ranking data
+	        2. if game status change to READY, will offer player a "join game" button to join the game
+	        3. then follow WELCOME PAGE join game logic
+	
+	    RANKING PAGE
+	        1.
+	
+	    VISIT PAGE
+	        1. user is able to see other players shake data
+	        2. if game end, status change to STOPPED, it will route to RANKING PAGE
+	 */
+	
 	module.exports = window.store = new Vuex.Store({
 	    state: {
+	        gameId: '',
+	        gameStatus: 'STOPPED', // 'STOPPED': not allow player to join -> 'READY': allow player to join  -> 'STARTED': not allow player to join
+	        gameSize: 5,    // 5 players
+	        gameTime: 20,   // seconds
 	        mask: false,
 	        playerList: [],
+	        currentPlayer: {
+	            userName: '',
+	            userId: '',
+	            userType: '',
+	            userStatus: '',
+	            shakeCount: 0
+	        },
+	        pages: {
+	            welcome: {
 	
+	            },
+	            lobby: {
+	
+	            },
+	            dashboard: {
+	
+	            }
+	        },
 	        player: {
 	            userName: '',
 	            userId: '',
 	            userType: '',
-	            shakeCount: 0,
 	            welcomeView: {
 	                userNameFormMessage: '',
 	            }
@@ -14456,7 +14532,9 @@
 	
 	        }
 	    },
+	
 	    actions: {
+	        // player actions
 	        selectUserType: function(store, type) {
 	            console.log('store.actions.selectUserType', type);
 	            store.dispatch('SELECT_USER_TYPE', type);
@@ -14478,9 +14556,7 @@
 	
 	                    api.createUser(request).then(function(data) {
 	                        store.dispatch('PLAYER_USER_CREATED_SUCCESSFULLY', data.user);
-	                        localStorage.userId = data.user.objectId;
-	                        localStorage.userName = data.user.userName;
-	                        localStorage.userType = data.user.userType;
+	                        keepLocal(data.user);
 	
 	                        store.actions.hideMask();
 	                        resolve(data.user);
@@ -14495,28 +14571,34 @@
 	        joinGame: function(store, userId) {
 	            var request = {
 	                userId: userId,
-	                userStatus: 'JOINED'
+	                userStatus: 'JOINED',
+	                shakeCount: 0
 	            };
 	
-	            console.log('store.actions.joinGame', userId);
-	
-	            api.updateUser(request).then(function() {
-	                console.log('store.actions.joinGame update userStatus successfully');
+	            // update current players status, and get the latest data in DB
+	            api.updateUser(request).then(function(data) {
+	                store.dispatch('UPDATE_CURRENT_PLAYER_INFO', data.user);
+	                listenPlayerSocketMessage(true);
+	                keepLocal(data.user);
 	                socket.emit('join', userId);
 	            }, function(error) {
 	
 	            });
+	
+	            // get players who already joined the game
+	            store.actions.getPlayerList();
 	        },
 	        leaveGame: function(store, userId) {
 	            var request = {
 	                userId: userId,
-	                userStatus: ''
+	                userStatus: '',
+	                shakeCount: 0
 	            };
 	
 	            console.log('store.actions.leaveGame', userId);
 	
 	            api.updateUser(request).then(function() {
-	                console.log('store.actions.leaveGame update userStatus successfully');
+	                listenPlayerSocketMessage(false);
 	                socket.emit('leave', userId);
 	            }, function(error) {
 	
@@ -14538,9 +14620,15 @@
 	        },
 	        shake: function(store) {
 	            store.dispatch('PLAYER_SHAKE_COUNT');
+	
+	            api.updateUser({
+	                userId: store.state.currentPlayer.userId,
+	                shakeCount: store.state.currentPlayer.shakeCount
+	            });
+	
 	            socket.emit('shake', {
-	                userId: store.state.player.userId,
-	                shakeCount: store.state.player.shakeCount
+	                userId: store.state.currentPlayer.userId,
+	                shakeCount: store.state.currentPlayer.shakeCount
 	            });
 	        },
 	        updateOtherShakeData: function(store, data) {
@@ -14551,6 +14639,37 @@
 	        },
 	        hideMask: function(store) {
 	            store.dispatch('HIDE_MASK');
+	        },
+	
+	        // dashboard actions
+	        initDashboard: function(store) {
+	            store.actions.getPlayerList();
+	            listenPlayerSocketMessage(true);
+	        },
+	        startGame: function(store) {
+	            var request = {
+	                gameSize: store.state.gameSize,
+	                gameTime: store.state.gameTime
+	            };
+	
+	            if(store.state.gameStatus === 'STOPPED') {
+	                api.startGame(request).then(function(data) {
+	                    store.dispatch('UPDATE_GAME_STATUS', 'STARTED');
+	                }, function(error) {
+	
+	                });
+	
+	            } else {
+	                console.log('store.actions.startGame game is already started, cannot start again');
+	            }
+	        },
+	        stopGame: function(store) {
+	            if(store.state.gameStatus === 'STARTED') {
+	                api.updateGameStatus()
+	                store.dispatch('UPDATE_GAME_STATUS', 'STOPPED');
+	            } else {
+	                console.log('store.actions.startGame game is already stopped, cannot stop again');
+	            }
 	        },
 	
 	        // socket will call these
@@ -14566,10 +14685,10 @@
 	        playerLeave: function(store, userId) {
 	            console.log('store.actions.playerLeave', userId);
 	            store.dispatch('PLAYER_LEAVE', userId);
-	        },
-	
+	        }
 	
 	    },
+	
 	    mutations: {
 	        SHOW_MASK: function(state) {
 	            state.mask = true;
@@ -14597,7 +14716,7 @@
 	            state.playerList = playerList;
 	        },
 	        PLAYER_SHAKE_COUNT: function(state) {
-	            state.player.shakeCount ++;
+	            state.currentPlayer.shakeCount ++;
 	        },
 	        UPDATE_OTHER_SHAKE_DATA: function(state, data) {
 	            var userId = data.userId,
@@ -14609,6 +14728,15 @@
 	                    state.playerList[i].shakeCount = count;
 	                    return;
 	                }
+	            }
+	        },
+	        UPDATE_CURRENT_PLAYER_INFO: function(state, user) {
+	            state.currentPlayer = {
+	                userId: user.objectId,
+	                userName: user.userName,
+	                userType: user.userType,
+	                userStatus: user.userStatus,
+	                shakeCount: user.shakeCount
 	            }
 	        },
 	        PLAYER_JOIN: function(state, player) {
@@ -14623,6 +14751,11 @@
 	            state.playerList = state.playerList.filter(function(p) {
 	                return p.objectId !== userId;
 	            })
+	        },
+	
+	        // dashboard
+	        UPDATE_GAME_STATUS: function(state, status) {
+	            state.gameStatus = status;
 	        }
 	    }
 	});
@@ -15145,6 +15278,13 @@
 	    },
 	    getUser: function(request) {
 	        return callservice('/game/user/get', request);
+	    },
+	
+	    startGame: function() {
+	        return callservice('/game/controls/start', {});
+	    },
+	    stopGame: function(gameId) {
+	        return callservice('/game/controls/stop', {gameId: gameId});
 	    }
 	};
 
@@ -15218,7 +15358,7 @@
 	
 	
 	// module
-	exports.push([module.id, "\n.selected[_v-b81c11f4] {\n    color: red;\n}\n", "", {"version":3,"sources":["/./src/components/player/welcome.vue?ceaebaa6"],"names":[],"mappings":";AACA;IACA,WAAA;CACA","file":"welcome.vue","sourcesContent":["<style scoped>\r\n    .selected {\r\n        color: red;\r\n    }\r\n</style>\r\n\r\n<template>\r\n    <div>\r\n        <h4>welcome, please input your name and select a role</h4>\r\n        <input type=\"text\" v-model=\"userName\" @input=\"inputUserName\"/>\r\n        <span>{{formMessage}}</span>\r\n        <div>\r\n            <span @click=\"selectUserType('BRIDE')\" :class=\"[userType === 'BRIDE' ? 'selected' : '']\">Bride Guest</span>\r\n            <span @click=\"selectUserType('GROOM')\" :class=\"[userType === 'GROOM' ? 'selected' : '']\">Groom Guest</span>\r\n        </div>\r\n        <button @click=\"start()\">Join Game</button>\r\n    </div>\r\n</template>\r\n\r\n<script>\r\n    var store = require('../../store');\r\n\r\n    module.exports = {\r\n\r\n        computed: {\r\n            userId: function() {\r\n                return store.state.player.userId;\r\n            },\r\n            userName: function() {\r\n                return store.state.player.userName || localStorage.userName;\r\n            },\r\n            userType: function() {\r\n                return store.state.player.userType || localStorage.userType;\r\n            },\r\n            formMessage: function() {\r\n                return store.state.player.welcomeView.userNameFormMessage;\r\n            }\r\n        },\r\n\r\n        methods: {\r\n            selectUserType: store.actions.selectUserType,\r\n            start: function() {\r\n                var router = this.$router;\r\n\r\n                store.actions.start({\r\n                    userName: this.userName,\r\n                    userType: this.userType\r\n                }).then(function(user) {\r\n                    router.go({name: 'lobby', params: {playerId: user.objectId}});\r\n                });\r\n            },\r\n            inputUserName: function(e) {\r\n                store.actions.inputUserName(e.target.value);\r\n            }\r\n        }\r\n    };\r\n</script>"],"sourceRoot":"webpack://"}]);
+	exports.push([module.id, "\n.selected[_v-b81c11f4] {\n    color: red;\n}\n", "", {"version":3,"sources":["/./src/components/player/welcome.vue?31aabfbd"],"names":[],"mappings":";AACA;IACA,WAAA;CACA","file":"welcome.vue","sourcesContent":["<style scoped>\r\n    .selected {\r\n        color: red;\r\n    }\r\n</style>\r\n\r\n<template>\r\n    <div>\r\n        <h4>welcome, please input your name and select a role</h4>\r\n        <input type=\"text\" v-model=\"userName\" @input=\"inputUserName\"/>\r\n        <span>{{formMessage}}</span>\r\n        <div>\r\n            <span @click=\"selectUserType('BRIDE')\" :class=\"[userType === 'BRIDE' ? 'selected' : '']\">Bride Guest</span>\r\n            <span @click=\"selectUserType('GROOM')\" :class=\"[userType === 'GROOM' ? 'selected' : '']\">Groom Guest</span>\r\n        </div>\r\n        <button @click=\"joinGame()\">Join Game</button>\r\n    </div>\r\n</template>\r\n\r\n<script>\r\n    var store = require('../../store');\r\n\r\n    module.exports = {\r\n\r\n        computed: {\r\n            userId: function() {\r\n                return store.state.player.userId;\r\n            },\r\n            userName: function() {\r\n                return store.state.player.userName || localStorage.userName;\r\n            },\r\n            userType: function() {\r\n                return store.state.player.userType || localStorage.userType;\r\n            },\r\n            formMessage: function() {\r\n                return store.state.player.welcomeView.userNameFormMessage;\r\n            }\r\n        },\r\n\r\n        methods: {\r\n            selectUserType: store.actions.selectUserType,\r\n            start: function() {\r\n                var router = this.$router;\r\n\r\n                store.actions.start({\r\n                    userName: this.userName,\r\n                    userType: this.userType\r\n                }).then(function(user) {\r\n                    router.go({name: 'lobby', params: {playerId: user.objectId}});\r\n                });\r\n            },\r\n            inputUserName: function(e) {\r\n                store.actions.inputUserName(e.target.value);\r\n            }\r\n        }\r\n    };\r\n</script>"],"sourceRoot":"webpack://"}]);
 	
 	// exports
 
@@ -15270,7 +15410,7 @@
 /* 45 */
 /***/ function(module, exports) {
 
-	module.exports = "\n<div _v-b81c11f4=\"\">\n    <h4 _v-b81c11f4=\"\">welcome, please input your name and select a role</h4>\n    <input type=\"text\" v-model=\"userName\" @input=\"inputUserName\" _v-b81c11f4=\"\">\n    <span _v-b81c11f4=\"\">{{formMessage}}</span>\n    <div _v-b81c11f4=\"\">\n        <span @click=\"selectUserType('BRIDE')\" :class=\"[userType === 'BRIDE' ? 'selected' : '']\" _v-b81c11f4=\"\">Bride Guest</span>\n        <span @click=\"selectUserType('GROOM')\" :class=\"[userType === 'GROOM' ? 'selected' : '']\" _v-b81c11f4=\"\">Groom Guest</span>\n    </div>\n    <button @click=\"start()\" _v-b81c11f4=\"\">Join Game</button>\n</div>\n";
+	module.exports = "\n<div _v-b81c11f4=\"\">\n    <h4 _v-b81c11f4=\"\">welcome, please input your name and select a role</h4>\n    <input type=\"text\" v-model=\"userName\" @input=\"inputUserName\" _v-b81c11f4=\"\">\n    <span _v-b81c11f4=\"\">{{formMessage}}</span>\n    <div _v-b81c11f4=\"\">\n        <span @click=\"selectUserType('BRIDE')\" :class=\"[userType === 'BRIDE' ? 'selected' : '']\" _v-b81c11f4=\"\">Bride Guest</span>\n        <span @click=\"selectUserType('GROOM')\" :class=\"[userType === 'GROOM' ? 'selected' : '']\" _v-b81c11f4=\"\">Groom Guest</span>\n    </div>\n    <button @click=\"joinGame()\" _v-b81c11f4=\"\">Join Game</button>\n</div>\n";
 
 /***/ },
 /* 46 */
@@ -15283,7 +15423,7 @@
 	    __vue_script__.__esModule &&
 	    Object.keys(__vue_script__).length > 1) {
 	  console.warn("[vue-loader] src\\components\\player\\lobby.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(50)
+	__vue_template__ = __webpack_require__(51)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
 	if (__vue_template__) {
@@ -15336,7 +15476,7 @@
 	
 	
 	// module
-	exports.push([module.id, "\n\n", "", {"version":3,"sources":[],"names":[],"mappings":"","file":"lobby.vue","sourceRoot":"webpack://"}]);
+	exports.push([module.id, "\n.line[_v-12b5f07a] {\n    background: red;\n    display: inline-block;\n    height: 2px;\n    width: 0%;\n    -webkit-transition: width 0.5s ease;\n    transition: width 0.5s ease;\n}\n", "", {"version":3,"sources":["/./src/components/player/lobby.vue?4281e222"],"names":[],"mappings":";AACA;IACA,gBAAA;IACA,sBAAA;IACA,YAAA;IACA,UAAA;IACA,oCAAA;IAAA,4BAAA;CACA","file":"lobby.vue","sourcesContent":["<style scoped>\r\n    .line {\r\n        background: red;\r\n        display: inline-block;\r\n        height: 2px;\r\n        width: 0%;\r\n        transition: width 0.5s ease;\r\n    }\r\n</style>\r\n\r\n<template>\r\n    <div>\r\n        <div>current player: {{currentPlayer.userName}}</div>\r\n        <div>you just shaked: {{currentPlayer.shakeCount}}</div>\r\n\r\n        <h4>other players: </h4>\r\n        <div v-for=\"player in playerList\">\r\n            {{player.userName}}, {{player.shakeCount}}\r\n            <div class=\"line\" :style=\"{width: player.shakeCount + '%'}\"></div>\r\n        </div>\r\n\r\n        <div>\r\n            <button @click=\"leaveGame()\">Leave</button>\r\n            <button @click=\"shake()\">Shake</button>\r\n        </div>\r\n    </div>\r\n</template>\r\n\r\n<script>\r\n    var store = require('../../store');\r\n    var ShakeJS = require('shake.js');\r\n    var shake = null;\r\n\r\n    module.exports = {\r\n        computed: {\r\n            playerList: function() {\r\n                var currentUserId = this.$route.params.playerId;\r\n\r\n                return store.state.playerList.filter(function(p) {\r\n                    return p.objectId !== currentUserId;\r\n                }).sort(function(p1, p2) {\r\n                    return p1.updatedAt < p2.updatedAt;\r\n                });\r\n            },\r\n            currentPlayer: function() {\r\n                return store.state.currentPlayer;\r\n            }\r\n        },\r\n\r\n        ready: function() {\r\n            store.actions.joinGame(this.$route.params.playerId);\r\n\r\n            if(!shake) {\r\n                shake = new ShakeJS({\r\n                    threshold: 15,\r\n                    timeout: 100\r\n                });\r\n\r\n                window.addEventListener('shake', function() {\r\n                    store.actions.shake();\r\n                }.bind(this), false);\r\n\r\n                shake.start();\r\n            }\r\n\r\n            console.log('component ready');\r\n        },\r\n\r\n        methods: {\r\n            leaveGame: function() {\r\n                store.actions.leaveGame(this.$route.params.playerId);\r\n                this.$router.go({name: 'welcome'});\r\n            },\r\n            shake: store.actions.shake\r\n        },\r\n\r\n        route: {\r\n            data: function(transition) {\r\n                // this part of code won't run if you directly input the url in the browser or refresh the page\r\n                /*store.actions.getPlayerList().then(function() {\r\n                    transition.next();\r\n                }, function(error) {\r\n                    transition.abort();\r\n                });*/\r\n                console.log('route.data');\r\n                transition.next();\r\n            },\r\n            activate: function(transition) {\r\n                console.log('route.activate');\r\n                transition.next();\r\n            },\r\n            deactivate: function(transition) {\r\n                store.actions.leaveGame(this.$route.params.playerId);\r\n                transition.next();\r\n            }\r\n        }\r\n    }\r\n</script>"],"sourceRoot":"webpack://"}]);
 	
 	// exports
 
@@ -15348,21 +15488,42 @@
 	'use strict';
 	
 	var store = __webpack_require__(34);
+	var ShakeJS = __webpack_require__(50);
+	var shake = null;
 	
 	module.exports = {
 	    computed: {
 	        playerList: function playerList() {
-	            return store.state.playerList.sort(function (p1, p2) {
+	            var currentUserId = this.$route.params.playerId;
+	
+	            return store.state.playerList.filter(function (p) {
+	                return p.objectId !== currentUserId;
+	            }).sort(function (p1, p2) {
 	                return p1.updatedAt < p2.updatedAt;
 	            });
 	        },
-	        shakeCount: function shakeCount() {
-	            return store.state.player.shakeCount;
+	        currentPlayer: function currentPlayer() {
+	            return store.state.currentPlayer;
 	        }
 	    },
 	
 	    ready: function ready() {
 	        store.actions.joinGame(this.$route.params.playerId);
+	
+	        if (!shake) {
+	            shake = new ShakeJS({
+	                threshold: 15,
+	                timeout: 100
+	            });
+	
+	            window.addEventListener('shake', function () {
+	                store.actions.shake();
+	            }.bind(this), false);
+	
+	            shake.start();
+	        }
+	
+	        console.log('component ready');
 	    },
 	
 	    methods: {
@@ -15375,33 +15536,173 @@
 	
 	    route: {
 	        data: function data(transition) {
-	            store.actions.getPlayerList().then(function () {
-	                transition.next();
-	            }, function (error) {
-	                transition.abort();
-	            });
+	            console.log('route.data');
+	            transition.next();
+	        },
+	        activate: function activate(transition) {
+	            console.log('route.activate');
+	            transition.next();
+	        },
+	        deactivate: function deactivate(transition) {
+	            store.actions.leaveGame(this.$route.params.playerId);
+	            transition.next();
 	        }
 	    }
 	};
 
 /***/ },
 /* 50 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	module.exports = "\n<div _v-12b5f07a=\"\">\n    lobby page\n    <div v-for=\"player in playerList\" _v-12b5f07a=\"\">\n        {{player.userName}}\n    </div>\n    <button @click=\"leaveGame()\" _v-12b5f07a=\"\">Leave</button>\n    <div _v-12b5f07a=\"\">\n        <button @click=\"shake()\" _v-12b5f07a=\"\">Shake {{shakeCount}}</button>\n    </div>\n</div>\n";
+	var __WEBPACK_AMD_DEFINE_RESULT__;/*
+	 * Author: Alex Gibson
+	 * https://github.com/alexgibson/shake.js
+	 * License: MIT license
+	 */
+	
+	(function(global, factory) {
+	    if (true) {
+	        !(__WEBPACK_AMD_DEFINE_RESULT__ = function() {
+	            return factory(global, global.document);
+	        }.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	    } else if (typeof module !== 'undefined' && module.exports) {
+	        module.exports = factory(global, global.document);
+	    } else {
+	        global.Shake = factory(global, global.document);
+	    }
+	} (typeof window !== 'undefined' ? window : this, function (window, document) {
+	
+	    'use strict';
+	
+	    function Shake(options) {
+	        //feature detect
+	        this.hasDeviceMotion = 'ondevicemotion' in window;
+	
+	        this.options = {
+	            threshold: 15, //default velocity threshold for shake to register
+	            timeout: 1000 //default interval between events
+	        };
+	
+	        if (typeof options === 'object') {
+	            for (var i in options) {
+	                if (options.hasOwnProperty(i)) {
+	                    this.options[i] = options[i];
+	                }
+	            }
+	        }
+	
+	        //use date to prevent multiple shakes firing
+	        this.lastTime = new Date();
+	
+	        //accelerometer values
+	        this.lastX = null;
+	        this.lastY = null;
+	        this.lastZ = null;
+	
+	        //create custom event
+	        if (typeof document.CustomEvent === 'function') {
+	            this.event = new document.CustomEvent('shake', {
+	                bubbles: true,
+	                cancelable: true
+	            });
+	        } else if (typeof document.createEvent === 'function') {
+	            this.event = document.createEvent('Event');
+	            this.event.initEvent('shake', true, true);
+	        } else {
+	            return false;
+	        }
+	    }
+	
+	    //reset timer values
+	    Shake.prototype.reset = function () {
+	        this.lastTime = new Date();
+	        this.lastX = null;
+	        this.lastY = null;
+	        this.lastZ = null;
+	    };
+	
+	    //start listening for devicemotion
+	    Shake.prototype.start = function () {
+	        this.reset();
+	        if (this.hasDeviceMotion) {
+	            window.addEventListener('devicemotion', this, false);
+	        }
+	    };
+	
+	    //stop listening for devicemotion
+	    Shake.prototype.stop = function () {
+	        if (this.hasDeviceMotion) {
+	            window.removeEventListener('devicemotion', this, false);
+	        }
+	        this.reset();
+	    };
+	
+	    //calculates if shake did occur
+	    Shake.prototype.devicemotion = function (e) {
+	        var current = e.accelerationIncludingGravity;
+	        var currentTime;
+	        var timeDifference;
+	        var deltaX = 0;
+	        var deltaY = 0;
+	        var deltaZ = 0;
+	
+	        if ((this.lastX === null) && (this.lastY === null) && (this.lastZ === null)) {
+	            this.lastX = current.x;
+	            this.lastY = current.y;
+	            this.lastZ = current.z;
+	            return;
+	        }
+	
+	        deltaX = Math.abs(this.lastX - current.x);
+	        deltaY = Math.abs(this.lastY - current.y);
+	        deltaZ = Math.abs(this.lastZ - current.z);
+	
+	        if (((deltaX > this.options.threshold) && (deltaY > this.options.threshold)) || ((deltaX > this.options.threshold) && (deltaZ > this.options.threshold)) || ((deltaY > this.options.threshold) && (deltaZ > this.options.threshold))) {
+	            //calculate time in milliseconds since last shake registered
+	            currentTime = new Date();
+	            timeDifference = currentTime.getTime() - this.lastTime.getTime();
+	
+	            if (timeDifference > this.options.timeout) {
+	                window.dispatchEvent(this.event);
+	                this.lastTime = new Date();
+	            }
+	        }
+	
+	        this.lastX = current.x;
+	        this.lastY = current.y;
+	        this.lastZ = current.z;
+	
+	    };
+	
+	    //event handler
+	    Shake.prototype.handleEvent = function (e) {
+	        if (typeof (this[e.type]) === 'function') {
+	            return this[e.type](e);
+	        }
+	    };
+	
+	    return Shake;
+	}));
+
 
 /***/ },
 /* 51 */
+/***/ function(module, exports) {
+
+	module.exports = "\n<div _v-12b5f07a=\"\">\n    <div _v-12b5f07a=\"\">current player: {{currentPlayer.userName}}</div>\n    <div _v-12b5f07a=\"\">you just shaked: {{currentPlayer.shakeCount}}</div>\n\n    <h4 _v-12b5f07a=\"\">other players: </h4>\n    <div v-for=\"player in playerList\" _v-12b5f07a=\"\">\n        {{player.userName}}, {{player.shakeCount}}\n        <div class=\"line\" :style=\"{width: player.shakeCount + '%'}\" _v-12b5f07a=\"\"></div>\n    </div>\n\n    <div _v-12b5f07a=\"\">\n        <button @click=\"leaveGame()\" _v-12b5f07a=\"\">Leave</button>\n        <button @click=\"shake()\" _v-12b5f07a=\"\">Shake</button>\n    </div>\n</div>\n";
+
+/***/ },
+/* 52 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __vue_script__, __vue_template__
-	__webpack_require__(52)
-	__vue_script__ = __webpack_require__(54)
+	__webpack_require__(53)
+	__vue_script__ = __webpack_require__(55)
 	if (__vue_script__ &&
 	    __vue_script__.__esModule &&
 	    Object.keys(__vue_script__).length > 1) {
 	  console.warn("[vue-loader] src\\components\\dashboard\\dashboard.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(55)
+	__vue_template__ = __webpack_require__(56)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
 	if (__vue_template__) {
@@ -15420,13 +15721,13 @@
 	})()}
 
 /***/ },
-/* 52 */
+/* 53 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
 	// load the styles
-	var content = __webpack_require__(53);
+	var content = __webpack_require__(54);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(32)(content, {});
@@ -15446,7 +15747,7 @@
 	}
 
 /***/ },
-/* 53 */
+/* 54 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(31)();
@@ -15454,24 +15755,41 @@
 	
 	
 	// module
-	exports.push([module.id, "\n\n", "", {"version":3,"sources":[],"names":[],"mappings":"","file":"dashboard.vue","sourceRoot":"webpack://"}]);
+	exports.push([module.id, "\n.line[_v-0b7591bd] {\n    background: red;\n    display: inline-block;\n    height: 2px;\n    width: 0%;\n    -webkit-transition: width 0.5s ease;\n    transition: width 0.5s ease;\n}\n", "", {"version":3,"sources":["/./src/components/dashboard/dashboard.vue?776aa3e5"],"names":[],"mappings":";AACA;IACA,gBAAA;IACA,sBAAA;IACA,YAAA;IACA,UAAA;IACA,oCAAA;IAAA,4BAAA;CACA","file":"dashboard.vue","sourcesContent":["<style scoped>\r\n    .line {\r\n        background: red;\r\n        display: inline-block;\r\n        height: 2px;\r\n        width: 0%;\r\n        transition: width 0.5s ease;\r\n    }\r\n</style>\r\n\r\n<template>\r\n    <div>\r\n        <p>--------------- player list ---------------</p>\r\n        <ul>\r\n            <li v-for=\"player in playerList\">\r\n                <div>{{player.userName}} - {{player.shakeCount}}</div>\r\n                <div class=\"line\" :style=\"{width: player.shakeCount + '%'}\"></div>\r\n            </li>\r\n        </ul>\r\n        <p>--------------- game control ---------------</p>\r\n        <div>\r\n            <button @click=\"startGame()\">Start Game</button>\r\n            <button @click=\"stopGame()\">Stop Game</button>\r\n        </div>\r\n    </div>\r\n</template>\r\n\r\n<script>\r\n    var store = require('../../store');\r\n\r\n    module.exports = {\r\n        computed: {\r\n            playerList: function() {\r\n                return store.state.playerList;\r\n            }\r\n        },\r\n\r\n        ready: function() {\r\n            store.actions.initDashboard();\r\n        },\r\n\r\n        methods: {\r\n            startGame: store.actions.startGame,\r\n            stopGame: store.actions.stopGame\r\n        }\r\n    };\r\n</script>"],"sourceRoot":"webpack://"}]);
 	
 	// exports
 
 
 /***/ },
-/* 54 */
-/***/ function(module, exports) {
+/* 55 */
+/***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 	
-	module.exports = {};
+	var store = __webpack_require__(34);
+	
+	module.exports = {
+	    computed: {
+	        playerList: function playerList() {
+	            return store.state.playerList;
+	        }
+	    },
+	
+	    ready: function ready() {
+	        store.actions.initDashboard();
+	    },
+	
+	    methods: {
+	        startGame: store.actions.startGame,
+	        stopGame: store.actions.stopGame
+	    }
+	};
 
 /***/ },
-/* 55 */
+/* 56 */
 /***/ function(module, exports) {
 
-	module.exports = "\n<div _v-0b7591bd=\"\">\n    dashboard page\n</div>\n";
+	module.exports = "\n<div _v-0b7591bd=\"\">\n    <p _v-0b7591bd=\"\">--------------- player list ---------------</p>\n    <ul _v-0b7591bd=\"\">\n        <li v-for=\"player in playerList\" _v-0b7591bd=\"\">\n            <div _v-0b7591bd=\"\">{{player.userName}} - {{player.shakeCount}}</div>\n            <div class=\"line\" :style=\"{width: player.shakeCount + '%'}\" _v-0b7591bd=\"\"></div>\n        </li>\n    </ul>\n    <p _v-0b7591bd=\"\">--------------- game control ---------------</p>\n    <div _v-0b7591bd=\"\">\n        <button @click=\"startGame()\" _v-0b7591bd=\"\">Start Game</button>\n        <button @click=\"stopGame()\" _v-0b7591bd=\"\">Stop Game</button>\n    </div>\n</div>\n";
 
 /***/ }
 /******/ ]);

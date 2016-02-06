@@ -2,6 +2,7 @@ var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
+var compress = require('compression');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var http = require('http');
@@ -18,20 +19,35 @@ var Player = AV.Object.extend('Player');
 io.on('connection', function(socket) {
     console.log('socket.io connected');
 
-    // message from everyone will be broadcast to others
+    /* message from everyone will be broadcast to others */
+
+    // game start
+    socket.on('start', function(message) {
+        socket.broadcast.emit('start', message);
+    });
+
+    // game stop
+    socket.on('stop', function(message) {
+        socket.broadcast.emit('stop', message);
+    });
+
+    // play join the game
     socket.on('join', function(message) {
         socket.userId = message;
         socket.broadcast.emit('join', message);
     });
 
+    // player leave the game
     socket.on('leave', function(message) {
         socket.broadcast.emit('leave', message);
     });
 
+    // player shake
     socket.on('shake', function(message) {
         socket.broadcast.emit('shake', message);
     });
 
+    // player disconnect
     socket.on('disconnect', function() {
         var userId = socket.userId,
             playerQueryObj = new AV.Query('Player');
@@ -52,6 +68,7 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
+app.use(compress());
 app.use(express.static(path.join(__dirname, '../dist')));
 
 require('./routes/index.js')(app, io);
