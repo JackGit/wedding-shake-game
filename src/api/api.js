@@ -2,7 +2,9 @@ var Vue = require('vue');
 
 function callservice(url, request) {
     return new Promise(function(resolve, reject) {
+        console.log('callservice::url, request', url, request);
         Vue.http.post(url, request).then(function(response) {
+            console.log('callservice::response', response);
             if(response.data.statusCode === 0) {
                 resolve(response.data);
             } else {
@@ -10,13 +12,13 @@ function callservice(url, request) {
             }
         }, function(error) {
             alert('system callservice error');
-            console.log('system callservice error', error);
+            console.log('callservice::error', error);
             reject(error);
         });
     });
 }
 
-module.exports = {
+var API = {
     createUser: function(request) {
         return callservice('/game/user/create', request);
     },
@@ -29,11 +31,35 @@ module.exports = {
     getUser: function(request) {
         return callservice('/game/user/get', request);
     },
-
-    startGame: function() {
-        return callservice('/game/controls/start', {});
+    getUsers: function(userIds) {
+        return callservice('/game/user/list', {
+            userIds: userIds
+        });
     },
-    stopGame: function(gameId) {
-        return callservice('/game/controls/stop', {gameId: gameId});
+    getRoom: function(roomId) {
+        return callservice('/game/room/get', {
+            roomId: roomId
+        });
+    },
+    getRoomPlayers: function(roomId) {
+        return callservice('/game/room/playerList', {roomId: roomId});
+    },
+    listRoom: function() {
+        return callservice('/game/room/list');
+    },
+    joinRoom: function(roomId, userId, userType) {
+        return callservice('/game/user/joinRoom', {
+            userId: userId,
+            userType: userType,
+            roomId: roomId
+        });
+    },
+    leaveRoom: function(roomId, userId) {
+        return callservice('/game/user/leaveRoom', {
+            roomId: roomId,
+            userId: userId
+        });
     }
 };
+
+module.exports = window.api = API;

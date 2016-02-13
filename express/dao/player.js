@@ -1,8 +1,8 @@
 var AV = require('avoscloud-sdk');
 var Player = AV.Object.extend('Player');
 var PLAYER_PROPERTIES = {
-    playerName: '',
-    playerType: '',
+    userName: '',
+    userType: '',
     shakeCount: 0               // this shakeCount will be used to record playing data. When game is stopped, this data will be synced to room.ranking
 };
 
@@ -17,9 +17,9 @@ var playerDAO = {
 
         return playerAVObj.save();
     },
-    getPlayer: function(playerId) {
+    getPlayer: function(userId) {
         var playerQueryObj = new AV.Query('Player');
-        return playerQueryObj.get(playerId);
+        return playerQueryObj.get(userId);
     },
     updatePlayer: function(player) {
         return playerDAO.getPlayer(player.objectId).try(function(playerAVObj) {
@@ -30,9 +30,9 @@ var playerDAO = {
             return playerAVObj.save();
         });
     },
-    getPlayerList: function(playerIds) {
+    getPlayerList: function(userIds) {
         var playerQueryObj = new AV.Query('Player');
-        playerQueryObj.containedIn('objectId', playerIds);
+        playerQueryObj.containedIn('objectId', userIds);
         return playerQueryObj.find();
     }
 };

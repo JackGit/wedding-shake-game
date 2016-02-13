@@ -24,22 +24,34 @@ window.socket = socket;
 });*/
 
 router.map({
-    '/player': {
+    '/welcome': {
         name: 'welcome',
-        component: require('./components/player/welcome.vue')
+        component: require('./components/player/welcome-page.vue')
     },
-    '/player/:playerId': {
-        name: 'lobby',
-        component: require('./components/player/lobby.vue')
+    '/home/:userId': {
+        name: 'home',
+        component: require('./components/player/home-page.vue')
     },
-    '/dashboard': {
+    '/ready/:roomId': {
+        name: 'ready',
+        component: require('./components/player/ready-page.vue')
+    },
+    '/shake': {
+        name: 'shake',
+        component: require('./components/player/shake-page.vue')
+    },
+    '/ranking/:roomId': {
+        name: 'ranking',
+        component: require('./components/player/ranking-page.vue')
+    },
+    '/admin': {
         name: 'dashboard',
-        component: require('./components/dashboard/dashboard.vue')
+        component: require('./components/admin/admin.vue')
     }
 });
 
 router.redirect({
-   '/': '/player'
+   '/': '/welcome'
 });
 
 

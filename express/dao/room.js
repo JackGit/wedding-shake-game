@@ -12,10 +12,10 @@ var ROOM_PROPERTIES = {
 
 /**
  * room status:
- *      created: INIT
- *      allow player to join: JOINING
- *      start game: PLAYING
- *      game end: END
+ *      created:                INIT
+ *      allow player to join:   JOINING
+ *      start game:             PLAYING
+ *      game end:               END
  *
  * note: it should create a new room record to start another round of game. So END is the end state of room.
  *      and each room record is a snapshot of a round of game.
@@ -50,9 +50,14 @@ var roomDAO = {
         var roomQueryObj = new AV.Query('Room');
         return roomQueryObj.get(roomId);
     },
+    listRoom: function() {
+        var roomQueryObj = new AV.Query('Room');
+        roomQueryObj.addAscending('createAt');
+        return roomQueryObj.find();
+    },
     joinRoom: function(roomId, playerId, playerType) {
         return roomDAO.getRoom(roomId).try(function(roomAVObj) {
-            var playerList = roomAVObj.get('playerList'),
+            var playerList = roomAVObj.get('players'),
                 status = roomAVObj.get('status'),
                 roomSize = roomAVObj.get('roomSize');
 
@@ -65,32 +70,36 @@ var roomDAO = {
                 return AV.Promise.error(playerType + ' players is full, cannot join');
 
             // check for duplicate join
-            if(playerList.indexOf(playerId) === -1)
+            if(playerList.filter(function(p) { return p.playerId === playerId; }).length === 0)
                 playerList.push({
                     playerId: playerId,
-                    playerType: playerType
+                    playerType: playerType,
+                    joinedAt: new Date()
                 });
 
-            roomAVObj.set('playerList', playerList);
+            roomAVObj.set('players', playerList);
 
             return roomAVObj.save();
         });
     },
     leaveRoom: function(roomId, playerId) {
         return roomDAO.getRoom(roomId).try(function(roomAVObj) {
-            var playerList = roomAVObj.get('playerList');
+            var playerList = roomAVObj.get('players');
 
             playerList = playerList.filter(function(p) {
                 return p.playerId !== playerId;
             });
 
-            roomAVObj.set('playerList', playerList);
+            roomAVObj.set('players', playerList);
             return roomAVObj.save();
         });
     },
     getRoomPlayerList: function(roomId) {
         return roomDAO.getRoom(roomId).try(function(roomAVObj) {
-            return playerDAO.getPlayerList(roomAVObj.get('playerList'));
+            var userIds = roomAVObj.get('players').map(function(p) {
+                return p.playerId;
+            });
+            return playerDAO.getPlayerList(userIds);
         });
     },
     allowPlayerJoin: function(roomId) {
@@ -152,7 +161,7 @@ var roomDAO = {
                     playerAVObj.set('shakeCount', 0);
                     playerAVObj.save();
                 });
-                return roomDAO.updateRoom(room)
+                return roomDAO.updateRoom(room);
             });
         });
     }

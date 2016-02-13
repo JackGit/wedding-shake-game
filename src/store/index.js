@@ -5,12 +5,6 @@ var api = require('../api/api.js');
 Vue.use(Vuex);
 Vue.config.debug = true;
 
-function keepLocal(user) {
-    localStorage.userId = user.objectId;
-    localStorage.userName = user.userName;
-    localStorage.userType = user.userType;
-}
-
 // socket is global var defined in main.js
 function listenPlayerSocketMessage(enable) {
     console.log('listenPlayerSocketMessage', enable);
@@ -32,122 +26,151 @@ function listenPlayerSocketMessage(enable) {
     }
 }
 
-/*
-    game (room) status:
-
-        INIT -> JOINING -> PLAYING -> END
-
-
-    WELCOME PAGE
-        1. user not sign up
-            1.1 sign up
-            1.2 click JOIN
-                - if game is STOPPED, which not allow player to join
-                    player will be routed to END page
-                - if game is READY, which allow player to join
-                    player will be routed to READY page to wait game start
-                - if game is STARTED, which not allow player to join, but will recieve play data
-                    player will be routed to VISIT PAGE
-        2. user signed up
-            pre-fill form data, and allow player to click JOIN
-
-    READY PAGE
-        1. show game rules, and joined players
-        2. if game status change to STARTED, it will count down and then route player to SHAKE page
-        3. if game status change to STOPPED, player will be routed to END PAGE
-
-    SHAKE PAGE
-        1. allow user to shake
-        2. if game end, status change to STOPPED, player will be routed to RANKING page
-
-    END PAGE
-        1. will display: game is not started yet, and this is the last ranking data
-        2. if game status change to READY, will offer player a "join game" button to join the game
-        3. then follow WELCOME PAGE join game logic
-
-    RANKING PAGE
-        1.
-
-    VISIT PAGE
-        1. user is able to see other players shake data
-        2. if game end, status change to STOPPED, it will route to RANKING PAGE
- */
 
 module.exports = window.store = new Vuex.Store({
     state: {
-        gameId: '',
-        gameStatus: 'STOPPED', // 'STOPPED': not allow player to join -> 'READY': allow player to join  -> 'STARTED': not allow player to join
-        gameSize: 5,    // 5 players
-        gameTime: 20,   // seconds
-        mask: false,
-        playerList: [],
-        currentPlayer: {
-            userName: '',
-            userId: '',
-            userType: '',
-            userStatus: '',
-            shakeCount: 0
-        },
-        pages: {
-            welcome: {
-
-            },
-            lobby: {
-
-            },
-            dashboard: {
-
-            }
-        },
+        /* player pages states */
         player: {
-            userName: '',
-            userId: '',
-            userType: '',
-            welcomeView: {
-                userNameFormMessage: '',
+            currentPlayer: {
+                userId: localStorage.userId || '',
+                userName: '',
+                userType: '',
+                shakeCount: 0
+            },
+            welcomePage: {
+                formUserName: '',
+                formUserType: '',
+                formUserNameMessage: '',
+                formUserTypeMessage: ''
+            },
+            pageMask: false,
+            homePage: {
+                roomList: []            // need socket.io to update this field
+            },
+            readyPage: {
+                roomDetails: {},         // need socket.io to update this field
+                players: [],
+                gameStatus: ''
+            },
+            shakePage: {
+
+            },
+            rankingPage: {
+
             }
         },
 
-        dashboard: {
+        /* admin pages states */
+        admin: {
 
         }
     },
 
     actions: {
-        // player actions
-        selectUserType: function(store, type) {
-            console.log('store.actions.selectUserType', type);
-            store.dispatch('SELECT_USER_TYPE', type);
+        /* player actions */
+        inputUserName: function(store, userName) {
+            console.log('store.actions.inputUserName', userName);
+            store.state.player.welcomePage.formUserName = userName;
         },
-        start: function(store, data) {
+        inputUserType: function(store, userType) {
+            console.log('store.actions.inputUserType', userType);
+            store.state.player.welcomePage.formUserType = userType;
+        },
+        registerPlayer: function(store, user) {
+            console.log('store.actions.registerPlayer', user);
+
             return new Promise(function(resolve, reject) {
-                console.log('store.actions.joinGame', data);
-                var request = {
-                    userName: data.userName,
-                    userType: data.userType
-                };
-
-                if(!data.userName) {
-                    store.dispatch('PLAYER_WELCOME_USER_NAME_FORM_MESSAGE', 'please input correct user name');
-                    return;
-                } else {
-                    store.dispatch('PLAYER_WELCOME_USER_NAME_FORM_MESSAGE', '');
-                    store.actions.showMask();
-
-                    api.createUser(request).then(function(data) {
-                        store.dispatch('PLAYER_USER_CREATED_SUCCESSFULLY', data.user);
-                        keepLocal(data.user);
-
-                        store.actions.hideMask();
-                        resolve(data.user);
-                    }, function(error) {
-                        store.actions.hideMask();
-                        console.log('store.actions.joinGame error', error);
-                        reject(error);
-                    })
-                }
+                api.createUser(user).then(function(data) {
+                    store.state.player.currentPlayer.userId = localStorage.userId = data.user.objectId;
+                    store.state.player.currentPlayer.userName = data.user.userName;
+                    store.state.player.currentPlayer.userType = data.user.userType;
+                    resolve(data.user);
+                }, function(error) {
+                    reject(error);
+                });
             });
         },
+        getUserDetails: function(store, userId) {
+            console.log('store.actions.getUserDetails', userId);
+            return new Promise(function(resolve, reject) {
+                api.getUser({userId: userId}).then(function(data) {
+                    var user = data.user;
+                    store.state.player.currentPlayer.userName = user.userName;
+                    store.state.player.currentPlayer.userType = user.userType;
+                    resolve(user);
+                }, function(error) {
+                    reject(error);
+                });
+            });
+        },
+        clearUserData: function(store) {
+            localStorage.userId = '';
+            store.state.player.currentPlayer.userId = '';
+            store.state.player.currentPlayer.userName = '';
+            store.state.player.currentPlayer.userType = '';
+            store.state.player.currentPlayer.shakeCount = 0;
+        },
+        getRoomDetails: function(store, roomId) {
+            console.log('store.actions.getRoomDetails', roomId);
+
+            api.getRoom(roomId).then(function(data) {
+                store.state.player.readyPage.roomDetails = data.room;
+            }, function(error) {
+                console.log('store.actions.getRoomDetails error', error);
+            });
+        },
+        getRoomPlayers: function(store, roomId) {
+            console.log('store.actions.getRoomPlayers', roomId);
+            api.getRoomPlayers(roomId).then(function(data) {
+                store.state.player.readyPage.players = data.players;
+            }, function(error) {
+                console.log('store.actions.getRoomPlayers error', error);
+            });
+        },
+        getRoomList: function(store) {
+            console.log('store.actions.getRoomList');
+
+            api.listRoom().then(function(data) {
+                store.state.player.homePage.roomList = data.roomList;
+            }, function(error) {
+                console.log('store.actions.getRoomList error', error);
+            });
+        },
+        joinRoom: function(store, request) {
+            console.log('store.actions.joinRoom request', request);
+            var user = request.user, roomId = request.roomId;
+
+            return new Promise(function(resolve, reject) {
+                api.joinRoom(roomId, user.userId, user.userType).then(function(data) {
+                    resolve(data.room);
+                }, function(error) {
+                    reject(error);
+                });
+            });
+        },
+        leaveRoom: function(store, roomId, userId) {
+            console.log('store.actions.leaveRoom', roomId, userId);
+            return new Promise(function(resolve, reject) {
+                api.leaveRoom(roomId, userId).then(function(data) {
+                    resolve(data.room);
+                }, function(error) {
+                    reject(error);
+                });
+            });
+        },
+
+
+
+        /* admin acitons */
+
+
+
+
+
+
+        // player actions
+
+
         joinGame: function(store, userId) {
             var request = {
                 userId: userId,
@@ -184,9 +207,7 @@ module.exports = window.store = new Vuex.Store({
 
             });
         },
-        inputUserName: function(store, userName) {
-            store.dispatch('PLAYER_INPUT_USER_NAME', userName);
-        },
+
         getPlayerList: function(store) {
             return new Promise(function(resolve, reject) {
                 api.listUser().then(function(data) {
@@ -270,6 +291,17 @@ module.exports = window.store = new Vuex.Store({
     },
 
     mutations: {
+        UPDATE_USER_DETAILS: function(state, user) {
+            state.currentPlayer.userId = user.objectId;
+            state.currentPlayer.userName = user.userName;
+            state.currentPlayer.userType = user.userType;
+            state.currentPlayer.shakeCount = user.shakeCount;
+
+            keepLocal(user);
+        },
+
+
+
         SHOW_MASK: function(state) {
             state.mask = true;
         },

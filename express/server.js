@@ -31,6 +31,11 @@ io.on('connection', function(socket) {
         socket.broadcast.emit('stop', message);
     });
 
+    // game control: allow players to join the game
+    socket.on('allow-join', function(message) {
+        socket.broadcast.emit('allow-join', message);
+    });
+
     // play join the game
     socket.on('join', function(message) {
         socket.userId = message;

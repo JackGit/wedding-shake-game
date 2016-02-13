@@ -70,22 +70,34 @@
 	});*/
 	
 	router.map({
-	    '/player': {
+	    '/welcome': {
 	        name: 'welcome',
 	        component: __webpack_require__(41)
 	    },
-	    '/player/:playerId': {
-	        name: 'lobby',
+	    '/home/:userId': {
+	        name: 'home',
 	        component: __webpack_require__(46)
 	    },
-	    '/dashboard': {
+	    '/ready/:roomId': {
+	        name: 'ready',
+	        component: __webpack_require__(56)
+	    },
+	    '/shake': {
+	        name: 'shake',
+	        component: __webpack_require__(62)
+	    },
+	    '/ranking/:roomId': {
+	        name: 'ranking',
+	        component: __webpack_require__(63)
+	    },
+	    '/admin': {
 	        name: 'dashboard',
-	        component: __webpack_require__(52)
+	        component: __webpack_require__(51)
 	    }
 	});
 	
 	router.redirect({
-	   '/': '/player'
+	   '/': '/welcome'
 	});
 	
 	
@@ -14059,7 +14071,7 @@
 	if (__vue_script__ &&
 	    __vue_script__.__esModule &&
 	    Object.keys(__vue_script__).length > 1) {
-	  console.warn("[vue-loader] src\\app.vue: named exports in *.vue files are ignored.")}
+	  console.warn("[vue-loader] src/app.vue: named exports in *.vue files are ignored.")}
 	__vue_template__ = __webpack_require__(40)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
@@ -14070,7 +14082,7 @@
 	  var hotAPI = require("vue-hot-reload-api")
 	  hotAPI.install(require("vue"), true)
 	  if (!hotAPI.compatible) return
-	  var id = "C:\\Users\\Administrator\\Documents\\GitHub\\wedding-shake-game\\src\\app.vue"
+	  var id = "/Users/Jack/WebstormProjects/wedding-shake-game/src/app.vue"
 	  if (!module.hot.data) {
 	    hotAPI.createRecord(id, module.exports)
 	  } else {
@@ -14113,7 +14125,7 @@
 	
 	
 	// module
-	exports.push([module.id, "\n.mask {\n    position: fixed;\n    top: 0;\n    bottom: 0;\n    left: 0;\n    right: 0;\n    background-color: rgba(0,0,0,0.5);\n}\n\n.fade-transition {\n    -webkit-transition: all 0.5s ease;\n    transition: all 0.5s ease;\n}\n\n.fade-enter {\n    opacity: 0;\n    margin-top: 50%;\n}\n\n.fade-leave {\n    opacity: 0;\n}\n", "", {"version":3,"sources":["/./src/app.vue?15ea8aec"],"names":[],"mappings":";AACA;IACA,gBAAA;IACA,OAAA;IACA,UAAA;IACA,QAAA;IACA,SAAA;IACA,kCAAA;CACA;;AAEA;IACA,kCAAA;IAAA,0BAAA;CACA;;AAEA;IACA,WAAA;IACA,gBAAA;CACA;;AAEA;IACA,WAAA;CACA","file":"app.vue","sourcesContent":["<style>\r\n    .mask {\r\n        position: fixed;\r\n        top: 0;\r\n        bottom: 0;\r\n        left: 0;\r\n        right: 0;\r\n        background-color: rgba(0,0,0,0.5);\r\n    }\r\n\r\n    .fade-transition {\r\n        transition: all 0.5s ease;\r\n    }\r\n\r\n    .fade-enter {\r\n        opacity: 0;\r\n        margin-top: 50%;\r\n    }\r\n\r\n    .fade-leave {\r\n        opacity: 0;\r\n    }\r\n</style>\r\n\r\n<template>\r\n    <div>\r\n        <router-view transition=\"fade\" transition-mode=\"out-in\"></router-view>\r\n        <div class=\"mask\" v-if=\"mask\"></div>\r\n    </div>\r\n</template>\r\n\r\n<script>\r\n    var store = require('./store');\r\n\r\n    module.exports = {\r\n        components: {\r\n\r\n        },\r\n\r\n        computed: {\r\n            mask: function() {\r\n                return store.state.mask;\r\n            }\r\n        }\r\n    }\r\n</script>"],"sourceRoot":"webpack://"}]);
+	exports.push([module.id, "\n.mask {\n    position: fixed;\n    top: 0;\n    bottom: 0;\n    left: 0;\n    right: 0;\n    background-color: rgba(0,0,0,0.5);\n}\n\n.fade-transition {\n    -webkit-transition: all 0.5s ease;\n    transition: all 0.5s ease;\n}\n\n.fade-enter {\n    opacity: 0;\n    margin-top: 50%;\n}\n\n.fade-leave {\n    opacity: 0;\n}\n", "", {"version":3,"sources":["/./src/app.vue?2812eb7d"],"names":[],"mappings":";AACA;IACA,gBAAA;IACA,OAAA;IACA,UAAA;IACA,QAAA;IACA,SAAA;IACA,kCAAA;CACA;;AAEA;IACA,kCAAA;IAAA,0BAAA;CACA;;AAEA;IACA,WAAA;IACA,gBAAA;CACA;;AAEA;IACA,WAAA;CACA","file":"app.vue","sourcesContent":["<style>\n    .mask {\n        position: fixed;\n        top: 0;\n        bottom: 0;\n        left: 0;\n        right: 0;\n        background-color: rgba(0,0,0,0.5);\n    }\n\n    .fade-transition {\n        transition: all 0.5s ease;\n    }\n\n    .fade-enter {\n        opacity: 0;\n        margin-top: 50%;\n    }\n\n    .fade-leave {\n        opacity: 0;\n    }\n</style>\n\n<template>\n    <div>\n        <router-view transition=\"fade\" transition-mode=\"out-in\"></router-view>\n        <div class=\"mask\" v-if=\"mask\"></div>\n    </div>\n</template>\n\n<script>\n    var store = require('./store');\n\n    module.exports = {\n        components: {\n\n        },\n\n        computed: {\n            mask: function() {\n                return store.state.mask;\n            }\n        }\n    }\n</script>"],"sourceRoot":"webpack://"}]);
 	
 	// exports
 
@@ -14425,12 +14437,6 @@
 	Vue.use(Vuex);
 	Vue.config.debug = true;
 	
-	function keepLocal(user) {
-	    localStorage.userId = user.objectId;
-	    localStorage.userName = user.userName;
-	    localStorage.userType = user.userType;
-	}
-	
 	// socket is global var defined in main.js
 	function listenPlayerSocketMessage(enable) {
 	    console.log('listenPlayerSocketMessage', enable);
@@ -14452,122 +14458,151 @@
 	    }
 	}
 	
-	/*
-	    game (room) status:
-	
-	        INIT -> JOINING -> PLAYING -> END
-	
-	
-	    WELCOME PAGE
-	        1. user not sign up
-	            1.1 sign up
-	            1.2 click JOIN
-	                - if game is STOPPED, which not allow player to join
-	                    player will be routed to END page
-	                - if game is READY, which allow player to join
-	                    player will be routed to READY page to wait game start
-	                - if game is STARTED, which not allow player to join, but will recieve play data
-	                    player will be routed to VISIT PAGE
-	        2. user signed up
-	            pre-fill form data, and allow player to click JOIN
-	
-	    READY PAGE
-	        1. show game rules, and joined players
-	        2. if game status change to STARTED, it will count down and then route player to SHAKE page
-	        3. if game status change to STOPPED, player will be routed to END PAGE
-	
-	    SHAKE PAGE
-	        1. allow user to shake
-	        2. if game end, status change to STOPPED, player will be routed to RANKING page
-	
-	    END PAGE
-	        1. will display: game is not started yet, and this is the last ranking data
-	        2. if game status change to READY, will offer player a "join game" button to join the game
-	        3. then follow WELCOME PAGE join game logic
-	
-	    RANKING PAGE
-	        1.
-	
-	    VISIT PAGE
-	        1. user is able to see other players shake data
-	        2. if game end, status change to STOPPED, it will route to RANKING PAGE
-	 */
 	
 	module.exports = window.store = new Vuex.Store({
 	    state: {
-	        gameId: '',
-	        gameStatus: 'STOPPED', // 'STOPPED': not allow player to join -> 'READY': allow player to join  -> 'STARTED': not allow player to join
-	        gameSize: 5,    // 5 players
-	        gameTime: 20,   // seconds
-	        mask: false,
-	        playerList: [],
-	        currentPlayer: {
-	            userName: '',
-	            userId: '',
-	            userType: '',
-	            userStatus: '',
-	            shakeCount: 0
-	        },
-	        pages: {
-	            welcome: {
-	
-	            },
-	            lobby: {
-	
-	            },
-	            dashboard: {
-	
-	            }
-	        },
+	        /* player pages states */
 	        player: {
-	            userName: '',
-	            userId: '',
-	            userType: '',
-	            welcomeView: {
-	                userNameFormMessage: '',
+	            currentPlayer: {
+	                userId: localStorage.userId || '',
+	                userName: '',
+	                userType: '',
+	                shakeCount: 0
+	            },
+	            welcomePage: {
+	                formUserName: '',
+	                formUserType: '',
+	                formUserNameMessage: '',
+	                formUserTypeMessage: ''
+	            },
+	            pageMask: false,
+	            homePage: {
+	                roomList: []            // need socket.io to update this field
+	            },
+	            readyPage: {
+	                roomDetails: {},         // need socket.io to update this field
+	                players: [],
+	                gameStatus: ''
+	            },
+	            shakePage: {
+	
+	            },
+	            rankingPage: {
+	
 	            }
 	        },
 	
-	        dashboard: {
+	        /* admin pages states */
+	        admin: {
 	
 	        }
 	    },
 	
 	    actions: {
-	        // player actions
-	        selectUserType: function(store, type) {
-	            console.log('store.actions.selectUserType', type);
-	            store.dispatch('SELECT_USER_TYPE', type);
+	        /* player actions */
+	        inputUserName: function(store, userName) {
+	            console.log('store.actions.inputUserName', userName);
+	            store.state.player.welcomePage.formUserName = userName;
 	        },
-	        start: function(store, data) {
+	        inputUserType: function(store, userType) {
+	            console.log('store.actions.inputUserType', userType);
+	            store.state.player.welcomePage.formUserType = userType;
+	        },
+	        registerPlayer: function(store, user) {
+	            console.log('store.actions.registerPlayer', user);
+	
 	            return new Promise(function(resolve, reject) {
-	                console.log('store.actions.joinGame', data);
-	                var request = {
-	                    userName: data.userName,
-	                    userType: data.userType
-	                };
-	
-	                if(!data.userName) {
-	                    store.dispatch('PLAYER_WELCOME_USER_NAME_FORM_MESSAGE', 'please input correct user name');
-	                    return;
-	                } else {
-	                    store.dispatch('PLAYER_WELCOME_USER_NAME_FORM_MESSAGE', '');
-	                    store.actions.showMask();
-	
-	                    api.createUser(request).then(function(data) {
-	                        store.dispatch('PLAYER_USER_CREATED_SUCCESSFULLY', data.user);
-	                        keepLocal(data.user);
-	
-	                        store.actions.hideMask();
-	                        resolve(data.user);
-	                    }, function(error) {
-	                        store.actions.hideMask();
-	                        console.log('store.actions.joinGame error', error);
-	                        reject(error);
-	                    })
-	                }
+	                api.createUser(user).then(function(data) {
+	                    store.state.player.currentPlayer.userId = localStorage.userId = data.user.objectId;
+	                    store.state.player.currentPlayer.userName = data.user.userName;
+	                    store.state.player.currentPlayer.userType = data.user.userType;
+	                    resolve(data.user);
+	                }, function(error) {
+	                    reject(error);
+	                });
 	            });
 	        },
+	        getUserDetails: function(store, userId) {
+	            console.log('store.actions.getUserDetails', userId);
+	            return new Promise(function(resolve, reject) {
+	                api.getUser({userId: userId}).then(function(data) {
+	                    var user = data.user;
+	                    store.state.player.currentPlayer.userName = user.userName;
+	                    store.state.player.currentPlayer.userType = user.userType;
+	                    resolve(user);
+	                }, function(error) {
+	                    reject(error);
+	                });
+	            });
+	        },
+	        clearUserData: function(store) {
+	            localStorage.userId = '';
+	            store.state.player.currentPlayer.userId = '';
+	            store.state.player.currentPlayer.userName = '';
+	            store.state.player.currentPlayer.userType = '';
+	            store.state.player.currentPlayer.shakeCount = 0;
+	        },
+	        getRoomDetails: function(store, roomId) {
+	            console.log('store.actions.getRoomDetails', roomId);
+	
+	            api.getRoom(roomId).then(function(data) {
+	                store.state.player.readyPage.roomDetails = data.room;
+	            }, function(error) {
+	                console.log('store.actions.getRoomDetails error', error);
+	            });
+	        },
+	        getRoomPlayers: function(store, roomId) {
+	            console.log('store.actions.getRoomPlayers', roomId);
+	            api.getRoomPlayers(roomId).then(function(data) {
+	                store.state.player.readyPage.players = data.players;
+	            }, function(error) {
+	                console.log('store.actions.getRoomPlayers error', error);
+	            });
+	        },
+	        getRoomList: function(store) {
+	            console.log('store.actions.getRoomList');
+	
+	            api.listRoom().then(function(data) {
+	                store.state.player.homePage.roomList = data.roomList;
+	            }, function(error) {
+	                console.log('store.actions.getRoomList error', error);
+	            });
+	        },
+	        joinRoom: function(store, request) {
+	            console.log('store.actions.joinRoom request', request);
+	            var user = request.user, roomId = request.roomId;
+	
+	            return new Promise(function(resolve, reject) {
+	                api.joinRoom(roomId, user.userId, user.userType).then(function(data) {
+	                    resolve(data.room);
+	                }, function(error) {
+	                    reject(error);
+	                });
+	            });
+	        },
+	        leaveRoom: function(store, roomId, userId) {
+	            console.log('store.actions.leaveRoom', roomId, userId);
+	            return new Promise(function(resolve, reject) {
+	                api.leaveRoom(roomId, userId).then(function(data) {
+	                    resolve(data.room);
+	                }, function(error) {
+	                    reject(error);
+	                });
+	            });
+	        },
+	
+	
+	
+	        /* admin acitons */
+	
+	
+	
+	
+	
+	
+	        // player actions
+	
+	
 	        joinGame: function(store, userId) {
 	            var request = {
 	                userId: userId,
@@ -14604,9 +14639,7 @@
 	
 	            });
 	        },
-	        inputUserName: function(store, userName) {
-	            store.dispatch('PLAYER_INPUT_USER_NAME', userName);
-	        },
+	
 	        getPlayerList: function(store) {
 	            return new Promise(function(resolve, reject) {
 	                api.listUser().then(function(data) {
@@ -14690,6 +14723,17 @@
 	    },
 	
 	    mutations: {
+	        UPDATE_USER_DETAILS: function(state, user) {
+	            state.currentPlayer.userId = user.objectId;
+	            state.currentPlayer.userName = user.userName;
+	            state.currentPlayer.userType = user.userType;
+	            state.currentPlayer.shakeCount = user.shakeCount;
+	
+	            keepLocal(user);
+	        },
+	
+	
+	
 	        SHOW_MASK: function(state) {
 	            state.mask = true;
 	        },
@@ -15252,7 +15296,9 @@
 	
 	function callservice(url, request) {
 	    return new Promise(function(resolve, reject) {
+	        console.log('callservice::url, request', url, request);
 	        Vue.http.post(url, request).then(function(response) {
+	            console.log('callservice::response', response);
 	            if(response.data.statusCode === 0) {
 	                resolve(response.data);
 	            } else {
@@ -15260,13 +15306,13 @@
 	            }
 	        }, function(error) {
 	            alert('system callservice error');
-	            console.log('system callservice error', error);
+	            console.log('callservice::error', error);
 	            reject(error);
 	        });
 	    });
 	}
 	
-	module.exports = {
+	var API = {
 	    createUser: function(request) {
 	        return callservice('/game/user/create', request);
 	    },
@@ -15279,14 +15325,38 @@
 	    getUser: function(request) {
 	        return callservice('/game/user/get', request);
 	    },
-	
-	    startGame: function() {
-	        return callservice('/game/controls/start', {});
+	    getUsers: function(userIds) {
+	        return callservice('/game/user/list', {
+	            userIds: userIds
+	        });
 	    },
-	    stopGame: function(gameId) {
-	        return callservice('/game/controls/stop', {gameId: gameId});
+	    getRoom: function(roomId) {
+	        return callservice('/game/room/get', {
+	            roomId: roomId
+	        });
+	    },
+	    getRoomPlayers: function(roomId) {
+	        return callservice('/game/room/playerList', {roomId: roomId});
+	    },
+	    listRoom: function() {
+	        return callservice('/game/room/list');
+	    },
+	    joinRoom: function(roomId, userId, userType) {
+	        return callservice('/game/user/joinRoom', {
+	            userId: userId,
+	            userType: userType,
+	            roomId: roomId
+	        });
+	    },
+	    leaveRoom: function(roomId, userId) {
+	        return callservice('/game/user/leaveRoom', {
+	            roomId: roomId,
+	            userId: userId
+	        });
 	    }
 	};
+	
+	module.exports = window.api = API;
 
 /***/ },
 /* 40 */
@@ -15304,7 +15374,7 @@
 	if (__vue_script__ &&
 	    __vue_script__.__esModule &&
 	    Object.keys(__vue_script__).length > 1) {
-	  console.warn("[vue-loader] src\\components\\player\\welcome.vue: named exports in *.vue files are ignored.")}
+	  console.warn("[vue-loader] src/components/player/welcome-page.vue: named exports in *.vue files are ignored.")}
 	__vue_template__ = __webpack_require__(45)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
@@ -15315,7 +15385,7 @@
 	  var hotAPI = require("vue-hot-reload-api")
 	  hotAPI.install(require("vue"), true)
 	  if (!hotAPI.compatible) return
-	  var id = "C:\\Users\\Administrator\\Documents\\GitHub\\wedding-shake-game\\src\\components\\player\\welcome.vue"
+	  var id = "/Users/Jack/WebstormProjects/wedding-shake-game/src/components/player/welcome-page.vue"
 	  if (!module.hot.data) {
 	    hotAPI.createRecord(id, module.exports)
 	  } else {
@@ -15339,8 +15409,8 @@
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../../node_modules/css-loader/index.js?sourceMap!./../../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-b81c11f4&scoped=true!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./welcome.vue", function() {
-				var newContent = require("!!./../../../node_modules/css-loader/index.js?sourceMap!./../../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-b81c11f4&scoped=true!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./welcome.vue");
+			module.hot.accept("!!./../../../node_modules/css-loader/index.js?sourceMap!./../../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-5dda15bf&scoped=true!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./welcome-page.vue", function() {
+				var newContent = require("!!./../../../node_modules/css-loader/index.js?sourceMap!./../../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-5dda15bf&scoped=true!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./welcome-page.vue");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -15358,7 +15428,7 @@
 	
 	
 	// module
-	exports.push([module.id, "\n.selected[_v-b81c11f4] {\n    color: red;\n}\n", "", {"version":3,"sources":["/./src/components/player/welcome.vue?31aabfbd"],"names":[],"mappings":";AACA;IACA,WAAA;CACA","file":"welcome.vue","sourcesContent":["<style scoped>\r\n    .selected {\r\n        color: red;\r\n    }\r\n</style>\r\n\r\n<template>\r\n    <div>\r\n        <h4>welcome, please input your name and select a role</h4>\r\n        <input type=\"text\" v-model=\"userName\" @input=\"inputUserName\"/>\r\n        <span>{{formMessage}}</span>\r\n        <div>\r\n            <span @click=\"selectUserType('BRIDE')\" :class=\"[userType === 'BRIDE' ? 'selected' : '']\">Bride Guest</span>\r\n            <span @click=\"selectUserType('GROOM')\" :class=\"[userType === 'GROOM' ? 'selected' : '']\">Groom Guest</span>\r\n        </div>\r\n        <button @click=\"joinGame()\">Join Game</button>\r\n    </div>\r\n</template>\r\n\r\n<script>\r\n    var store = require('../../store');\r\n\r\n    module.exports = {\r\n\r\n        computed: {\r\n            userId: function() {\r\n                return store.state.player.userId;\r\n            },\r\n            userName: function() {\r\n                return store.state.player.userName || localStorage.userName;\r\n            },\r\n            userType: function() {\r\n                return store.state.player.userType || localStorage.userType;\r\n            },\r\n            formMessage: function() {\r\n                return store.state.player.welcomeView.userNameFormMessage;\r\n            }\r\n        },\r\n\r\n        methods: {\r\n            selectUserType: store.actions.selectUserType,\r\n            start: function() {\r\n                var router = this.$router;\r\n\r\n                store.actions.start({\r\n                    userName: this.userName,\r\n                    userType: this.userType\r\n                }).then(function(user) {\r\n                    router.go({name: 'lobby', params: {playerId: user.objectId}});\r\n                });\r\n            },\r\n            inputUserName: function(e) {\r\n                store.actions.inputUserName(e.target.value);\r\n            }\r\n        }\r\n    };\r\n</script>"],"sourceRoot":"webpack://"}]);
+	exports.push([module.id, "\n.selected[_v-5dda15bf] {\n    color: red;\n}\n", "", {"version":3,"sources":["/./src/components/player/welcome-page.vue?6eb48525"],"names":[],"mappings":";AACA;IACA,WAAA;CACA","file":"welcome-page.vue","sourcesContent":["<style scoped>\n    .selected {\n        color: red;\n    }\n</style>\n\n<template>\n    <div>\n        <h4>welcome, please input your name and select a role</h4>\n        <p>name:</p>\n        <input type=\"text\" v-model=\"userName\" @input=\"inputUserName\"/>\n\n        <p>type:</p>\n        <div>\n            <span @click=\"inputUserType('BRIDE')\" :class=\"[userType === 'BRIDE' ? 'selected' : '']\">Bride Guest</span>\n            <span @click=\"inputUserType('GROOM')\" :class=\"[userType === 'GROOM' ? 'selected' : '']\">Groom Guest</span>\n        </div>\n        <button @click=\"start()\">Start</button>\n    </div>\n</template>\n\n<script>\n    /**\n     * welcome page\n     *  1. 1st time to open this page, need to input user name and user type, then click start\n     *  2. not 1st time to open this page, with user information, just route to home page\n     */\n\n    var store = require('../../store');\n\n    module.exports = {\n\n        computed: {\n            userName: function() {\n                return store.state.player.welcomePage.formUserName;\n            },\n            userType: function() {\n                return store.state.player.welcomePage.formUserType;\n            },\n            userNameMessage: function() {\n                return store.state.player.welcomePage.formUserNameMessage;\n            },\n            userTypeMessage: function() {\n                return store.state.player.welcomePage.formUserTypeMessage;\n            }\n        },\n\n        methods: {\n            start: function() {\n                var router = this.$router;\n\n                store.actions.registerPlayer({\n                    userName: this.userName,\n                    userType: this.userType\n                }).then(function(user) {\n                    router.go({name: 'home', params: {userId: user.objectId}});\n                });\n            },\n            inputUserName: function(e) {\n                store.actions.inputUserName(e.target.value);\n            },\n            inputUserType: function(userType) {\n                store.actions.inputUserType(userType);\n            }\n\n        },\n\n        route: {\n            data: function(transition) {\n                var userId = store.state.player.currentPlayer.userId;\n\n                if(userId)\n                    transition.redirect({name: 'home', params: {userId: userId}});\n                else\n                    transition.next();\n            }\n        }\n    };\n</script>"],"sourceRoot":"webpack://"}]);
 	
 	// exports
 
@@ -15374,34 +15444,45 @@
 	module.exports = {
 	
 	    computed: {
-	        userId: function userId() {
-	            return store.state.player.userId;
-	        },
 	        userName: function userName() {
-	            return store.state.player.userName || localStorage.userName;
+	            return store.state.player.welcomePage.formUserName;
 	        },
 	        userType: function userType() {
-	            return store.state.player.userType || localStorage.userType;
+	            return store.state.player.welcomePage.formUserType;
 	        },
-	        formMessage: function formMessage() {
-	            return store.state.player.welcomeView.userNameFormMessage;
+	        userNameMessage: function userNameMessage() {
+	            return store.state.player.welcomePage.formUserNameMessage;
+	        },
+	        userTypeMessage: function userTypeMessage() {
+	            return store.state.player.welcomePage.formUserTypeMessage;
 	        }
 	    },
 	
 	    methods: {
-	        selectUserType: store.actions.selectUserType,
 	        start: function start() {
 	            var router = this.$router;
 	
-	            store.actions.start({
+	            store.actions.registerPlayer({
 	                userName: this.userName,
 	                userType: this.userType
 	            }).then(function (user) {
-	                router.go({ name: 'lobby', params: { playerId: user.objectId } });
+	                router.go({ name: 'home', params: { userId: user.objectId } });
 	            });
 	        },
 	        inputUserName: function inputUserName(e) {
 	            store.actions.inputUserName(e.target.value);
+	        },
+	        inputUserType: function inputUserType(userType) {
+	            store.actions.inputUserType(userType);
+	        }
+	
+	    },
+	
+	    route: {
+	        data: function data(transition) {
+	            var userId = store.state.player.currentPlayer.userId;
+	
+	            if (userId) transition.redirect({ name: 'home', params: { userId: userId } });else transition.next();
 	        }
 	    }
 	};
@@ -15410,7 +15491,7 @@
 /* 45 */
 /***/ function(module, exports) {
 
-	module.exports = "\n<div _v-b81c11f4=\"\">\n    <h4 _v-b81c11f4=\"\">welcome, please input your name and select a role</h4>\n    <input type=\"text\" v-model=\"userName\" @input=\"inputUserName\" _v-b81c11f4=\"\">\n    <span _v-b81c11f4=\"\">{{formMessage}}</span>\n    <div _v-b81c11f4=\"\">\n        <span @click=\"selectUserType('BRIDE')\" :class=\"[userType === 'BRIDE' ? 'selected' : '']\" _v-b81c11f4=\"\">Bride Guest</span>\n        <span @click=\"selectUserType('GROOM')\" :class=\"[userType === 'GROOM' ? 'selected' : '']\" _v-b81c11f4=\"\">Groom Guest</span>\n    </div>\n    <button @click=\"joinGame()\" _v-b81c11f4=\"\">Join Game</button>\n</div>\n";
+	module.exports = "\n<div _v-5dda15bf=\"\">\n    <h4 _v-5dda15bf=\"\">welcome, please input your name and select a role</h4>\n    <p _v-5dda15bf=\"\">name:</p>\n    <input type=\"text\" v-model=\"userName\" @input=\"inputUserName\" _v-5dda15bf=\"\">\n\n    <p _v-5dda15bf=\"\">type:</p>\n    <div _v-5dda15bf=\"\">\n        <span @click=\"inputUserType('BRIDE')\" :class=\"[userType === 'BRIDE' ? 'selected' : '']\" _v-5dda15bf=\"\">Bride Guest</span>\n        <span @click=\"inputUserType('GROOM')\" :class=\"[userType === 'GROOM' ? 'selected' : '']\" _v-5dda15bf=\"\">Groom Guest</span>\n    </div>\n    <button @click=\"start()\" _v-5dda15bf=\"\">Start</button>\n</div>\n";
 
 /***/ },
 /* 46 */
@@ -15422,8 +15503,8 @@
 	if (__vue_script__ &&
 	    __vue_script__.__esModule &&
 	    Object.keys(__vue_script__).length > 1) {
-	  console.warn("[vue-loader] src\\components\\player\\lobby.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(51)
+	  console.warn("[vue-loader] src/components/player/home-page.vue: named exports in *.vue files are ignored.")}
+	__vue_template__ = __webpack_require__(50)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
 	if (__vue_template__) {
@@ -15433,7 +15514,7 @@
 	  var hotAPI = require("vue-hot-reload-api")
 	  hotAPI.install(require("vue"), true)
 	  if (!hotAPI.compatible) return
-	  var id = "C:\\Users\\Administrator\\Documents\\GitHub\\wedding-shake-game\\src\\components\\player\\lobby.vue"
+	  var id = "/Users/Jack/WebstormProjects/wedding-shake-game/src/components/player/home-page.vue"
 	  if (!module.hot.data) {
 	    hotAPI.createRecord(id, module.exports)
 	  } else {
@@ -15457,8 +15538,8 @@
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../../node_modules/css-loader/index.js?sourceMap!./../../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-12b5f07a&scoped=true!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./lobby.vue", function() {
-				var newContent = require("!!./../../../node_modules/css-loader/index.js?sourceMap!./../../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-12b5f07a&scoped=true!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./lobby.vue");
+			module.hot.accept("!!./../../../node_modules/css-loader/index.js?sourceMap!./../../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-3ac087e8&scoped=true!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./home-page.vue", function() {
+				var newContent = require("!!./../../../node_modules/css-loader/index.js?sourceMap!./../../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-3ac087e8&scoped=true!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./home-page.vue");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -15476,7 +15557,7 @@
 	
 	
 	// module
-	exports.push([module.id, "\n.line[_v-12b5f07a] {\n    background: red;\n    display: inline-block;\n    height: 2px;\n    width: 0%;\n    -webkit-transition: width 0.5s ease;\n    transition: width 0.5s ease;\n}\n", "", {"version":3,"sources":["/./src/components/player/lobby.vue?4281e222"],"names":[],"mappings":";AACA;IACA,gBAAA;IACA,sBAAA;IACA,YAAA;IACA,UAAA;IACA,oCAAA;IAAA,4BAAA;CACA","file":"lobby.vue","sourcesContent":["<style scoped>\r\n    .line {\r\n        background: red;\r\n        display: inline-block;\r\n        height: 2px;\r\n        width: 0%;\r\n        transition: width 0.5s ease;\r\n    }\r\n</style>\r\n\r\n<template>\r\n    <div>\r\n        <div>current player: {{currentPlayer.userName}}</div>\r\n        <div>you just shaked: {{currentPlayer.shakeCount}}</div>\r\n\r\n        <h4>other players: </h4>\r\n        <div v-for=\"player in playerList\">\r\n            {{player.userName}}, {{player.shakeCount}}\r\n            <div class=\"line\" :style=\"{width: player.shakeCount + '%'}\"></div>\r\n        </div>\r\n\r\n        <div>\r\n            <button @click=\"leaveGame()\">Leave</button>\r\n            <button @click=\"shake()\">Shake</button>\r\n        </div>\r\n    </div>\r\n</template>\r\n\r\n<script>\r\n    var store = require('../../store');\r\n    var ShakeJS = require('shake.js');\r\n    var shake = null;\r\n\r\n    module.exports = {\r\n        computed: {\r\n            playerList: function() {\r\n                var currentUserId = this.$route.params.playerId;\r\n\r\n                return store.state.playerList.filter(function(p) {\r\n                    return p.objectId !== currentUserId;\r\n                }).sort(function(p1, p2) {\r\n                    return p1.updatedAt < p2.updatedAt;\r\n                });\r\n            },\r\n            currentPlayer: function() {\r\n                return store.state.currentPlayer;\r\n            }\r\n        },\r\n\r\n        ready: function() {\r\n            store.actions.joinGame(this.$route.params.playerId);\r\n\r\n            if(!shake) {\r\n                shake = new ShakeJS({\r\n                    threshold: 15,\r\n                    timeout: 100\r\n                });\r\n\r\n                window.addEventListener('shake', function() {\r\n                    store.actions.shake();\r\n                }.bind(this), false);\r\n\r\n                shake.start();\r\n            }\r\n\r\n            console.log('component ready');\r\n        },\r\n\r\n        methods: {\r\n            leaveGame: function() {\r\n                store.actions.leaveGame(this.$route.params.playerId);\r\n                this.$router.go({name: 'welcome'});\r\n            },\r\n            shake: store.actions.shake\r\n        },\r\n\r\n        route: {\r\n            data: function(transition) {\r\n                // this part of code won't run if you directly input the url in the browser or refresh the page\r\n                /*store.actions.getPlayerList().then(function() {\r\n                    transition.next();\r\n                }, function(error) {\r\n                    transition.abort();\r\n                });*/\r\n                console.log('route.data');\r\n                transition.next();\r\n            },\r\n            activate: function(transition) {\r\n                console.log('route.activate');\r\n                transition.next();\r\n            },\r\n            deactivate: function(transition) {\r\n                store.actions.leaveGame(this.$route.params.playerId);\r\n                transition.next();\r\n            }\r\n        }\r\n    }\r\n</script>"],"sourceRoot":"webpack://"}]);
+	exports.push([module.id, "\n", "", {"version":3,"sources":[],"names":[],"mappings":"","file":"home-page.vue","sourceRoot":"webpack://"}]);
 	
 	// exports
 
@@ -15488,221 +15569,68 @@
 	'use strict';
 	
 	var store = __webpack_require__(34);
-	var ShakeJS = __webpack_require__(50);
-	var shake = null;
 	
 	module.exports = {
-	    computed: {
-	        playerList: function playerList() {
-	            var currentUserId = this.$route.params.playerId;
 	
-	            return store.state.playerList.filter(function (p) {
-	                return p.objectId !== currentUserId;
-	            }).sort(function (p1, p2) {
-	                return p1.updatedAt < p2.updatedAt;
-	            });
-	        },
+	    computed: {
 	        currentPlayer: function currentPlayer() {
-	            return store.state.currentPlayer;
+	            return store.state.player.currentPlayer;
+	        },
+	        roomList: function roomList() {
+	            return store.state.player.homePage.roomList;
 	        }
 	    },
 	
 	    ready: function ready() {
-	        store.actions.joinGame(this.$route.params.playerId);
-	
-	        if (!shake) {
-	            shake = new ShakeJS({
-	                threshold: 15,
-	                timeout: 100
-	            });
-	
-	            window.addEventListener('shake', function () {
-	                store.actions.shake();
-	            }.bind(this), false);
-	
-	            shake.start();
-	        }
-	
-	        console.log('component ready');
+	        store.actions.getRoomList();
 	    },
 	
 	    methods: {
-	        leaveGame: function leaveGame() {
-	            store.actions.leaveGame(this.$route.params.playerId);
-	            this.$router.go({ name: 'welcome' });
-	        },
-	        shake: store.actions.shake
+	        join: function join(roomId) {
+	            var router = this.$router;
+	
+	            store.actions.joinRoom({
+	                user: store.state.player.currentPlayer,
+	                roomId: roomId
+	            }).then(function () {
+	                router.go({ name: 'ready', params: { roomId: roomId } });
+	            }, function () {});
+	        }
 	    },
 	
 	    route: {
 	        data: function data(transition) {
-	            console.log('route.data');
-	            transition.next();
-	        },
-	        activate: function activate(transition) {
-	            console.log('route.activate');
-	            transition.next();
-	        },
-	        deactivate: function deactivate(transition) {
-	            store.actions.leaveGame(this.$route.params.playerId);
-	            transition.next();
+	            var userId = this.$route.params.userId;
+	
+	            store.actions.getUserDetails(userId).then(function (user) {
+	                transition.next();
+	            }, function (error) {
+	                console.log('home-page validate user failed, redirect to welcome page, userId', userId);
+	                store.actions.clearUserData();
+	                transition.redirect({ name: 'welcome' });
+	            });
 	        }
 	    }
 	};
 
 /***/ },
 /* 50 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ function(module, exports) {
 
-	var __WEBPACK_AMD_DEFINE_RESULT__;/*
-	 * Author: Alex Gibson
-	 * https://github.com/alexgibson/shake.js
-	 * License: MIT license
-	 */
-	
-	(function(global, factory) {
-	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_RESULT__ = function() {
-	            return factory(global, global.document);
-	        }.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	    } else if (typeof module !== 'undefined' && module.exports) {
-	        module.exports = factory(global, global.document);
-	    } else {
-	        global.Shake = factory(global, global.document);
-	    }
-	} (typeof window !== 'undefined' ? window : this, function (window, document) {
-	
-	    'use strict';
-	
-	    function Shake(options) {
-	        //feature detect
-	        this.hasDeviceMotion = 'ondevicemotion' in window;
-	
-	        this.options = {
-	            threshold: 15, //default velocity threshold for shake to register
-	            timeout: 1000 //default interval between events
-	        };
-	
-	        if (typeof options === 'object') {
-	            for (var i in options) {
-	                if (options.hasOwnProperty(i)) {
-	                    this.options[i] = options[i];
-	                }
-	            }
-	        }
-	
-	        //use date to prevent multiple shakes firing
-	        this.lastTime = new Date();
-	
-	        //accelerometer values
-	        this.lastX = null;
-	        this.lastY = null;
-	        this.lastZ = null;
-	
-	        //create custom event
-	        if (typeof document.CustomEvent === 'function') {
-	            this.event = new document.CustomEvent('shake', {
-	                bubbles: true,
-	                cancelable: true
-	            });
-	        } else if (typeof document.createEvent === 'function') {
-	            this.event = document.createEvent('Event');
-	            this.event.initEvent('shake', true, true);
-	        } else {
-	            return false;
-	        }
-	    }
-	
-	    //reset timer values
-	    Shake.prototype.reset = function () {
-	        this.lastTime = new Date();
-	        this.lastX = null;
-	        this.lastY = null;
-	        this.lastZ = null;
-	    };
-	
-	    //start listening for devicemotion
-	    Shake.prototype.start = function () {
-	        this.reset();
-	        if (this.hasDeviceMotion) {
-	            window.addEventListener('devicemotion', this, false);
-	        }
-	    };
-	
-	    //stop listening for devicemotion
-	    Shake.prototype.stop = function () {
-	        if (this.hasDeviceMotion) {
-	            window.removeEventListener('devicemotion', this, false);
-	        }
-	        this.reset();
-	    };
-	
-	    //calculates if shake did occur
-	    Shake.prototype.devicemotion = function (e) {
-	        var current = e.accelerationIncludingGravity;
-	        var currentTime;
-	        var timeDifference;
-	        var deltaX = 0;
-	        var deltaY = 0;
-	        var deltaZ = 0;
-	
-	        if ((this.lastX === null) && (this.lastY === null) && (this.lastZ === null)) {
-	            this.lastX = current.x;
-	            this.lastY = current.y;
-	            this.lastZ = current.z;
-	            return;
-	        }
-	
-	        deltaX = Math.abs(this.lastX - current.x);
-	        deltaY = Math.abs(this.lastY - current.y);
-	        deltaZ = Math.abs(this.lastZ - current.z);
-	
-	        if (((deltaX > this.options.threshold) && (deltaY > this.options.threshold)) || ((deltaX > this.options.threshold) && (deltaZ > this.options.threshold)) || ((deltaY > this.options.threshold) && (deltaZ > this.options.threshold))) {
-	            //calculate time in milliseconds since last shake registered
-	            currentTime = new Date();
-	            timeDifference = currentTime.getTime() - this.lastTime.getTime();
-	
-	            if (timeDifference > this.options.timeout) {
-	                window.dispatchEvent(this.event);
-	                this.lastTime = new Date();
-	            }
-	        }
-	
-	        this.lastX = current.x;
-	        this.lastY = current.y;
-	        this.lastZ = current.z;
-	
-	    };
-	
-	    //event handler
-	    Shake.prototype.handleEvent = function (e) {
-	        if (typeof (this[e.type]) === 'function') {
-	            return this[e.type](e);
-	        }
-	    };
-	
-	    return Shake;
-	}));
-
+	module.exports = "\n<div _v-3ac087e8=\"\">\n    {{currentPlayer.userName}}'s home page\n    <ul _v-3ac087e8=\"\">\n        <li v-for=\"room in roomList\" _v-3ac087e8=\"\">\n            <p _v-3ac087e8=\"\">name: {{room.roomName}}</p>\n            <p _v-3ac087e8=\"\">status: {{room.status}}</p>\n            <p _v-3ac087e8=\"\">players: {{room.players.length}}</p>\n            <button @click=\"join(room.objectId)\" _v-3ac087e8=\"\">{{room.status === 'JOINING' ? 'Join' : 'Visit as guest'}}</button>\n        </li>\n    </ul>\n</div>\n";
 
 /***/ },
 /* 51 */
-/***/ function(module, exports) {
-
-	module.exports = "\n<div _v-12b5f07a=\"\">\n    <div _v-12b5f07a=\"\">current player: {{currentPlayer.userName}}</div>\n    <div _v-12b5f07a=\"\">you just shaked: {{currentPlayer.shakeCount}}</div>\n\n    <h4 _v-12b5f07a=\"\">other players: </h4>\n    <div v-for=\"player in playerList\" _v-12b5f07a=\"\">\n        {{player.userName}}, {{player.shakeCount}}\n        <div class=\"line\" :style=\"{width: player.shakeCount + '%'}\" _v-12b5f07a=\"\"></div>\n    </div>\n\n    <div _v-12b5f07a=\"\">\n        <button @click=\"leaveGame()\" _v-12b5f07a=\"\">Leave</button>\n        <button @click=\"shake()\" _v-12b5f07a=\"\">Shake</button>\n    </div>\n</div>\n";
-
-/***/ },
-/* 52 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __vue_script__, __vue_template__
-	__webpack_require__(53)
-	__vue_script__ = __webpack_require__(55)
+	__webpack_require__(52)
+	__vue_script__ = __webpack_require__(54)
 	if (__vue_script__ &&
 	    __vue_script__.__esModule &&
 	    Object.keys(__vue_script__).length > 1) {
-	  console.warn("[vue-loader] src\\components\\dashboard\\dashboard.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(56)
+	  console.warn("[vue-loader] src/components/admin/admin.vue: named exports in *.vue files are ignored.")}
+	__vue_template__ = __webpack_require__(55)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
 	if (__vue_template__) {
@@ -15712,7 +15640,7 @@
 	  var hotAPI = require("vue-hot-reload-api")
 	  hotAPI.install(require("vue"), true)
 	  if (!hotAPI.compatible) return
-	  var id = "C:\\Users\\Administrator\\Documents\\GitHub\\wedding-shake-game\\src\\components\\dashboard\\dashboard.vue"
+	  var id = "/Users/Jack/WebstormProjects/wedding-shake-game/src/components/admin/admin.vue"
 	  if (!module.hot.data) {
 	    hotAPI.createRecord(id, module.exports)
 	  } else {
@@ -15721,13 +15649,13 @@
 	})()}
 
 /***/ },
-/* 53 */
+/* 52 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
 	// load the styles
-	var content = __webpack_require__(54);
+	var content = __webpack_require__(53);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(32)(content, {});
@@ -15736,8 +15664,8 @@
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../../node_modules/css-loader/index.js?sourceMap!./../../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-0b7591bd&scoped=true!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./dashboard.vue", function() {
-				var newContent = require("!!./../../../node_modules/css-loader/index.js?sourceMap!./../../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-0b7591bd&scoped=true!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./dashboard.vue");
+			module.hot.accept("!!./../../../node_modules/css-loader/index.js?sourceMap!./../../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-44ee4974&scoped=true!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./admin.vue", function() {
+				var newContent = require("!!./../../../node_modules/css-loader/index.js?sourceMap!./../../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-44ee4974&scoped=true!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./admin.vue");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -15747,7 +15675,7 @@
 	}
 
 /***/ },
-/* 54 */
+/* 53 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(31)();
@@ -15755,13 +15683,13 @@
 	
 	
 	// module
-	exports.push([module.id, "\n.line[_v-0b7591bd] {\n    background: red;\n    display: inline-block;\n    height: 2px;\n    width: 0%;\n    -webkit-transition: width 0.5s ease;\n    transition: width 0.5s ease;\n}\n", "", {"version":3,"sources":["/./src/components/dashboard/dashboard.vue?776aa3e5"],"names":[],"mappings":";AACA;IACA,gBAAA;IACA,sBAAA;IACA,YAAA;IACA,UAAA;IACA,oCAAA;IAAA,4BAAA;CACA","file":"dashboard.vue","sourcesContent":["<style scoped>\r\n    .line {\r\n        background: red;\r\n        display: inline-block;\r\n        height: 2px;\r\n        width: 0%;\r\n        transition: width 0.5s ease;\r\n    }\r\n</style>\r\n\r\n<template>\r\n    <div>\r\n        <p>--------------- player list ---------------</p>\r\n        <ul>\r\n            <li v-for=\"player in playerList\">\r\n                <div>{{player.userName}} - {{player.shakeCount}}</div>\r\n                <div class=\"line\" :style=\"{width: player.shakeCount + '%'}\"></div>\r\n            </li>\r\n        </ul>\r\n        <p>--------------- game control ---------------</p>\r\n        <div>\r\n            <button @click=\"startGame()\">Start Game</button>\r\n            <button @click=\"stopGame()\">Stop Game</button>\r\n        </div>\r\n    </div>\r\n</template>\r\n\r\n<script>\r\n    var store = require('../../store');\r\n\r\n    module.exports = {\r\n        computed: {\r\n            playerList: function() {\r\n                return store.state.playerList;\r\n            }\r\n        },\r\n\r\n        ready: function() {\r\n            store.actions.initDashboard();\r\n        },\r\n\r\n        methods: {\r\n            startGame: store.actions.startGame,\r\n            stopGame: store.actions.stopGame\r\n        }\r\n    };\r\n</script>"],"sourceRoot":"webpack://"}]);
+	exports.push([module.id, "\n.line[_v-44ee4974] {\n    background: red;\n    display: inline-block;\n    height: 2px;\n    width: 0%;\n    -webkit-transition: width 0.5s ease;\n    transition: width 0.5s ease;\n}\n", "", {"version":3,"sources":["/./src/components/admin/admin.vue?2a849122"],"names":[],"mappings":";AACA;IACA,gBAAA;IACA,sBAAA;IACA,YAAA;IACA,UAAA;IACA,oCAAA;IAAA,4BAAA;CACA","file":"admin.vue","sourcesContent":["<style scoped>\n    .line {\n        background: red;\n        display: inline-block;\n        height: 2px;\n        width: 0%;\n        transition: width 0.5s ease;\n    }\n</style>\n\n<template>\n    <div>\n        <p>--------------- player list ---------------</p>\n        <ul>\n            <li v-for=\"player in playerList\">\n                <div>{{player.userName}} - {{player.shakeCount}}</div>\n                <div class=\"line\" :style=\"{width: player.shakeCount + '%'}\"></div>\n            </li>\n        </ul>\n        <p>--------------- game control ---------------</p>\n        <div>\n            <button @click=\"startGame()\">Start Game</button>\n            <button @click=\"stopGame()\">Stop Game</button>\n        </div>\n    </div>\n</template>\n\n<script>\n    var store = require('../../store');\n\n    module.exports = {\n        computed: {\n            playerList: function() {\n                return store.state.playerList;\n            }\n        },\n\n        ready: function() {\n            store.actions.initDashboard();\n        },\n\n        methods: {\n            startGame: store.actions.startGame,\n            stopGame: store.actions.stopGame\n        }\n    };\n</script>"],"sourceRoot":"webpack://"}]);
 	
 	// exports
 
 
 /***/ },
-/* 55 */
+/* 54 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -15786,10 +15714,236 @@
 	};
 
 /***/ },
-/* 56 */
+/* 55 */
 /***/ function(module, exports) {
 
-	module.exports = "\n<div _v-0b7591bd=\"\">\n    <p _v-0b7591bd=\"\">--------------- player list ---------------</p>\n    <ul _v-0b7591bd=\"\">\n        <li v-for=\"player in playerList\" _v-0b7591bd=\"\">\n            <div _v-0b7591bd=\"\">{{player.userName}} - {{player.shakeCount}}</div>\n            <div class=\"line\" :style=\"{width: player.shakeCount + '%'}\" _v-0b7591bd=\"\"></div>\n        </li>\n    </ul>\n    <p _v-0b7591bd=\"\">--------------- game control ---------------</p>\n    <div _v-0b7591bd=\"\">\n        <button @click=\"startGame()\" _v-0b7591bd=\"\">Start Game</button>\n        <button @click=\"stopGame()\" _v-0b7591bd=\"\">Stop Game</button>\n    </div>\n</div>\n";
+	module.exports = "\n<div _v-44ee4974=\"\">\n    <p _v-44ee4974=\"\">--------------- player list ---------------</p>\n    <ul _v-44ee4974=\"\">\n        <li v-for=\"player in playerList\" _v-44ee4974=\"\">\n            <div _v-44ee4974=\"\">{{player.userName}} - {{player.shakeCount}}</div>\n            <div class=\"line\" :style=\"{width: player.shakeCount + '%'}\" _v-44ee4974=\"\"></div>\n        </li>\n    </ul>\n    <p _v-44ee4974=\"\">--------------- game control ---------------</p>\n    <div _v-44ee4974=\"\">\n        <button @click=\"startGame()\" _v-44ee4974=\"\">Start Game</button>\n        <button @click=\"stopGame()\" _v-44ee4974=\"\">Stop Game</button>\n    </div>\n</div>\n";
+
+/***/ },
+/* 56 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __vue_script__, __vue_template__
+	__webpack_require__(57)
+	__vue_script__ = __webpack_require__(59)
+	if (__vue_script__ &&
+	    __vue_script__.__esModule &&
+	    Object.keys(__vue_script__).length > 1) {
+	  console.warn("[vue-loader] src/components/player/ready-page.vue: named exports in *.vue files are ignored.")}
+	__vue_template__ = __webpack_require__(60)
+	module.exports = __vue_script__ || {}
+	if (module.exports.__esModule) module.exports = module.exports.default
+	if (__vue_template__) {
+	(typeof module.exports === "function" ? (module.exports.options || (module.exports.options = {})) : module.exports).template = __vue_template__
+	}
+	if (false) {(function () {  module.hot.accept()
+	  var hotAPI = require("vue-hot-reload-api")
+	  hotAPI.install(require("vue"), true)
+	  if (!hotAPI.compatible) return
+	  var id = "/Users/Jack/WebstormProjects/wedding-shake-game/src/components/player/ready-page.vue"
+	  if (!module.hot.data) {
+	    hotAPI.createRecord(id, module.exports)
+	  } else {
+	    hotAPI.update(id, module.exports, __vue_template__)
+	  }
+	})()}
+
+/***/ },
+/* 57 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+	
+	// load the styles
+	var content = __webpack_require__(58);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(32)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../../../node_modules/css-loader/index.js?sourceMap!./../../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-44a46fde&scoped=true!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./ready-page.vue", function() {
+				var newContent = require("!!./../../../node_modules/css-loader/index.js?sourceMap!./../../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-44a46fde&scoped=true!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./ready-page.vue");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 58 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(31)();
+	// imports
+	
+	
+	// module
+	exports.push([module.id, "\n", "", {"version":3,"sources":[],"names":[],"mappings":"","file":"ready-page.vue","sourceRoot":"webpack://"}]);
+	
+	// exports
+
+
+/***/ },
+/* 59 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var store = __webpack_require__(34);
+	
+	module.exports = {
+	
+	    computed: {
+	        room: function room() {
+	            return store.state.player.readyPage.roomDetails;
+	        },
+	        players: function players() {
+	            return store.state.player.readyPage.players;
+	        },
+	        gameStatus: function gameStatus() {
+	            var status = store.state.player.readyPage.gameStatus;
+	
+	            if (status === 'PLAYING') {
+	                console.log('START!!!');
+	                this.$router.go({ name: 'shake' });
+	            }
+	
+	            if (status === 'END') console.log('END!!!');
+	            return status;
+	        }
+	    },
+	
+	    ready: function ready() {
+	        var roomId = this.$route.params.roomId;
+	
+	        store.actions.getRoomDetails(roomId);
+	        store.actions.getRoomPlayers(roomId);
+	    },
+	
+	    methods: {
+	        leaveRoom: function leaveRoom() {
+	            var roomId = this.$route.params.roomId;
+	            var userId = store.state.player.currentPlayer.userId;
+	            var router = this.$router;
+	
+	            store.actions.leaveRoom(roomId, userId).then(function () {
+	                router.go({ name: 'home', params: { userId: userId } });
+	            }, function () {});
+	        }
+	    }
+	};
+
+/***/ },
+/* 60 */
+/***/ function(module, exports) {
+
+	module.exports = "\n<div _v-44a46fde=\"\">\n    <div _v-44a46fde=\"\">room name: {{room.roomName}}</div>\n    <div _v-44a46fde=\"\">room size: {{room.roomSize}}</div>\n    <div _v-44a46fde=\"\">\n        players: {{gameStatus}}\n    </div>\n    <div v-for=\"player in players\" _v-44a46fde=\"\">\n        {{player.userName}}\n    </div>\n    <button @click=\"leaveRoom()\" _v-44a46fde=\"\">Leave</button>\n</div>\n";
+
+/***/ },
+/* 61 */,
+/* 62 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __vue_script__, __vue_template__
+	__vue_script__ = __webpack_require__(64)
+	if (__vue_script__ &&
+	    __vue_script__.__esModule &&
+	    Object.keys(__vue_script__).length > 1) {
+	  console.warn("[vue-loader] src/components/player/shake-page.vue: named exports in *.vue files are ignored.")}
+	__vue_template__ = __webpack_require__(65)
+	module.exports = __vue_script__ || {}
+	if (module.exports.__esModule) module.exports = module.exports.default
+	if (__vue_template__) {
+	(typeof module.exports === "function" ? (module.exports.options || (module.exports.options = {})) : module.exports).template = __vue_template__
+	}
+	if (false) {(function () {  module.hot.accept()
+	  var hotAPI = require("vue-hot-reload-api")
+	  hotAPI.install(require("vue"), true)
+	  if (!hotAPI.compatible) return
+	  var id = "/Users/Jack/WebstormProjects/wedding-shake-game/src/components/player/shake-page.vue"
+	  if (!module.hot.data) {
+	    hotAPI.createRecord(id, module.exports)
+	  } else {
+	    hotAPI.update(id, module.exports, __vue_template__)
+	  }
+	})()}
+
+/***/ },
+/* 63 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __vue_script__, __vue_template__
+	__vue_script__ = __webpack_require__(66)
+	if (__vue_script__ &&
+	    __vue_script__.__esModule &&
+	    Object.keys(__vue_script__).length > 1) {
+	  console.warn("[vue-loader] src/components/player/ranking-page.vue: named exports in *.vue files are ignored.")}
+	__vue_template__ = __webpack_require__(67)
+	module.exports = __vue_script__ || {}
+	if (module.exports.__esModule) module.exports = module.exports.default
+	if (__vue_template__) {
+	(typeof module.exports === "function" ? (module.exports.options || (module.exports.options = {})) : module.exports).template = __vue_template__
+	}
+	if (false) {(function () {  module.hot.accept()
+	  var hotAPI = require("vue-hot-reload-api")
+	  hotAPI.install(require("vue"), true)
+	  if (!hotAPI.compatible) return
+	  var id = "/Users/Jack/WebstormProjects/wedding-shake-game/src/components/player/ranking-page.vue"
+	  if (!module.hot.data) {
+	    hotAPI.createRecord(id, module.exports)
+	  } else {
+	    hotAPI.update(id, module.exports, __vue_template__)
+	  }
+	})()}
+
+/***/ },
+/* 64 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	module.exports = {
+	    ready: function ready() {
+	        var router = this.$router;
+	        setTimeout(function () {
+	            router.go({ name: 'ranking', params: { roomId: 'test' } });
+	        }, 1000);
+	    }
+	};
+
+/***/ },
+/* 65 */
+/***/ function(module, exports) {
+
+	module.exports = "\n<div>shake page</div>\n";
+
+/***/ },
+/* 66 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var store = __webpack_require__(34);
+	
+	module.exports = {
+	
+	    methods: {
+	        back: function back() {
+	            this.$router.go({ name: 'home', params: { userId: store.state.player.currentPlayer.userId } });
+	        }
+	    }
+	};
+
+/***/ },
+/* 67 */
+/***/ function(module, exports) {
+
+	module.exports = "\n<div @click=\"back()\">ranking page</div>\n";
 
 /***/ }
 /******/ ]);

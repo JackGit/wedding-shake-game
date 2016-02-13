@@ -1,4 +1,6 @@
 var AV = require('avoscloud-sdk');
+var PlayerDAO = require('../dao/player.js');
+var RoomDAO = require('../dao/room.js');
 
 // AV Objects
 var Player = AV.Object.extend('Player');
@@ -61,21 +63,16 @@ module.exports = function(app, io) {
 
     router.post('/game/user/delete', function(req, res) {});
     router.post('/game/user/list', function(req, res) {
-        var playerQueryObj = new AV.Query('Player');
-
-        playerQueryObj.addAscending('updatedAt');
-        playerQueryObj.equalTo('userStatus', 'JOINED');
-
-        playerQueryObj.find().then(function(results) {
+        PlayerDAO.getPlayerList(req.body.userId).then(function(response) {
             res.send({
                 statusCode: 0,
                 message: '',
-                userList: results
+                users: response
             });
         }, function(error) {
             res.send({
-                statusCode: 1,
-                message: 'user list error',
+                statusCode: -1,
+                message: '',
                 error: error
             });
         });
@@ -101,94 +98,32 @@ module.exports = function(app, io) {
     });
 
     router.post('/game/user/joinRoom', function(req, res) {
-        var roomQueryObj = new AV.Query('Room'),
-            roomId = req.body.roomId,
-            playerId = req.body.userId;
-
-        roomQueryObj.get(roomId).then(function(room) {
-
-            // check by room status, only WAITING can be joined
-            if(room.get('status') !== 'WAITING') {
-                res.send({
-                    statusCode: 1,
-                    message: 'room is not waiting, cannot join',
-                    room: room
-                });
-                return;
-            }
-
-            // check for room size
-            if(room.get('players').length === room.get('roomSize')) {
-                res.send({
-                    statusCode: 1,
-                    message: 'room is full, cannot join',
-                    room: room
-                });
-                return;
-            }
-
-            // add playerId into room.players array
-            if(room.get('players').indexOf(playerId) === -1) {
-                room.get('players').push(playerId);
-            }
-
-
-            room.save().then(function(response) {
-                res.send({
-                    statusCode: 0,
-                    message: '',
-                    room: response
-                });
-            }, function(error) {
-                res.send({
-                    statusCode: 1,
-                    message: 'update room players error',
-                    error: error
-                });
+        RoomDAO.joinRoom(req.body.roomId, req.body.userId, req.body.userType).then(function(response) {
+            res.send({
+                statusCode: 0,
+                message: '',
+                room: response
             });
-
         }, function(error) {
             res.send({
-                statusCode: 1,
-                message: 'cannot find room by id ' + roomId,
+                statusCode: -1,
+                message: 'join room error',
                 error: error
             });
         });
     });
 
     router.post('/game/user/leaveRoom', function(req, res) {
-        var roomQueryObj = new AV.Query('Room'),
-            roomId = req.body.roomId,
-            userId = req.body.userId;
-
-        roomQueryObj.get(roomId).then(function(room) {
-            room.set('players',
-                room.get('players').filter(function(playerId) {
-                    return playerId !== userId;
-                })
-            );
-
-            if(room.get('players').length === 0)
-                room.status = 'CLOSED';
-
-            room.save().then(function(response) {
-                res.send({
-                    statusCode: 0,
-                    message: '',
-                    room: response
-                });
-            }, function(error) {
-                res.send({
-                    statusCode: 1,
-                    message: 'update room players error',
-                    error: error
-                });
+        RoomDAO.leaveRoom(req.body.roomId, req.body.userId).then(function(response) {
+            res.send({
+                statusCode: 0,
+                message: '',
+                room: response
             });
-
         }, function(error) {
             res.send({
-                statusCode: 1,
-                message: 'cannot find room by id ' + roomId,
+                statusCode: -1,
+                message: 'leave room error',
                 error: error
             });
         });
@@ -304,7 +239,21 @@ module.exports = function(app, io) {
         });
     });
 
-    router.post('/game/room/listPlayers', function(req, res) {});
+    router.post('/game/room/playerList', function(req, res) {
+        RoomDAO.getRoomPlayerList(req.body.roomId).then(function(response) {
+            res.send({
+                statusCode: 0,
+                message: '',
+                players: response
+            });
+        }, function(error) {
+            res.send({
+                statusCode: -1,
+                message: '',
+                error: error
+            });
+        });
+    });
 
     router.post('/game/rankings', function(req, res) {});
     router.post('/game/controls/start', function(req, res) {
