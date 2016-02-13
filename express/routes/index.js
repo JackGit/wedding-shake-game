@@ -130,20 +130,14 @@ module.exports = function(app, io) {
     });
 
     router.post('/game/room/create', function(req, res) {
-        var roomAVObj = new Room(),
-            room = {
-                roomName: req.body.roomName,
-                roomDescription : req.body.roomDescription,
-                roomSize: Number.parseInt(req.body.roomSize, 10),
-                players: [],
-                status: 'WAITING',
-                creator: req.body.creator
-            };
+        var room = {
+            roomName: req.body.roomName,
+            roomDescription : req.body.roomDescription,
+            roomSize: Number.parseInt(req.body.roomSize, 10),
+            players: []
+        };
 
-        roomAVObj.save(room).then(function(response) {
-
-            io.emit('room-create', response);
-
+        RoomDAO.createRoom(room, false).then(function(response) {
             res.send({
                 statusCode: 0,
                 message: '',
@@ -151,8 +145,8 @@ module.exports = function(app, io) {
             });
         }, function(error) {
             res.send({
-                statusCode: 1,
-                message: 'create room error',
+                statusCode: -1,
+                message: 'create room failed',
                 error: error
             });
         });
@@ -160,28 +154,24 @@ module.exports = function(app, io) {
 
 
     router.post('/game/room/update', function(req, res) {
-        var roomQueryObj = new AV.Query('Room'),
-            roomId = req.body.roomId;
+        var room = {
+            roomId: req.body.roomId,
+            roomName: req.body.roomName,
+            roomDescription: req.body.roomDescription,
+            roomSize: req.body.roomSize,
+            status: req.body.status
+        };
 
-        roomQueryObj.get(roomId).try(function(room) {
-            if(room.get('status') !== 'WAITING') {
-                AV.Promise.error('cannot update room while status is "WAITING"');
-            } else {
-                room.set('roomName', req.body.roomName);
-                room.set('roomDescription', req.body.roomDescription);
-                room.set('roomSize', Number.parseInt(req.body.roomSize, 10));
-                return room.save();
-            }
-        }).try(function(room) {
+        RoomDAO.updateRoom(room).then(function(response) {
             res.send({
                 statusCode: 0,
                 message: '',
-                room: room
+                room: response
             });
-        }).catch(function(error) {
+        }, function(error) {
             res.send({
-                statusCode: 1,
-                message: 'room update failed',
+                statusCode: -1,
+                message: 'update room error',
                 error: error
             });
         });

@@ -6,7 +6,7 @@ var ROOM_PROPERTIES = {
     roomDescription: 'default room description',
     roomSize: 5,        // 5 for each side of players (GROOM and BRIDE)
     status: 'INIT',
-    playerList: [],     // array of {playerId: '', playerType: 'GROOM'}
+    players: [],     // array of {playerId: '', playerType: 'GROOM'}
     ranking: []         // array of {playerId: '', shakeCount: XX}
 };
 
@@ -29,6 +29,8 @@ var roomDAO = {
         for(p in ROOM_PROPERTIES)
             if(room[p] !== undefined)
                 roomAVObj.set(p, room[p]);
+            else
+                roomAVObj.set(p, ROOM_PROPERTIES[p]);
 
         if(allowJoin)
             room.status = 'JOINING';
@@ -38,7 +40,7 @@ var roomDAO = {
     updateRoom: function(room) {
         var p;
 
-        return roomDAO.getRoom(room.objectId).try(function(roomAVObj) {
+        return roomDAO.getRoom(room.roomId).try(function(roomAVObj) {
             for(p in ROOM_PROPERTIES)
                 if(room[p] !== undefined)
                     roomAVObj.set(p, room[p]);

@@ -62,7 +62,13 @@ module.exports = window.store = new Vuex.Store({
 
         /* admin pages states */
         admin: {
-
+            homePage: {
+                roomList: []
+            },
+            roomPage: {
+                roomDetails: {},
+                players: []
+            }
         }
     },
 
@@ -161,7 +167,65 @@ module.exports = window.store = new Vuex.Store({
 
 
 
-        /* admin acitons */
+        /* admin actions */
+        getAdminRoomList: function(store) {
+            console.log('store.actions.getAdminRoomList');
+
+            api.listRoom().then(function(data) {
+                store.state.admin.homePage.roomList = data.roomList;
+            }, function(error) {
+                console.log('store.actions.getAdminRoomList error', error);
+            });
+        },
+        getAdminRoomDetails: function(store, roomId) {
+            console.log('store.actions.getAdminRoomDetails', roomId);
+
+            api.getRoom(roomId).then(function(data) {
+                store.state.admin.roomPage.roomDetails = data.room;
+            }, function(error) {
+                console.log('store.actions.getAdminRoomDetails error', error);
+            });
+        },
+        getAdminRoomPlayers: function(store, roomId) {
+            console.log('store.actions.getAdminRoomPlayers', roomId);
+            api.getRoomPlayers(roomId).then(function(data) {
+                store.state.admin.roomPage.players = data.players;
+            }, function(error) {
+                console.log('store.actions.getAdminRoomPlayers error', error);
+            });
+        },
+        createRoom: function(store, room) {
+            console.log('store.actions.createRoom', room);
+
+            return new Promise(function(resolve, reject) {
+                api.createRoom(room).then(function(data) {
+                    resolve(data.room);
+                }, function(error) {
+                    reject(error);
+                });
+            });
+        },
+        allowToJoinRoom: function(store, roomId) {
+            api.updateRoom({roomId: roomId, status: 'JOINING'}).then(function(data) {
+                console.log('store.actions.allowToJoinRoom success');
+            }, function(error) {
+                console.log('store.actions.allowToJoinRoom error', error);
+            });
+        },
+        startRoom: function(store, roomId) {
+            api.updateRoom({roomId: roomId, status: 'PLAYING'}).then(function(data) {
+                console.log('store.actions.startRoom success');
+            }, function(error) {
+                console.log('store.actions.startRoom error', error);
+            });
+        },
+        stopRoom: function(store, roomId) {
+            api.updateRoom({roomId: roomId, status: 'END'}).then(function(data) {
+                console.log('store.actions.stopRoom success');
+            }, function(error) {
+                console.log('store.actions.stopRoom error', error);
+            });
+        },
 
 
 

@@ -36,6 +36,14 @@ var API = {
             userIds: userIds
         });
     },
+    createRoom: function(room) {
+        var request = {
+            roomName: room.roomName,
+            roomDescription: room.roomDescription,
+            roomSize: room.roomSize
+        };
+        return callservice('/game/room/create', request);
+    },
     getRoom: function(roomId) {
         return callservice('/game/room/get', {
             roomId: roomId
@@ -43,6 +51,9 @@ var API = {
     },
     getRoomPlayers: function(roomId) {
         return callservice('/game/room/playerList', {roomId: roomId});
+    },
+    updateRoom: function(room) {
+        return callservice('/game/room/update', room);
     },
     listRoom: function() {
         return callservice('/game/room/list');

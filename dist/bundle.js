@@ -92,7 +92,11 @@
 	    },
 	    '/admin': {
 	        name: 'dashboard',
-	        component: __webpack_require__(51)
+	        component: __webpack_require__(68)
+	    },
+	    '/room/:roomId': {
+	        name: 'room',
+	        component: __webpack_require__(73)
 	    }
 	});
 	
@@ -14494,7 +14498,13 @@
 	
 	        /* admin pages states */
 	        admin: {
-	
+	            homePage: {
+	                roomList: []
+	            },
+	            roomPage: {
+	                roomDetails: {},
+	                players: []
+	            }
 	        }
 	    },
 	
@@ -14593,7 +14603,65 @@
 	
 	
 	
-	        /* admin acitons */
+	        /* admin actions */
+	        getAdminRoomList: function(store) {
+	            console.log('store.actions.getAdminRoomList');
+	
+	            api.listRoom().then(function(data) {
+	                store.state.admin.homePage.roomList = data.roomList;
+	            }, function(error) {
+	                console.log('store.actions.getAdminRoomList error', error);
+	            });
+	        },
+	        getAdminRoomDetails: function(store, roomId) {
+	            console.log('store.actions.getAdminRoomDetails', roomId);
+	
+	            api.getRoom(roomId).then(function(data) {
+	                store.state.admin.roomPage.roomDetails = data.room;
+	            }, function(error) {
+	                console.log('store.actions.getAdminRoomDetails error', error);
+	            });
+	        },
+	        getAdminRoomPlayers: function(store, roomId) {
+	            console.log('store.actions.getAdminRoomPlayers', roomId);
+	            api.getRoomPlayers(roomId).then(function(data) {
+	                store.state.admin.roomPage.players = data.players;
+	            }, function(error) {
+	                console.log('store.actions.getAdminRoomPlayers error', error);
+	            });
+	        },
+	        createRoom: function(store, room) {
+	            console.log('store.actions.createRoom', room);
+	
+	            return new Promise(function(resolve, reject) {
+	                api.createRoom(room).then(function(data) {
+	                    resolve(data.room);
+	                }, function(error) {
+	                    reject(error);
+	                });
+	            });
+	        },
+	        allowToJoinRoom: function(store, roomId) {
+	            api.updateRoom({roomId: roomId, status: 'JOINING'}).then(function(data) {
+	                console.log('store.actions.allowToJoinRoom success');
+	            }, function(error) {
+	                console.log('store.actions.allowToJoinRoom error', error);
+	            });
+	        },
+	        startRoom: function(store, roomId) {
+	            api.updateRoom({roomId: roomId, status: 'PLAYING'}).then(function(data) {
+	                console.log('store.actions.startRoom success');
+	            }, function(error) {
+	                console.log('store.actions.startRoom error', error);
+	            });
+	        },
+	        stopRoom: function(store, roomId) {
+	            api.updateRoom({roomId: roomId, status: 'END'}).then(function(data) {
+	                console.log('store.actions.stopRoom success');
+	            }, function(error) {
+	                console.log('store.actions.stopRoom error', error);
+	            });
+	        },
 	
 	
 	
@@ -15330,6 +15398,14 @@
 	            userIds: userIds
 	        });
 	    },
+	    createRoom: function(room) {
+	        var request = {
+	            roomName: room.roomName,
+	            roomDescription: room.roomDescription,
+	            roomSize: room.roomSize
+	        };
+	        return callservice('/game/room/create', request);
+	    },
 	    getRoom: function(roomId) {
 	        return callservice('/game/room/get', {
 	            roomId: roomId
@@ -15337,6 +15413,9 @@
 	    },
 	    getRoomPlayers: function(roomId) {
 	        return callservice('/game/room/playerList', {roomId: roomId});
+	    },
+	    updateRoom: function(room) {
+	        return callservice('/game/room/update', room);
 	    },
 	    listRoom: function() {
 	        return callservice('/game/room/list');
@@ -15620,106 +15699,11 @@
 	module.exports = "\n<div _v-3ac087e8=\"\">\n    {{currentPlayer.userName}}'s home page\n    <ul _v-3ac087e8=\"\">\n        <li v-for=\"room in roomList\" _v-3ac087e8=\"\">\n            <p _v-3ac087e8=\"\">name: {{room.roomName}}</p>\n            <p _v-3ac087e8=\"\">status: {{room.status}}</p>\n            <p _v-3ac087e8=\"\">players: {{room.players.length}}</p>\n            <button @click=\"join(room.objectId)\" _v-3ac087e8=\"\">{{room.status === 'JOINING' ? 'Join' : 'Visit as guest'}}</button>\n        </li>\n    </ul>\n</div>\n";
 
 /***/ },
-/* 51 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var __vue_script__, __vue_template__
-	__webpack_require__(52)
-	__vue_script__ = __webpack_require__(54)
-	if (__vue_script__ &&
-	    __vue_script__.__esModule &&
-	    Object.keys(__vue_script__).length > 1) {
-	  console.warn("[vue-loader] src/components/admin/admin.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(55)
-	module.exports = __vue_script__ || {}
-	if (module.exports.__esModule) module.exports = module.exports.default
-	if (__vue_template__) {
-	(typeof module.exports === "function" ? (module.exports.options || (module.exports.options = {})) : module.exports).template = __vue_template__
-	}
-	if (false) {(function () {  module.hot.accept()
-	  var hotAPI = require("vue-hot-reload-api")
-	  hotAPI.install(require("vue"), true)
-	  if (!hotAPI.compatible) return
-	  var id = "/Users/Jack/WebstormProjects/wedding-shake-game/src/components/admin/admin.vue"
-	  if (!module.hot.data) {
-	    hotAPI.createRecord(id, module.exports)
-	  } else {
-	    hotAPI.update(id, module.exports, __vue_template__)
-	  }
-	})()}
-
-/***/ },
-/* 52 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-	
-	// load the styles
-	var content = __webpack_require__(53);
-	if(typeof content === 'string') content = [[module.id, content, '']];
-	// add the styles to the DOM
-	var update = __webpack_require__(32)(content, {});
-	if(content.locals) module.exports = content.locals;
-	// Hot Module Replacement
-	if(false) {
-		// When the styles change, update the <style> tags
-		if(!content.locals) {
-			module.hot.accept("!!./../../../node_modules/css-loader/index.js?sourceMap!./../../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-44ee4974&scoped=true!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./admin.vue", function() {
-				var newContent = require("!!./../../../node_modules/css-loader/index.js?sourceMap!./../../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-44ee4974&scoped=true!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./admin.vue");
-				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-				update(newContent);
-			});
-		}
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
-
-/***/ },
-/* 53 */
-/***/ function(module, exports, __webpack_require__) {
-
-	exports = module.exports = __webpack_require__(31)();
-	// imports
-	
-	
-	// module
-	exports.push([module.id, "\n.line[_v-44ee4974] {\n    background: red;\n    display: inline-block;\n    height: 2px;\n    width: 0%;\n    -webkit-transition: width 0.5s ease;\n    transition: width 0.5s ease;\n}\n", "", {"version":3,"sources":["/./src/components/admin/admin.vue?2a849122"],"names":[],"mappings":";AACA;IACA,gBAAA;IACA,sBAAA;IACA,YAAA;IACA,UAAA;IACA,oCAAA;IAAA,4BAAA;CACA","file":"admin.vue","sourcesContent":["<style scoped>\n    .line {\n        background: red;\n        display: inline-block;\n        height: 2px;\n        width: 0%;\n        transition: width 0.5s ease;\n    }\n</style>\n\n<template>\n    <div>\n        <p>--------------- player list ---------------</p>\n        <ul>\n            <li v-for=\"player in playerList\">\n                <div>{{player.userName}} - {{player.shakeCount}}</div>\n                <div class=\"line\" :style=\"{width: player.shakeCount + '%'}\"></div>\n            </li>\n        </ul>\n        <p>--------------- game control ---------------</p>\n        <div>\n            <button @click=\"startGame()\">Start Game</button>\n            <button @click=\"stopGame()\">Stop Game</button>\n        </div>\n    </div>\n</template>\n\n<script>\n    var store = require('../../store');\n\n    module.exports = {\n        computed: {\n            playerList: function() {\n                return store.state.playerList;\n            }\n        },\n\n        ready: function() {\n            store.actions.initDashboard();\n        },\n\n        methods: {\n            startGame: store.actions.startGame,\n            stopGame: store.actions.stopGame\n        }\n    };\n</script>"],"sourceRoot":"webpack://"}]);
-	
-	// exports
-
-
-/***/ },
-/* 54 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var store = __webpack_require__(34);
-	
-	module.exports = {
-	    computed: {
-	        playerList: function playerList() {
-	            return store.state.playerList;
-	        }
-	    },
-	
-	    ready: function ready() {
-	        store.actions.initDashboard();
-	    },
-	
-	    methods: {
-	        startGame: store.actions.startGame,
-	        stopGame: store.actions.stopGame
-	    }
-	};
-
-/***/ },
-/* 55 */
-/***/ function(module, exports) {
-
-	module.exports = "\n<div _v-44ee4974=\"\">\n    <p _v-44ee4974=\"\">--------------- player list ---------------</p>\n    <ul _v-44ee4974=\"\">\n        <li v-for=\"player in playerList\" _v-44ee4974=\"\">\n            <div _v-44ee4974=\"\">{{player.userName}} - {{player.shakeCount}}</div>\n            <div class=\"line\" :style=\"{width: player.shakeCount + '%'}\" _v-44ee4974=\"\"></div>\n        </li>\n    </ul>\n    <p _v-44ee4974=\"\">--------------- game control ---------------</p>\n    <div _v-44ee4974=\"\">\n        <button @click=\"startGame()\" _v-44ee4974=\"\">Start Game</button>\n        <button @click=\"stopGame()\" _v-44ee4974=\"\">Stop Game</button>\n    </div>\n</div>\n";
-
-/***/ },
+/* 51 */,
+/* 52 */,
+/* 53 */,
+/* 54 */,
+/* 55 */,
 /* 56 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -15944,6 +15928,228 @@
 /***/ function(module, exports) {
 
 	module.exports = "\n<div @click=\"back()\">ranking page</div>\n";
+
+/***/ },
+/* 68 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __vue_script__, __vue_template__
+	__webpack_require__(69)
+	__vue_script__ = __webpack_require__(71)
+	if (__vue_script__ &&
+	    __vue_script__.__esModule &&
+	    Object.keys(__vue_script__).length > 1) {
+	  console.warn("[vue-loader] src/components/admin/admin-page.vue: named exports in *.vue files are ignored.")}
+	__vue_template__ = __webpack_require__(72)
+	module.exports = __vue_script__ || {}
+	if (module.exports.__esModule) module.exports = module.exports.default
+	if (__vue_template__) {
+	(typeof module.exports === "function" ? (module.exports.options || (module.exports.options = {})) : module.exports).template = __vue_template__
+	}
+	if (false) {(function () {  module.hot.accept()
+	  var hotAPI = require("vue-hot-reload-api")
+	  hotAPI.install(require("vue"), true)
+	  if (!hotAPI.compatible) return
+	  var id = "/Users/Jack/WebstormProjects/wedding-shake-game/src/components/admin/admin-page.vue"
+	  if (!module.hot.data) {
+	    hotAPI.createRecord(id, module.exports)
+	  } else {
+	    hotAPI.update(id, module.exports, __vue_template__)
+	  }
+	})()}
+
+/***/ },
+/* 69 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+	
+	// load the styles
+	var content = __webpack_require__(70);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(32)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../../../node_modules/css-loader/index.js?sourceMap!./../../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-67c2cce6&scoped=true!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./admin-page.vue", function() {
+				var newContent = require("!!./../../../node_modules/css-loader/index.js?sourceMap!./../../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-67c2cce6&scoped=true!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./admin-page.vue");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 70 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(31)();
+	// imports
+	
+	
+	// module
+	exports.push([module.id, "\n.line[_v-67c2cce6] {\n    background: red;\n    display: inline-block;\n    height: 2px;\n    width: 0%;\n    -webkit-transition: width 0.5s ease;\n    transition: width 0.5s ease;\n}\n", "", {"version":3,"sources":["/./src/components/admin/admin-page.vue?212fe413"],"names":[],"mappings":";AACA;IACA,gBAAA;IACA,sBAAA;IACA,YAAA;IACA,UAAA;IACA,oCAAA;IAAA,4BAAA;CACA","file":"admin-page.vue","sourcesContent":["<style scoped>\n    .line {\n        background: red;\n        display: inline-block;\n        height: 2px;\n        width: 0%;\n        transition: width 0.5s ease;\n    }\n</style>\n\n<template>\n    <div>\n        <h4>admin page</h4>\n        <p>room list</p>\n        <ul>\n            <li v-for=\"room in rooms\">\n                {{room.roomName}}\n            </li>\n        </ul>\n        <button @click=\"createRoom()\">Create Room</button>\n    </div>\n</template>\n\n<script>\n    var store = require('../../store');\n\n    module.exports = {\n        computed: {\n            rooms: function() {\n                return store.state.admin.homePage.roomList;\n            }\n        },\n\n        ready: function() {\n            store.actions.getAdminRoomList();\n        },\n\n        methods: {\n            createRoom: function() {\n                var router = this.$router;\n\n                store.actions.createRoom({\n                    roomName: 'test room name',\n                    roomDescription: 'test room description',\n                    roomSize: 5\n                }).then(function(room) {\n                    console.log('room created', room);\n                    router.go({name: 'room', params: {roomId: room.objectId}});\n                }, function(error) {\n\n                });\n            }\n        }\n    };\n</script>"],"sourceRoot":"webpack://"}]);
+	
+	// exports
+
+
+/***/ },
+/* 71 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var store = __webpack_require__(34);
+	
+	module.exports = {
+	    computed: {
+	        rooms: function rooms() {
+	            return store.state.admin.homePage.roomList;
+	        }
+	    },
+	
+	    ready: function ready() {
+	        store.actions.getAdminRoomList();
+	    },
+	
+	    methods: {
+	        createRoom: function createRoom() {
+	            var router = this.$router;
+	
+	            store.actions.createRoom({
+	                roomName: 'test room name',
+	                roomDescription: 'test room description',
+	                roomSize: 5
+	            }).then(function (room) {
+	                console.log('room created', room);
+	                router.go({ name: 'room', params: { roomId: room.objectId } });
+	            }, function (error) {});
+	        }
+	    }
+	};
+
+/***/ },
+/* 72 */
+/***/ function(module, exports) {
+
+	module.exports = "\n<div _v-67c2cce6=\"\">\n    <h4 _v-67c2cce6=\"\">admin page</h4>\n    <p _v-67c2cce6=\"\">room list</p>\n    <ul _v-67c2cce6=\"\">\n        <li v-for=\"room in rooms\" _v-67c2cce6=\"\">\n            {{room.roomName}}\n        </li>\n    </ul>\n    <button @click=\"createRoom()\" _v-67c2cce6=\"\">Create Room</button>\n</div>\n";
+
+/***/ },
+/* 73 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __vue_script__, __vue_template__
+	__webpack_require__(74)
+	__vue_script__ = __webpack_require__(76)
+	if (__vue_script__ &&
+	    __vue_script__.__esModule &&
+	    Object.keys(__vue_script__).length > 1) {
+	  console.warn("[vue-loader] src/components/admin/room-page.vue: named exports in *.vue files are ignored.")}
+	__vue_template__ = __webpack_require__(77)
+	module.exports = __vue_script__ || {}
+	if (module.exports.__esModule) module.exports = module.exports.default
+	if (__vue_template__) {
+	(typeof module.exports === "function" ? (module.exports.options || (module.exports.options = {})) : module.exports).template = __vue_template__
+	}
+	if (false) {(function () {  module.hot.accept()
+	  var hotAPI = require("vue-hot-reload-api")
+	  hotAPI.install(require("vue"), true)
+	  if (!hotAPI.compatible) return
+	  var id = "/Users/Jack/WebstormProjects/wedding-shake-game/src/components/admin/room-page.vue"
+	  if (!module.hot.data) {
+	    hotAPI.createRecord(id, module.exports)
+	  } else {
+	    hotAPI.update(id, module.exports, __vue_template__)
+	  }
+	})()}
+
+/***/ },
+/* 74 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+	
+	// load the styles
+	var content = __webpack_require__(75);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(32)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../../../node_modules/css-loader/index.js?sourceMap!./../../../node_modules/vue-loader/lib/style-rewriter.js!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./room-page.vue", function() {
+				var newContent = require("!!./../../../node_modules/css-loader/index.js?sourceMap!./../../../node_modules/vue-loader/lib/style-rewriter.js!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./room-page.vue");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 75 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(31)();
+	// imports
+	
+	
+	// module
+	exports.push([module.id, "\n\n", "", {"version":3,"sources":[],"names":[],"mappings":"","file":"room-page.vue","sourceRoot":"webpack://"}]);
+	
+	// exports
+
+
+/***/ },
+/* 76 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var store = __webpack_require__(34);
+	
+	module.exports = {
+	
+	    computed: {
+	        room: function room() {
+	            return store.state.admin.roomPage.roomDetails;
+	        },
+	        players: function players() {
+	            return store.state.admin.roomPage.players;
+	        }
+	    },
+	
+	    ready: function ready() {
+	        store.actions.getAdminRoomDetails(this.$route.params.roomId);
+	        store.actions.getAdminRoomPlayers(this.$route.params.roomId);
+	    },
+	
+	    methods: {
+	        allowToJoin: function allowToJoin() {
+	            store.actions.allowToJoinRoom(this.$route.params.roomId);
+	        },
+	        start: function start() {
+	            store.actions.startRoom(this.$route.params.roomId);
+	        },
+	        stop: function stop() {
+	            store.actions.stopRoom(this.$route.params.roomId);
+	        }
+	    }
+	};
+
+/***/ },
+/* 77 */
+/***/ function(module, exports) {
+
+	module.exports = "\n<div>\n    room page: {{room.roomName}}\n    players: {{players.length}}\n    <div>\n        <button @click=\"allowToJoin()\">Allow To Join</button>\n        <button @click=\"start()\">Start</button>\n        <button @click=\"stop()\">Stop</button>\n    </div>\n</div>\n";
 
 /***/ }
 /******/ ]);

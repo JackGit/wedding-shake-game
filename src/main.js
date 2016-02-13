@@ -46,7 +46,11 @@ router.map({
     },
     '/admin': {
         name: 'dashboard',
-        component: require('./components/admin/admin.vue')
+        component: require('./components/admin/admin-page.vue')
+    },
+    '/room/:roomId': {
+        name: 'room',
+        component: require('./components/admin/room-page.vue')
     }
 });
 
