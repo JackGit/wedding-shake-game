@@ -177,12 +177,24 @@ module.exports = function(app, io) {
         });
     });
 
-    router.post('/game/room/delete', function(req, res) {});
-    router.post('/game/room/list', function(req, res) {
-        var roomQueryObj = new AV.Query('Room');
+    router.post('/game/room/delete', function(req, res) {
+        RoomDAO.deleteRoom(req.body.roomId).then(function(response) {
+            res.send({
+                statusCode: 0,
+                message: '',
+                room: response
+            });
+        }, function(error) {
+            res.send({
+                statusCode: -1,
+                message: 'delete room error',
+                error: error
+            });
+        });
+    });
 
-        roomQueryObj.addAscending('createAt');
-        roomQueryObj.find().then(function(results) {
+    router.post('/game/room/list', function(req, res) {
+        RoomDAO.listRoom().then(function(results) {
             res.send({
                 statusCode: 0,
                 message: '',
@@ -198,32 +210,16 @@ module.exports = function(app, io) {
     });
 
     router.post('/game/room/get', function(req, res) {
-        var roomQueryObj = new AV.Query('Room'),
-            playerQueryObj = new AV.Query('Player'),
-            roomId = req.body.roomId;
-
-        roomQueryObj.get(roomId).then(function(room) {
-
-            playerQueryObj.containedIn('objectId', room.get('players'));
-            playerQueryObj.find().then(function(players) {
-                res.send({
-                    statusCode: 0,
-                    message: '',
-                    room: room,
-                    players: players
-                });
-            }, function(error) {
-                res.send({
-                    statusCode: 0,
-                    message: 'get room player list error',
-                    error: error
-                });
+        RoomDAO.getRoom(req.body.roomId).then(function(response) {
+            res.send({
+                statusCode: 0,
+                message: '',
+                room: response
             });
-
         }, function(error) {
             res.send({
-                statusCode: 1,
-                message: 'cannot get room by id ' + roomId,
+                statusCode: -1,
+                message: 'get room error',
                 error: error
             });
         });

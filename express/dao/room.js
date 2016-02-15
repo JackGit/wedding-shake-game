@@ -37,6 +37,10 @@ var roomDAO = {
 
         return roomAVObj.save();
     },
+    deleteRoom: function(roomId) {
+        var roomQueryObj = new AV.Query('Room');
+        return roomQueryObj.get(roomId).destroyAll();
+    },
     updateRoom: function(room) {
         var p;
 

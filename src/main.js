@@ -45,7 +45,7 @@ router.map({
         component: require('./components/player/ranking-page.vue')
     },
     '/admin': {
-        name: 'dashboard',
+        name: 'admin',
         component: require('./components/admin/admin-page.vue')
     },
     '/room/:roomId': {

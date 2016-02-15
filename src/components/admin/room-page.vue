@@ -1,15 +1,24 @@
-<style>
-
+<style scoped>
+    .room-edit-button {
+        margin: 20px;
+    }
 </style>
 
 <template>
     <div>
-        room page: {{room.roomName}}
-        players: {{players.length}}
-        <div>
-            <button @click="allowToJoin()">Allow To Join</button>
-            <button @click="start()">Start</button>
-            <button @click="stop()">Stop</button>
+        <div class="card blue-grey darken-1">
+            <a class="waves-effect btn right white black-text room-edit-button"><i class="material-icons left">edit</i>edit</a>
+            <div class="card-content white-text">
+                <span class="card-title">{{room.roomName}} ({{room.status}})</span>
+                <p>{{room.roomDescription}}</p>
+                <p>size: {{room.roomSize}}</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-content">
+                
+            </div>
         </div>
     </div>
 </template>

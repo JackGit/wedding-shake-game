@@ -10,14 +10,15 @@
 
 <template>
     <div>
-        <h4>admin page</h4>
+        <h4>admin page 中文<i class="material-icons">grade</i></h4>
         <p>room list</p>
         <ul>
-            <li v-for="room in rooms">
+            <li v-for="room in rooms" @click="goToRoom(room.objectId)">
                 {{room.roomName}}
             </li>
         </ul>
         <button @click="createRoom()">Create Room</button>
+        <room-edit-dialog v-ref:room-edit-dialog :room-id="selectRoomId"></room-edit-dialog>
     </div>
 </template>
 
@@ -25,6 +26,10 @@
     var store = require('../../store');
 
     module.exports = {
+        components: {
+            'room-edit-dialog': require('./room-edit-dialog.vue')
+        },
+
         computed: {
             rooms: function() {
                 return store.state.admin.homePage.roomList;
@@ -37,18 +42,11 @@
 
         methods: {
             createRoom: function() {
-                var router = this.$router;
-
-                store.actions.createRoom({
-                    roomName: 'test room name',
-                    roomDescription: 'test room description',
-                    roomSize: 5
-                }).then(function(room) {
-                    console.log('room created', room);
-                    router.go({name: 'room', params: {roomId: room.objectId}});
-                }, function(error) {
-
-                });
+                store.actions.getEditRoomDialogData('');
+                $(this.$refs.roomEditDialog.$el).openModal();
+            },
+            goToRoom: function(roomId) {
+                this.$router.go({name: 'room', params: {roomId: roomId}});
             }
         }
     };

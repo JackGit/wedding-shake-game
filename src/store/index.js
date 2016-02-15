@@ -68,6 +68,9 @@ module.exports = window.store = new Vuex.Store({
             roomPage: {
                 roomDetails: {},
                 players: []
+            },
+            editRoomDialog: {
+                roomDetails: {}
             }
         }
     },
@@ -194,11 +197,37 @@ module.exports = window.store = new Vuex.Store({
                 console.log('store.actions.getAdminRoomPlayers error', error);
             });
         },
+        getEditRoomDialogData: function(store, roomId) {
+            if(roomId) {
+                api.getRoom(roomId).then(function(data) {
+                    store.state.admin.editRoomDialog.roomDetails = data.room;
+                }, function(error) {
+                    console.log('store.actions.getEditRoomDialogData error', error);
+                });
+            } else {
+                store.state.admin.editRoomDialog.roomDetails = {
+                    roomName: '',
+                    roomDescription: '',
+                    roomSize: 5
+                };
+            }
+        },
         createRoom: function(store, room) {
             console.log('store.actions.createRoom', room);
 
             return new Promise(function(resolve, reject) {
                 api.createRoom(room).then(function(data) {
+                    store.state.admin.editRoomDialog.roomDetails = data.room;
+                    resolve(data.room);
+                }, function(error) {
+                    reject(error);
+                });
+            });
+        },
+        updateRoom: function(store, room) {
+            console.log('store.actions.updateRoom', room);
+            return new Promise(function(resolve, reject) {
+                api.updateRoom(room).then(function(data) {
                     resolve(data.room);
                 }, function(error) {
                     reject(error);

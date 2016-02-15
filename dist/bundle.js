@@ -80,23 +80,23 @@
 	    },
 	    '/ready/:roomId': {
 	        name: 'ready',
-	        component: __webpack_require__(56)
+	        component: __webpack_require__(51)
 	    },
 	    '/shake': {
 	        name: 'shake',
-	        component: __webpack_require__(62)
+	        component: __webpack_require__(56)
 	    },
 	    '/ranking/:roomId': {
 	        name: 'ranking',
-	        component: __webpack_require__(63)
+	        component: __webpack_require__(59)
 	    },
 	    '/admin': {
-	        name: 'dashboard',
-	        component: __webpack_require__(68)
+	        name: 'admin',
+	        component: __webpack_require__(62)
 	    },
 	    '/room/:roomId': {
 	        name: 'room',
-	        component: __webpack_require__(73)
+	        component: __webpack_require__(72)
 	    }
 	});
 	
@@ -14075,7 +14075,7 @@
 	if (__vue_script__ &&
 	    __vue_script__.__esModule &&
 	    Object.keys(__vue_script__).length > 1) {
-	  console.warn("[vue-loader] src/app.vue: named exports in *.vue files are ignored.")}
+	  console.warn("[vue-loader] src\\app.vue: named exports in *.vue files are ignored.")}
 	__vue_template__ = __webpack_require__(40)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
@@ -14086,7 +14086,7 @@
 	  var hotAPI = require("vue-hot-reload-api")
 	  hotAPI.install(require("vue"), true)
 	  if (!hotAPI.compatible) return
-	  var id = "/Users/Jack/WebstormProjects/wedding-shake-game/src/app.vue"
+	  var id = "C:\\Users\\Administrator\\Documents\\GitHub\\wedding-shake-game\\src\\app.vue"
 	  if (!module.hot.data) {
 	    hotAPI.createRecord(id, module.exports)
 	  } else {
@@ -14129,7 +14129,7 @@
 	
 	
 	// module
-	exports.push([module.id, "\n.mask {\n    position: fixed;\n    top: 0;\n    bottom: 0;\n    left: 0;\n    right: 0;\n    background-color: rgba(0,0,0,0.5);\n}\n\n.fade-transition {\n    -webkit-transition: all 0.5s ease;\n    transition: all 0.5s ease;\n}\n\n.fade-enter {\n    opacity: 0;\n    margin-top: 50%;\n}\n\n.fade-leave {\n    opacity: 0;\n}\n", "", {"version":3,"sources":["/./src/app.vue?2812eb7d"],"names":[],"mappings":";AACA;IACA,gBAAA;IACA,OAAA;IACA,UAAA;IACA,QAAA;IACA,SAAA;IACA,kCAAA;CACA;;AAEA;IACA,kCAAA;IAAA,0BAAA;CACA;;AAEA;IACA,WAAA;IACA,gBAAA;CACA;;AAEA;IACA,WAAA;CACA","file":"app.vue","sourcesContent":["<style>\n    .mask {\n        position: fixed;\n        top: 0;\n        bottom: 0;\n        left: 0;\n        right: 0;\n        background-color: rgba(0,0,0,0.5);\n    }\n\n    .fade-transition {\n        transition: all 0.5s ease;\n    }\n\n    .fade-enter {\n        opacity: 0;\n        margin-top: 50%;\n    }\n\n    .fade-leave {\n        opacity: 0;\n    }\n</style>\n\n<template>\n    <div>\n        <router-view transition=\"fade\" transition-mode=\"out-in\"></router-view>\n        <div class=\"mask\" v-if=\"mask\"></div>\n    </div>\n</template>\n\n<script>\n    var store = require('./store');\n\n    module.exports = {\n        components: {\n\n        },\n\n        computed: {\n            mask: function() {\n                return store.state.mask;\n            }\n        }\n    }\n</script>"],"sourceRoot":"webpack://"}]);
+	exports.push([module.id, "\n.mask {\n    position: fixed;\n    top: 0;\n    bottom: 0;\n    left: 0;\n    right: 0;\n    background-color: rgba(0,0,0,0.5);\n}\n\n.fade-transition {\n    -webkit-transition: all 0.5s ease;\n    transition: all 0.5s ease;\n}\n\n.fade-enter {\n    opacity: 0;\n    margin-top: 50%;\n}\n\n.fade-leave {\n    opacity: 0;\n}\n", "", {"version":3,"sources":["/./src/app.vue?15ea8aec"],"names":[],"mappings":";AACA;IACA,gBAAA;IACA,OAAA;IACA,UAAA;IACA,QAAA;IACA,SAAA;IACA,kCAAA;CACA;;AAEA;IACA,kCAAA;IAAA,0BAAA;CACA;;AAEA;IACA,WAAA;IACA,gBAAA;CACA;;AAEA;IACA,WAAA;CACA","file":"app.vue","sourcesContent":["<style>\r\n    .mask {\r\n        position: fixed;\r\n        top: 0;\r\n        bottom: 0;\r\n        left: 0;\r\n        right: 0;\r\n        background-color: rgba(0,0,0,0.5);\r\n    }\r\n\r\n    .fade-transition {\r\n        transition: all 0.5s ease;\r\n    }\r\n\r\n    .fade-enter {\r\n        opacity: 0;\r\n        margin-top: 50%;\r\n    }\r\n\r\n    .fade-leave {\r\n        opacity: 0;\r\n    }\r\n</style>\r\n\r\n<template>\r\n    <div>\r\n        <router-view transition=\"fade\" transition-mode=\"out-in\"></router-view>\r\n        <div class=\"mask\" v-if=\"mask\"></div>\r\n    </div>\r\n</template>\r\n\r\n<script>\r\n    var store = require('./store');\r\n\r\n    module.exports = {\r\n        components: {\r\n\r\n        },\r\n\r\n        computed: {\r\n            mask: function() {\r\n                return store.state.mask;\r\n            }\r\n        }\r\n    }\r\n</script>"],"sourceRoot":"webpack://"}]);
 	
 	// exports
 
@@ -14504,6 +14504,9 @@
 	            roomPage: {
 	                roomDetails: {},
 	                players: []
+	            },
+	            editRoomDialog: {
+	                roomDetails: {}
 	            }
 	        }
 	    },
@@ -14630,11 +14633,37 @@
 	                console.log('store.actions.getAdminRoomPlayers error', error);
 	            });
 	        },
+	        getEditRoomDialogData: function(store, roomId) {
+	            if(roomId) {
+	                api.getRoom(roomId).then(function(data) {
+	                    store.state.admin.editRoomDialog.roomDetails = data.room;
+	                }, function(error) {
+	                    console.log('store.actions.getEditRoomDialogData error', error);
+	                });
+	            } else {
+	                store.state.admin.editRoomDialog.roomDetails = {
+	                    roomName: '',
+	                    roomDescription: '',
+	                    roomSize: 5
+	                };
+	            }
+	        },
 	        createRoom: function(store, room) {
 	            console.log('store.actions.createRoom', room);
 	
 	            return new Promise(function(resolve, reject) {
 	                api.createRoom(room).then(function(data) {
+	                    store.state.admin.editRoomDialog.roomDetails = data.room;
+	                    resolve(data.room);
+	                }, function(error) {
+	                    reject(error);
+	                });
+	            });
+	        },
+	        updateRoom: function(store, room) {
+	            console.log('store.actions.updateRoom', room);
+	            return new Promise(function(resolve, reject) {
+	                api.updateRoom(room).then(function(data) {
 	                    resolve(data.room);
 	                }, function(error) {
 	                    reject(error);
@@ -15453,7 +15482,7 @@
 	if (__vue_script__ &&
 	    __vue_script__.__esModule &&
 	    Object.keys(__vue_script__).length > 1) {
-	  console.warn("[vue-loader] src/components/player/welcome-page.vue: named exports in *.vue files are ignored.")}
+	  console.warn("[vue-loader] src\\components\\player\\welcome-page.vue: named exports in *.vue files are ignored.")}
 	__vue_template__ = __webpack_require__(45)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
@@ -15464,7 +15493,7 @@
 	  var hotAPI = require("vue-hot-reload-api")
 	  hotAPI.install(require("vue"), true)
 	  if (!hotAPI.compatible) return
-	  var id = "/Users/Jack/WebstormProjects/wedding-shake-game/src/components/player/welcome-page.vue"
+	  var id = "C:\\Users\\Administrator\\Documents\\GitHub\\wedding-shake-game\\src\\components\\player\\welcome-page.vue"
 	  if (!module.hot.data) {
 	    hotAPI.createRecord(id, module.exports)
 	  } else {
@@ -15488,8 +15517,8 @@
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../../node_modules/css-loader/index.js?sourceMap!./../../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-5dda15bf&scoped=true!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./welcome-page.vue", function() {
-				var newContent = require("!!./../../../node_modules/css-loader/index.js?sourceMap!./../../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-5dda15bf&scoped=true!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./welcome-page.vue");
+			module.hot.accept("!!./../../../node_modules/css-loader/index.js?sourceMap!./../../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-d515edb4&scoped=true!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./welcome-page.vue", function() {
+				var newContent = require("!!./../../../node_modules/css-loader/index.js?sourceMap!./../../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-d515edb4&scoped=true!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./welcome-page.vue");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -15507,7 +15536,7 @@
 	
 	
 	// module
-	exports.push([module.id, "\n.selected[_v-5dda15bf] {\n    color: red;\n}\n", "", {"version":3,"sources":["/./src/components/player/welcome-page.vue?6eb48525"],"names":[],"mappings":";AACA;IACA,WAAA;CACA","file":"welcome-page.vue","sourcesContent":["<style scoped>\n    .selected {\n        color: red;\n    }\n</style>\n\n<template>\n    <div>\n        <h4>welcome, please input your name and select a role</h4>\n        <p>name:</p>\n        <input type=\"text\" v-model=\"userName\" @input=\"inputUserName\"/>\n\n        <p>type:</p>\n        <div>\n            <span @click=\"inputUserType('BRIDE')\" :class=\"[userType === 'BRIDE' ? 'selected' : '']\">Bride Guest</span>\n            <span @click=\"inputUserType('GROOM')\" :class=\"[userType === 'GROOM' ? 'selected' : '']\">Groom Guest</span>\n        </div>\n        <button @click=\"start()\">Start</button>\n    </div>\n</template>\n\n<script>\n    /**\n     * welcome page\n     *  1. 1st time to open this page, need to input user name and user type, then click start\n     *  2. not 1st time to open this page, with user information, just route to home page\n     */\n\n    var store = require('../../store');\n\n    module.exports = {\n\n        computed: {\n            userName: function() {\n                return store.state.player.welcomePage.formUserName;\n            },\n            userType: function() {\n                return store.state.player.welcomePage.formUserType;\n            },\n            userNameMessage: function() {\n                return store.state.player.welcomePage.formUserNameMessage;\n            },\n            userTypeMessage: function() {\n                return store.state.player.welcomePage.formUserTypeMessage;\n            }\n        },\n\n        methods: {\n            start: function() {\n                var router = this.$router;\n\n                store.actions.registerPlayer({\n                    userName: this.userName,\n                    userType: this.userType\n                }).then(function(user) {\n                    router.go({name: 'home', params: {userId: user.objectId}});\n                });\n            },\n            inputUserName: function(e) {\n                store.actions.inputUserName(e.target.value);\n            },\n            inputUserType: function(userType) {\n                store.actions.inputUserType(userType);\n            }\n\n        },\n\n        route: {\n            data: function(transition) {\n                var userId = store.state.player.currentPlayer.userId;\n\n                if(userId)\n                    transition.redirect({name: 'home', params: {userId: userId}});\n                else\n                    transition.next();\n            }\n        }\n    };\n</script>"],"sourceRoot":"webpack://"}]);
+	exports.push([module.id, "\n.selected[_v-d515edb4] {\n    color: red;\n}\n", "", {"version":3,"sources":["/./src/components/player/welcome-page.vue?547915ae"],"names":[],"mappings":";AACA;IACA,WAAA;CACA","file":"welcome-page.vue","sourcesContent":["<style scoped>\r\n    .selected {\r\n        color: red;\r\n    }\r\n</style>\r\n\r\n<template>\r\n    <div>\r\n        <h4>welcome, please input your name and select a role</h4>\r\n        <p>name:</p>\r\n        <input type=\"text\" v-model=\"userName\" @input=\"inputUserName\"/>\r\n\r\n        <p>type:</p>\r\n        <div>\r\n            <span @click=\"inputUserType('BRIDE')\" :class=\"[userType === 'BRIDE' ? 'selected' : '']\">Bride Guest</span>\r\n            <span @click=\"inputUserType('GROOM')\" :class=\"[userType === 'GROOM' ? 'selected' : '']\">Groom Guest</span>\r\n        </div>\r\n        <button @click=\"start()\">Start</button>\r\n    </div>\r\n</template>\r\n\r\n<script>\r\n    /**\r\n     * welcome page\r\n     *  1. 1st time to open this page, need to input user name and user type, then click start\r\n     *  2. not 1st time to open this page, with user information, just route to home page\r\n     */\r\n\r\n    var store = require('../../store');\r\n\r\n    module.exports = {\r\n\r\n        computed: {\r\n            userName: function() {\r\n                return store.state.player.welcomePage.formUserName;\r\n            },\r\n            userType: function() {\r\n                return store.state.player.welcomePage.formUserType;\r\n            },\r\n            userNameMessage: function() {\r\n                return store.state.player.welcomePage.formUserNameMessage;\r\n            },\r\n            userTypeMessage: function() {\r\n                return store.state.player.welcomePage.formUserTypeMessage;\r\n            }\r\n        },\r\n\r\n        methods: {\r\n            start: function() {\r\n                var router = this.$router;\r\n\r\n                store.actions.registerPlayer({\r\n                    userName: this.userName,\r\n                    userType: this.userType\r\n                }).then(function(user) {\r\n                    router.go({name: 'home', params: {userId: user.objectId}});\r\n                });\r\n            },\r\n            inputUserName: function(e) {\r\n                store.actions.inputUserName(e.target.value);\r\n            },\r\n            inputUserType: function(userType) {\r\n                store.actions.inputUserType(userType);\r\n            }\r\n\r\n        },\r\n\r\n        route: {\r\n            data: function(transition) {\r\n                var userId = store.state.player.currentPlayer.userId;\r\n\r\n                if(userId)\r\n                    transition.redirect({name: 'home', params: {userId: userId}});\r\n                else\r\n                    transition.next();\r\n            }\r\n        }\r\n    };\r\n</script>"],"sourceRoot":"webpack://"}]);
 	
 	// exports
 
@@ -15570,7 +15599,7 @@
 /* 45 */
 /***/ function(module, exports) {
 
-	module.exports = "\n<div _v-5dda15bf=\"\">\n    <h4 _v-5dda15bf=\"\">welcome, please input your name and select a role</h4>\n    <p _v-5dda15bf=\"\">name:</p>\n    <input type=\"text\" v-model=\"userName\" @input=\"inputUserName\" _v-5dda15bf=\"\">\n\n    <p _v-5dda15bf=\"\">type:</p>\n    <div _v-5dda15bf=\"\">\n        <span @click=\"inputUserType('BRIDE')\" :class=\"[userType === 'BRIDE' ? 'selected' : '']\" _v-5dda15bf=\"\">Bride Guest</span>\n        <span @click=\"inputUserType('GROOM')\" :class=\"[userType === 'GROOM' ? 'selected' : '']\" _v-5dda15bf=\"\">Groom Guest</span>\n    </div>\n    <button @click=\"start()\" _v-5dda15bf=\"\">Start</button>\n</div>\n";
+	module.exports = "\n<div _v-d515edb4=\"\">\n    <h4 _v-d515edb4=\"\">welcome, please input your name and select a role</h4>\n    <p _v-d515edb4=\"\">name:</p>\n    <input type=\"text\" v-model=\"userName\" @input=\"inputUserName\" _v-d515edb4=\"\">\n\n    <p _v-d515edb4=\"\">type:</p>\n    <div _v-d515edb4=\"\">\n        <span @click=\"inputUserType('BRIDE')\" :class=\"[userType === 'BRIDE' ? 'selected' : '']\" _v-d515edb4=\"\">Bride Guest</span>\n        <span @click=\"inputUserType('GROOM')\" :class=\"[userType === 'GROOM' ? 'selected' : '']\" _v-d515edb4=\"\">Groom Guest</span>\n    </div>\n    <button @click=\"start()\" _v-d515edb4=\"\">Start</button>\n</div>\n";
 
 /***/ },
 /* 46 */
@@ -15582,7 +15611,7 @@
 	if (__vue_script__ &&
 	    __vue_script__.__esModule &&
 	    Object.keys(__vue_script__).length > 1) {
-	  console.warn("[vue-loader] src/components/player/home-page.vue: named exports in *.vue files are ignored.")}
+	  console.warn("[vue-loader] src\\components\\player\\home-page.vue: named exports in *.vue files are ignored.")}
 	__vue_template__ = __webpack_require__(50)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
@@ -15593,7 +15622,7 @@
 	  var hotAPI = require("vue-hot-reload-api")
 	  hotAPI.install(require("vue"), true)
 	  if (!hotAPI.compatible) return
-	  var id = "/Users/Jack/WebstormProjects/wedding-shake-game/src/components/player/home-page.vue"
+	  var id = "C:\\Users\\Administrator\\Documents\\GitHub\\wedding-shake-game\\src\\components\\player\\home-page.vue"
 	  if (!module.hot.data) {
 	    hotAPI.createRecord(id, module.exports)
 	  } else {
@@ -15617,8 +15646,8 @@
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../../node_modules/css-loader/index.js?sourceMap!./../../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-3ac087e8&scoped=true!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./home-page.vue", function() {
-				var newContent = require("!!./../../../node_modules/css-loader/index.js?sourceMap!./../../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-3ac087e8&scoped=true!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./home-page.vue");
+			module.hot.accept("!!./../../../node_modules/css-loader/index.js?sourceMap!./../../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-6ab4b43e&scoped=true!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./home-page.vue", function() {
+				var newContent = require("!!./../../../node_modules/css-loader/index.js?sourceMap!./../../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-6ab4b43e&scoped=true!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./home-page.vue");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -15696,25 +15725,20 @@
 /* 50 */
 /***/ function(module, exports) {
 
-	module.exports = "\n<div _v-3ac087e8=\"\">\n    {{currentPlayer.userName}}'s home page\n    <ul _v-3ac087e8=\"\">\n        <li v-for=\"room in roomList\" _v-3ac087e8=\"\">\n            <p _v-3ac087e8=\"\">name: {{room.roomName}}</p>\n            <p _v-3ac087e8=\"\">status: {{room.status}}</p>\n            <p _v-3ac087e8=\"\">players: {{room.players.length}}</p>\n            <button @click=\"join(room.objectId)\" _v-3ac087e8=\"\">{{room.status === 'JOINING' ? 'Join' : 'Visit as guest'}}</button>\n        </li>\n    </ul>\n</div>\n";
+	module.exports = "\n<div _v-6ab4b43e=\"\">\n    {{currentPlayer.userName}}'s home page\n    <ul _v-6ab4b43e=\"\">\n        <li v-for=\"room in roomList\" _v-6ab4b43e=\"\">\n            <p _v-6ab4b43e=\"\">name: {{room.roomName}}</p>\n            <p _v-6ab4b43e=\"\">status: {{room.status}}</p>\n            <p _v-6ab4b43e=\"\">players: {{room.players.length}}</p>\n            <button @click=\"join(room.objectId)\" _v-6ab4b43e=\"\">{{room.status === 'JOINING' ? 'Join' : 'Visit as guest'}}</button>\n        </li>\n    </ul>\n</div>\n";
 
 /***/ },
-/* 51 */,
-/* 52 */,
-/* 53 */,
-/* 54 */,
-/* 55 */,
-/* 56 */
+/* 51 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __vue_script__, __vue_template__
-	__webpack_require__(57)
-	__vue_script__ = __webpack_require__(59)
+	__webpack_require__(52)
+	__vue_script__ = __webpack_require__(54)
 	if (__vue_script__ &&
 	    __vue_script__.__esModule &&
 	    Object.keys(__vue_script__).length > 1) {
-	  console.warn("[vue-loader] src/components/player/ready-page.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(60)
+	  console.warn("[vue-loader] src\\components\\player\\ready-page.vue: named exports in *.vue files are ignored.")}
+	__vue_template__ = __webpack_require__(55)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
 	if (__vue_template__) {
@@ -15724,7 +15748,7 @@
 	  var hotAPI = require("vue-hot-reload-api")
 	  hotAPI.install(require("vue"), true)
 	  if (!hotAPI.compatible) return
-	  var id = "/Users/Jack/WebstormProjects/wedding-shake-game/src/components/player/ready-page.vue"
+	  var id = "C:\\Users\\Administrator\\Documents\\GitHub\\wedding-shake-game\\src\\components\\player\\ready-page.vue"
 	  if (!module.hot.data) {
 	    hotAPI.createRecord(id, module.exports)
 	  } else {
@@ -15733,13 +15757,13 @@
 	})()}
 
 /***/ },
-/* 57 */
+/* 52 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
 	// load the styles
-	var content = __webpack_require__(58);
+	var content = __webpack_require__(53);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(32)(content, {});
@@ -15748,8 +15772,8 @@
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../../node_modules/css-loader/index.js?sourceMap!./../../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-44a46fde&scoped=true!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./ready-page.vue", function() {
-				var newContent = require("!!./../../../node_modules/css-loader/index.js?sourceMap!./../../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-44a46fde&scoped=true!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./ready-page.vue");
+			module.hot.accept("!!./../../../node_modules/css-loader/index.js?sourceMap!./../../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-9d39ddf6&scoped=true!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./ready-page.vue", function() {
+				var newContent = require("!!./../../../node_modules/css-loader/index.js?sourceMap!./../../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-9d39ddf6&scoped=true!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./ready-page.vue");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -15759,7 +15783,7 @@
 	}
 
 /***/ },
-/* 58 */
+/* 53 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(31)();
@@ -15773,7 +15797,7 @@
 
 
 /***/ },
-/* 59 */
+/* 54 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -15823,23 +15847,22 @@
 	};
 
 /***/ },
-/* 60 */
+/* 55 */
 /***/ function(module, exports) {
 
-	module.exports = "\n<div _v-44a46fde=\"\">\n    <div _v-44a46fde=\"\">room name: {{room.roomName}}</div>\n    <div _v-44a46fde=\"\">room size: {{room.roomSize}}</div>\n    <div _v-44a46fde=\"\">\n        players: {{gameStatus}}\n    </div>\n    <div v-for=\"player in players\" _v-44a46fde=\"\">\n        {{player.userName}}\n    </div>\n    <button @click=\"leaveRoom()\" _v-44a46fde=\"\">Leave</button>\n</div>\n";
+	module.exports = "\n<div _v-9d39ddf6=\"\">\n    <div _v-9d39ddf6=\"\">room name: {{room.roomName}}</div>\n    <div _v-9d39ddf6=\"\">room size: {{room.roomSize}}</div>\n    <div _v-9d39ddf6=\"\">\n        players: {{gameStatus}}\n    </div>\n    <div v-for=\"player in players\" _v-9d39ddf6=\"\">\n        {{player.userName}}\n    </div>\n    <button @click=\"leaveRoom()\" _v-9d39ddf6=\"\">Leave</button>\n</div>\n";
 
 /***/ },
-/* 61 */,
-/* 62 */
+/* 56 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __vue_script__, __vue_template__
-	__vue_script__ = __webpack_require__(64)
+	__vue_script__ = __webpack_require__(57)
 	if (__vue_script__ &&
 	    __vue_script__.__esModule &&
 	    Object.keys(__vue_script__).length > 1) {
-	  console.warn("[vue-loader] src/components/player/shake-page.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(65)
+	  console.warn("[vue-loader] src\\components\\player\\shake-page.vue: named exports in *.vue files are ignored.")}
+	__vue_template__ = __webpack_require__(58)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
 	if (__vue_template__) {
@@ -15849,7 +15872,7 @@
 	  var hotAPI = require("vue-hot-reload-api")
 	  hotAPI.install(require("vue"), true)
 	  if (!hotAPI.compatible) return
-	  var id = "/Users/Jack/WebstormProjects/wedding-shake-game/src/components/player/shake-page.vue"
+	  var id = "C:\\Users\\Administrator\\Documents\\GitHub\\wedding-shake-game\\src\\components\\player\\shake-page.vue"
 	  if (!module.hot.data) {
 	    hotAPI.createRecord(id, module.exports)
 	  } else {
@@ -15858,35 +15881,7 @@
 	})()}
 
 /***/ },
-/* 63 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var __vue_script__, __vue_template__
-	__vue_script__ = __webpack_require__(66)
-	if (__vue_script__ &&
-	    __vue_script__.__esModule &&
-	    Object.keys(__vue_script__).length > 1) {
-	  console.warn("[vue-loader] src/components/player/ranking-page.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(67)
-	module.exports = __vue_script__ || {}
-	if (module.exports.__esModule) module.exports = module.exports.default
-	if (__vue_template__) {
-	(typeof module.exports === "function" ? (module.exports.options || (module.exports.options = {})) : module.exports).template = __vue_template__
-	}
-	if (false) {(function () {  module.hot.accept()
-	  var hotAPI = require("vue-hot-reload-api")
-	  hotAPI.install(require("vue"), true)
-	  if (!hotAPI.compatible) return
-	  var id = "/Users/Jack/WebstormProjects/wedding-shake-game/src/components/player/ranking-page.vue"
-	  if (!module.hot.data) {
-	    hotAPI.createRecord(id, module.exports)
-	  } else {
-	    hotAPI.update(id, module.exports, __vue_template__)
-	  }
-	})()}
-
-/***/ },
-/* 64 */
+/* 57 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -15901,13 +15896,41 @@
 	};
 
 /***/ },
-/* 65 */
+/* 58 */
 /***/ function(module, exports) {
 
 	module.exports = "\n<div>shake page</div>\n";
 
 /***/ },
-/* 66 */
+/* 59 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __vue_script__, __vue_template__
+	__vue_script__ = __webpack_require__(60)
+	if (__vue_script__ &&
+	    __vue_script__.__esModule &&
+	    Object.keys(__vue_script__).length > 1) {
+	  console.warn("[vue-loader] src\\components\\player\\ranking-page.vue: named exports in *.vue files are ignored.")}
+	__vue_template__ = __webpack_require__(61)
+	module.exports = __vue_script__ || {}
+	if (module.exports.__esModule) module.exports = module.exports.default
+	if (__vue_template__) {
+	(typeof module.exports === "function" ? (module.exports.options || (module.exports.options = {})) : module.exports).template = __vue_template__
+	}
+	if (false) {(function () {  module.hot.accept()
+	  var hotAPI = require("vue-hot-reload-api")
+	  hotAPI.install(require("vue"), true)
+	  if (!hotAPI.compatible) return
+	  var id = "C:\\Users\\Administrator\\Documents\\GitHub\\wedding-shake-game\\src\\components\\player\\ranking-page.vue"
+	  if (!module.hot.data) {
+	    hotAPI.createRecord(id, module.exports)
+	  } else {
+	    hotAPI.update(id, module.exports, __vue_template__)
+	  }
+	})()}
+
+/***/ },
+/* 60 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -15924,23 +15947,23 @@
 	};
 
 /***/ },
-/* 67 */
+/* 61 */
 /***/ function(module, exports) {
 
 	module.exports = "\n<div @click=\"back()\">ranking page</div>\n";
 
 /***/ },
-/* 68 */
+/* 62 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __vue_script__, __vue_template__
-	__webpack_require__(69)
-	__vue_script__ = __webpack_require__(71)
+	__webpack_require__(63)
+	__vue_script__ = __webpack_require__(65)
 	if (__vue_script__ &&
 	    __vue_script__.__esModule &&
 	    Object.keys(__vue_script__).length > 1) {
-	  console.warn("[vue-loader] src/components/admin/admin-page.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(72)
+	  console.warn("[vue-loader] src\\components\\admin\\admin-page.vue: named exports in *.vue files are ignored.")}
+	__vue_template__ = __webpack_require__(71)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
 	if (__vue_template__) {
@@ -15950,7 +15973,7 @@
 	  var hotAPI = require("vue-hot-reload-api")
 	  hotAPI.install(require("vue"), true)
 	  if (!hotAPI.compatible) return
-	  var id = "/Users/Jack/WebstormProjects/wedding-shake-game/src/components/admin/admin-page.vue"
+	  var id = "C:\\Users\\Administrator\\Documents\\GitHub\\wedding-shake-game\\src\\components\\admin\\admin-page.vue"
 	  if (!module.hot.data) {
 	    hotAPI.createRecord(id, module.exports)
 	  } else {
@@ -15959,13 +15982,13 @@
 	})()}
 
 /***/ },
-/* 69 */
+/* 63 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
 	// load the styles
-	var content = __webpack_require__(70);
+	var content = __webpack_require__(64);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(32)(content, {});
@@ -15974,8 +15997,8 @@
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../../node_modules/css-loader/index.js?sourceMap!./../../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-67c2cce6&scoped=true!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./admin-page.vue", function() {
-				var newContent = require("!!./../../../node_modules/css-loader/index.js?sourceMap!./../../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-67c2cce6&scoped=true!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./admin-page.vue");
+			module.hot.accept("!!./../../../node_modules/css-loader/index.js?sourceMap!./../../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-0f3d2759&scoped=true!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./admin-page.vue", function() {
+				var newContent = require("!!./../../../node_modules/css-loader/index.js?sourceMap!./../../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-0f3d2759&scoped=true!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./admin-page.vue");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -15985,7 +16008,7 @@
 	}
 
 /***/ },
-/* 70 */
+/* 64 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(31)();
@@ -15993,13 +16016,13 @@
 	
 	
 	// module
-	exports.push([module.id, "\n.line[_v-67c2cce6] {\n    background: red;\n    display: inline-block;\n    height: 2px;\n    width: 0%;\n    -webkit-transition: width 0.5s ease;\n    transition: width 0.5s ease;\n}\n", "", {"version":3,"sources":["/./src/components/admin/admin-page.vue?212fe413"],"names":[],"mappings":";AACA;IACA,gBAAA;IACA,sBAAA;IACA,YAAA;IACA,UAAA;IACA,oCAAA;IAAA,4BAAA;CACA","file":"admin-page.vue","sourcesContent":["<style scoped>\n    .line {\n        background: red;\n        display: inline-block;\n        height: 2px;\n        width: 0%;\n        transition: width 0.5s ease;\n    }\n</style>\n\n<template>\n    <div>\n        <h4>admin page</h4>\n        <p>room list</p>\n        <ul>\n            <li v-for=\"room in rooms\">\n                {{room.roomName}}\n            </li>\n        </ul>\n        <button @click=\"createRoom()\">Create Room</button>\n    </div>\n</template>\n\n<script>\n    var store = require('../../store');\n\n    module.exports = {\n        computed: {\n            rooms: function() {\n                return store.state.admin.homePage.roomList;\n            }\n        },\n\n        ready: function() {\n            store.actions.getAdminRoomList();\n        },\n\n        methods: {\n            createRoom: function() {\n                var router = this.$router;\n\n                store.actions.createRoom({\n                    roomName: 'test room name',\n                    roomDescription: 'test room description',\n                    roomSize: 5\n                }).then(function(room) {\n                    console.log('room created', room);\n                    router.go({name: 'room', params: {roomId: room.objectId}});\n                }, function(error) {\n\n                });\n            }\n        }\n    };\n</script>"],"sourceRoot":"webpack://"}]);
+	exports.push([module.id, "\n.line[_v-0f3d2759] {\n    background: red;\n    display: inline-block;\n    height: 2px;\n    width: 0%;\n    -webkit-transition: width 0.5s ease;\n    transition: width 0.5s ease;\n}\n", "", {"version":3,"sources":["/./src/components/admin/admin-page.vue?268dfc14"],"names":[],"mappings":";AACA;IACA,gBAAA;IACA,sBAAA;IACA,YAAA;IACA,UAAA;IACA,oCAAA;IAAA,4BAAA;CACA","file":"admin-page.vue","sourcesContent":["<style scoped>\r\n    .line {\r\n        background: red;\r\n        display: inline-block;\r\n        height: 2px;\r\n        width: 0%;\r\n        transition: width 0.5s ease;\r\n    }\r\n</style>\r\n\r\n<template>\r\n    <div>\r\n        <h4>admin page 中文<i class=\"material-icons\">grade</i></h4>\r\n        <p>room list</p>\r\n        <ul>\r\n            <li v-for=\"room in rooms\" @click=\"goToRoom(room.objectId)\">\r\n                {{room.roomName}}\r\n            </li>\r\n        </ul>\r\n        <button @click=\"createRoom()\">Create Room</button>\r\n        <room-edit-dialog v-ref:room-edit-dialog :room-id=\"selectRoomId\"></room-edit-dialog>\r\n    </div>\r\n</template>\r\n\r\n<script>\r\n    var store = require('../../store');\r\n\r\n    module.exports = {\r\n        components: {\r\n            'room-edit-dialog': require('./room-edit-dialog.vue')\r\n        },\r\n\r\n        computed: {\r\n            rooms: function() {\r\n                return store.state.admin.homePage.roomList;\r\n            }\r\n        },\r\n\r\n        ready: function() {\r\n            store.actions.getAdminRoomList();\r\n        },\r\n\r\n        methods: {\r\n            createRoom: function() {\r\n                store.actions.getEditRoomDialogData('');\r\n                $(this.$refs.roomEditDialog.$el).openModal();\r\n            },\r\n            goToRoom: function(roomId) {\r\n                this.$router.go({name: 'room', params: {roomId: roomId}});\r\n            }\r\n        }\r\n    };\r\n</script>"],"sourceRoot":"webpack://"}]);
 	
 	// exports
 
 
 /***/ },
-/* 71 */
+/* 65 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -16007,6 +16030,10 @@
 	var store = __webpack_require__(34);
 	
 	module.exports = {
+	    components: {
+	        'room-edit-dialog': __webpack_require__(66)
+	    },
+	
 	    computed: {
 	        rooms: function rooms() {
 	            return store.state.admin.homePage.roomList;
@@ -16019,38 +16046,27 @@
 	
 	    methods: {
 	        createRoom: function createRoom() {
-	            var router = this.$router;
-	
-	            store.actions.createRoom({
-	                roomName: 'test room name',
-	                roomDescription: 'test room description',
-	                roomSize: 5
-	            }).then(function (room) {
-	                console.log('room created', room);
-	                router.go({ name: 'room', params: { roomId: room.objectId } });
-	            }, function (error) {});
+	            store.actions.getEditRoomDialogData('');
+	            $(this.$refs.roomEditDialog.$el).openModal();
+	        },
+	        goToRoom: function goToRoom(roomId) {
+	            this.$router.go({ name: 'room', params: { roomId: roomId } });
 	        }
 	    }
 	};
 
 /***/ },
-/* 72 */
-/***/ function(module, exports) {
-
-	module.exports = "\n<div _v-67c2cce6=\"\">\n    <h4 _v-67c2cce6=\"\">admin page</h4>\n    <p _v-67c2cce6=\"\">room list</p>\n    <ul _v-67c2cce6=\"\">\n        <li v-for=\"room in rooms\" _v-67c2cce6=\"\">\n            {{room.roomName}}\n        </li>\n    </ul>\n    <button @click=\"createRoom()\" _v-67c2cce6=\"\">Create Room</button>\n</div>\n";
-
-/***/ },
-/* 73 */
+/* 66 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __vue_script__, __vue_template__
-	__webpack_require__(74)
-	__vue_script__ = __webpack_require__(76)
+	__webpack_require__(67)
+	__vue_script__ = __webpack_require__(69)
 	if (__vue_script__ &&
 	    __vue_script__.__esModule &&
 	    Object.keys(__vue_script__).length > 1) {
-	  console.warn("[vue-loader] src/components/admin/room-page.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(77)
+	  console.warn("[vue-loader] src\\components\\admin\\room-edit-dialog.vue: named exports in *.vue files are ignored.")}
+	__vue_template__ = __webpack_require__(70)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
 	if (__vue_template__) {
@@ -16060,7 +16076,7 @@
 	  var hotAPI = require("vue-hot-reload-api")
 	  hotAPI.install(require("vue"), true)
 	  if (!hotAPI.compatible) return
-	  var id = "/Users/Jack/WebstormProjects/wedding-shake-game/src/components/admin/room-page.vue"
+	  var id = "C:\\Users\\Administrator\\Documents\\GitHub\\wedding-shake-game\\src\\components\\admin\\room-edit-dialog.vue"
 	  if (!module.hot.data) {
 	    hotAPI.createRecord(id, module.exports)
 	  } else {
@@ -16069,13 +16085,13 @@
 	})()}
 
 /***/ },
-/* 74 */
+/* 67 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
 	// load the styles
-	var content = __webpack_require__(75);
+	var content = __webpack_require__(68);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(32)(content, {});
@@ -16084,8 +16100,8 @@
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../../node_modules/css-loader/index.js?sourceMap!./../../../node_modules/vue-loader/lib/style-rewriter.js!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./room-page.vue", function() {
-				var newContent = require("!!./../../../node_modules/css-loader/index.js?sourceMap!./../../../node_modules/vue-loader/lib/style-rewriter.js!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./room-page.vue");
+			module.hot.accept("!!./../../../node_modules/css-loader/index.js?sourceMap!./../../../node_modules/vue-loader/lib/style-rewriter.js!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./room-edit-dialog.vue", function() {
+				var newContent = require("!!./../../../node_modules/css-loader/index.js?sourceMap!./../../../node_modules/vue-loader/lib/style-rewriter.js!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./room-edit-dialog.vue");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -16095,7 +16111,7 @@
 	}
 
 /***/ },
-/* 75 */
+/* 68 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(31)();
@@ -16103,13 +16119,148 @@
 	
 	
 	// module
-	exports.push([module.id, "\n\n", "", {"version":3,"sources":[],"names":[],"mappings":"","file":"room-page.vue","sourceRoot":"webpack://"}]);
+	exports.push([module.id, "\n\n", "", {"version":3,"sources":[],"names":[],"mappings":"","file":"room-edit-dialog.vue","sourceRoot":"webpack://"}]);
 	
 	// exports
 
 
 /***/ },
-/* 76 */
+/* 69 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var store = __webpack_require__(34);
+	
+	module.exports = {
+	    props: {
+	        roomId: {
+	            type: String,
+	            default: ''
+	        }
+	    },
+	
+	    computed: {
+	        room: function room() {
+	            return store.state.admin.editRoomDialog.roomDetails;
+	        }
+	    },
+	
+	    ready: function ready() {},
+	
+	    methods: {
+	        createRoom: function createRoom() {
+	            store.actions.createRoom({
+	                roomName: this.$els.roomName.value,
+	                roomDescription: this.$els.roomDescription.value,
+	                roomSize: this.$els.roomSize.value
+	            }).then(function (room) {
+	                console.log('room created', room);
+	                store.actions.getAdminRoomList();
+	            }, function (error) {});
+	        },
+	
+	        updateRoom: function updateRoom() {
+	            store.actions.updateRoom({
+	                roomId: this.roomId,
+	                roomName: this.$els.roomName.value,
+	                roomDescription: this.$els.roomDescription.value,
+	                roomSize: this.$els.roomSize.value
+	            }).then(function (room) {
+	                console.log('room updated', room);
+	                store.actions.getAdminRoomList();
+	            }, function (error) {});
+	        },
+	
+	        submitForm: function submitForm() {
+	            if (this.roomId) this.updateRoom();else this.createRoom();
+	        }
+	    }
+	};
+
+/***/ },
+/* 70 */
+/***/ function(module, exports) {
+
+	module.exports = "\n<div id=\"modal1\" class=\"modal modal-fixed-footer\">\n    <div class=\"modal-content\">\n        <h4>{{!roomId ? 'Create Room' : 'Update Room'}}</h4>\n        <div class=\"row\">\n            <form class=\"col s12\">\n                <div class=\"input-field col s12\">\n                    <input type=\"text\" class=\"validate\" id=\"roomEditDialogRoomName\" value=\"{{room.roomName}}\" v-el:room-name >\n                    <label for=\"roomEditDialogRoomName\">Room Name</label>\n                </div>\n                <div class=\"input-field col s12\">\n                    <input type=\"text\" id=\"roomEditDialogRoomDesc\" value=\"{{room.roomDescription}}\" v-el:room-description >\n                    <label for=\"roomEditDialogRoomDesc\">Room Description</label>\n                </div>\n                <div class=\"input-field col s12\">\n                    <input type=\"text\" id=\"roomEditDialogRoomSize\" value=\"{{room.roomSize}}\" v-el:room-size >\n                    <label for=\"roomEditDialogRoomSize\">Room Size</label>\n                </div>\n            </form>\n        </div>\n    </div>\n    <div class=\"modal-footer\">\n        <a @click=\"submitForm()\" class=\" modal-action modal-close waves-effect waves-green btn-flat\">Confirm</a>\n        <a class=\" modal-action modal-close waves-effect waves-green btn-flat\">Cancel</a>\n    </div>\n</div>\n";
+
+/***/ },
+/* 71 */
+/***/ function(module, exports) {
+
+	module.exports = "\n<div _v-0f3d2759=\"\">\n    <h4 _v-0f3d2759=\"\">admin page 中文<i class=\"material-icons\" _v-0f3d2759=\"\">grade</i></h4>\n    <p _v-0f3d2759=\"\">room list</p>\n    <ul _v-0f3d2759=\"\">\n        <li v-for=\"room in rooms\" @click=\"goToRoom(room.objectId)\" _v-0f3d2759=\"\">\n            {{room.roomName}}\n        </li>\n    </ul>\n    <button @click=\"createRoom()\" _v-0f3d2759=\"\">Create Room</button>\n    <room-edit-dialog v-ref:room-edit-dialog=\"\" :room-id=\"selectRoomId\" _v-0f3d2759=\"\"></room-edit-dialog>\n</div>\n";
+
+/***/ },
+/* 72 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __vue_script__, __vue_template__
+	__webpack_require__(73)
+	__vue_script__ = __webpack_require__(75)
+	if (__vue_script__ &&
+	    __vue_script__.__esModule &&
+	    Object.keys(__vue_script__).length > 1) {
+	  console.warn("[vue-loader] src\\components\\admin\\room-page.vue: named exports in *.vue files are ignored.")}
+	__vue_template__ = __webpack_require__(76)
+	module.exports = __vue_script__ || {}
+	if (module.exports.__esModule) module.exports = module.exports.default
+	if (__vue_template__) {
+	(typeof module.exports === "function" ? (module.exports.options || (module.exports.options = {})) : module.exports).template = __vue_template__
+	}
+	if (false) {(function () {  module.hot.accept()
+	  var hotAPI = require("vue-hot-reload-api")
+	  hotAPI.install(require("vue"), true)
+	  if (!hotAPI.compatible) return
+	  var id = "C:\\Users\\Administrator\\Documents\\GitHub\\wedding-shake-game\\src\\components\\admin\\room-page.vue"
+	  if (!module.hot.data) {
+	    hotAPI.createRecord(id, module.exports)
+	  } else {
+	    hotAPI.update(id, module.exports, __vue_template__)
+	  }
+	})()}
+
+/***/ },
+/* 73 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+	
+	// load the styles
+	var content = __webpack_require__(74);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(32)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../../../node_modules/css-loader/index.js?sourceMap!./../../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-69b23236&scoped=true!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./room-page.vue", function() {
+				var newContent = require("!!./../../../node_modules/css-loader/index.js?sourceMap!./../../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-69b23236&scoped=true!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./room-page.vue");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 74 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(31)();
+	// imports
+	
+	
+	// module
+	exports.push([module.id, "\n.room-edit-button[_v-69b23236] {\n    margin: 20px;\n}\n", "", {"version":3,"sources":["/./src/components/admin/room-page.vue?2b8acf6f"],"names":[],"mappings":";AACA;IACA,aAAA;CACA","file":"room-page.vue","sourcesContent":["<style scoped>\r\n    .room-edit-button {\r\n        margin: 20px;\r\n    }\r\n</style>\r\n\r\n<template>\r\n    <div>\r\n        <div class=\"card blue-grey darken-1\">\r\n            <a class=\"waves-effect btn right white black-text room-edit-button\"><i class=\"material-icons left\">edit</i>edit</a>\r\n            <div class=\"card-content white-text\">\r\n                <span class=\"card-title\">{{room.roomName}} ({{room.status}})</span>\r\n                <p>{{room.roomDescription}}</p>\r\n                <p>size: {{room.roomSize}}</p>\r\n            </div>\r\n        </div>\r\n\r\n        <div class=\"card\">\r\n            \r\n        </div>\r\n    </div>\r\n</template>\r\n\r\n<script>\r\n    var store = require('../../store');\r\n\r\n    module.exports = {\r\n\r\n        computed: {\r\n            room: function() {\r\n                return store.state.admin.roomPage.roomDetails;\r\n            },\r\n            players: function() {\r\n                return store.state.admin.roomPage.players;\r\n            }\r\n        },\r\n\r\n        ready: function() {\r\n            store.actions.getAdminRoomDetails(this.$route.params.roomId);\r\n            store.actions.getAdminRoomPlayers(this.$route.params.roomId);\r\n        },\r\n\r\n        methods: {\r\n            allowToJoin: function() {\r\n                store.actions.allowToJoinRoom(this.$route.params.roomId);\r\n            },\r\n            start: function() {\r\n                store.actions.startRoom(this.$route.params.roomId);\r\n            },\r\n            stop: function() {\r\n                store.actions.stopRoom(this.$route.params.roomId);\r\n            }\r\n        }\r\n    };\r\n</script>"],"sourceRoot":"webpack://"}]);
+	
+	// exports
+
+
+/***/ },
+/* 75 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -16146,10 +16297,10 @@
 	};
 
 /***/ },
-/* 77 */
+/* 76 */
 /***/ function(module, exports) {
 
-	module.exports = "\n<div>\n    room page: {{room.roomName}}\n    players: {{players.length}}\n    <div>\n        <button @click=\"allowToJoin()\">Allow To Join</button>\n        <button @click=\"start()\">Start</button>\n        <button @click=\"stop()\">Stop</button>\n    </div>\n</div>\n";
+	module.exports = "\n<div _v-69b23236=\"\">\n    <div class=\"card blue-grey darken-1\" _v-69b23236=\"\">\n        <a class=\"waves-effect btn right white black-text room-edit-button\" _v-69b23236=\"\"><i class=\"material-icons left\" _v-69b23236=\"\">edit</i>edit</a>\n        <div class=\"card-content white-text\" _v-69b23236=\"\">\n            <span class=\"card-title\" _v-69b23236=\"\">{{room.roomName}} ({{room.status}})</span>\n            <p _v-69b23236=\"\">{{room.roomDescription}}</p>\n            <p _v-69b23236=\"\">size: {{room.roomSize}}</p>\n        </div>\n    </div>\n\n    <div class=\"card\" _v-69b23236=\"\">\n        \n    </div>\n</div>\n";
 
 /***/ }
 /******/ ]);
