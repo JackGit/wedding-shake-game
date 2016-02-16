@@ -6,26 +6,32 @@ Vue.use(Vuex);
 Vue.config.debug = true;
 
 // socket is global var defined in main.js
-function listenPlayerSocketMessage(enable) {
-    console.log('listenPlayerSocketMessage', enable);
-
+function adminListenPlayerSocketMessage(type, enable) {
+    console.log('listenPlayerSocketMessage', type, enable);
     if(enable) {
-        socket.on('join', function(userId) {
-            store.actions.playerJoin(userId);
-        });
-        socket.on('leave', function(userId) {
-            store.actions.playerLeave(userId);
-        });
-        socket.on('shake', function(message) {
-            store.actions.updateOtherShakeData(message);
-        });
+        switch(type) {
+            case 'join':
+                socket.on('join', function(userId) {
+                    store.actions.adminOnJoin(userId);
+                });
+                break;
+            case 'leave':
+                socket.on('leave', function(userId) {
+                    store.actions.adminOnLeave(userId);
+                });
+                break;
+            case 'shake':
+                socket.on('shake', function(message) {
+                    store.actions.adminOnShake(message);
+                });
+                break;
+            default:
+                break;
+        }
     } else {
-        socket.off('join');
-        socket.off('leave');
-        socket.off('shake');
+        socket.off(type);
     }
 }
-
 
 module.exports = window.store = new Vuex.Store({
     state: {
@@ -38,10 +44,7 @@ module.exports = window.store = new Vuex.Store({
                 shakeCount: 0
             },
             welcomePage: {
-                formUserName: '',
-                formUserType: '',
-                formUserNameMessage: '',
-                formUserTypeMessage: ''
+
             },
             pageMask: false,
             homePage: {
@@ -77,14 +80,6 @@ module.exports = window.store = new Vuex.Store({
 
     actions: {
         /* player actions */
-        inputUserName: function(store, userName) {
-            console.log('store.actions.inputUserName', userName);
-            store.state.player.welcomePage.formUserName = userName;
-        },
-        inputUserType: function(store, userType) {
-            console.log('store.actions.inputUserType', userType);
-            store.state.player.welcomePage.formUserType = userType;
-        },
         registerPlayer: function(store, user) {
             console.log('store.actions.registerPlayer', user);
 
@@ -151,6 +146,7 @@ module.exports = window.store = new Vuex.Store({
 
             return new Promise(function(resolve, reject) {
                 api.joinRoom(roomId, user.userId, user.userType).then(function(data) {
+                    socket.emit('join', {userId: user.userId, roomId: roomId});
                     resolve(data.room);
                 }, function(error) {
                     reject(error);
@@ -161,10 +157,27 @@ module.exports = window.store = new Vuex.Store({
             console.log('store.actions.leaveRoom', roomId, userId);
             return new Promise(function(resolve, reject) {
                 api.leaveRoom(roomId, userId).then(function(data) {
+                    socket.emit('leave', {userId: userId, roomId: roomId});
                     resolve(data.room);
                 }, function(error) {
                     reject(error);
                 });
+            });
+        },
+        clearShakeCount: function(store) {
+            store.state.player.currentPlayer.shakeCount = 0;
+        },
+        shake: function(store) {
+            var shakeCount = ++ store.state.player.currentPlayer.shakeCount;
+
+            api.updateUser({
+                userId: store.state.player.currentPlayer.userId,
+                shakeCount: shakeCount
+            });
+
+            socket.emit('shake', {
+                userId: store.state.player.currentPlayer.userId,
+                shakeCount: shakeCount
             });
         },
 
@@ -235,15 +248,23 @@ module.exports = window.store = new Vuex.Store({
             });
         },
         allowToJoinRoom: function(store, roomId) {
+            if(store.state.admin.roomPage.roomDetails.status === 'JOINING')
+                return;
+
             api.updateRoom({roomId: roomId, status: 'JOINING'}).then(function(data) {
                 console.log('store.actions.allowToJoinRoom success');
+                store.state.admin.roomPage.roomDetails = data.room;
             }, function(error) {
                 console.log('store.actions.allowToJoinRoom error', error);
             });
         },
         startRoom: function(store, roomId) {
+            if(store.state.admin.roomPage.roomDetails.status === 'PLAYING')
+                return;
+
             api.updateRoom({roomId: roomId, status: 'PLAYING'}).then(function(data) {
                 console.log('store.actions.startRoom success');
+                store.state.admin.roomPage.roomDetails = data.room;
             }, function(error) {
                 console.log('store.actions.startRoom error', error);
             });
@@ -255,212 +276,48 @@ module.exports = window.store = new Vuex.Store({
                 console.log('store.actions.stopRoom error', error);
             });
         },
-
-
-
-
-
-
-        // player actions
-
-
-        joinGame: function(store, userId) {
-            var request = {
-                userId: userId,
-                userStatus: 'JOINED',
-                shakeCount: 0
-            };
-
-            // update current players status, and get the latest data in DB
-            api.updateUser(request).then(function(data) {
-                store.dispatch('UPDATE_CURRENT_PLAYER_INFO', data.user);
-                listenPlayerSocketMessage(true);
-                keepLocal(data.user);
-                socket.emit('join', userId);
-            }, function(error) {
-
-            });
-
-            // get players who already joined the game
-            store.actions.getPlayerList();
+        listenSocketMessage: function(store, enable) {
+            adminListenPlayerSocketMessage('shake', enable);
+            adminListenPlayerSocketMessage('join', enable);
+            adminListenPlayerSocketMessage('leave', enable);
         },
-        leaveGame: function(store, userId) {
-            var request = {
-                userId: userId,
-                userStatus: '',
-                shakeCount: 0
-            };
+        adminOnJoin: function(store, message) {
+            var userId = message.userId, roomId = message.roomId;
 
-            console.log('store.actions.leaveGame', userId);
-
-            api.updateUser(request).then(function() {
-                listenPlayerSocketMessage(false);
-                socket.emit('leave', userId);
-            }, function(error) {
-
-            });
-        },
-
-        getPlayerList: function(store) {
-            return new Promise(function(resolve, reject) {
-                api.listUser().then(function(data) {
-                    store.dispatch('GET_PLAYER_LIST', data.userList);
-                    resolve(data.userList);
-                }, function(error) {
-                    reject(error);
-                    console.log('store.actions.getPlayerList error', error);
-                })
-            });
-        },
-        shake: function(store) {
-            store.dispatch('PLAYER_SHAKE_COUNT');
-
-            api.updateUser({
-                userId: store.state.currentPlayer.userId,
-                shakeCount: store.state.currentPlayer.shakeCount
-            });
-
-            socket.emit('shake', {
-                userId: store.state.currentPlayer.userId,
-                shakeCount: store.state.currentPlayer.shakeCount
-            });
-        },
-        updateOtherShakeData: function(store, data) {
-            store.dispatch('UPDATE_OTHER_SHAKE_DATA', data);
-        },
-        showMask: function(store) {
-            store.dispatch('SHOW_MASK');
-        },
-        hideMask: function(store) {
-            store.dispatch('HIDE_MASK');
-        },
-
-        // dashboard actions
-        initDashboard: function(store) {
-            store.actions.getPlayerList();
-            listenPlayerSocketMessage(true);
-        },
-        startGame: function(store) {
-            var request = {
-                gameSize: store.state.gameSize,
-                gameTime: store.state.gameTime
-            };
-
-            if(store.state.gameStatus === 'STOPPED') {
-                api.startGame(request).then(function(data) {
-                    store.dispatch('UPDATE_GAME_STATUS', 'STARTED');
-                }, function(error) {
-
-                });
-
-            } else {
-                console.log('store.actions.startGame game is already started, cannot start again');
-            }
-        },
-        stopGame: function(store) {
-            if(store.state.gameStatus === 'STARTED') {
-                api.updateGameStatus()
-                store.dispatch('UPDATE_GAME_STATUS', 'STOPPED');
-            } else {
-                console.log('store.actions.startGame game is already stopped, cannot stop again');
-            }
-        },
-
-        // socket will call these
-        playerJoin: function(store, userId) {
-            console.log('store.actions.playerJoin', userId);
-
+            console.log('store.actions.adminOnJoin', userId);
             api.getUser({userId: userId}).then(function(data) {
-                store.dispatch('PLAYER_JOIN', data.user);
-            }, function(error) {
+                var exist = store.state.admin.roomPage.players.filter(function(p) {
+                        return p.objectId === userId;
+                    }).length !== 0;
 
+                if(!exist)
+                    store.state.admin.roomPage.players.push(data.user);
+            }, function(error) {
+                console.log('store.actions.adminOnJoin get user error', error);
             });
         },
-        playerLeave: function(store, userId) {
-            console.log('store.actions.playerLeave', userId);
-            store.dispatch('PLAYER_LEAVE', userId);
-        }
+        adminOnLeave: function(store, message) {
+            var userId = message.userId, roomId = message.roomId;
 
-    },
-
-    mutations: {
-        UPDATE_USER_DETAILS: function(state, user) {
-            state.currentPlayer.userId = user.objectId;
-            state.currentPlayer.userName = user.userName;
-            state.currentPlayer.userType = user.userType;
-            state.currentPlayer.shakeCount = user.shakeCount;
-
-            keepLocal(user);
+            store.state.admin.roomPage.players = store.state.admin.roomPage.players.filter(function(player) {
+                return player.objectId !== userId;
+            });
         },
-
-
-
-        SHOW_MASK: function(state) {
-            state.mask = true;
-        },
-        HIDE_MASK: function(state) {
-            state.mask = false;
-        },
-        PLAYER_INPUT_USER_NAME: function(state, userName) {
-            state.player.userName = userName;
-        },
-        SELECT_USER_TYPE: function(state, type) {
-            state.player.userType = type;
-        },
-        PLAYER_WELCOME_USER_NAME_FORM_MESSAGE: function(state, message) {
-            state.player.welcomeView.userNameFormMessage = message;
-        },
-        PLAYER_USER_CREATED_SUCCESSFULLY: function(state, user) {
-            console.log('store.mutations.PLAYER_USER_CREATED_SUCCESSFULLY', user);
-            state.player.userName = user.userName;
-            state.player.userType = user.userType;
-            state.player.userId = user.objectId;
-        },
-        GET_PLAYER_LIST: function(state, playerList) {
-            console.log('store.mutations.GET_PLAYER_LIST', playerList);
-            state.playerList = playerList;
-        },
-        PLAYER_SHAKE_COUNT: function(state) {
-            state.currentPlayer.shakeCount ++;
-        },
-        UPDATE_OTHER_SHAKE_DATA: function(state, data) {
+        adminOnShake: function(store, data) {
             var userId = data.userId,
                 count = data.shakeCount,
                 i;
 
-            for(i = 0; i < state.playerList.length; i ++) {
-                if(state.playerList[i].objectId === userId) {
-                    state.playerList[i].shakeCount = count;
-                    return;
+            for(i = 0; i < store.state.admin.roomPage.players.length; i ++) {
+                if(store.state.admin.roomPage.players[i].objectId === userId) {
+                    store.state.admin.roomPage.players[i].shakeCount = count;
+                    break;
                 }
             }
-        },
-        UPDATE_CURRENT_PLAYER_INFO: function(state, user) {
-            state.currentPlayer = {
-                userId: user.objectId,
-                userName: user.userName,
-                userType: user.userType,
-                userStatus: user.userStatus,
-                shakeCount: user.shakeCount
-            }
-        },
-        PLAYER_JOIN: function(state, player) {
-            var exist = state.playerList.filter(function(p) {
-                return p.objectId === player.objectId;
-            }).length !== 0;
-
-            if(!exist)
-                state.playerList.push(player);
-        },
-        PLAYER_LEAVE: function(state, userId) {
-            state.playerList = state.playerList.filter(function(p) {
-                return p.objectId !== userId;
-            })
-        },
-
-        // dashboard
-        UPDATE_GAME_STATUS: function(state, status) {
-            state.gameStatus = status;
         }
+    },
+
+    mutations: {
+
     }
 });

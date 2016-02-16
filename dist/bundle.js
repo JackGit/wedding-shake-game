@@ -84,19 +84,19 @@
 	    },
 	    '/shake': {
 	        name: 'shake',
-	        component: __webpack_require__(56)
+	        component: __webpack_require__(57)
 	    },
 	    '/ranking/:roomId': {
 	        name: 'ranking',
-	        component: __webpack_require__(59)
+	        component: __webpack_require__(60)
 	    },
 	    '/admin': {
 	        name: 'admin',
-	        component: __webpack_require__(62)
+	        component: __webpack_require__(63)
 	    },
 	    '/room/:roomId': {
 	        name: 'room',
-	        component: __webpack_require__(72)
+	        component: __webpack_require__(73)
 	    }
 	});
 	
@@ -14442,26 +14442,32 @@
 	Vue.config.debug = true;
 	
 	// socket is global var defined in main.js
-	function listenPlayerSocketMessage(enable) {
-	    console.log('listenPlayerSocketMessage', enable);
-	
+	function adminListenPlayerSocketMessage(type, enable) {
+	    console.log('listenPlayerSocketMessage', type, enable);
 	    if(enable) {
-	        socket.on('join', function(userId) {
-	            store.actions.playerJoin(userId);
-	        });
-	        socket.on('leave', function(userId) {
-	            store.actions.playerLeave(userId);
-	        });
-	        socket.on('shake', function(message) {
-	            store.actions.updateOtherShakeData(message);
-	        });
+	        switch(type) {
+	            case 'join':
+	                socket.on('join', function(userId) {
+	                    store.actions.adminOnJoin(userId);
+	                });
+	                break;
+	            case 'leave':
+	                socket.on('leave', function(userId) {
+	                    store.actions.adminOnLeave(userId);
+	                });
+	                break;
+	            case 'shake':
+	                socket.on('shake', function(message) {
+	                    store.actions.adminOnShake(message);
+	                });
+	                break;
+	            default:
+	                break;
+	        }
 	    } else {
-	        socket.off('join');
-	        socket.off('leave');
-	        socket.off('shake');
+	        socket.off(type);
 	    }
 	}
-	
 	
 	module.exports = window.store = new Vuex.Store({
 	    state: {
@@ -14474,10 +14480,7 @@
 	                shakeCount: 0
 	            },
 	            welcomePage: {
-	                formUserName: '',
-	                formUserType: '',
-	                formUserNameMessage: '',
-	                formUserTypeMessage: ''
+	
 	            },
 	            pageMask: false,
 	            homePage: {
@@ -14513,14 +14516,6 @@
 	
 	    actions: {
 	        /* player actions */
-	        inputUserName: function(store, userName) {
-	            console.log('store.actions.inputUserName', userName);
-	            store.state.player.welcomePage.formUserName = userName;
-	        },
-	        inputUserType: function(store, userType) {
-	            console.log('store.actions.inputUserType', userType);
-	            store.state.player.welcomePage.formUserType = userType;
-	        },
 	        registerPlayer: function(store, user) {
 	            console.log('store.actions.registerPlayer', user);
 	
@@ -14587,6 +14582,7 @@
 	
 	            return new Promise(function(resolve, reject) {
 	                api.joinRoom(roomId, user.userId, user.userType).then(function(data) {
+	                    socket.emit('join', {userId: user.userId, roomId: roomId});
 	                    resolve(data.room);
 	                }, function(error) {
 	                    reject(error);
@@ -14597,10 +14593,27 @@
 	            console.log('store.actions.leaveRoom', roomId, userId);
 	            return new Promise(function(resolve, reject) {
 	                api.leaveRoom(roomId, userId).then(function(data) {
+	                    socket.emit('leave', {userId: userId, roomId: roomId});
 	                    resolve(data.room);
 	                }, function(error) {
 	                    reject(error);
 	                });
+	            });
+	        },
+	        clearShakeCount: function(store) {
+	            store.state.player.currentPlayer.shakeCount = 0;
+	        },
+	        shake: function(store) {
+	            var shakeCount = ++ store.state.player.currentPlayer.shakeCount;
+	
+	            api.updateUser({
+	                userId: store.state.player.currentPlayer.userId,
+	                shakeCount: shakeCount
+	            });
+	
+	            socket.emit('shake', {
+	                userId: store.state.player.currentPlayer.userId,
+	                shakeCount: shakeCount
 	            });
 	        },
 	
@@ -14671,15 +14684,23 @@
 	            });
 	        },
 	        allowToJoinRoom: function(store, roomId) {
+	            if(store.state.admin.roomPage.roomDetails.status === 'JOINING')
+	                return;
+	
 	            api.updateRoom({roomId: roomId, status: 'JOINING'}).then(function(data) {
 	                console.log('store.actions.allowToJoinRoom success');
+	                store.state.admin.roomPage.roomDetails = data.room;
 	            }, function(error) {
 	                console.log('store.actions.allowToJoinRoom error', error);
 	            });
 	        },
 	        startRoom: function(store, roomId) {
+	            if(store.state.admin.roomPage.roomDetails.status === 'PLAYING')
+	                return;
+	
 	            api.updateRoom({roomId: roomId, status: 'PLAYING'}).then(function(data) {
 	                console.log('store.actions.startRoom success');
+	                store.state.admin.roomPage.roomDetails = data.room;
 	            }, function(error) {
 	                console.log('store.actions.startRoom error', error);
 	            });
@@ -14691,213 +14712,49 @@
 	                console.log('store.actions.stopRoom error', error);
 	            });
 	        },
-	
-	
-	
-	
-	
-	
-	        // player actions
-	
-	
-	        joinGame: function(store, userId) {
-	            var request = {
-	                userId: userId,
-	                userStatus: 'JOINED',
-	                shakeCount: 0
-	            };
-	
-	            // update current players status, and get the latest data in DB
-	            api.updateUser(request).then(function(data) {
-	                store.dispatch('UPDATE_CURRENT_PLAYER_INFO', data.user);
-	                listenPlayerSocketMessage(true);
-	                keepLocal(data.user);
-	                socket.emit('join', userId);
-	            }, function(error) {
-	
-	            });
-	
-	            // get players who already joined the game
-	            store.actions.getPlayerList();
+	        listenSocketMessage: function(store, enable) {
+	            adminListenPlayerSocketMessage('shake', enable);
+	            adminListenPlayerSocketMessage('join', enable);
+	            adminListenPlayerSocketMessage('leave', enable);
 	        },
-	        leaveGame: function(store, userId) {
-	            var request = {
-	                userId: userId,
-	                userStatus: '',
-	                shakeCount: 0
-	            };
+	        adminOnJoin: function(store, message) {
+	            var userId = message.userId, roomId = message.roomId;
 	
-	            console.log('store.actions.leaveGame', userId);
-	
-	            api.updateUser(request).then(function() {
-	                listenPlayerSocketMessage(false);
-	                socket.emit('leave', userId);
-	            }, function(error) {
-	
-	            });
-	        },
-	
-	        getPlayerList: function(store) {
-	            return new Promise(function(resolve, reject) {
-	                api.listUser().then(function(data) {
-	                    store.dispatch('GET_PLAYER_LIST', data.userList);
-	                    resolve(data.userList);
-	                }, function(error) {
-	                    reject(error);
-	                    console.log('store.actions.getPlayerList error', error);
-	                })
-	            });
-	        },
-	        shake: function(store) {
-	            store.dispatch('PLAYER_SHAKE_COUNT');
-	
-	            api.updateUser({
-	                userId: store.state.currentPlayer.userId,
-	                shakeCount: store.state.currentPlayer.shakeCount
-	            });
-	
-	            socket.emit('shake', {
-	                userId: store.state.currentPlayer.userId,
-	                shakeCount: store.state.currentPlayer.shakeCount
-	            });
-	        },
-	        updateOtherShakeData: function(store, data) {
-	            store.dispatch('UPDATE_OTHER_SHAKE_DATA', data);
-	        },
-	        showMask: function(store) {
-	            store.dispatch('SHOW_MASK');
-	        },
-	        hideMask: function(store) {
-	            store.dispatch('HIDE_MASK');
-	        },
-	
-	        // dashboard actions
-	        initDashboard: function(store) {
-	            store.actions.getPlayerList();
-	            listenPlayerSocketMessage(true);
-	        },
-	        startGame: function(store) {
-	            var request = {
-	                gameSize: store.state.gameSize,
-	                gameTime: store.state.gameTime
-	            };
-	
-	            if(store.state.gameStatus === 'STOPPED') {
-	                api.startGame(request).then(function(data) {
-	                    store.dispatch('UPDATE_GAME_STATUS', 'STARTED');
-	                }, function(error) {
-	
-	                });
-	
-	            } else {
-	                console.log('store.actions.startGame game is already started, cannot start again');
-	            }
-	        },
-	        stopGame: function(store) {
-	            if(store.state.gameStatus === 'STARTED') {
-	                api.updateGameStatus()
-	                store.dispatch('UPDATE_GAME_STATUS', 'STOPPED');
-	            } else {
-	                console.log('store.actions.startGame game is already stopped, cannot stop again');
-	            }
-	        },
-	
-	        // socket will call these
-	        playerJoin: function(store, userId) {
-	            console.log('store.actions.playerJoin', userId);
-	
+	            console.log('store.actions.adminOnJoin', userId);
 	            api.getUser({userId: userId}).then(function(data) {
-	                store.dispatch('PLAYER_JOIN', data.user);
-	            }, function(error) {
+	                var exist = store.state.admin.roomPage.players.filter(function(p) {
+	                        return p.objectId === userId;
+	                    }).length !== 0;
 	
+	                if(!exist)
+	                    store.state.admin.roomPage.players.push(data.user);
+	            }, function(error) {
+	                console.log('store.actions.adminOnJoin get user error', error);
 	            });
 	        },
-	        playerLeave: function(store, userId) {
-	            console.log('store.actions.playerLeave', userId);
-	            store.dispatch('PLAYER_LEAVE', userId);
-	        }
+	        adminOnLeave: function(store, message) {
+	            var userId = message.userId, roomId = message.roomId;
 	
-	    },
-	
-	    mutations: {
-	        UPDATE_USER_DETAILS: function(state, user) {
-	            state.currentPlayer.userId = user.objectId;
-	            state.currentPlayer.userName = user.userName;
-	            state.currentPlayer.userType = user.userType;
-	            state.currentPlayer.shakeCount = user.shakeCount;
-	
-	            keepLocal(user);
+	            store.state.admin.roomPage.players = store.state.admin.roomPage.players.filter(function(player) {
+	                return player.objectId !== userId;
+	            });
 	        },
-	
-	
-	
-	        SHOW_MASK: function(state) {
-	            state.mask = true;
-	        },
-	        HIDE_MASK: function(state) {
-	            state.mask = false;
-	        },
-	        PLAYER_INPUT_USER_NAME: function(state, userName) {
-	            state.player.userName = userName;
-	        },
-	        SELECT_USER_TYPE: function(state, type) {
-	            state.player.userType = type;
-	        },
-	        PLAYER_WELCOME_USER_NAME_FORM_MESSAGE: function(state, message) {
-	            state.player.welcomeView.userNameFormMessage = message;
-	        },
-	        PLAYER_USER_CREATED_SUCCESSFULLY: function(state, user) {
-	            console.log('store.mutations.PLAYER_USER_CREATED_SUCCESSFULLY', user);
-	            state.player.userName = user.userName;
-	            state.player.userType = user.userType;
-	            state.player.userId = user.objectId;
-	        },
-	        GET_PLAYER_LIST: function(state, playerList) {
-	            console.log('store.mutations.GET_PLAYER_LIST', playerList);
-	            state.playerList = playerList;
-	        },
-	        PLAYER_SHAKE_COUNT: function(state) {
-	            state.currentPlayer.shakeCount ++;
-	        },
-	        UPDATE_OTHER_SHAKE_DATA: function(state, data) {
+	        adminOnShake: function(store, data) {
 	            var userId = data.userId,
 	                count = data.shakeCount,
 	                i;
 	
-	            for(i = 0; i < state.playerList.length; i ++) {
-	                if(state.playerList[i].objectId === userId) {
-	                    state.playerList[i].shakeCount = count;
-	                    return;
+	            for(i = 0; i < store.state.admin.roomPage.players.length; i ++) {
+	                if(store.state.admin.roomPage.players[i].objectId === userId) {
+	                    store.state.admin.roomPage.players[i].shakeCount = count;
+	                    break;
 	                }
 	            }
-	        },
-	        UPDATE_CURRENT_PLAYER_INFO: function(state, user) {
-	            state.currentPlayer = {
-	                userId: user.objectId,
-	                userName: user.userName,
-	                userType: user.userType,
-	                userStatus: user.userStatus,
-	                shakeCount: user.shakeCount
-	            }
-	        },
-	        PLAYER_JOIN: function(state, player) {
-	            var exist = state.playerList.filter(function(p) {
-	                return p.objectId === player.objectId;
-	            }).length !== 0;
-	
-	            if(!exist)
-	                state.playerList.push(player);
-	        },
-	        PLAYER_LEAVE: function(state, userId) {
-	            state.playerList = state.playerList.filter(function(p) {
-	                return p.objectId !== userId;
-	            })
-	        },
-	
-	        // dashboard
-	        UPDATE_GAME_STATUS: function(state, status) {
-	            state.gameStatus = status;
 	        }
+	    },
+	
+	    mutations: {
+	
 	    }
 	});
 
@@ -15536,7 +15393,7 @@
 	
 	
 	// module
-	exports.push([module.id, "\n.selected[_v-d515edb4] {\n    color: red;\n}\n", "", {"version":3,"sources":["/./src/components/player/welcome-page.vue?547915ae"],"names":[],"mappings":";AACA;IACA,WAAA;CACA","file":"welcome-page.vue","sourcesContent":["<style scoped>\r\n    .selected {\r\n        color: red;\r\n    }\r\n</style>\r\n\r\n<template>\r\n    <div>\r\n        <h4>welcome, please input your name and select a role</h4>\r\n        <p>name:</p>\r\n        <input type=\"text\" v-model=\"userName\" @input=\"inputUserName\"/>\r\n\r\n        <p>type:</p>\r\n        <div>\r\n            <span @click=\"inputUserType('BRIDE')\" :class=\"[userType === 'BRIDE' ? 'selected' : '']\">Bride Guest</span>\r\n            <span @click=\"inputUserType('GROOM')\" :class=\"[userType === 'GROOM' ? 'selected' : '']\">Groom Guest</span>\r\n        </div>\r\n        <button @click=\"start()\">Start</button>\r\n    </div>\r\n</template>\r\n\r\n<script>\r\n    /**\r\n     * welcome page\r\n     *  1. 1st time to open this page, need to input user name and user type, then click start\r\n     *  2. not 1st time to open this page, with user information, just route to home page\r\n     */\r\n\r\n    var store = require('../../store');\r\n\r\n    module.exports = {\r\n\r\n        computed: {\r\n            userName: function() {\r\n                return store.state.player.welcomePage.formUserName;\r\n            },\r\n            userType: function() {\r\n                return store.state.player.welcomePage.formUserType;\r\n            },\r\n            userNameMessage: function() {\r\n                return store.state.player.welcomePage.formUserNameMessage;\r\n            },\r\n            userTypeMessage: function() {\r\n                return store.state.player.welcomePage.formUserTypeMessage;\r\n            }\r\n        },\r\n\r\n        methods: {\r\n            start: function() {\r\n                var router = this.$router;\r\n\r\n                store.actions.registerPlayer({\r\n                    userName: this.userName,\r\n                    userType: this.userType\r\n                }).then(function(user) {\r\n                    router.go({name: 'home', params: {userId: user.objectId}});\r\n                });\r\n            },\r\n            inputUserName: function(e) {\r\n                store.actions.inputUserName(e.target.value);\r\n            },\r\n            inputUserType: function(userType) {\r\n                store.actions.inputUserType(userType);\r\n            }\r\n\r\n        },\r\n\r\n        route: {\r\n            data: function(transition) {\r\n                var userId = store.state.player.currentPlayer.userId;\r\n\r\n                if(userId)\r\n                    transition.redirect({name: 'home', params: {userId: userId}});\r\n                else\r\n                    transition.next();\r\n            }\r\n        }\r\n    };\r\n</script>"],"sourceRoot":"webpack://"}]);
+	exports.push([module.id, "\n\n", "", {"version":3,"sources":[],"names":[],"mappings":"","file":"welcome-page.vue","sourceRoot":"webpack://"}]);
 	
 	// exports
 
@@ -15551,19 +15408,8 @@
 	
 	module.exports = {
 	
-	    computed: {
-	        userName: function userName() {
-	            return store.state.player.welcomePage.formUserName;
-	        },
-	        userType: function userType() {
-	            return store.state.player.welcomePage.formUserType;
-	        },
-	        userNameMessage: function userNameMessage() {
-	            return store.state.player.welcomePage.formUserNameMessage;
-	        },
-	        userTypeMessage: function userTypeMessage() {
-	            return store.state.player.welcomePage.formUserTypeMessage;
-	        }
+	    ready: function ready() {
+	        $('select').material_select();
 	    },
 	
 	    methods: {
@@ -15571,19 +15417,12 @@
 	            var router = this.$router;
 	
 	            store.actions.registerPlayer({
-	                userName: this.userName,
-	                userType: this.userType
+	                userName: this.$els.userName.value,
+	                userType: this.$els.userType.value
 	            }).then(function (user) {
 	                router.go({ name: 'home', params: { userId: user.objectId } });
 	            });
-	        },
-	        inputUserName: function inputUserName(e) {
-	            store.actions.inputUserName(e.target.value);
-	        },
-	        inputUserType: function inputUserType(userType) {
-	            store.actions.inputUserType(userType);
 	        }
-	
 	    },
 	
 	    route: {
@@ -15599,7 +15438,7 @@
 /* 45 */
 /***/ function(module, exports) {
 
-	module.exports = "\n<div _v-d515edb4=\"\">\n    <h4 _v-d515edb4=\"\">welcome, please input your name and select a role</h4>\n    <p _v-d515edb4=\"\">name:</p>\n    <input type=\"text\" v-model=\"userName\" @input=\"inputUserName\" _v-d515edb4=\"\">\n\n    <p _v-d515edb4=\"\">type:</p>\n    <div _v-d515edb4=\"\">\n        <span @click=\"inputUserType('BRIDE')\" :class=\"[userType === 'BRIDE' ? 'selected' : '']\" _v-d515edb4=\"\">Bride Guest</span>\n        <span @click=\"inputUserType('GROOM')\" :class=\"[userType === 'GROOM' ? 'selected' : '']\" _v-d515edb4=\"\">Groom Guest</span>\n    </div>\n    <button @click=\"start()\" _v-d515edb4=\"\">Start</button>\n</div>\n";
+	module.exports = "\n<div class=\"container\" _v-d515edb4=\"\">\n    <div class=\"row\" _v-d515edb4=\"\">\n        <div class=\"card\" _v-d515edb4=\"\">\n            <div class=\"card-content\" _v-d515edb4=\"\">\n                <span class=\"card-title\" _v-d515edb4=\"\">welcome</span>\n                <div class=\"row\" _v-d515edb4=\"\">\n                    <div class=\"input-field col s12\" _v-d515edb4=\"\">\n                        <input type=\"text\" id=\"welcome_user_name_input\" placeholder=\"user name\" v-el:user-name=\"\" _v-d515edb4=\"\">\n                        <label class=\"\" for=\"welcome_user_name_input\" _v-d515edb4=\"\">User Name</label>\n                    </div>\n                </div>\n                <div class=\"row\" _v-d515edb4=\"\">\n                    <div class=\"input-field col s12\" _v-d515edb4=\"\">\n                        <select v-el:user-type=\"\" _v-d515edb4=\"\">\n                            <option value=\"\" disabled=\"\" selected=\"\" _v-d515edb4=\"\">Choose your option</option>\n                            <option value=\"BRIDE\" _v-d515edb4=\"\">Bride Guest</option>\n                            <option value=\"GROOM\" _v-d515edb4=\"\">Groom Guest</option>\n                        </select>\n                        <label _v-d515edb4=\"\">Guest Type {{selected}}</label>\n                    </div>\n                </div>\n            </div>\n            <div class=\"card-action row\" _v-d515edb4=\"\">\n                <a class=\"col s12 waves-effect waves-light btn btn-large red white-text\" @click=\"start()\" _v-d515edb4=\"\">Start</a>\n            </div>\n        </div>\n    </div>\n</div>\n";
 
 /***/ },
 /* 46 */
@@ -15695,6 +15534,7 @@
 	
 	    methods: {
 	        join: function join(roomId) {
+	            console.log('join', roomId);
 	            var router = this.$router;
 	
 	            store.actions.joinRoom({
@@ -15703,6 +15543,12 @@
 	            }).then(function () {
 	                router.go({ name: 'ready', params: { roomId: roomId } });
 	            }, function () {});
+	        },
+	        visit: function visit(roomId) {
+	            console.log('visit');
+	        },
+	        ranking: function ranking(roomId) {
+	            console.log('ranking');
 	        }
 	    },
 	
@@ -15725,7 +15571,7 @@
 /* 50 */
 /***/ function(module, exports) {
 
-	module.exports = "\n<div _v-6ab4b43e=\"\">\n    {{currentPlayer.userName}}'s home page\n    <ul _v-6ab4b43e=\"\">\n        <li v-for=\"room in roomList\" _v-6ab4b43e=\"\">\n            <p _v-6ab4b43e=\"\">name: {{room.roomName}}</p>\n            <p _v-6ab4b43e=\"\">status: {{room.status}}</p>\n            <p _v-6ab4b43e=\"\">players: {{room.players.length}}</p>\n            <button @click=\"join(room.objectId)\" _v-6ab4b43e=\"\">{{room.status === 'JOINING' ? 'Join' : 'Visit as guest'}}</button>\n        </li>\n    </ul>\n</div>\n";
+	module.exports = "\n<div _v-6ab4b43e=\"\">\n    <nav _v-6ab4b43e=\"\">\n        <div class=\"nav-wrapper red lighten-2\" _v-6ab4b43e=\"\">\n            <a href=\"#\" class=\"brand-logo\" _v-6ab4b43e=\"\">{{currentPlayer.userName}}</a>\n            <ul id=\"nav-mobile\" class=\"right hide-on-med-and-down\" _v-6ab4b43e=\"\">\n                <li _v-6ab4b43e=\"\"><a href=\"sass.html\" _v-6ab4b43e=\"\">Sass</a></li>\n                <li _v-6ab4b43e=\"\"><a href=\"badges.html\" _v-6ab4b43e=\"\">Components</a></li>\n                <li _v-6ab4b43e=\"\"><a href=\"collapsible.html\" _v-6ab4b43e=\"\">JavaScript</a></li>\n            </ul>\n        </div>\n    </nav>\n\n    <div class=\"container\" _v-6ab4b43e=\"\">\n        <div class=\"row\" _v-6ab4b43e=\"\">\n            <div class=\"card col s12\" v-for=\"room in roomList\" _v-6ab4b43e=\"\">\n                <div class=\"card-content\" _v-6ab4b43e=\"\">\n                    <span class=\"card-title red-text text-lighten-2\" _v-6ab4b43e=\"\">{{room.roomName}}</span>\n                    <p v-if=\"room.status === 'INIT'\" _v-6ab4b43e=\"\">Game is not started yet, please wait.</p>\n                    <p v-if=\"room.status === 'JOINING'\" _v-6ab4b43e=\"\">People are joining, there are {{room.players.length}} players joined the game.</p>\n                    <p v-if=\"room.status === 'PLAYING'\" _v-6ab4b43e=\"\">Game is playing right now. You can't join right now.</p>\n                    <p v-if=\"room.status === 'END'\" _v-6ab4b43e=\"\">Game is ended.</p>\n                </div>\n                <div class=\"card-action\" v-if=\"room.status === 'JOINING'\" _v-6ab4b43e=\"\">\n                    <a @click=\"join(room.objectId)\" class=\"waves-effect waves-red btn-flat\" _v-6ab4b43e=\"\">Join Now</a>\n                </div>\n                <div class=\"card-action\" v-if=\"room.status === 'PLAYING'\" _v-6ab4b43e=\"\">\n                    <a @click=\"visit(room.objectId)\" class=\"waves-effect waves-red btn-flat\" _v-6ab4b43e=\"\">Pay Visit</a>\n                </div>\n                <div class=\"card-action\" v-if=\"room.status === 'END'\" _v-6ab4b43e=\"\">\n                    <a @click=\"ranking(room.objectId)\" class=\"waves-effect waves-red btn-flat\" _v-6ab4b43e=\"\">Check Rankings</a>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n";
 
 /***/ },
 /* 51 */
@@ -15738,7 +15584,7 @@
 	    __vue_script__.__esModule &&
 	    Object.keys(__vue_script__).length > 1) {
 	  console.warn("[vue-loader] src\\components\\player\\ready-page.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(55)
+	__vue_template__ = __webpack_require__(56)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
 	if (__vue_template__) {
@@ -15804,6 +15650,9 @@
 	
 	var store = __webpack_require__(34);
 	
+	var ShakeJS = __webpack_require__(55);
+	var shake = null;
+	
 	module.exports = {
 	
 	    computed: {
@@ -15823,6 +15672,9 @@
 	
 	            if (status === 'END') console.log('END!!!');
 	            return status;
+	        },
+	        shakeCount: function shakeCount() {
+	            return store.state.player.currentPlayer.shakeCount;
 	        }
 	    },
 	
@@ -15831,6 +15683,22 @@
 	
 	        store.actions.getRoomDetails(roomId);
 	        store.actions.getRoomPlayers(roomId);
+	        store.actions.clearShakeCount();
+	
+	        if (shake) {
+	            shake.stop();
+	        } else {
+	            window.addEventListener('shake', function () {
+	                store.actions.shake();
+	            }, false);
+	
+	            shake = new ShakeJS({
+	                threshold: 15,
+	                timeout: 100
+	            });
+	        }
+	
+	        shake.start();
 	    },
 	
 	    methods: {
@@ -15848,21 +15716,156 @@
 
 /***/ },
 /* 55 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	module.exports = "\n<div _v-9d39ddf6=\"\">\n    <div _v-9d39ddf6=\"\">room name: {{room.roomName}}</div>\n    <div _v-9d39ddf6=\"\">room size: {{room.roomSize}}</div>\n    <div _v-9d39ddf6=\"\">\n        players: {{gameStatus}}\n    </div>\n    <div v-for=\"player in players\" _v-9d39ddf6=\"\">\n        {{player.userName}}\n    </div>\n    <button @click=\"leaveRoom()\" _v-9d39ddf6=\"\">Leave</button>\n</div>\n";
+	var __WEBPACK_AMD_DEFINE_RESULT__;/*
+	 * Author: Alex Gibson
+	 * https://github.com/alexgibson/shake.js
+	 * License: MIT license
+	 */
+	
+	(function(global, factory) {
+	    if (true) {
+	        !(__WEBPACK_AMD_DEFINE_RESULT__ = function() {
+	            return factory(global, global.document);
+	        }.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	    } else if (typeof module !== 'undefined' && module.exports) {
+	        module.exports = factory(global, global.document);
+	    } else {
+	        global.Shake = factory(global, global.document);
+	    }
+	} (typeof window !== 'undefined' ? window : this, function (window, document) {
+	
+	    'use strict';
+	
+	    function Shake(options) {
+	        //feature detect
+	        this.hasDeviceMotion = 'ondevicemotion' in window;
+	
+	        this.options = {
+	            threshold: 15, //default velocity threshold for shake to register
+	            timeout: 1000 //default interval between events
+	        };
+	
+	        if (typeof options === 'object') {
+	            for (var i in options) {
+	                if (options.hasOwnProperty(i)) {
+	                    this.options[i] = options[i];
+	                }
+	            }
+	        }
+	
+	        //use date to prevent multiple shakes firing
+	        this.lastTime = new Date();
+	
+	        //accelerometer values
+	        this.lastX = null;
+	        this.lastY = null;
+	        this.lastZ = null;
+	
+	        //create custom event
+	        if (typeof document.CustomEvent === 'function') {
+	            this.event = new document.CustomEvent('shake', {
+	                bubbles: true,
+	                cancelable: true
+	            });
+	        } else if (typeof document.createEvent === 'function') {
+	            this.event = document.createEvent('Event');
+	            this.event.initEvent('shake', true, true);
+	        } else {
+	            return false;
+	        }
+	    }
+	
+	    //reset timer values
+	    Shake.prototype.reset = function () {
+	        this.lastTime = new Date();
+	        this.lastX = null;
+	        this.lastY = null;
+	        this.lastZ = null;
+	    };
+	
+	    //start listening for devicemotion
+	    Shake.prototype.start = function () {
+	        this.reset();
+	        if (this.hasDeviceMotion) {
+	            window.addEventListener('devicemotion', this, false);
+	        }
+	    };
+	
+	    //stop listening for devicemotion
+	    Shake.prototype.stop = function () {
+	        if (this.hasDeviceMotion) {
+	            window.removeEventListener('devicemotion', this, false);
+	        }
+	        this.reset();
+	    };
+	
+	    //calculates if shake did occur
+	    Shake.prototype.devicemotion = function (e) {
+	        var current = e.accelerationIncludingGravity;
+	        var currentTime;
+	        var timeDifference;
+	        var deltaX = 0;
+	        var deltaY = 0;
+	        var deltaZ = 0;
+	
+	        if ((this.lastX === null) && (this.lastY === null) && (this.lastZ === null)) {
+	            this.lastX = current.x;
+	            this.lastY = current.y;
+	            this.lastZ = current.z;
+	            return;
+	        }
+	
+	        deltaX = Math.abs(this.lastX - current.x);
+	        deltaY = Math.abs(this.lastY - current.y);
+	        deltaZ = Math.abs(this.lastZ - current.z);
+	
+	        if (((deltaX > this.options.threshold) && (deltaY > this.options.threshold)) || ((deltaX > this.options.threshold) && (deltaZ > this.options.threshold)) || ((deltaY > this.options.threshold) && (deltaZ > this.options.threshold))) {
+	            //calculate time in milliseconds since last shake registered
+	            currentTime = new Date();
+	            timeDifference = currentTime.getTime() - this.lastTime.getTime();
+	
+	            if (timeDifference > this.options.timeout) {
+	                window.dispatchEvent(this.event);
+	                this.lastTime = new Date();
+	            }
+	        }
+	
+	        this.lastX = current.x;
+	        this.lastY = current.y;
+	        this.lastZ = current.z;
+	
+	    };
+	
+	    //event handler
+	    Shake.prototype.handleEvent = function (e) {
+	        if (typeof (this[e.type]) === 'function') {
+	            return this[e.type](e);
+	        }
+	    };
+	
+	    return Shake;
+	}));
+
 
 /***/ },
 /* 56 */
+/***/ function(module, exports) {
+
+	module.exports = "\n<div _v-9d39ddf6=\"\">\n    <div _v-9d39ddf6=\"\">room name: {{room.roomName}}</div>\n    <div _v-9d39ddf6=\"\">room size: {{room.roomSize}}</div>\n    <div _v-9d39ddf6=\"\">\n        players: {{gameStatus}}\n    </div>\n    <div _v-9d39ddf6=\"\">\n        {{shakeCount}}\n    </div>\n    <div v-for=\"player in players\" _v-9d39ddf6=\"\">\n        {{player.userName}}\n    </div>\n    <button @click=\"leaveRoom()\" _v-9d39ddf6=\"\">Leave</button>\n</div>\n";
+
+/***/ },
+/* 57 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __vue_script__, __vue_template__
-	__vue_script__ = __webpack_require__(57)
+	__vue_script__ = __webpack_require__(58)
 	if (__vue_script__ &&
 	    __vue_script__.__esModule &&
 	    Object.keys(__vue_script__).length > 1) {
 	  console.warn("[vue-loader] src\\components\\player\\shake-page.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(58)
+	__vue_template__ = __webpack_require__(59)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
 	if (__vue_template__) {
@@ -15881,7 +15884,7 @@
 	})()}
 
 /***/ },
-/* 57 */
+/* 58 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -15896,22 +15899,22 @@
 	};
 
 /***/ },
-/* 58 */
+/* 59 */
 /***/ function(module, exports) {
 
 	module.exports = "\n<div>shake page</div>\n";
 
 /***/ },
-/* 59 */
+/* 60 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __vue_script__, __vue_template__
-	__vue_script__ = __webpack_require__(60)
+	__vue_script__ = __webpack_require__(61)
 	if (__vue_script__ &&
 	    __vue_script__.__esModule &&
 	    Object.keys(__vue_script__).length > 1) {
 	  console.warn("[vue-loader] src\\components\\player\\ranking-page.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(61)
+	__vue_template__ = __webpack_require__(62)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
 	if (__vue_template__) {
@@ -15930,7 +15933,7 @@
 	})()}
 
 /***/ },
-/* 60 */
+/* 61 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -15947,23 +15950,23 @@
 	};
 
 /***/ },
-/* 61 */
+/* 62 */
 /***/ function(module, exports) {
 
 	module.exports = "\n<div @click=\"back()\">ranking page</div>\n";
 
 /***/ },
-/* 62 */
+/* 63 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __vue_script__, __vue_template__
-	__webpack_require__(63)
-	__vue_script__ = __webpack_require__(65)
+	__webpack_require__(64)
+	__vue_script__ = __webpack_require__(66)
 	if (__vue_script__ &&
 	    __vue_script__.__esModule &&
 	    Object.keys(__vue_script__).length > 1) {
 	  console.warn("[vue-loader] src\\components\\admin\\admin-page.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(71)
+	__vue_template__ = __webpack_require__(72)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
 	if (__vue_template__) {
@@ -15982,13 +15985,13 @@
 	})()}
 
 /***/ },
-/* 63 */
+/* 64 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
 	// load the styles
-	var content = __webpack_require__(64);
+	var content = __webpack_require__(65);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(32)(content, {});
@@ -16008,7 +16011,7 @@
 	}
 
 /***/ },
-/* 64 */
+/* 65 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(31)();
@@ -16016,13 +16019,13 @@
 	
 	
 	// module
-	exports.push([module.id, "\n.line[_v-0f3d2759] {\n    background: red;\n    display: inline-block;\n    height: 2px;\n    width: 0%;\n    -webkit-transition: width 0.5s ease;\n    transition: width 0.5s ease;\n}\n", "", {"version":3,"sources":["/./src/components/admin/admin-page.vue?268dfc14"],"names":[],"mappings":";AACA;IACA,gBAAA;IACA,sBAAA;IACA,YAAA;IACA,UAAA;IACA,oCAAA;IAAA,4BAAA;CACA","file":"admin-page.vue","sourcesContent":["<style scoped>\r\n    .line {\r\n        background: red;\r\n        display: inline-block;\r\n        height: 2px;\r\n        width: 0%;\r\n        transition: width 0.5s ease;\r\n    }\r\n</style>\r\n\r\n<template>\r\n    <div>\r\n        <h4>admin page 中文<i class=\"material-icons\">grade</i></h4>\r\n        <p>room list</p>\r\n        <ul>\r\n            <li v-for=\"room in rooms\" @click=\"goToRoom(room.objectId)\">\r\n                {{room.roomName}}\r\n            </li>\r\n        </ul>\r\n        <button @click=\"createRoom()\">Create Room</button>\r\n        <room-edit-dialog v-ref:room-edit-dialog :room-id=\"selectRoomId\"></room-edit-dialog>\r\n    </div>\r\n</template>\r\n\r\n<script>\r\n    var store = require('../../store');\r\n\r\n    module.exports = {\r\n        components: {\r\n            'room-edit-dialog': require('./room-edit-dialog.vue')\r\n        },\r\n\r\n        computed: {\r\n            rooms: function() {\r\n                return store.state.admin.homePage.roomList;\r\n            }\r\n        },\r\n\r\n        ready: function() {\r\n            store.actions.getAdminRoomList();\r\n        },\r\n\r\n        methods: {\r\n            createRoom: function() {\r\n                store.actions.getEditRoomDialogData('');\r\n                $(this.$refs.roomEditDialog.$el).openModal();\r\n            },\r\n            goToRoom: function(roomId) {\r\n                this.$router.go({name: 'room', params: {roomId: roomId}});\r\n            }\r\n        }\r\n    };\r\n</script>"],"sourceRoot":"webpack://"}]);
+	exports.push([module.id, "\n.hero[_v-0f3d2759] {\n    background-image: url(https://static.artofwhere.net/img/home-slider/girl-sewing.jpg);\n    background-size: cover;\n    background-position: center center;\n    height: 350px;\n    width: 100%;\n}\n", "", {"version":3,"sources":["/./src/components/admin/admin-page.vue?240f6db4"],"names":[],"mappings":";AACA;IACA,qFAAA;IACA,uBAAA;IACA,mCAAA;IACA,cAAA;IACA,YAAA;CACA","file":"admin-page.vue","sourcesContent":["<style scoped>\r\n    .hero {\r\n        background-image: url(https://static.artofwhere.net/img/home-slider/girl-sewing.jpg);\r\n        background-size: cover;\r\n        background-position: center center;\r\n        height: 350px;\r\n        width: 100%;\r\n    }\r\n</style>\r\n\r\n<template>\r\n    <div>\r\n        <div class=\"hero\"></div>\r\n        <div class=\"container\">\r\n            <h5>ROOM LIST</h5>\r\n            <div class=\"row\">\r\n                <div class=\"col s4\" v-for=\"room in rooms\">\r\n                    <div class=\"card cyan lighten-2 white-text waves-effect waves-block waves-light\" @click=\"goToRoom(room.objectId)\">\r\n                        <div class=\"card-image\">\r\n                            <img src=\"http://sd.people.com.cn/mediafile/201007/05/F2010070514353200467.jpg\"/>\r\n                            <span class=\"card-title black-text\">{{room.roomName}}</span>\r\n                        </div>\r\n                        <div class=\"card-content\">\r\n                            <p style=\"margin-bottom: 10px\">{{room.roomDescription}}</p>\r\n                            <p class=\"grey-text text-lighten-3\">SIZE<span class=\"right amber-text\">{{room.players.length}}/{{room.roomSize}}</span></p>\r\n                            <p class=\"grey-text text-lighten-3\">STATUS<span class=\"right amber-text\">{{room.status}}</span></p>\r\n                        </div>\r\n                    </div>\r\n                </div>\r\n            </div>\r\n\r\n            <div class=\"fixed-action-btn\" style=\"bottom: 45px; right: 45px;\">\r\n                <a class=\"btn-floating btn-large waves-effect waves-light red\" @click=\"createRoom()\">\r\n                    <i class=\"material-icons\">add</i>\r\n                </a>\r\n            </div>\r\n\r\n            <room-edit-dialog v-ref:room-edit-dialog :room-id=\"selectRoomId\"></room-edit-dialog>\r\n        </div>\r\n    </div>\r\n</template>\r\n\r\n<script>\r\n    var store = require('../../store');\r\n\r\n    module.exports = {\r\n        components: {\r\n            'room-edit-dialog': require('./room-edit-dialog.vue')\r\n        },\r\n\r\n        computed: {\r\n            rooms: function() {\r\n                return store.state.admin.homePage.roomList;\r\n            }\r\n        },\r\n\r\n        ready: function() {\r\n            store.actions.getAdminRoomList();\r\n        },\r\n\r\n        methods: {\r\n            createRoom: function() {\r\n                store.actions.getEditRoomDialogData('');\r\n                $(this.$refs.roomEditDialog.$el).openModal();\r\n            },\r\n            goToRoom: function(roomId) {\r\n                this.$router.go({name: 'room', params: {roomId: roomId}});\r\n            }\r\n        }\r\n    };\r\n</script>"],"sourceRoot":"webpack://"}]);
 	
 	// exports
 
 
 /***/ },
-/* 65 */
+/* 66 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -16031,7 +16034,7 @@
 	
 	module.exports = {
 	    components: {
-	        'room-edit-dialog': __webpack_require__(66)
+	        'room-edit-dialog': __webpack_require__(67)
 	    },
 	
 	    computed: {
@@ -16056,17 +16059,17 @@
 	};
 
 /***/ },
-/* 66 */
+/* 67 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __vue_script__, __vue_template__
-	__webpack_require__(67)
-	__vue_script__ = __webpack_require__(69)
+	__webpack_require__(68)
+	__vue_script__ = __webpack_require__(70)
 	if (__vue_script__ &&
 	    __vue_script__.__esModule &&
 	    Object.keys(__vue_script__).length > 1) {
 	  console.warn("[vue-loader] src\\components\\admin\\room-edit-dialog.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(70)
+	__vue_template__ = __webpack_require__(71)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
 	if (__vue_template__) {
@@ -16085,13 +16088,13 @@
 	})()}
 
 /***/ },
-/* 67 */
+/* 68 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
 	// load the styles
-	var content = __webpack_require__(68);
+	var content = __webpack_require__(69);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(32)(content, {});
@@ -16111,7 +16114,7 @@
 	}
 
 /***/ },
-/* 68 */
+/* 69 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(31)();
@@ -16125,7 +16128,7 @@
 
 
 /***/ },
-/* 69 */
+/* 70 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -16179,29 +16182,29 @@
 	};
 
 /***/ },
-/* 70 */
+/* 71 */
 /***/ function(module, exports) {
 
 	module.exports = "\n<div id=\"modal1\" class=\"modal modal-fixed-footer\">\n    <div class=\"modal-content\">\n        <h4>{{!roomId ? 'Create Room' : 'Update Room'}}</h4>\n        <div class=\"row\">\n            <form class=\"col s12\">\n                <div class=\"input-field col s12\">\n                    <input type=\"text\" class=\"validate\" id=\"roomEditDialogRoomName\" value=\"{{room.roomName}}\" v-el:room-name >\n                    <label for=\"roomEditDialogRoomName\">Room Name</label>\n                </div>\n                <div class=\"input-field col s12\">\n                    <input type=\"text\" id=\"roomEditDialogRoomDesc\" value=\"{{room.roomDescription}}\" v-el:room-description >\n                    <label for=\"roomEditDialogRoomDesc\">Room Description</label>\n                </div>\n                <div class=\"input-field col s12\">\n                    <input type=\"text\" id=\"roomEditDialogRoomSize\" value=\"{{room.roomSize}}\" v-el:room-size >\n                    <label for=\"roomEditDialogRoomSize\">Room Size</label>\n                </div>\n            </form>\n        </div>\n    </div>\n    <div class=\"modal-footer\">\n        <a @click=\"submitForm()\" class=\" modal-action modal-close waves-effect waves-green btn-flat\">Confirm</a>\n        <a class=\" modal-action modal-close waves-effect waves-green btn-flat\">Cancel</a>\n    </div>\n</div>\n";
 
 /***/ },
-/* 71 */
+/* 72 */
 /***/ function(module, exports) {
 
-	module.exports = "\n<div _v-0f3d2759=\"\">\n    <h4 _v-0f3d2759=\"\">admin page 中文<i class=\"material-icons\" _v-0f3d2759=\"\">grade</i></h4>\n    <p _v-0f3d2759=\"\">room list</p>\n    <ul _v-0f3d2759=\"\">\n        <li v-for=\"room in rooms\" @click=\"goToRoom(room.objectId)\" _v-0f3d2759=\"\">\n            {{room.roomName}}\n        </li>\n    </ul>\n    <button @click=\"createRoom()\" _v-0f3d2759=\"\">Create Room</button>\n    <room-edit-dialog v-ref:room-edit-dialog=\"\" :room-id=\"selectRoomId\" _v-0f3d2759=\"\"></room-edit-dialog>\n</div>\n";
+	module.exports = "\n<div _v-0f3d2759=\"\">\n    <div class=\"hero\" _v-0f3d2759=\"\"></div>\n    <div class=\"container\" _v-0f3d2759=\"\">\n        <h5 _v-0f3d2759=\"\">ROOM LIST</h5>\n        <div class=\"row\" _v-0f3d2759=\"\">\n            <div class=\"col s4\" v-for=\"room in rooms\" _v-0f3d2759=\"\">\n                <div class=\"card cyan lighten-2 white-text waves-effect waves-block waves-light\" @click=\"goToRoom(room.objectId)\" _v-0f3d2759=\"\">\n                    <div class=\"card-image\" _v-0f3d2759=\"\">\n                        <img src=\"http://sd.people.com.cn/mediafile/201007/05/F2010070514353200467.jpg\" _v-0f3d2759=\"\">\n                        <span class=\"card-title black-text\" _v-0f3d2759=\"\">{{room.roomName}}</span>\n                    </div>\n                    <div class=\"card-content\" _v-0f3d2759=\"\">\n                        <p style=\"margin-bottom: 10px\" _v-0f3d2759=\"\">{{room.roomDescription}}</p>\n                        <p class=\"grey-text text-lighten-3\" _v-0f3d2759=\"\">SIZE<span class=\"right amber-text\" _v-0f3d2759=\"\">{{room.players.length}}/{{room.roomSize}}</span></p>\n                        <p class=\"grey-text text-lighten-3\" _v-0f3d2759=\"\">STATUS<span class=\"right amber-text\" _v-0f3d2759=\"\">{{room.status}}</span></p>\n                    </div>\n                </div>\n            </div>\n        </div>\n\n        <div class=\"fixed-action-btn\" style=\"bottom: 45px; right: 45px;\" _v-0f3d2759=\"\">\n            <a class=\"btn-floating btn-large waves-effect waves-light red\" @click=\"createRoom()\" _v-0f3d2759=\"\">\n                <i class=\"material-icons\" _v-0f3d2759=\"\">add</i>\n            </a>\n        </div>\n\n        <room-edit-dialog v-ref:room-edit-dialog=\"\" :room-id=\"selectRoomId\" _v-0f3d2759=\"\"></room-edit-dialog>\n    </div>\n</div>\n";
 
 /***/ },
-/* 72 */
+/* 73 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __vue_script__, __vue_template__
-	__webpack_require__(73)
-	__vue_script__ = __webpack_require__(75)
+	__webpack_require__(74)
+	__vue_script__ = __webpack_require__(76)
 	if (__vue_script__ &&
 	    __vue_script__.__esModule &&
 	    Object.keys(__vue_script__).length > 1) {
 	  console.warn("[vue-loader] src\\components\\admin\\room-page.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(76)
+	__vue_template__ = __webpack_require__(77)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
 	if (__vue_template__) {
@@ -16220,13 +16223,13 @@
 	})()}
 
 /***/ },
-/* 73 */
+/* 74 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
 	// load the styles
-	var content = __webpack_require__(74);
+	var content = __webpack_require__(75);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(32)(content, {});
@@ -16246,7 +16249,7 @@
 	}
 
 /***/ },
-/* 74 */
+/* 75 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(31)();
@@ -16254,13 +16257,13 @@
 	
 	
 	// module
-	exports.push([module.id, "\n.room-edit-button[_v-69b23236] {\n    margin: 20px;\n}\n", "", {"version":3,"sources":["/./src/components/admin/room-page.vue?2b8acf6f"],"names":[],"mappings":";AACA;IACA,aAAA;CACA","file":"room-page.vue","sourcesContent":["<style scoped>\r\n    .room-edit-button {\r\n        margin: 20px;\r\n    }\r\n</style>\r\n\r\n<template>\r\n    <div>\r\n        <div class=\"card blue-grey darken-1\">\r\n            <a class=\"waves-effect btn right white black-text room-edit-button\"><i class=\"material-icons left\">edit</i>edit</a>\r\n            <div class=\"card-content white-text\">\r\n                <span class=\"card-title\">{{room.roomName}} ({{room.status}})</span>\r\n                <p>{{room.roomDescription}}</p>\r\n                <p>size: {{room.roomSize}}</p>\r\n            </div>\r\n        </div>\r\n\r\n        <div class=\"card\">\r\n            \r\n        </div>\r\n    </div>\r\n</template>\r\n\r\n<script>\r\n    var store = require('../../store');\r\n\r\n    module.exports = {\r\n\r\n        computed: {\r\n            room: function() {\r\n                return store.state.admin.roomPage.roomDetails;\r\n            },\r\n            players: function() {\r\n                return store.state.admin.roomPage.players;\r\n            }\r\n        },\r\n\r\n        ready: function() {\r\n            store.actions.getAdminRoomDetails(this.$route.params.roomId);\r\n            store.actions.getAdminRoomPlayers(this.$route.params.roomId);\r\n        },\r\n\r\n        methods: {\r\n            allowToJoin: function() {\r\n                store.actions.allowToJoinRoom(this.$route.params.roomId);\r\n            },\r\n            start: function() {\r\n                store.actions.startRoom(this.$route.params.roomId);\r\n            },\r\n            stop: function() {\r\n                store.actions.stopRoom(this.$route.params.roomId);\r\n            }\r\n        }\r\n    };\r\n</script>"],"sourceRoot":"webpack://"}]);
+	exports.push([module.id, "\n.room-edit-button[_v-69b23236] {\n    margin: 20px;\n}\n", "", {"version":3,"sources":["/./src/components/admin/room-page.vue?44188504"],"names":[],"mappings":";AACA;IACA,aAAA;CACA","file":"room-page.vue","sourcesContent":["<style scoped>\r\n    .room-edit-button {\r\n        margin: 20px;\r\n    }\r\n</style>\r\n\r\n<template>\r\n    <div class=\"container\">\r\n\r\n        <div class=\"row\">\r\n            <div class=\"card cyan lighten-2\">\r\n                <a class=\"waves-effect btn right white black-text room-edit-button\" @click=\"editRoom()\">edit</a>\r\n                <div class=\"card-content white-text\">\r\n                    <span class=\"card-title\">{{room.roomName}} ({{room.status}})</span>\r\n                    <p style=\"margin-bottom: 10px\">{{room.roomDescription}}</p>\r\n                    <p>size: {{room.roomSize}}</p>\r\n                </div>\r\n            </div>\r\n        </div>\r\n\r\n        <div class=\"row\">\r\n            <div class=\"col s6\">\r\n                <h5>BRIDE CUSTOMERS<span class=\"right\">{{bridePlayers.length}}/{{room.roomSize}}</span></h5>\r\n                <div class=\"card\">\r\n                    <div class=\"card-content\">\r\n                        <ul class=\"collection with-header\">\r\n                            <li class=\"collection-header\">\r\n                                <h4>Total <span class=\"right\">{{brideShakeTotal}}</span></h4>\r\n                            </li>\r\n                            <li v-for=\"player in bridePlayers\" class=\"collection-item avatar\">\r\n                                <img src=\"http://materializecss.com/images/yuna.jpg\" class=\"circle\">\r\n                                <span class=\"title\">{{player.userName}}</span>\r\n                                <p>count: {{player.shakeCount}}</p>\r\n                                <div class=\"progress\">\r\n                                    <div class=\"determinate\" :style=\"{width: player.shakeCount/200*100 + '%'}\"></div>\r\n                                </div>\r\n                            </li>\r\n                        </ul>\r\n                    </div>\r\n                </div>\r\n            </div>\r\n            <div class=\"col s6\">\r\n                <h5>GROOM CUSTOMERS<span class=\"right\">{{groomPlayers.length}}/{{room.roomSize}}</span></h5>\r\n                <div class=\"card\">\r\n                    <div class=\"card-content\">\r\n                        <ul class=\"collection with-header\">\r\n                            <li class=\"collection-header\"><h4>Total<span class=\"right\">{{groomShakeTotal}}</span></h4></li>\r\n                            <li v-for=\"player in groomPlayers\" class=\"collection-item avatar\">\r\n                                <img src=\"http://materializecss.com/images/yuna.jpg\" class=\"circle\">\r\n                                <span class=\"title\">{{player.userName}}</span>\r\n                                <p>count: {{player.shakeCount}}</p>\r\n                                <div class=\"progress pink lighten-4\">\r\n                                    <div class=\"determinate pink\" :style=\"{width: player.shakeCount/200*100 + '%'}\"></div>\r\n                                </div>\r\n                            </li>\r\n                        </ul>\r\n                    </div>\r\n                </div>\r\n            </div>\r\n        </div>\r\n\r\n        <div class=\"fixed-action-btn horizontal\" style=\"bottom: 45px; right: 45px;\">\r\n            <a class=\"btn-floating btn-large red\">\r\n                <i class=\"large material-icons\">games</i>\r\n            </a>\r\n            <ul>\r\n                <li>\r\n                    <a @click=\"allowToJoin()\" class=\"btn-floating yellow darken-1 tooltipped\" data-position=\"top\" data-delay=\"50\" data-tooltip=\"allow join\">\r\n                        <i class=\"material-icons\">input</i>\r\n                    </a>\r\n                </li>\r\n                <li>\r\n                    <a @click=\"start()\" class=\"btn-floating green darken-1 tooltipped\" data-position=\"top\" data-delay=\"50\" data-tooltip=\"start game\">\r\n                        <i class=\"material-icons\">play_circle_outline</i>\r\n                    </a>\r\n                </li>\r\n            </ul>\r\n        </div>\r\n\r\n        <room-edit-dialog v-ref:room-edit-dialog :room-id=\"$route.params.roomId\"></room-edit-dialog>\r\n    </div>\r\n</template>\r\n\r\n<script>\r\n    var store = require('../../store');\r\n\r\n    module.exports = {\r\n        components: {\r\n            'room-edit-dialog': require('./room-edit-dialog.vue')\r\n        },\r\n\r\n        computed: {\r\n            room: function() {\r\n                return store.state.admin.roomPage.roomDetails;\r\n            },\r\n            brideShakeTotal: function() {\r\n                var count = 0;\r\n                this.bridePlayers.forEach(function(player) {\r\n                    count += player.shakeCount;\r\n                });\r\n                return count;\r\n            },\r\n            bridePlayers: function() {\r\n                return store.state.admin.roomPage.players.filter(function(player) {\r\n                    return player.userType === 'BRIDE';\r\n                });\r\n            },\r\n            groomShakeTotal: function() {\r\n                var count = 0;\r\n                this.groomPlayers.forEach(function(player) {\r\n                    count += player.shakeCount;\r\n                });\r\n                return count;\r\n            },\r\n            groomPlayers: function() {\r\n                return store.state.admin.roomPage.players.filter(function(player) {\r\n                    return player.userType === 'GROOM';\r\n                });\r\n            }\r\n        },\r\n\r\n        ready: function() {\r\n            store.actions.getAdminRoomDetails(this.$route.params.roomId);\r\n            store.actions.getAdminRoomPlayers(this.$route.params.roomId);\r\n            store.actions.listenSocketMessage(true);\r\n        },\r\n\r\n        methods: {\r\n            allowToJoin: function() {\r\n                store.actions.allowToJoinRoom(this.$route.params.roomId);\r\n            },\r\n            start: function() {\r\n                store.actions.startRoom(this.$route.params.roomId);\r\n            },\r\n            stop: function() {\r\n                store.actions.stopRoom(this.$route.params.roomId);\r\n            },\r\n            editRoom: function() {\r\n                $(this.$refs.roomEditDialog.$el).openModal();\r\n            }\r\n        }\r\n    };\r\n</script>"],"sourceRoot":"webpack://"}]);
 	
 	// exports
 
 
 /***/ },
-/* 75 */
+/* 76 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -16268,19 +16271,44 @@
 	var store = __webpack_require__(34);
 	
 	module.exports = {
+	    components: {
+	        'room-edit-dialog': __webpack_require__(67)
+	    },
 	
 	    computed: {
 	        room: function room() {
 	            return store.state.admin.roomPage.roomDetails;
 	        },
-	        players: function players() {
-	            return store.state.admin.roomPage.players;
+	        brideShakeTotal: function brideShakeTotal() {
+	            var count = 0;
+	            this.bridePlayers.forEach(function (player) {
+	                count += player.shakeCount;
+	            });
+	            return count;
+	        },
+	        bridePlayers: function bridePlayers() {
+	            return store.state.admin.roomPage.players.filter(function (player) {
+	                return player.userType === 'BRIDE';
+	            });
+	        },
+	        groomShakeTotal: function groomShakeTotal() {
+	            var count = 0;
+	            this.groomPlayers.forEach(function (player) {
+	                count += player.shakeCount;
+	            });
+	            return count;
+	        },
+	        groomPlayers: function groomPlayers() {
+	            return store.state.admin.roomPage.players.filter(function (player) {
+	                return player.userType === 'GROOM';
+	            });
 	        }
 	    },
 	
 	    ready: function ready() {
 	        store.actions.getAdminRoomDetails(this.$route.params.roomId);
 	        store.actions.getAdminRoomPlayers(this.$route.params.roomId);
+	        store.actions.listenSocketMessage(true);
 	    },
 	
 	    methods: {
@@ -16292,15 +16320,18 @@
 	        },
 	        stop: function stop() {
 	            store.actions.stopRoom(this.$route.params.roomId);
+	        },
+	        editRoom: function editRoom() {
+	            $(this.$refs.roomEditDialog.$el).openModal();
 	        }
 	    }
 	};
 
 /***/ },
-/* 76 */
+/* 77 */
 /***/ function(module, exports) {
 
-	module.exports = "\n<div _v-69b23236=\"\">\n    <div class=\"card blue-grey darken-1\" _v-69b23236=\"\">\n        <a class=\"waves-effect btn right white black-text room-edit-button\" _v-69b23236=\"\"><i class=\"material-icons left\" _v-69b23236=\"\">edit</i>edit</a>\n        <div class=\"card-content white-text\" _v-69b23236=\"\">\n            <span class=\"card-title\" _v-69b23236=\"\">{{room.roomName}} ({{room.status}})</span>\n            <p _v-69b23236=\"\">{{room.roomDescription}}</p>\n            <p _v-69b23236=\"\">size: {{room.roomSize}}</p>\n        </div>\n    </div>\n\n    <div class=\"card\" _v-69b23236=\"\">\n        \n    </div>\n</div>\n";
+	module.exports = "\n<div class=\"container\" _v-69b23236=\"\">\n\n    <div class=\"row\" _v-69b23236=\"\">\n        <div class=\"card cyan lighten-2\" _v-69b23236=\"\">\n            <a class=\"waves-effect btn right white black-text room-edit-button\" @click=\"editRoom()\" _v-69b23236=\"\">edit</a>\n            <div class=\"card-content white-text\" _v-69b23236=\"\">\n                <span class=\"card-title\" _v-69b23236=\"\">{{room.roomName}} ({{room.status}})</span>\n                <p style=\"margin-bottom: 10px\" _v-69b23236=\"\">{{room.roomDescription}}</p>\n                <p _v-69b23236=\"\">size: {{room.roomSize}}</p>\n            </div>\n        </div>\n    </div>\n\n    <div class=\"row\" _v-69b23236=\"\">\n        <div class=\"col s6\" _v-69b23236=\"\">\n            <h5 _v-69b23236=\"\">BRIDE CUSTOMERS<span class=\"right\" _v-69b23236=\"\">{{bridePlayers.length}}/{{room.roomSize}}</span></h5>\n            <div class=\"card\" _v-69b23236=\"\">\n                <div class=\"card-content\" _v-69b23236=\"\">\n                    <ul class=\"collection with-header\" _v-69b23236=\"\">\n                        <li class=\"collection-header\" _v-69b23236=\"\">\n                            <h4 _v-69b23236=\"\">Total <span class=\"right\" _v-69b23236=\"\">{{brideShakeTotal}}</span></h4>\n                        </li>\n                        <li v-for=\"player in bridePlayers\" class=\"collection-item avatar\" _v-69b23236=\"\">\n                            <img src=\"http://materializecss.com/images/yuna.jpg\" class=\"circle\" _v-69b23236=\"\">\n                            <span class=\"title\" _v-69b23236=\"\">{{player.userName}}</span>\n                            <p _v-69b23236=\"\">count: {{player.shakeCount}}</p>\n                            <div class=\"progress\" _v-69b23236=\"\">\n                                <div class=\"determinate\" :style=\"{width: player.shakeCount/200*100 + '%'}\" _v-69b23236=\"\"></div>\n                            </div>\n                        </li>\n                    </ul>\n                </div>\n            </div>\n        </div>\n        <div class=\"col s6\" _v-69b23236=\"\">\n            <h5 _v-69b23236=\"\">GROOM CUSTOMERS<span class=\"right\" _v-69b23236=\"\">{{groomPlayers.length}}/{{room.roomSize}}</span></h5>\n            <div class=\"card\" _v-69b23236=\"\">\n                <div class=\"card-content\" _v-69b23236=\"\">\n                    <ul class=\"collection with-header\" _v-69b23236=\"\">\n                        <li class=\"collection-header\" _v-69b23236=\"\"><h4 _v-69b23236=\"\">Total<span class=\"right\" _v-69b23236=\"\">{{groomShakeTotal}}</span></h4></li>\n                        <li v-for=\"player in groomPlayers\" class=\"collection-item avatar\" _v-69b23236=\"\">\n                            <img src=\"http://materializecss.com/images/yuna.jpg\" class=\"circle\" _v-69b23236=\"\">\n                            <span class=\"title\" _v-69b23236=\"\">{{player.userName}}</span>\n                            <p _v-69b23236=\"\">count: {{player.shakeCount}}</p>\n                            <div class=\"progress pink lighten-4\" _v-69b23236=\"\">\n                                <div class=\"determinate pink\" :style=\"{width: player.shakeCount/200*100 + '%'}\" _v-69b23236=\"\"></div>\n                            </div>\n                        </li>\n                    </ul>\n                </div>\n            </div>\n        </div>\n    </div>\n\n    <div class=\"fixed-action-btn horizontal\" style=\"bottom: 45px; right: 45px;\" _v-69b23236=\"\">\n        <a class=\"btn-floating btn-large red\" _v-69b23236=\"\">\n            <i class=\"large material-icons\" _v-69b23236=\"\">games</i>\n        </a>\n        <ul _v-69b23236=\"\">\n            <li _v-69b23236=\"\">\n                <a @click=\"allowToJoin()\" class=\"btn-floating yellow darken-1 tooltipped\" data-position=\"top\" data-delay=\"50\" data-tooltip=\"allow join\" _v-69b23236=\"\">\n                    <i class=\"material-icons\" _v-69b23236=\"\">input</i>\n                </a>\n            </li>\n            <li _v-69b23236=\"\">\n                <a @click=\"start()\" class=\"btn-floating green darken-1 tooltipped\" data-position=\"top\" data-delay=\"50\" data-tooltip=\"start game\" _v-69b23236=\"\">\n                    <i class=\"material-icons\" _v-69b23236=\"\">play_circle_outline</i>\n                </a>\n            </li>\n        </ul>\n    </div>\n\n    <room-edit-dialog v-ref:room-edit-dialog=\"\" :room-id=\"$route.params.roomId\" _v-69b23236=\"\"></room-edit-dialog>\n</div>\n";
 
 /***/ }
 /******/ ]);

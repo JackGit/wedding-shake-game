@@ -3,15 +3,39 @@
 
 <template>
     <div>
-        {{currentPlayer.userName}}'s home page
-        <ul>
-            <li v-for="room in roomList">
-                <p>name: {{room.roomName}}</p>
-                <p>status: {{room.status}}</p>
-                <p>players: {{room.players.length}}</p>
-                <button @click="join(room.objectId)">{{room.status === 'JOINING' ? 'Join' : 'Visit as guest'}}</button>
-            </li>
-        </ul>
+        <nav>
+            <div class="nav-wrapper red lighten-2">
+                <a href="#" class="brand-logo">{{currentPlayer.userName}}</a>
+                <ul id="nav-mobile" class="right hide-on-med-and-down">
+                    <li><a href="sass.html">Sass</a></li>
+                    <li><a href="badges.html">Components</a></li>
+                    <li><a href="collapsible.html">JavaScript</a></li>
+                </ul>
+            </div>
+        </nav>
+
+        <div class="container">
+            <div class="row">
+                <div class="card col s12" v-for="room in roomList">
+                    <div class="card-content">
+                        <span class="card-title red-text text-lighten-2">{{room.roomName}}</span>
+                        <p v-if="room.status === 'INIT'">Game is not started yet, please wait.</p>
+                        <p v-if="room.status === 'JOINING'">People are joining, there are {{room.players.length}} players joined the game.</p>
+                        <p v-if="room.status === 'PLAYING'">Game is playing right now. You can't join right now.</p>
+                        <p v-if="room.status === 'END'">Game is ended.</p>
+                    </div>
+                    <div class="card-action" v-if="room.status === 'JOINING'">
+                        <a @click="join(room.objectId)" class="waves-effect waves-red btn-flat">Join Now</a>
+                    </div>
+                    <div class="card-action" v-if="room.status === 'PLAYING'">
+                        <a @click="visit(room.objectId)" class="waves-effect waves-red btn-flat">Pay Visit</a>
+                    </div>
+                    <div class="card-action" v-if="room.status === 'END'">
+                        <a @click="ranking(room.objectId)" class="waves-effect waves-red btn-flat">Check Rankings</a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -35,6 +59,7 @@
 
         methods: {
             join: function(roomId) {
+                console.log('join', roomId);
                 var router = this.$router;
 
                 store.actions.joinRoom({
@@ -45,6 +70,12 @@
                 }, function() {
 
                 });
+            },
+            visit: function(roomId) {
+                console.log('visit');
+            },
+            ranking: function(roomId) {
+                console.log('ranking');
             }
         },
 

@@ -13,56 +13,42 @@ var AV = require('avoscloud-sdk');
 
 // config AV
 AV.initialize('W2soq1Vc141dGSO2pSYiwFVX-gzGzoHsz', '29EmBl8KEcyTpQbetUPQ0obs');
-var Player = AV.Object.extend('Player');
+
+var RoomDAO = require('./dao/room');
 
 // config socket.io
 io.on('connection', function(socket) {
     console.log('socket.io connected');
 
-    /* message from everyone will be broadcast to others */
-
-    // game start
-    socket.on('start', function(message) {
-        socket.broadcast.emit('start', message);
-    });
-
-    // game stop
-    socket.on('stop', function(message) {
-        socket.broadcast.emit('stop', message);
-    });
-
-    // game control: allow players to join the game
-    socket.on('allow-join', function(message) {
-        socket.broadcast.emit('allow-join', message);
-    });
-
     // play join the game
-    socket.on('join', function(message) {
-        socket.userId = message;
+    socket.on('join', function(message) { // {userId: userId, roomId: roomId}
+        console.log('*** socket join message ***', message);
+        socket.userId = message.userId;
+        socket.roomId = message.roomId;
         socket.broadcast.emit('join', message);
     });
 
     // player leave the game
-    socket.on('leave', function(message) {
+    socket.on('leave', function(message) { // {userId: userId, roomId: roomId}
+        console.log('*** socket leave message ***', message);
         socket.broadcast.emit('leave', message);
     });
 
     // player shake
-    socket.on('shake', function(message) {
+    socket.on('shake', function(message) { // {userId: userId: shakeCount: count}
+        console.log('*** socket shake message ***', message);
         socket.broadcast.emit('shake', message);
     });
 
     // player disconnect
     socket.on('disconnect', function() {
+        console.log('disconnected', socket.userId);
+
         var userId = socket.userId,
-            playerQueryObj = new AV.Query('Player');
+            roomId = socket.roomId;
 
-        playerQueryObj.get(userId).try(function(player) {
-            player.set('userStatus', '');
-            player.save();
-        });
-
-        socket.broadcast.emit('leave', socket.userId);
+        RoomDAO.leaveRoom(roomId, userId);
+        socket.broadcast.emit('leave', {userId: socket.userId, roomId: roomId});
     });
 });
 

@@ -1,21 +1,35 @@
 <style scoped>
-    .selected {
-        color: red;
-    }
+
 </style>
 
 <template>
-    <div>
-        <h4>welcome, please input your name and select a role</h4>
-        <p>name:</p>
-        <input type="text" v-model="userName" @input="inputUserName"/>
-
-        <p>type:</p>
-        <div>
-            <span @click="inputUserType('BRIDE')" :class="[userType === 'BRIDE' ? 'selected' : '']">Bride Guest</span>
-            <span @click="inputUserType('GROOM')" :class="[userType === 'GROOM' ? 'selected' : '']">Groom Guest</span>
+    <div class="container">
+        <div class="row">
+            <div class="card">
+                <div class="card-content">
+                    <span class="card-title">welcome</span>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input type="text" id="welcome_user_name_input" placeholder="user name" v-el:user-name/>
+                            <label class="" for="welcome_user_name_input">User Name</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <select v-el:user-type>
+                                <option value="" disabled selected>Choose your option</option>
+                                <option value="BRIDE">Bride Guest</option>
+                                <option value="GROOM">Groom Guest</option>
+                            </select>
+                            <label>Guest Type {{selected}}</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-action row">
+                    <a class="col s12 waves-effect waves-light btn btn-large red white-text" @click="start()">Start</a>
+                </div>
+            </div>
         </div>
-        <button @click="start()">Start</button>
     </div>
 </template>
 
@@ -30,19 +44,8 @@
 
     module.exports = {
 
-        computed: {
-            userName: function() {
-                return store.state.player.welcomePage.formUserName;
-            },
-            userType: function() {
-                return store.state.player.welcomePage.formUserType;
-            },
-            userNameMessage: function() {
-                return store.state.player.welcomePage.formUserNameMessage;
-            },
-            userTypeMessage: function() {
-                return store.state.player.welcomePage.formUserTypeMessage;
-            }
+        ready: function() {
+            $('select').material_select();
         },
 
         methods: {
@@ -50,19 +53,12 @@
                 var router = this.$router;
 
                 store.actions.registerPlayer({
-                    userName: this.userName,
-                    userType: this.userType
+                    userName: this.$els.userName.value,
+                    userType: this.$els.userType.value
                 }).then(function(user) {
                     router.go({name: 'home', params: {userId: user.objectId}});
                 });
-            },
-            inputUserName: function(e) {
-                store.actions.inputUserName(e.target.value);
-            },
-            inputUserType: function(userType) {
-                store.actions.inputUserType(userType);
             }
-
         },
 
         route: {

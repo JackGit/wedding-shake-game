@@ -8,6 +8,9 @@
         <div>
             players: {{gameStatus}}
         </div>
+        <div>
+            {{shakeCount}}
+        </div>
         <div v-for="player in players">
             {{player.userName}}
         </div>
@@ -17,6 +20,10 @@
 
 <script>
     var store = require('../../store');
+
+    // threshold = 15, timeout = 100 => 80 times / 10s, for both iphone and android
+    var ShakeJS = require('shake.js');
+    var shake = null;
 
     module.exports = {
 
@@ -38,6 +45,9 @@
                 if(status === 'END')
                     console.log('END!!!');
                 return status;
+            },
+            shakeCount: function() {
+                return store.state.player.currentPlayer.shakeCount;
             }
         },
 
@@ -46,6 +56,23 @@
 
             store.actions.getRoomDetails(roomId);
             store.actions.getRoomPlayers(roomId);
+            store.actions.clearShakeCount();
+
+
+            if(shake) {
+                shake.stop();
+            } else {
+                window.addEventListener('shake', function() {
+                    store.actions.shake();
+                }, false);
+
+                shake = new ShakeJS({
+                    threshold: 15,
+                    timeout: 100
+                });
+            }
+
+            shake.start();
         },
 
         methods: {
