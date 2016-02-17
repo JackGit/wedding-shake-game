@@ -40,6 +40,11 @@ io.on('connection', function(socket) {
         socket.broadcast.emit('shake', message);
     });
 
+    socket.on('status-change', function(message) {
+        console.log('*** socket status-change message ***', message);
+        socket.broadcast.emit('status-change', message);
+    });
+
     // player disconnect
     socket.on('disconnect', function() {
         console.log('disconnected', socket.userId);

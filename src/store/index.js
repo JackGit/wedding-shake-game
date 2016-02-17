@@ -33,6 +33,38 @@ function adminListenPlayerSocketMessage(type, enable) {
     }
 }
 
+function listenPlayerSocketMessage(type, enable) {
+    console.log('listenPlayerSocketMessage', type, enable);
+    if(enable) {
+        switch(type) {
+            case 'join':
+                socket.on('join', function(userId) {
+                    store.actions.onJoin(userId);
+                });
+                break;
+            case 'leave':
+                socket.on('leave', function(userId) {
+                    store.actions.onLeave(userId);
+                });
+                break;
+            case 'shake':
+                socket.on('shake', function(message) {
+                    store.actions.onShake(message);
+                });
+                break;
+            case 'status-change':
+                socket.on('status-change', function(message) {
+                    store.actions.onStatusChange(message);
+                });
+                break;
+            default:
+                break;
+        }
+    } else {
+        socket.off(type);
+    }
+}
+
 module.exports = window.store = new Vuex.Store({
     state: {
         /* player pages states */
@@ -52,14 +84,13 @@ module.exports = window.store = new Vuex.Store({
             },
             readyPage: {
                 roomDetails: {},         // need socket.io to update this field
-                players: [],
-                gameStatus: ''
+                players: []
             },
             shakePage: {
 
             },
             rankingPage: {
-
+                players: [{userName: 'Jack', userType: 'BRIDE', shakeCount: 11}, {userName: 'Tom', userType: 'GROOM', shakeCount: 21}]
             }
         },
 
@@ -165,10 +196,19 @@ module.exports = window.store = new Vuex.Store({
             });
         },
         clearShakeCount: function(store) {
+            api.updateUser({
+                userId: store.state.player.currentPlayer.userId,
+                shakeCount: 0
+            });
             store.state.player.currentPlayer.shakeCount = 0;
         },
         shake: function(store) {
             var shakeCount = ++ store.state.player.currentPlayer.shakeCount;
+
+            store.state.player.readyPage.players.forEach(function(p) {
+                if(p.objectId === store.state.player.currentPlayer.userId)
+                    p.shakeCount = shakeCount;
+            });
 
             api.updateUser({
                 userId: store.state.player.currentPlayer.userId,
@@ -178,6 +218,64 @@ module.exports = window.store = new Vuex.Store({
             socket.emit('shake', {
                 userId: store.state.player.currentPlayer.userId,
                 shakeCount: shakeCount
+            });
+        },
+        listenPlayerJoinSocketMessage: function(store, enable) {
+            listenPlayerSocketMessage('join', enable);
+        },
+        listenPlayerLeaveSocketMessage: function(store, enable) {
+            listenPlayerSocketMessage('leave', enable);
+        },
+        listenPlayerShakeSocketMessage: function(store, enable) {
+            listenPlayerSocketMessage('shake', enable);
+        },
+        listenPlayerStatusChangeSocketMessage: function(store, enable) {
+            listenPlayerSocketMessage('status-change', enable);
+        },
+        onJoin: function(store, message) {
+            var userId = message.userId, roomId = message.roomId;
+
+            console.log('store.actions.onJoin', userId);
+            api.getUser({userId: userId}).then(function(data) {
+                var exist = store.state.player.readyPage.players.filter(function(p) {
+                        return p.objectId === userId;
+                    }).length !== 0;
+
+                if(!exist)
+                    store.state.player.readyPage.players.push(data.user);
+            }, function(error) {
+                console.log('store.actions.onJoin get user error', error);
+            });
+        },
+        onLeave: function(store, message) {
+            var userId = message.userId, roomId = message.roomId;
+
+            store.state.player.readyPage.players = store.state.player.readyPage.players.filter(function(player) {
+                return player.objectId !== userId;
+            });
+        },
+        onShake: function(store, data) {
+            var userId = data.userId,
+                count = data.shakeCount,
+                i;
+
+            for(i = 0; i < store.state.player.readyPage.players.length; i ++) {
+                if(store.state.player.readyPage.players[i].objectId === userId) {
+                    store.state.player.readyPage.players[i].shakeCount = count;
+                    break;
+                }
+            }
+        },
+        onStatusChange: function(store, message) {
+            var roomId = message.roomId,
+                status = message.status;
+
+            if(roomId === store.state.player.readyPage.roomDetails.objectId)
+                store.state.player.readyPage.roomDetails.status = status;
+
+            store.state.player.homePage.roomList.forEach(function(room) {
+                if(room.objectId === roomId)
+                    room.status = status;
             });
         },
 
@@ -254,6 +352,7 @@ module.exports = window.store = new Vuex.Store({
             api.updateRoom({roomId: roomId, status: 'JOINING'}).then(function(data) {
                 console.log('store.actions.allowToJoinRoom success');
                 store.state.admin.roomPage.roomDetails = data.room;
+                socket.emit('status-change', {roomId: roomId, status: 'JOINING'});
             }, function(error) {
                 console.log('store.actions.allowToJoinRoom error', error);
             });
@@ -265,6 +364,7 @@ module.exports = window.store = new Vuex.Store({
             api.updateRoom({roomId: roomId, status: 'PLAYING'}).then(function(data) {
                 console.log('store.actions.startRoom success');
                 store.state.admin.roomPage.roomDetails = data.room;
+                socket.emit('status-change', {roomId: roomId, status: 'PLAYING'});
             }, function(error) {
                 console.log('store.actions.startRoom error', error);
             });
@@ -272,11 +372,12 @@ module.exports = window.store = new Vuex.Store({
         stopRoom: function(store, roomId) {
             api.updateRoom({roomId: roomId, status: 'END'}).then(function(data) {
                 console.log('store.actions.stopRoom success');
+                socket.emit('status-change', {roomId: roomId, status: 'END'});
             }, function(error) {
                 console.log('store.actions.stopRoom error', error);
             });
         },
-        listenSocketMessage: function(store, enable) {
+        adminListenSocketMessage: function(store, enable) {
             adminListenPlayerSocketMessage('shake', enable);
             adminListenPlayerSocketMessage('join', enable);
             adminListenPlayerSocketMessage('leave', enable);

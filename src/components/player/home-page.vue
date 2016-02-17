@@ -55,6 +55,8 @@
 
         ready: function() {
             store.actions.getRoomList();
+            store.actions.clearShakeCount();
+            store.actions.listenPlayerStatusChangeSocketMessage(true);
         },
 
         methods: {

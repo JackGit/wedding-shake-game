@@ -122,7 +122,7 @@
         ready: function() {
             store.actions.getAdminRoomDetails(this.$route.params.roomId);
             store.actions.getAdminRoomPlayers(this.$route.params.roomId);
-            store.actions.listenSocketMessage(true);
+            store.actions.adminListenSocketMessage(true);
         },
 
         methods: {
