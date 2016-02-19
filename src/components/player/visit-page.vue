@@ -1,12 +1,5 @@
-<style scoped>
-    .win-stamp {
-        width: 40px;
-        position: absolute;
-        top: -5px;
-        right: -5px;
-        -webkit-transform: rotate(30deg);
-        border-radius: 50%;
-    }
+<style>
+
 </style>
 
 <template>
@@ -14,9 +7,9 @@
         <div class="navbar-fixed">
             <nav>
                 <div class="nav-wrapper red lighten-2">
-                    <a href="#" class="brand-logo">Ranking</a>
+                    <a href="#" class="brand-logo">Visit Mode</a>
                     <ul id="nav-mobile" class="left">
-                        <li><a v-link="{name: 'home', params: {userId: currentPlayer.userId}}"><i class="material-icons">open_in_new</i></a></li>
+                        <li><a v-link="{name: 'home'}"><i class="material-icons">open_in_new</i></a></li>
                     </ul>
                 </div>
             </nav>
@@ -24,36 +17,34 @@
 
         <div class="container">
             <div class="row">
-                <h6 class="grey-text">RESULT</h6>
-                <div class="card col s12">
-                    <div class="card-content">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th data-field="side">Side</th>
-                                    <th data-field="players">Players</th>
-                                    <th data-field="total">Total</th>
-                                    <th data-field="result">Result</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>Bride</td>
-                                    <td>{{bridePlayers.length}}</td>
-                                    <td>{{brideTotal}}</td>
-                                    <td style="position: relative">WIN<img src="http://img.aiyidu.com/forum/201309/08/192346u5dud4wi14uw1e4w.jpg" class="win-stamp"></td>
-                                </tr>
-                                <tr>
-                                    <td>Groom</td>
-                                    <td>{{groomPlayers.length}}</td>
-                                    <td>{{groomTotal}}</td>
-                                    <td style="position: relative">FAILED</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                <h6 class="grey-text">STATUS</h6>
+                <div class="card">
+                    <div class="card-content" v-if="status === 'END'">
+                        <h4 class="card-title center-align">Game Ended</h4>
+                        <div class="center-align">
+                            <a class="waves-effect waves-light btn red lighten-2" v-link="{name: 'ranking', params: {roomId: $route.params.roomId}}">Check Ranking</a>
+                        </div>
+                    </div>
+                    <div class="card-content" v-else>
+                        <h4 class="card-title center-align">Game WIP</h4>
                     </div>
                 </div>
-                <h6 class="grey-text">DETAILS</h6>
+
+                <h6 class="grey-text">ROOM INFO</h6>
+                <div class="card col s12">
+                    <div class="card-content">
+                        <div class="col s6 teal-text">
+                            <h6 class="center-align text-lighten-3">Bride({{bridePlayers.length}})</h6>
+                            <h1 class="center-align">{{brideTotal}}</h1>
+                        </div>
+                        <div class="col s6 red-text">
+                            <h6 class="center-align text-lighten-3">Groom({{groomPlayers.length}})</h6>
+                            <h1 class="center-align">{{groomTotal}}</h1>
+                        </div>
+                    </div>
+                </div>
+
+                <h6 class="grey-text">PLAYER DATA</h6>
                 <div class="card col s12">
                     <div class="card-content">
                         <ul class="collection">
@@ -116,26 +107,18 @@
                         total += player.shakeCount;
                 });
                 return total;
+            },
+            status: function() {
+                return store.state.player.currentRoom.status;
             }
         },
 
         ready: function() {
             var roomId = this.$route.params.roomId;
-            store.actions.getRoomPlayers(roomId);
             store.actions.getRoomDetails(roomId);
-        },
-
-        route: {
-            canActivate: function(transition) {
-                var room = store.state.player.currentRoom;
-
-                if(room.status === 'END')
-                    transition.next();
-                else if(room.status === 'PLAYING')
-                    transition.redirect({name: 'visit', params: {roomId: room.objectId}});
-                else
-                    transition.abort();
-            }
+            store.actions.getRoomPlayers(roomId);
+            store.actions.listenPlayerShakeSocketMessage(true);
+            store.actions.listenPlayerStatusChangeSocketMessage(true);
         }
     };
 </script>

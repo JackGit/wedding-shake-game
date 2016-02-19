@@ -2,24 +2,17 @@ var AV = require('avoscloud-sdk');
 var PlayerDAO = require('../dao/player.js');
 var RoomDAO = require('../dao/room.js');
 
-// AV Objects
-var Player = AV.Object.extend('Player');
-var Room = AV.Object.extend('Room');
-var Game = AV.Object.extend('Game');
-
 module.exports = function(app, io) {
     var router = app;
 
     router.post('/game/user/create', function(req, res) {
-        var playerAVObj = new Player(),
-            player = {
-                userName: req.body.userName,
-                userType: req.body.userType,
-                userStatus: 'JOINED',
-                shakeCount: 0
-            };
+        var player = {
+            userName: req.body.userName,
+            userType: req.body.userType,
+            shakeCount: 0
+        };
 
-        playerAVObj.save(player).then(function(response) {
+        PlayerDAO.createPlayer(player).then(function(response) {
             res.send({
                 statusCode: 0,
                 message: '',
@@ -35,33 +28,23 @@ module.exports = function(app, io) {
     });
 
     router.post('/game/user/update', function(req, res) {
-        var userId = req.body.userId,
-            userName = req.body.userName,
-            userStatus = req.body.userStatus,
-            shakeCount = req.body.shakeCount,
-            playerQueryObj = new AV.Query('Player');
-
-        playerQueryObj.get(userId).try(function(player) {
-            if(userName !== undefined) player.set('userName', userName);
-            if(userStatus !== undefined) player.set('userStatus', userStatus);
-            if(shakeCount !== undefined) player.set('shakeCount', shakeCount);
-            return player.save();
-        }).try(function(response) {
+        PlayerDAO.updatePlayer(req.body.user).then(function(response) {
             res.send({
                 statusCode: 0,
                 message: '',
                 user: response
             });
-        }).catch(function(error) {
+        }, function(error) {
             res.send({
                 statusCode: 1,
                 message: 'update user error',
                 error: error
-            })
-        })
+            });
+        });
     });
 
     router.post('/game/user/delete', function(req, res) {});
+
     router.post('/game/user/list', function(req, res) {
         PlayerDAO.getPlayerList(req.body.userId).then(function(response) {
             res.send({
@@ -79,10 +62,7 @@ module.exports = function(app, io) {
     });
 
     router.post('/game/user/get', function(req, res) {
-        var playerQueryObj = new AV.Query('Player'),
-            id = req.body.userId;
-
-        playerQueryObj.get(id).then(function(response) {
+        PlayerDAO.getPlayer(req.body.userId).then(function(response) {
             res.send({
                 statusCode: 0,
                 message: '',

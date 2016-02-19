@@ -28,11 +28,14 @@ router.map({
         name: 'welcome',
         component: require('./components/player/welcome-page.vue')
     },
-    '/home/:userId': {
+    '/home': {
         name: 'home',
         component: require('./components/player/home-page.vue')
     },
-    '/ready/:roomId': {
+
+    // pages after join room start
+    // refresh these pages will route to home page
+    '/ready': {
         name: 'ready',
         component: require('./components/player/ready-page.vue')
     },
@@ -40,10 +43,18 @@ router.map({
         name: 'shake',
         component: require('./components/player/shake-page.vue')
     },
+    // pages after join room end
+
     '/ranking/:roomId': {
         name: 'ranking',
         component: require('./components/player/ranking-page.vue')
     },
+    '/visit/:roomId': {
+        name: 'visit',
+        component: require('./components/player/visit-page.vue')
+    },
+
+    // admin pages
     '/admin': {
         name: 'admin',
         component: require('./components/admin/admin-page.vue')

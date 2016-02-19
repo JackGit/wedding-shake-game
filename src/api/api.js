@@ -22,8 +22,8 @@ var API = {
     createUser: function(request) {
         return callservice('/game/user/create', request);
     },
-    updateUser: function(request) {
-        return callservice('/game/user/update', request);
+    updateUser: function(user) {
+        return callservice('/game/user/update', {user: user});
     },
     listUser: function() {
         return callservice('/game/user/list', {});

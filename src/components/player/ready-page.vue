@@ -4,14 +4,16 @@
 
 <template>
     <div>
-        <nav>
-            <div class="nav-wrapper red lighten-2">
-                <a href="#" class="brand-logo">{{currentPlayer.userName}}</a>
-                <ul id="nav-mobile" class="left">
-                    <li><a @click="leaveRoom()"><i class="material-icons">open_in_new</i></a></li>
-                </ul>
-            </div>
-        </nav>
+        <div class="navbar-fixed">
+            <nav>
+                <div class="nav-wrapper red lighten-2">
+                    <a href="#" class="brand-logo">{{currentPlayer.userName}}</a>
+                    <ul id="nav-mobile" class="left">
+                        <li><a @click="leaveRoom()"><i class="material-icons">open_in_new</i></a></li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
 
         <div class="container">
             <div class="row">
@@ -69,23 +71,23 @@
 
         computed: {
             room: function() {
-                return store.state.player.readyPage.roomDetails;
+                return store.state.player.currentRoom;
             },
             currentPlayer: function() {
                 return store.state.player.currentPlayer;
             },
             bridePlayers: function() {
-                return store.state.player.readyPage.players.filter(function(player) {
+                return store.state.player.playerList.filter(function(player) {
                     return player.userType === 'BRIDE';
                 });
             },
             groomPlayers: function() {
-                return store.state.player.readyPage.players.filter(function(player) {
+                return store.state.player.playerList.filter(function(player) {
                     return player.userType === 'GROOM';
                 });
             },
             status: function() {
-                return store.state.player.readyPage.roomDetails.status;
+                return store.state.player.currentRoom.status;
             }
         },
 
@@ -107,25 +109,24 @@
         ready: function() {
             $(this.$els.tabs).tabs();
 
-            var roomId = this.$route.params.roomId;
+            var roomId = store.state.player.currentRoom.objectId;
 
             store.actions.getRoomDetails(roomId);
             store.actions.getRoomPlayers(roomId);
 
             store.actions.listenPlayerJoinSocketMessage(true);
             store.actions.listenPlayerLeaveSocketMessage(true);
-            store.actions.listenPlayerShakeSocketMessage(true);
             store.actions.listenPlayerStatusChangeSocketMessage(true);
         },
 
         methods: {
             leaveRoom: function() {
-                var roomId = this.$route.params.roomId;
-                var userId = store.state.player.currentPlayer.userId;
+                var roomId = store.state.player.currentRoom.objectId;
+                var userId = store.state.player.currentPlayer.objectId;
                 var router = this.$router;
 
                 store.actions.leaveRoom(roomId, userId).then(function() {
-                    router.go({name: 'home', params: {userId: userId}});
+                    router.go({name: 'home'});
                 }, function() {
 
                 });
@@ -151,6 +152,17 @@
                 setTimeout(function() {
                     timer.start();
                 }, 2000);
+            }
+        },
+
+        route: {
+            canActivate: function(transition) {
+                var roomId = store.state.player.currentRoom.objectId;
+
+                if(roomId)
+                    transition.next();
+                else
+                    transition.redirect({name: 'home'});
             }
         }
     };

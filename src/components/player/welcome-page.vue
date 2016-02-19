@@ -63,7 +63,7 @@
 
         route: {
             data: function(transition) {
-                var userId = store.state.player.currentPlayer.userId;
+                var userId = store.state.player.currentPlayer.objectId;
 
                 if(userId)
                     transition.redirect({name: 'home', params: {userId: userId}});

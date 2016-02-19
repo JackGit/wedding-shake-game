@@ -74,11 +74,14 @@
 	        name: 'welcome',
 	        component: __webpack_require__(41)
 	    },
-	    '/home/:userId': {
+	    '/home': {
 	        name: 'home',
 	        component: __webpack_require__(46)
 	    },
-	    '/ready/:roomId': {
+	
+	    // pages after join room start
+	    // refresh these pages will route to home page
+	    '/ready': {
 	        name: 'ready',
 	        component: __webpack_require__(51)
 	    },
@@ -86,17 +89,25 @@
 	        name: 'shake',
 	        component: __webpack_require__(61)
 	    },
+	    // pages after join room end
+	
 	    '/ranking/:roomId': {
 	        name: 'ranking',
 	        component: __webpack_require__(67)
 	    },
+	    '/visit/:roomId': {
+	        name: 'visit',
+	        component: __webpack_require__(72)
+	    },
+	
+	    // admin pages
 	    '/admin': {
 	        name: 'admin',
-	        component: __webpack_require__(72)
+	        component: __webpack_require__(77)
 	    },
 	    '/room/:roomId': {
 	        name: 'room',
-	        component: __webpack_require__(82)
+	        component: __webpack_require__(87)
 	    }
 	});
 	
@@ -14500,34 +14511,15 @@
 	        socket.off(type);
 	    }
 	}
-	
+	console.log('--- new store');
 	module.exports = window.store = new Vuex.Store({
 	    state: {
 	        /* player pages states */
 	        player: {
-	            currentPlayer: {
-	                userId: localStorage.userId || '',
-	                userName: '',
-	                userType: '',
-	                shakeCount: 0
-	            },
-	            welcomePage: {
-	
-	            },
-	            pageMask: false,
-	            homePage: {
-	                roomList: []            // need socket.io to update this field
-	            },
-	            readyPage: {
-	                roomDetails: {},         // need socket.io to update this field
-	                players: []
-	            },
-	            shakePage: {
-	
-	            },
-	            rankingPage: {
-	                players: [{userName: 'Jack', userType: 'BRIDE', shakeCount: 11}, {userName: 'Tom', userType: 'GROOM', shakeCount: 21}]
-	            }
+	            currentPlayer: localStorage.userJSON ? JSON.parse(localStorage.userJSON) : {},
+	            currentRoom: {},
+	            playerList: [],         // player list in current room
+	            roomList: [],           // room list
 	        },
 	
 	        /* admin pages states */
@@ -14552,11 +14544,12 @@
 	
 	            return new Promise(function(resolve, reject) {
 	                api.createUser(user).then(function(data) {
-	                    store.state.player.currentPlayer.userId = localStorage.userId = data.user.objectId;
-	                    store.state.player.currentPlayer.userName = data.user.userName;
-	                    store.state.player.currentPlayer.userType = data.user.userType;
+	                    localStorage.userJSON = JSON.stringify(data.user);
+	                    store.state.player.currentPlayer = data.user;
 	                    resolve(data.user);
 	                }, function(error) {
+	                    localStorage.userJSON = '';
+	                    store.state.player.currentPlayer = {};
 	                    reject(error);
 	                });
 	            });
@@ -14565,27 +14558,21 @@
 	            console.log('store.actions.getUserDetails', userId);
 	            return new Promise(function(resolve, reject) {
 	                api.getUser({userId: userId}).then(function(data) {
-	                    var user = data.user;
-	                    store.state.player.currentPlayer.userName = user.userName;
-	                    store.state.player.currentPlayer.userType = user.userType;
-	                    resolve(user);
+	                    localStorage.userJSON = JSON.stringify(data.user);
+	                    store.state.player.currentPlayer = data.user;
+	                    resolve(data.user);
 	                }, function(error) {
+	                    localStorage.userJSON = '';
+	                    store.state.player.currentPlayer = {};
 	                    reject(error);
 	                });
 	            });
-	        },
-	        clearUserData: function(store) {
-	            localStorage.userId = '';
-	            store.state.player.currentPlayer.userId = '';
-	            store.state.player.currentPlayer.userName = '';
-	            store.state.player.currentPlayer.userType = '';
-	            store.state.player.currentPlayer.shakeCount = 0;
 	        },
 	        getRoomDetails: function(store, roomId) {
 	            console.log('store.actions.getRoomDetails', roomId);
 	
 	            api.getRoom(roomId).then(function(data) {
-	                store.state.player.readyPage.roomDetails = data.room;
+	                store.state.player.currentRoom = data.room;
 	            }, function(error) {
 	                console.log('store.actions.getRoomDetails error', error);
 	            });
@@ -14593,18 +14580,20 @@
 	        getRoomPlayers: function(store, roomId) {
 	            console.log('store.actions.getRoomPlayers', roomId);
 	            api.getRoomPlayers(roomId).then(function(data) {
-	                store.state.player.readyPage.players = data.players;
+	                store.state.player.playerList = data.players;
 	            }, function(error) {
 	                console.log('store.actions.getRoomPlayers error', error);
+	                store.state.player.playerList = [];
 	            });
 	        },
 	        getRoomList: function(store) {
 	            console.log('store.actions.getRoomList');
 	
 	            api.listRoom().then(function(data) {
-	                store.state.player.homePage.roomList = data.roomList;
+	                store.state.player.roomList = data.roomList;
 	            }, function(error) {
 	                console.log('store.actions.getRoomList error', error);
+	                store.state.player.roomList = [];
 	            });
 	        },
 	        joinRoom: function(store, request) {
@@ -14612,10 +14601,13 @@
 	            var user = request.user, roomId = request.roomId;
 	
 	            return new Promise(function(resolve, reject) {
-	                api.joinRoom(roomId, user.userId, user.userType).then(function(data) {
-	                    socket.emit('join', {userId: user.userId, roomId: roomId});
+	                api.joinRoom(roomId, user.objectId, user.userType).then(function(data) {
+	                    store.state.player.currentRoom = data.room;
+	                    socket.emit('join', {userId: user.objectId, roomId: data.room.objectId});
 	                    resolve(data.room);
 	                }, function(error) {
+	                    store.state.player.currentRoom = {};
+	                    store.state.player.playerList = [];
 	                    reject(error);
 	                });
 	            });
@@ -14624,6 +14616,8 @@
 	            console.log('store.actions.leaveRoom', roomId, userId);
 	            return new Promise(function(resolve, reject) {
 	                api.leaveRoom(roomId, userId).then(function(data) {
+	                    store.state.player.currentRoom = {};
+	                    store.state.player.playerList = [];
 	                    socket.emit('leave', {userId: userId, roomId: roomId});
 	                    resolve(data.room);
 	                }, function(error) {
@@ -14633,7 +14627,7 @@
 	        },
 	        clearShakeCount: function(store) {
 	            api.updateUser({
-	                userId: store.state.player.currentPlayer.userId,
+	                objectId: store.state.player.currentPlayer.objectId,
 	                shakeCount: 0
 	            });
 	            store.state.player.currentPlayer.shakeCount = 0;
@@ -14641,18 +14635,18 @@
 	        shake: function(store) {
 	            var shakeCount = ++ store.state.player.currentPlayer.shakeCount;
 	
-	            store.state.player.readyPage.players.forEach(function(p) {
-	                if(p.objectId === store.state.player.currentPlayer.userId)
+	            store.state.player.playerList.forEach(function(p) {
+	                if(p.objectId === store.state.player.currentPlayer.objectId)
 	                    p.shakeCount = shakeCount;
 	            });
 	
 	            api.updateUser({
-	                userId: store.state.player.currentPlayer.userId,
+	                objectId: store.state.player.currentPlayer.objectId,
 	                shakeCount: shakeCount
 	            });
 	
 	            socket.emit('shake', {
-	                userId: store.state.player.currentPlayer.userId,
+	                userId: store.state.player.currentPlayer.objectId,
 	                shakeCount: shakeCount
 	            });
 	        },
@@ -14673,12 +14667,12 @@
 	
 	            console.log('store.actions.onJoin', userId);
 	            api.getUser({userId: userId}).then(function(data) {
-	                var exist = store.state.player.readyPage.players.filter(function(p) {
+	                var exist = store.state.player.playerList.filter(function(p) {
 	                        return p.objectId === userId;
 	                    }).length !== 0;
 	
 	                if(!exist)
-	                    store.state.player.readyPage.players.push(data.user);
+	                    store.state.player.playerList.push(data.user);
 	            }, function(error) {
 	                console.log('store.actions.onJoin get user error', error);
 	            });
@@ -14686,7 +14680,7 @@
 	        onLeave: function(store, message) {
 	            var userId = message.userId, roomId = message.roomId;
 	
-	            store.state.player.readyPage.players = store.state.player.readyPage.players.filter(function(player) {
+	            store.state.player.playerList = store.state.player.playerList.filter(function(player) {
 	                return player.objectId !== userId;
 	            });
 	        },
@@ -14695,9 +14689,9 @@
 	                count = data.shakeCount,
 	                i;
 	
-	            for(i = 0; i < store.state.player.readyPage.players.length; i ++) {
-	                if(store.state.player.readyPage.players[i].objectId === userId) {
-	                    store.state.player.readyPage.players[i].shakeCount = count;
+	            for(i = 0; i < store.state.player.playerList.length; i ++) {
+	                if(store.state.player.playerList[i].objectId === userId) {
+	                    store.state.player.playerList[i].shakeCount = count;
 	                    break;
 	                }
 	            }
@@ -14706,10 +14700,10 @@
 	            var roomId = message.roomId,
 	                status = message.status;
 	
-	            if(roomId === store.state.player.readyPage.roomDetails.objectId)
-	                store.state.player.readyPage.roomDetails.status = status;
+	            if(roomId === store.state.player.currentRoom.objectId)
+	                store.state.player.currentRoom.status = status;
 	
-	            store.state.player.homePage.roomList.forEach(function(room) {
+	            store.state.player.roomList.forEach(function(room) {
 	                if(room.objectId === roomId)
 	                    room.status = status;
 	            });
@@ -15371,8 +15365,8 @@
 	    createUser: function(request) {
 	        return callservice('/game/user/create', request);
 	    },
-	    updateUser: function(request) {
-	        return callservice('/game/user/update', request);
+	    updateUser: function(user) {
+	        return callservice('/game/user/update', {user: user});
 	    },
 	    listUser: function() {
 	        return callservice('/game/user/list', {});
@@ -15528,7 +15522,7 @@
 	
 	    route: {
 	        data: function data(transition) {
-	            var userId = store.state.player.currentPlayer.userId;
+	            var userId = store.state.player.currentPlayer.objectId;
 	
 	            if (userId) transition.redirect({ name: 'home', params: { userId: userId } });else transition.next();
 	        }
@@ -15625,7 +15619,7 @@
 	            return store.state.player.currentPlayer;
 	        },
 	        roomList: function roomList() {
-	            return store.state.player.homePage.roomList;
+	            return store.state.player.roomList;
 	        }
 	    },
 	
@@ -15644,26 +15638,27 @@
 	                user: store.state.player.currentPlayer,
 	                roomId: roomId
 	            }).then(function () {
-	                router.go({ name: 'ready', params: { roomId: roomId } });
+	                router.go({ name: 'ready' });
 	            }, function () {});
 	        },
 	        visit: function visit(roomId) {
 	            console.log('visit');
+	            this.$router.go({ name: 'visit', params: { roomId: roomId } });
 	        },
 	        ranking: function ranking(roomId) {
 	            console.log('ranking');
+	            this.$router.go({ name: 'ranking', params: { roomId: roomId } });
 	        }
 	    },
 	
 	    route: {
-	        data: function data(transition) {
-	            var userId = this.$route.params.userId;
+	        canActivate: function canActivate(transition) {
+	            var userId = store.state.player.currentPlayer.objectId;
 	
-	            store.actions.getUserDetails(userId).then(function (user) {
+	            store.actions.getUserDetails(userId).then(function () {
 	                transition.next();
-	            }, function (error) {
+	            }, function () {
 	                console.log('home-page validate user failed, redirect to welcome page, userId', userId);
-	                store.actions.clearUserData();
 	                transition.redirect({ name: 'welcome' });
 	            });
 	        }
@@ -15674,7 +15669,7 @@
 /* 50 */
 /***/ function(module, exports) {
 
-	module.exports = "\n<div _v-6ab4b43e=\"\">\n    <nav _v-6ab4b43e=\"\">\n        <div class=\"nav-wrapper red lighten-2\" _v-6ab4b43e=\"\">\n            <a href=\"#\" class=\"brand-logo\" _v-6ab4b43e=\"\">{{currentPlayer.userName}}</a>\n            <ul id=\"nav-mobile\" class=\"right hide-on-med-and-down\" _v-6ab4b43e=\"\">\n                <li _v-6ab4b43e=\"\"><a href=\"sass.html\" _v-6ab4b43e=\"\">Sass</a></li>\n                <li _v-6ab4b43e=\"\"><a href=\"badges.html\" _v-6ab4b43e=\"\">Components</a></li>\n                <li _v-6ab4b43e=\"\"><a href=\"collapsible.html\" _v-6ab4b43e=\"\">JavaScript</a></li>\n            </ul>\n        </div>\n    </nav>\n\n    <div class=\"container\" _v-6ab4b43e=\"\">\n        <div class=\"row\" _v-6ab4b43e=\"\">\n            <div class=\"card col s12\" v-for=\"room in roomList\" _v-6ab4b43e=\"\">\n                <div class=\"card-content\" _v-6ab4b43e=\"\">\n                    <span class=\"card-title red-text text-lighten-2\" _v-6ab4b43e=\"\">{{room.roomName}}</span>\n                    <p v-if=\"room.status === 'INIT'\" _v-6ab4b43e=\"\">Game is not started yet, please wait.</p>\n                    <p v-if=\"room.status === 'JOINING'\" _v-6ab4b43e=\"\">People are joining, there are {{room.players.length}} players joined the game.</p>\n                    <p v-if=\"room.status === 'PLAYING'\" _v-6ab4b43e=\"\">Game is playing right now. You can't join right now.</p>\n                    <p v-if=\"room.status === 'END'\" _v-6ab4b43e=\"\">Game is ended.</p>\n                </div>\n                <div class=\"card-action\" v-if=\"room.status === 'JOINING'\" _v-6ab4b43e=\"\">\n                    <a @click=\"join(room.objectId)\" class=\"waves-effect waves-red btn-flat\" _v-6ab4b43e=\"\">Join Now</a>\n                </div>\n                <div class=\"card-action\" v-if=\"room.status === 'PLAYING'\" _v-6ab4b43e=\"\">\n                    <a @click=\"visit(room.objectId)\" class=\"waves-effect waves-red btn-flat\" _v-6ab4b43e=\"\">Pay Visit</a>\n                </div>\n                <div class=\"card-action\" v-if=\"room.status === 'END'\" _v-6ab4b43e=\"\">\n                    <a @click=\"ranking(room.objectId)\" class=\"waves-effect waves-red btn-flat\" _v-6ab4b43e=\"\">Check Rankings</a>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n";
+	module.exports = "\n<div _v-6ab4b43e=\"\">\n    <div class=\"navbar-fixed\" _v-6ab4b43e=\"\">\n        <nav _v-6ab4b43e=\"\">\n            <div class=\"nav-wrapper red lighten-2\" _v-6ab4b43e=\"\">\n                <a href=\"#\" class=\"brand-logo\" _v-6ab4b43e=\"\">{{currentPlayer.userName}}</a>\n            </div>\n        </nav>\n    </div>\n\n    <div class=\"container\" _v-6ab4b43e=\"\">\n        <div class=\"row\" _v-6ab4b43e=\"\">\n            <div class=\"card col s12\" v-for=\"room in roomList\" _v-6ab4b43e=\"\">\n                <div class=\"card-content\" _v-6ab4b43e=\"\">\n                    <span class=\"card-title red-text text-lighten-2\" _v-6ab4b43e=\"\">{{room.roomName}}</span>\n                    <p v-if=\"room.status === 'INIT'\" _v-6ab4b43e=\"\">Game is not started yet, please wait.</p>\n                    <p v-if=\"room.status === 'JOINING'\" _v-6ab4b43e=\"\">People are joining, there are {{room.players.length}} players joined the game.</p>\n                    <p v-if=\"room.status === 'PLAYING'\" _v-6ab4b43e=\"\">Game is playing right now. You can't join right now.</p>\n                    <p v-if=\"room.status === 'END'\" _v-6ab4b43e=\"\">Game is ended.</p>\n                </div>\n                <div class=\"card-content center-align\" v-if=\"room.status === 'JOINING'\" _v-6ab4b43e=\"\">\n                    <a @click=\"join(room.objectId)\" class=\"waves-effect waves-light btn red lighten-2\" _v-6ab4b43e=\"\">Join Now</a>\n                </div>\n                <div class=\"card-content center-align\" v-if=\"room.status === 'PLAYING'\" _v-6ab4b43e=\"\">\n                    <a @click=\"visit(room.objectId)\" class=\"waves-effect waves-light btn red lighten-2\" _v-6ab4b43e=\"\">Pay Visit</a>\n                </div>\n                <div class=\"card-content center-align\" v-if=\"room.status === 'END'\" _v-6ab4b43e=\"\">\n                    <a @click=\"ranking(room.objectId)\" class=\"waves-effect waves-light btn red lighten-2\" _v-6ab4b43e=\"\">Check Rankings</a>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n";
 
 /***/ },
 /* 51 */
@@ -15758,23 +15753,23 @@
 	
 	    computed: {
 	        room: function room() {
-	            return store.state.player.readyPage.roomDetails;
+	            return store.state.player.currentRoom;
 	        },
 	        currentPlayer: function currentPlayer() {
 	            return store.state.player.currentPlayer;
 	        },
 	        bridePlayers: function bridePlayers() {
-	            return store.state.player.readyPage.players.filter(function (player) {
+	            return store.state.player.playerList.filter(function (player) {
 	                return player.userType === 'BRIDE';
 	            });
 	        },
 	        groomPlayers: function groomPlayers() {
-	            return store.state.player.readyPage.players.filter(function (player) {
+	            return store.state.player.playerList.filter(function (player) {
 	                return player.userType === 'GROOM';
 	            });
 	        },
 	        status: function status() {
-	            return store.state.player.readyPage.roomDetails.status;
+	            return store.state.player.currentRoom.status;
 	        }
 	    },
 	
@@ -15796,25 +15791,24 @@
 	    ready: function ready() {
 	        $(this.$els.tabs).tabs();
 	
-	        var roomId = this.$route.params.roomId;
+	        var roomId = store.state.player.currentRoom.objectId;
 	
 	        store.actions.getRoomDetails(roomId);
 	        store.actions.getRoomPlayers(roomId);
 	
 	        store.actions.listenPlayerJoinSocketMessage(true);
 	        store.actions.listenPlayerLeaveSocketMessage(true);
-	        store.actions.listenPlayerShakeSocketMessage(true);
 	        store.actions.listenPlayerStatusChangeSocketMessage(true);
 	    },
 	
 	    methods: {
 	        leaveRoom: function leaveRoom() {
-	            var roomId = this.$route.params.roomId;
-	            var userId = store.state.player.currentPlayer.userId;
+	            var roomId = store.state.player.currentRoom.objectId;
+	            var userId = store.state.player.currentPlayer.objectId;
 	            var router = this.$router;
 	
 	            store.actions.leaveRoom(roomId, userId).then(function () {
-	                router.go({ name: 'home', params: { userId: userId } });
+	                router.go({ name: 'home' });
 	            }, function () {});
 	        },
 	        start: function start() {
@@ -15836,6 +15830,14 @@
 	            setTimeout(function () {
 	                timer.start();
 	            }, 2000);
+	        }
+	    },
+	
+	    route: {
+	        canActivate: function canActivate(transition) {
+	            var roomId = store.state.player.currentRoom.objectId;
+	
+	            if (roomId) transition.next();else transition.redirect({ name: 'home' });
 	        }
 	    }
 	};
@@ -23577,7 +23579,7 @@
 /* 60 */
 /***/ function(module, exports) {
 
-	module.exports = "\n<div _v-9d39ddf6=\"\">\n    <nav _v-9d39ddf6=\"\">\n        <div class=\"nav-wrapper red lighten-2\" _v-9d39ddf6=\"\">\n            <a href=\"#\" class=\"brand-logo\" _v-9d39ddf6=\"\">{{currentPlayer.userName}}</a>\n            <ul id=\"nav-mobile\" class=\"left\" _v-9d39ddf6=\"\">\n                <li _v-9d39ddf6=\"\"><a @click=\"leaveRoom()\" _v-9d39ddf6=\"\"><i class=\"material-icons\" _v-9d39ddf6=\"\">open_in_new</i></a></li>\n            </ul>\n        </div>\n    </nav>\n\n    <div class=\"container\" _v-9d39ddf6=\"\">\n        <div class=\"row\" _v-9d39ddf6=\"\">\n            <h6 class=\"grey-text\" _v-9d39ddf6=\"\">ROOM INFORMATION</h6>\n            <div class=\"card col s12\" _v-9d39ddf6=\"\">\n                <div class=\"card-content\" _v-9d39ddf6=\"\">\n                    <span class=\"card-title\" _v-9d39ddf6=\"\">room info</span>\n                    <p _v-9d39ddf6=\"\">All players shake mobile for 30 seconds, total of shake count of which side is bigger, is the winner.</p>\n                </div>\n            </div>\n\n            <h6 class=\"grey-text\" _v-9d39ddf6=\"\">JOINED PLAYERS</h6>\n            <div class=\"card col s12\" _v-9d39ddf6=\"\">\n                <div class=\"card-content row\" _v-9d39ddf6=\"\">\n                    <div class=\"col s12\" _v-9d39ddf6=\"\">\n                        <ul class=\"tabs\" v-el:tabs=\"\" _v-9d39ddf6=\"\">\n                            <li class=\"tab col s6\" _v-9d39ddf6=\"\"><a href=\"#brideTab\" :class=\"currentPlayer.userType === 'BRIDE' ? 'active' : ''\" _v-9d39ddf6=\"\">Bride ({{bridePlayers.length}}/{{room.roomSize}})</a></li>\n                            <li class=\"tab col s6\" _v-9d39ddf6=\"\"><a href=\"#groomTab\" :class=\"currentPlayer.userType === 'GROOM' ? 'active' : ''\" _v-9d39ddf6=\"\">Groom ({{groomPlayers.length}}/{{room.roomSize}})</a></li>\n                        </ul>\n                    </div>\n                    <div id=\"brideTab\" class=\"col s12\" _v-9d39ddf6=\"\">\n                        <ul class=\"collection\" _v-9d39ddf6=\"\">\n                            <li class=\"collection-item avatar\" v-for=\"player in bridePlayers\" _v-9d39ddf6=\"\">\n                                <img src=\"http://materializecss.com/images/yuna.jpg\" class=\"circle\" _v-9d39ddf6=\"\">\n                                <span class=\"title\" _v-9d39ddf6=\"\">{{player.userName}}<span class=\"badge\" _v-9d39ddf6=\"\">{{player.shakeCount}}</span></span>\n                                <div class=\"progress\" _v-9d39ddf6=\"\">\n                                    <div class=\"determinate\" :style=\"{width: player.shakeCount/200*100 + '%'}\" _v-9d39ddf6=\"\"></div>\n                                </div>\n                            </li>\n                        </ul>\n                    </div>\n                    <div id=\"groomTab\" class=\"col s12\" _v-9d39ddf6=\"\">\n                        <ul class=\"collection\" _v-9d39ddf6=\"\">\n                            <li class=\"collection-item avatar\" v-for=\"player in groomPlayers\" _v-9d39ddf6=\"\">\n                                <img src=\"http://materializecss.com/images/yuna.jpg\" class=\"circle\" _v-9d39ddf6=\"\">\n                                <span class=\"title\" _v-9d39ddf6=\"\">{{player.userName}}<span class=\"badge\" _v-9d39ddf6=\"\">{{player.shakeCount}}</span></span>\n                                <div class=\"progress pink lighten-4\" _v-9d39ddf6=\"\">\n                                    <div class=\"determinate pink\" :style=\"{width: player.shakeCount/200*100 + '%'}\" _v-9d39ddf6=\"\"></div>\n                                </div>\n                            </li>\n                        </ul>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n";
+	module.exports = "\n<div _v-9d39ddf6=\"\">\n    <div class=\"navbar-fixed\" _v-9d39ddf6=\"\">\n        <nav _v-9d39ddf6=\"\">\n            <div class=\"nav-wrapper red lighten-2\" _v-9d39ddf6=\"\">\n                <a href=\"#\" class=\"brand-logo\" _v-9d39ddf6=\"\">{{currentPlayer.userName}}</a>\n                <ul id=\"nav-mobile\" class=\"left\" _v-9d39ddf6=\"\">\n                    <li _v-9d39ddf6=\"\"><a @click=\"leaveRoom()\" _v-9d39ddf6=\"\"><i class=\"material-icons\" _v-9d39ddf6=\"\">open_in_new</i></a></li>\n                </ul>\n            </div>\n        </nav>\n    </div>\n\n    <div class=\"container\" _v-9d39ddf6=\"\">\n        <div class=\"row\" _v-9d39ddf6=\"\">\n            <h6 class=\"grey-text\" _v-9d39ddf6=\"\">ROOM INFORMATION</h6>\n            <div class=\"card col s12\" _v-9d39ddf6=\"\">\n                <div class=\"card-content\" _v-9d39ddf6=\"\">\n                    <span class=\"card-title\" _v-9d39ddf6=\"\">room info</span>\n                    <p _v-9d39ddf6=\"\">All players shake mobile for 30 seconds, total of shake count of which side is bigger, is the winner.</p>\n                </div>\n            </div>\n\n            <h6 class=\"grey-text\" _v-9d39ddf6=\"\">JOINED PLAYERS</h6>\n            <div class=\"card col s12\" _v-9d39ddf6=\"\">\n                <div class=\"card-content row\" _v-9d39ddf6=\"\">\n                    <div class=\"col s12\" _v-9d39ddf6=\"\">\n                        <ul class=\"tabs\" v-el:tabs=\"\" _v-9d39ddf6=\"\">\n                            <li class=\"tab col s6\" _v-9d39ddf6=\"\"><a href=\"#brideTab\" :class=\"currentPlayer.userType === 'BRIDE' ? 'active' : ''\" _v-9d39ddf6=\"\">Bride ({{bridePlayers.length}}/{{room.roomSize}})</a></li>\n                            <li class=\"tab col s6\" _v-9d39ddf6=\"\"><a href=\"#groomTab\" :class=\"currentPlayer.userType === 'GROOM' ? 'active' : ''\" _v-9d39ddf6=\"\">Groom ({{groomPlayers.length}}/{{room.roomSize}})</a></li>\n                        </ul>\n                    </div>\n                    <div id=\"brideTab\" class=\"col s12\" _v-9d39ddf6=\"\">\n                        <ul class=\"collection\" _v-9d39ddf6=\"\">\n                            <li class=\"collection-item avatar\" v-for=\"player in bridePlayers\" _v-9d39ddf6=\"\">\n                                <img src=\"http://materializecss.com/images/yuna.jpg\" class=\"circle\" _v-9d39ddf6=\"\">\n                                <span class=\"title\" _v-9d39ddf6=\"\">{{player.userName}}<span class=\"badge\" _v-9d39ddf6=\"\">{{player.shakeCount}}</span></span>\n                                <div class=\"progress\" _v-9d39ddf6=\"\">\n                                    <div class=\"determinate\" :style=\"{width: player.shakeCount/200*100 + '%'}\" _v-9d39ddf6=\"\"></div>\n                                </div>\n                            </li>\n                        </ul>\n                    </div>\n                    <div id=\"groomTab\" class=\"col s12\" _v-9d39ddf6=\"\">\n                        <ul class=\"collection\" _v-9d39ddf6=\"\">\n                            <li class=\"collection-item avatar\" v-for=\"player in groomPlayers\" _v-9d39ddf6=\"\">\n                                <img src=\"http://materializecss.com/images/yuna.jpg\" class=\"circle\" _v-9d39ddf6=\"\">\n                                <span class=\"title\" _v-9d39ddf6=\"\">{{player.userName}}<span class=\"badge\" _v-9d39ddf6=\"\">{{player.shakeCount}}</span></span>\n                                <div class=\"progress pink lighten-4\" _v-9d39ddf6=\"\">\n                                    <div class=\"determinate pink\" :style=\"{width: player.shakeCount/200*100 + '%'}\" _v-9d39ddf6=\"\"></div>\n                                </div>\n                            </li>\n                        </ul>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n";
 
 /***/ },
 /* 61 */
@@ -23643,7 +23645,7 @@
 	
 	
 	// module
-	exports.push([module.id, "\n.shake-page-unit[_v-5b4dfb02] {\n    font-size: 20px;\n}\n", "", {"version":3,"sources":["/./src/components/player/shake-page.vue?b2e7fdc8"],"names":[],"mappings":";AACA;IACA,gBAAA;CACA","file":"shake-page.vue","sourcesContent":["<style scoped>\r\n    .shake-page-unit {\r\n        font-size: 20px;\r\n    }\r\n</style>\r\n\r\n<template>\r\n    <div>\r\n        <nav>\r\n            <div class=\"nav-wrapper red lighten-2\">\r\n                <a href=\"#\" class=\"brand-logo\">Shaking</a>\r\n                <ul id=\"nav-mobile\" class=\"left\">\r\n                    <li><a><i class=\"material-icons\">open_in_new</i></a></li>\r\n                </ul>\r\n            </div>\r\n        </nav>\r\n\r\n        <div class=\"container\">\r\n            <div class=\"row\">\r\n                <h6 class=\"grey-text\" v-if=\"showResult\">YOUR RESULT</h6>\r\n                <div class=\"card\" v-if=\"showResult\">\r\n                    <div class=\"card-content\">\r\n                        <h4 class=\"card-title center-align\">GAME END~</h4>\r\n                        <p>Congratulations! You just shaked <span class=\"teal-text\" style=\"font-size: 1.5em\">{{shakeCount}}</span> times in last <span class=\"red-text\" style=\"font-size: 1.5em\">{{time / 1000}}</span> seconds!</p>\r\n                    </div>\r\n                    <div class=\"card-content red lighten-3 white-text\">\r\n                        a chart here\r\n                    </div>\r\n                    <div class=\"card-action\">\r\n                        <a class=\"waves-effect waves-teal btn-flat\">Check RANKING</a>\r\n                    </div>\r\n                </div>\r\n\r\n                <h6 class=\"grey-text\" v-if=\"!showResult\">SHAKE COUNT</h6>\r\n                <div class=\"card\" v-if=\"!showResult\">\r\n                    <div class=\"card-content\">\r\n                        <h1 class=\"center-align teal-text\">{{shakeCount}}<span class=\"shake-page-unit\">times</span></h1>\r\n                    </div>\r\n                </div>\r\n\r\n                <h6 class=\"grey-text\" v-if=\"!showResult\">TIME</h6>\r\n                <div class=\"card\" v-if=\"!showResult\">\r\n                    <div class=\"card-content\">\r\n                        <h4 class=\"center-align red-text\">{{stopwatchString}}<i class=\"material-icons shake-page-unit\">restore</i></h4>\r\n                    </div>\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</template>\r\n\r\n<script>\r\n    var Stopwatch = require('timer-stopwatch');\r\n    // threshold = 15, timeout = 100 => 80 times / 10s, for both iphone and android\r\n    var ShakeJS = require('shake.js');\r\n    var shake = null;\r\n\r\n    module.exports = {\r\n        data: function() {\r\n            return {\r\n                time: 20 * 1000,\r\n                stopwatchString: '00:00.0',\r\n                showResult: false\r\n            }\r\n        },\r\n\r\n        computed: {\r\n            shakeCount: function() {\r\n                return store.state.player.currentPlayer.shakeCount;\r\n            }\r\n        },\r\n\r\n        ready: function() {\r\n            var unit = 100;\r\n            var that = this;\r\n            var timer = new Stopwatch(this.$data.time, {refreshRateMS: unit});\r\n            var total = this.$data.time;\r\n\r\n            timer.onTime(function() {\r\n                if(total > 0) {\r\n                    var s = '00' + Math.floor(total / 1000);\r\n                    var sStr = s.substring(s.length - 2, s.length);\r\n                    var ss = total % 1000 / unit;\r\n                    that.$data.stopwatchString = '00:' + sStr + '.' + ss;\r\n                }\r\n                total -= unit;\r\n            });\r\n            timer.onDone(function() {\r\n                shake.stop();\r\n                that.$data.stopwatchString = '00:00.0';\r\n                that.showResult = true;\r\n            });\r\n\r\n            timer.start();\r\n\r\n            if(shake) {\r\n                shake.stop();\r\n            } else {\r\n                window.addEventListener('shake', function() {\r\n                    store.actions.shake();\r\n                }, false);\r\n\r\n                shake = new ShakeJS({\r\n                    threshold: 15,\r\n                    timeout: 100\r\n                });\r\n            }\r\n            shake.start();\r\n        }\r\n    };\r\n</script>"],"sourceRoot":"webpack://"}]);
+	exports.push([module.id, "\n.shake-page-unit[_v-5b4dfb02] {\n    font-size: 20px;\n}\n", "", {"version":3,"sources":["/./src/components/player/shake-page.vue?01c492cc"],"names":[],"mappings":";AACA;IACA,gBAAA;CACA","file":"shake-page.vue","sourcesContent":["<style scoped>\r\n    .shake-page-unit {\r\n        font-size: 20px;\r\n    }\r\n</style>\r\n\r\n<template>\r\n    <div>\r\n        <div class=\"navbar-fixed\">\r\n            <nav>\r\n                <div class=\"nav-wrapper red lighten-2\">\r\n                    <a href=\"#\" class=\"brand-logo\">Shaking</a>\r\n                    <ul id=\"nav-mobile\" class=\"left\">\r\n                        <li><a v-link=\"{name: 'home'}\"><i class=\"material-icons\">open_in_new</i></a></li>\r\n                    </ul>\r\n                </div>\r\n            </nav>\r\n        </div>\r\n\r\n        <div class=\"container\">\r\n            <div class=\"row\">\r\n                <h6 class=\"grey-text\" v-if=\"showResult\">YOUR RESULT</h6>\r\n                <div class=\"card\" v-if=\"showResult\">\r\n                    <div class=\"card-content\">\r\n                        <h4 class=\"card-title center-align\">GAME END~</h4>\r\n                        <p>Congratulations! You just shaked <span class=\"teal-text\" style=\"font-size: 1.5em\">{{shakeCount}}</span> times in last <span class=\"red-text\" style=\"font-size: 1.5em\">{{time / 1000}}</span> seconds!</p>\r\n                    </div>\r\n                    <div class=\"card-content red lighten-3 white-text\">\r\n                        a chart here\r\n                    </div>\r\n                    <div class=\"card-content center-align\">\r\n                        <a class=\"waves-effect waves-light btn red lighten-2\" v-link=\"{name: 'ranking', params: {roomId: room.objectId}}\">Check Ranking</a>\r\n                    </div>\r\n                </div>\r\n\r\n                <h6 class=\"grey-text\" v-if=\"!showResult\">SHAKE COUNT</h6>\r\n                <div class=\"card\" v-if=\"!showResult\">\r\n                    <div class=\"card-content\">\r\n                        <h1 class=\"center-align teal-text\">{{shakeCount}}<span class=\"shake-page-unit\">times</span></h1>\r\n                    </div>\r\n                </div>\r\n\r\n                <h6 class=\"grey-text\" v-if=\"!showResult\">TIME</h6>\r\n                <div class=\"card\" v-if=\"!showResult\">\r\n                    <div class=\"card-content\">\r\n                        <h4 class=\"center-align red-text\">{{stopwatchString}}<i class=\"material-icons shake-page-unit\">restore</i></h4>\r\n                    </div>\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</template>\r\n\r\n<script>\r\n    var store = require('../../store');\r\n    var Stopwatch = require('timer-stopwatch');\r\n    var ShakeJS = require('shake.js'); // threshold = 15, timeout = 100 => 80 times / 10s, for both iphone and android\r\n    var shake = null;\r\n\r\n    module.exports = {\r\n        data: function() {\r\n            return {\r\n                time: 20 * 1000,\r\n                stopwatchString: '00:00.0',\r\n                showResult: false\r\n            }\r\n        },\r\n\r\n        computed: {\r\n            shakeCount: function() {\r\n                return store.state.player.currentPlayer.shakeCount;\r\n            },\r\n            room: function() {\r\n                return store.state.player.currentRoom;\r\n            }\r\n        },\r\n\r\n        ready: function() {\r\n            var unit = 100;\r\n            var that = this;\r\n            var timer = new Stopwatch(this.$data.time, {refreshRateMS: unit});\r\n            var total = this.$data.time;\r\n\r\n            timer.onTime(function() {\r\n                if(total > 0) {\r\n                    var s = '00' + Math.floor(total / 1000);\r\n                    var sStr = s.substring(s.length - 2, s.length);\r\n                    var ss = total % 1000 / unit;\r\n                    that.$data.stopwatchString = '00:' + sStr + '.' + ss;\r\n                }\r\n                total -= unit;\r\n            });\r\n            timer.onDone(function() {\r\n                shake.stop();\r\n                that.$data.stopwatchString = '00:00.0';\r\n                that.showResult = true;\r\n            });\r\n\r\n            timer.start();\r\n\r\n            if(shake) {\r\n                shake.stop();\r\n            } else {\r\n                window.addEventListener('shake', function() {\r\n                    store.actions.shake();\r\n                }, false);\r\n\r\n                shake = new ShakeJS({\r\n                    threshold: 15,\r\n                    timeout: 100\r\n                });\r\n            }\r\n            shake.start();\r\n        },\r\n\r\n        route: {\r\n            canActivate: function(transition) {\r\n                var room = store.state.player.currentRoom;\r\n\r\n                if(room.objectId) {\r\n                    if(room.status !== 'PLAYING')\r\n                        transition.redirect({name: 'ready'});\r\n                    else\r\n                        transition.next();\r\n                } else\r\n                    transition.redirect({name: 'home'});\r\n            }\r\n        }\r\n    };\r\n</script>"],"sourceRoot":"webpack://"}]);
 	
 	// exports
 
@@ -23654,8 +23656,8 @@
 
 	'use strict';
 	
+	var store = __webpack_require__(34);
 	var Stopwatch = __webpack_require__(55);
-	
 	var ShakeJS = __webpack_require__(65);
 	var shake = null;
 	
@@ -23671,6 +23673,9 @@
 	    computed: {
 	        shakeCount: function shakeCount() {
 	            return store.state.player.currentPlayer.shakeCount;
+	        },
+	        room: function room() {
+	            return store.state.player.currentRoom;
 	        }
 	    },
 	
@@ -23710,6 +23715,16 @@
 	            });
 	        }
 	        shake.start();
+	    },
+	
+	    route: {
+	        canActivate: function canActivate(transition) {
+	            var room = store.state.player.currentRoom;
+	
+	            if (room.objectId) {
+	                if (room.status !== 'PLAYING') transition.redirect({ name: 'ready' });else transition.next();
+	            } else transition.redirect({ name: 'home' });
+	        }
 	    }
 	};
 
@@ -23852,7 +23867,7 @@
 /* 66 */
 /***/ function(module, exports) {
 
-	module.exports = "\n<div _v-5b4dfb02=\"\">\n    <nav _v-5b4dfb02=\"\">\n        <div class=\"nav-wrapper red lighten-2\" _v-5b4dfb02=\"\">\n            <a href=\"#\" class=\"brand-logo\" _v-5b4dfb02=\"\">Shaking</a>\n            <ul id=\"nav-mobile\" class=\"left\" _v-5b4dfb02=\"\">\n                <li _v-5b4dfb02=\"\"><a _v-5b4dfb02=\"\"><i class=\"material-icons\" _v-5b4dfb02=\"\">open_in_new</i></a></li>\n            </ul>\n        </div>\n    </nav>\n\n    <div class=\"container\" _v-5b4dfb02=\"\">\n        <div class=\"row\" _v-5b4dfb02=\"\">\n            <h6 class=\"grey-text\" v-if=\"showResult\" _v-5b4dfb02=\"\">YOUR RESULT</h6>\n            <div class=\"card\" v-if=\"showResult\" _v-5b4dfb02=\"\">\n                <div class=\"card-content\" _v-5b4dfb02=\"\">\n                    <h4 class=\"card-title center-align\" _v-5b4dfb02=\"\">GAME END~</h4>\n                    <p _v-5b4dfb02=\"\">Congratulations! You just shaked <span class=\"teal-text\" style=\"font-size: 1.5em\" _v-5b4dfb02=\"\">{{shakeCount}}</span> times in last <span class=\"red-text\" style=\"font-size: 1.5em\" _v-5b4dfb02=\"\">{{time / 1000}}</span> seconds!</p>\n                </div>\n                <div class=\"card-content red lighten-3 white-text\" _v-5b4dfb02=\"\">\n                    a chart here\n                </div>\n                <div class=\"card-action\" _v-5b4dfb02=\"\">\n                    <a class=\"waves-effect waves-teal btn-flat\" _v-5b4dfb02=\"\">Check RANKING</a>\n                </div>\n            </div>\n\n            <h6 class=\"grey-text\" v-if=\"!showResult\" _v-5b4dfb02=\"\">SHAKE COUNT</h6>\n            <div class=\"card\" v-if=\"!showResult\" _v-5b4dfb02=\"\">\n                <div class=\"card-content\" _v-5b4dfb02=\"\">\n                    <h1 class=\"center-align teal-text\" _v-5b4dfb02=\"\">{{shakeCount}}<span class=\"shake-page-unit\" _v-5b4dfb02=\"\">times</span></h1>\n                </div>\n            </div>\n\n            <h6 class=\"grey-text\" v-if=\"!showResult\" _v-5b4dfb02=\"\">TIME</h6>\n            <div class=\"card\" v-if=\"!showResult\" _v-5b4dfb02=\"\">\n                <div class=\"card-content\" _v-5b4dfb02=\"\">\n                    <h4 class=\"center-align red-text\" _v-5b4dfb02=\"\">{{stopwatchString}}<i class=\"material-icons shake-page-unit\" _v-5b4dfb02=\"\">restore</i></h4>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n";
+	module.exports = "\n<div _v-5b4dfb02=\"\">\n    <div class=\"navbar-fixed\" _v-5b4dfb02=\"\">\n        <nav _v-5b4dfb02=\"\">\n            <div class=\"nav-wrapper red lighten-2\" _v-5b4dfb02=\"\">\n                <a href=\"#\" class=\"brand-logo\" _v-5b4dfb02=\"\">Shaking</a>\n                <ul id=\"nav-mobile\" class=\"left\" _v-5b4dfb02=\"\">\n                    <li _v-5b4dfb02=\"\"><a v-link=\"{name: 'home'}\" _v-5b4dfb02=\"\"><i class=\"material-icons\" _v-5b4dfb02=\"\">open_in_new</i></a></li>\n                </ul>\n            </div>\n        </nav>\n    </div>\n\n    <div class=\"container\" _v-5b4dfb02=\"\">\n        <div class=\"row\" _v-5b4dfb02=\"\">\n            <h6 class=\"grey-text\" v-if=\"showResult\" _v-5b4dfb02=\"\">YOUR RESULT</h6>\n            <div class=\"card\" v-if=\"showResult\" _v-5b4dfb02=\"\">\n                <div class=\"card-content\" _v-5b4dfb02=\"\">\n                    <h4 class=\"card-title center-align\" _v-5b4dfb02=\"\">GAME END~</h4>\n                    <p _v-5b4dfb02=\"\">Congratulations! You just shaked <span class=\"teal-text\" style=\"font-size: 1.5em\" _v-5b4dfb02=\"\">{{shakeCount}}</span> times in last <span class=\"red-text\" style=\"font-size: 1.5em\" _v-5b4dfb02=\"\">{{time / 1000}}</span> seconds!</p>\n                </div>\n                <div class=\"card-content red lighten-3 white-text\" _v-5b4dfb02=\"\">\n                    a chart here\n                </div>\n                <div class=\"card-content center-align\" _v-5b4dfb02=\"\">\n                    <a class=\"waves-effect waves-light btn red lighten-2\" v-link=\"{name: 'ranking', params: {roomId: room.objectId}}\" _v-5b4dfb02=\"\">Check Ranking</a>\n                </div>\n            </div>\n\n            <h6 class=\"grey-text\" v-if=\"!showResult\" _v-5b4dfb02=\"\">SHAKE COUNT</h6>\n            <div class=\"card\" v-if=\"!showResult\" _v-5b4dfb02=\"\">\n                <div class=\"card-content\" _v-5b4dfb02=\"\">\n                    <h1 class=\"center-align teal-text\" _v-5b4dfb02=\"\">{{shakeCount}}<span class=\"shake-page-unit\" _v-5b4dfb02=\"\">times</span></h1>\n                </div>\n            </div>\n\n            <h6 class=\"grey-text\" v-if=\"!showResult\" _v-5b4dfb02=\"\">TIME</h6>\n            <div class=\"card\" v-if=\"!showResult\" _v-5b4dfb02=\"\">\n                <div class=\"card-content\" _v-5b4dfb02=\"\">\n                    <h4 class=\"center-align red-text\" _v-5b4dfb02=\"\">{{stopwatchString}}<i class=\"material-icons shake-page-unit\" _v-5b4dfb02=\"\">restore</i></h4>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n";
 
 /***/ },
 /* 67 */
@@ -23918,7 +23933,7 @@
 	
 	
 	// module
-	exports.push([module.id, "\n.win-stamp[_v-4d4f86d2] {\n    width: 40px;\n    position: absolute;\n    top: -5px;\n    right: -5px;\n    -webkit-transform: rotate(30deg);\n    border-radius: 50%;\n}\n", "", {"version":3,"sources":["/./src/components/player/ranking-page.vue?701d8d0b"],"names":[],"mappings":";AACA;IACA,YAAA;IACA,mBAAA;IACA,UAAA;IACA,YAAA;IACA,iCAAA;IACA,mBAAA;CACA","file":"ranking-page.vue","sourcesContent":["<style scoped>\r\n    .win-stamp {\r\n        width: 40px;\r\n        position: absolute;\r\n        top: -5px;\r\n        right: -5px;\r\n        -webkit-transform: rotate(30deg);\r\n        border-radius: 50%;\r\n    }\r\n</style>\r\n\r\n<template>\r\n    <div>\r\n        <nav>\r\n            <div class=\"nav-wrapper red lighten-2\">\r\n                <a href=\"#\" class=\"brand-logo\">Ranking</a>\r\n                <ul id=\"nav-mobile\" class=\"left\">\r\n                    <li><a v-link=\"{name: 'home', params: {userId: currentPlayer.userId}}\"><i class=\"material-icons\">open_in_new</i></a></li>\r\n                </ul>\r\n            </div>\r\n        </nav>\r\n\r\n        <div class=\"container\">\r\n            <div class=\"row\">\r\n                <h6 class=\"grey-text\">RESULT</h6>\r\n                <div class=\"card col s12\">\r\n                    <div class=\"card-content\">\r\n                        <table>\r\n                            <thead>\r\n                                <tr>\r\n                                    <th data-field=\"side\">Side</th>\r\n                                    <th data-field=\"players\">Players</th>\r\n                                    <th data-field=\"total\">Total</th>\r\n                                    <th data-field=\"result\">Result</th>\r\n                                </tr>\r\n                            </thead>\r\n                            <tbody>\r\n                                <tr>\r\n                                    <td>Bride</td>\r\n                                    <td>5</td>\r\n                                    <td>32</td>\r\n                                    <td style=\"position: relative\">WIN<img src=\"http://img.aiyidu.com/forum/201309/08/192346u5dud4wi14uw1e4w.jpg\" class=\"win-stamp\"></td>\r\n                                </tr>\r\n                                <tr>\r\n                                    <td>Groom</td>\r\n                                    <td>4</td>\r\n                                    <td>30</td>\r\n                                    <td style=\"position: relative\">FAILED</td>\r\n                                </tr>\r\n                            </tbody>\r\n                        </table>\r\n                    </div>\r\n                </div>\r\n                <h6 class=\"grey-text\">DETAILS</h6>\r\n                <div class=\"card col s12\">\r\n                    <div class=\"card-content\">\r\n                        <ul class=\"collection\">\r\n                            <li class=\"collection-item avatar\" v-for=\"player in players\">\r\n                                <img src=\"http://materializecss.com/images/yuna.jpg\" class=\"circle\">\r\n                                <span class=\"title\">{{player.userName}}<span class=\"badge\">{{player.shakeCount}}</span></span>\r\n                                <div class=\"progress\">\r\n                                    <div class=\"determinate\" :style=\"{width: player.shakeCount/200*100 + '%'}\"></div>\r\n                                </div>\r\n                                <p>{{player.userType}} side</p>\r\n                            </li>\r\n                        </ul>\r\n                    </div>\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</template>\r\n\r\n<script>\r\n    var store = require('../../store');\r\n\r\n    module.exports = {\r\n\r\n        computed: {\r\n            currentPlayer: function() {\r\n                return store.state.player.currentPlayer;\r\n            },\r\n            players: function() {\r\n                return store.state.player.rankingPage.players.sort(function(p1, p2) {\r\n                    // descend order\r\n                    return p1.shakeCount < p2.shakeCount;\r\n                });\r\n            }\r\n        }\r\n    };\r\n</script>"],"sourceRoot":"webpack://"}]);
+	exports.push([module.id, "\n.win-stamp[_v-4d4f86d2] {\n    width: 40px;\n    position: absolute;\n    top: -5px;\n    right: -5px;\n    -webkit-transform: rotate(30deg);\n    border-radius: 50%;\n}\n", "", {"version":3,"sources":["/./src/components/player/ranking-page.vue?08fb69fa"],"names":[],"mappings":";AACA;IACA,YAAA;IACA,mBAAA;IACA,UAAA;IACA,YAAA;IACA,iCAAA;IACA,mBAAA;CACA","file":"ranking-page.vue","sourcesContent":["<style scoped>\r\n    .win-stamp {\r\n        width: 40px;\r\n        position: absolute;\r\n        top: -5px;\r\n        right: -5px;\r\n        -webkit-transform: rotate(30deg);\r\n        border-radius: 50%;\r\n    }\r\n</style>\r\n\r\n<template>\r\n    <div>\r\n        <div class=\"navbar-fixed\">\r\n            <nav>\r\n                <div class=\"nav-wrapper red lighten-2\">\r\n                    <a href=\"#\" class=\"brand-logo\">Ranking</a>\r\n                    <ul id=\"nav-mobile\" class=\"left\">\r\n                        <li><a v-link=\"{name: 'home', params: {userId: currentPlayer.userId}}\"><i class=\"material-icons\">open_in_new</i></a></li>\r\n                    </ul>\r\n                </div>\r\n            </nav>\r\n        </div>\r\n\r\n        <div class=\"container\">\r\n            <div class=\"row\">\r\n                <h6 class=\"grey-text\">RESULT</h6>\r\n                <div class=\"card col s12\">\r\n                    <div class=\"card-content\">\r\n                        <table>\r\n                            <thead>\r\n                                <tr>\r\n                                    <th data-field=\"side\">Side</th>\r\n                                    <th data-field=\"players\">Players</th>\r\n                                    <th data-field=\"total\">Total</th>\r\n                                    <th data-field=\"result\">Result</th>\r\n                                </tr>\r\n                            </thead>\r\n                            <tbody>\r\n                                <tr>\r\n                                    <td>Bride</td>\r\n                                    <td>{{bridePlayers.length}}</td>\r\n                                    <td>{{brideTotal}}</td>\r\n                                    <td style=\"position: relative\">WIN<img src=\"http://img.aiyidu.com/forum/201309/08/192346u5dud4wi14uw1e4w.jpg\" class=\"win-stamp\"></td>\r\n                                </tr>\r\n                                <tr>\r\n                                    <td>Groom</td>\r\n                                    <td>{{groomPlayers.length}}</td>\r\n                                    <td>{{groomTotal}}</td>\r\n                                    <td style=\"position: relative\">FAILED</td>\r\n                                </tr>\r\n                            </tbody>\r\n                        </table>\r\n                    </div>\r\n                </div>\r\n                <h6 class=\"grey-text\">DETAILS</h6>\r\n                <div class=\"card col s12\">\r\n                    <div class=\"card-content\">\r\n                        <ul class=\"collection\">\r\n                            <li class=\"collection-item avatar\" v-for=\"player in players\">\r\n                                <img src=\"http://materializecss.com/images/yuna.jpg\" class=\"circle\">\r\n                                <span class=\"title\">{{player.userName}}<span class=\"badge\">{{player.shakeCount}}</span></span>\r\n                                <div class=\"progress\" v-if=\"player.userType === 'BRIDE'\">\r\n                                    <div class=\"determinate\" :style=\"{width: player.shakeCount/200*100 + '%'}\"></div>\r\n                                </div>\r\n                                <div class=\"progress red lighten-4\" v-if=\"player.userType === 'GROOM'\">\r\n                                    <div class=\"determinate red\" :style=\"{width: player.shakeCount/200*100 + '%'}\"></div>\r\n                                </div>\r\n                                <p>{{player.userType}} side</p>\r\n                            </li>\r\n                        </ul>\r\n                    </div>\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</template>\r\n\r\n<script>\r\n    var store = require('../../store');\r\n\r\n    module.exports = {\r\n\r\n        computed: {\r\n            currentPlayer: function() {\r\n                return store.state.player.currentPlayer;\r\n            },\r\n            players: function() {\r\n                return store.state.player.playerList.sort(function(p1, p2) {\r\n                    // descend order\r\n                    return p1.shakeCount < p2.shakeCount;\r\n                });\r\n            },\r\n            bridePlayers: function() {\r\n                return store.state.player.playerList.filter(function(player) {\r\n                    return player.userType === 'BRIDE';\r\n                });\r\n            },\r\n            groomPlayers: function() {\r\n                return store.state.player.playerList.filter(function(player) {\r\n                    return player.userType === 'GROOM';\r\n                });\r\n            },\r\n            brideTotal: function() {\r\n                var total = 0;\r\n                store.state.player.playerList.forEach(function(player) {\r\n                    if(player.userType === 'BRIDE')\r\n                        total += player.shakeCount;\r\n                });\r\n                return total;\r\n            },\r\n            groomTotal: function() {\r\n                var total = 0;\r\n                store.state.player.playerList.forEach(function(player) {\r\n                    if(player.userType === 'GROOM')\r\n                        total += player.shakeCount;\r\n                });\r\n                return total;\r\n            }\r\n        },\r\n\r\n        ready: function() {\r\n            var roomId = this.$route.params.roomId;\r\n            store.actions.getRoomPlayers(roomId);\r\n            store.actions.getRoomDetails(roomId);\r\n        },\r\n\r\n        route: {\r\n            canActivate: function(transition) {\r\n                var room = store.state.player.currentRoom;\r\n\r\n                if(room.status === 'END')\r\n                    transition.next();\r\n                else if(room.status === 'PLAYING')\r\n                    transition.redirect({name: 'visit', params: {roomId: room.objectId}});\r\n                else\r\n                    transition.abort();\r\n            }\r\n        }\r\n    };\r\n</script>"],"sourceRoot":"webpack://"}]);
 	
 	// exports
 
@@ -23938,9 +23953,47 @@
 	            return store.state.player.currentPlayer;
 	        },
 	        players: function players() {
-	            return store.state.player.rankingPage.players.sort(function (p1, p2) {
+	            return store.state.player.playerList.sort(function (p1, p2) {
 	                return p1.shakeCount < p2.shakeCount;
 	            });
+	        },
+	        bridePlayers: function bridePlayers() {
+	            return store.state.player.playerList.filter(function (player) {
+	                return player.userType === 'BRIDE';
+	            });
+	        },
+	        groomPlayers: function groomPlayers() {
+	            return store.state.player.playerList.filter(function (player) {
+	                return player.userType === 'GROOM';
+	            });
+	        },
+	        brideTotal: function brideTotal() {
+	            var total = 0;
+	            store.state.player.playerList.forEach(function (player) {
+	                if (player.userType === 'BRIDE') total += player.shakeCount;
+	            });
+	            return total;
+	        },
+	        groomTotal: function groomTotal() {
+	            var total = 0;
+	            store.state.player.playerList.forEach(function (player) {
+	                if (player.userType === 'GROOM') total += player.shakeCount;
+	            });
+	            return total;
+	        }
+	    },
+	
+	    ready: function ready() {
+	        var roomId = this.$route.params.roomId;
+	        store.actions.getRoomPlayers(roomId);
+	        store.actions.getRoomDetails(roomId);
+	    },
+	
+	    route: {
+	        canActivate: function canActivate(transition) {
+	            var room = store.state.player.currentRoom;
+	
+	            if (room.status === 'END') transition.next();else if (room.status === 'PLAYING') transition.redirect({ name: 'visit', params: { roomId: room.objectId } });else transition.abort();
 	        }
 	    }
 	};
@@ -23949,7 +24002,7 @@
 /* 71 */
 /***/ function(module, exports) {
 
-	module.exports = "\n<div _v-4d4f86d2=\"\">\n    <nav _v-4d4f86d2=\"\">\n        <div class=\"nav-wrapper red lighten-2\" _v-4d4f86d2=\"\">\n            <a href=\"#\" class=\"brand-logo\" _v-4d4f86d2=\"\">Ranking</a>\n            <ul id=\"nav-mobile\" class=\"left\" _v-4d4f86d2=\"\">\n                <li _v-4d4f86d2=\"\"><a v-link=\"{name: 'home', params: {userId: currentPlayer.userId}}\" _v-4d4f86d2=\"\"><i class=\"material-icons\" _v-4d4f86d2=\"\">open_in_new</i></a></li>\n            </ul>\n        </div>\n    </nav>\n\n    <div class=\"container\" _v-4d4f86d2=\"\">\n        <div class=\"row\" _v-4d4f86d2=\"\">\n            <h6 class=\"grey-text\" _v-4d4f86d2=\"\">RESULT</h6>\n            <div class=\"card col s12\" _v-4d4f86d2=\"\">\n                <div class=\"card-content\" _v-4d4f86d2=\"\">\n                    <table _v-4d4f86d2=\"\">\n                        <thead _v-4d4f86d2=\"\">\n                            <tr _v-4d4f86d2=\"\">\n                                <th data-field=\"side\" _v-4d4f86d2=\"\">Side</th>\n                                <th data-field=\"players\" _v-4d4f86d2=\"\">Players</th>\n                                <th data-field=\"total\" _v-4d4f86d2=\"\">Total</th>\n                                <th data-field=\"result\" _v-4d4f86d2=\"\">Result</th>\n                            </tr>\n                        </thead>\n                        <tbody _v-4d4f86d2=\"\">\n                            <tr _v-4d4f86d2=\"\">\n                                <td _v-4d4f86d2=\"\">Bride</td>\n                                <td _v-4d4f86d2=\"\">5</td>\n                                <td _v-4d4f86d2=\"\">32</td>\n                                <td style=\"position: relative\" _v-4d4f86d2=\"\">WIN<img src=\"http://img.aiyidu.com/forum/201309/08/192346u5dud4wi14uw1e4w.jpg\" class=\"win-stamp\" _v-4d4f86d2=\"\"></td>\n                            </tr>\n                            <tr _v-4d4f86d2=\"\">\n                                <td _v-4d4f86d2=\"\">Groom</td>\n                                <td _v-4d4f86d2=\"\">4</td>\n                                <td _v-4d4f86d2=\"\">30</td>\n                                <td style=\"position: relative\" _v-4d4f86d2=\"\">FAILED</td>\n                            </tr>\n                        </tbody>\n                    </table>\n                </div>\n            </div>\n            <h6 class=\"grey-text\" _v-4d4f86d2=\"\">DETAILS</h6>\n            <div class=\"card col s12\" _v-4d4f86d2=\"\">\n                <div class=\"card-content\" _v-4d4f86d2=\"\">\n                    <ul class=\"collection\" _v-4d4f86d2=\"\">\n                        <li class=\"collection-item avatar\" v-for=\"player in players\" _v-4d4f86d2=\"\">\n                            <img src=\"http://materializecss.com/images/yuna.jpg\" class=\"circle\" _v-4d4f86d2=\"\">\n                            <span class=\"title\" _v-4d4f86d2=\"\">{{player.userName}}<span class=\"badge\" _v-4d4f86d2=\"\">{{player.shakeCount}}</span></span>\n                            <div class=\"progress\" _v-4d4f86d2=\"\">\n                                <div class=\"determinate\" :style=\"{width: player.shakeCount/200*100 + '%'}\" _v-4d4f86d2=\"\"></div>\n                            </div>\n                            <p _v-4d4f86d2=\"\">{{player.userType}} side</p>\n                        </li>\n                    </ul>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n";
+	module.exports = "\n<div _v-4d4f86d2=\"\">\n    <div class=\"navbar-fixed\" _v-4d4f86d2=\"\">\n        <nav _v-4d4f86d2=\"\">\n            <div class=\"nav-wrapper red lighten-2\" _v-4d4f86d2=\"\">\n                <a href=\"#\" class=\"brand-logo\" _v-4d4f86d2=\"\">Ranking</a>\n                <ul id=\"nav-mobile\" class=\"left\" _v-4d4f86d2=\"\">\n                    <li _v-4d4f86d2=\"\"><a v-link=\"{name: 'home', params: {userId: currentPlayer.userId}}\" _v-4d4f86d2=\"\"><i class=\"material-icons\" _v-4d4f86d2=\"\">open_in_new</i></a></li>\n                </ul>\n            </div>\n        </nav>\n    </div>\n\n    <div class=\"container\" _v-4d4f86d2=\"\">\n        <div class=\"row\" _v-4d4f86d2=\"\">\n            <h6 class=\"grey-text\" _v-4d4f86d2=\"\">RESULT</h6>\n            <div class=\"card col s12\" _v-4d4f86d2=\"\">\n                <div class=\"card-content\" _v-4d4f86d2=\"\">\n                    <table _v-4d4f86d2=\"\">\n                        <thead _v-4d4f86d2=\"\">\n                            <tr _v-4d4f86d2=\"\">\n                                <th data-field=\"side\" _v-4d4f86d2=\"\">Side</th>\n                                <th data-field=\"players\" _v-4d4f86d2=\"\">Players</th>\n                                <th data-field=\"total\" _v-4d4f86d2=\"\">Total</th>\n                                <th data-field=\"result\" _v-4d4f86d2=\"\">Result</th>\n                            </tr>\n                        </thead>\n                        <tbody _v-4d4f86d2=\"\">\n                            <tr _v-4d4f86d2=\"\">\n                                <td _v-4d4f86d2=\"\">Bride</td>\n                                <td _v-4d4f86d2=\"\">{{bridePlayers.length}}</td>\n                                <td _v-4d4f86d2=\"\">{{brideTotal}}</td>\n                                <td style=\"position: relative\" _v-4d4f86d2=\"\">WIN<img src=\"http://img.aiyidu.com/forum/201309/08/192346u5dud4wi14uw1e4w.jpg\" class=\"win-stamp\" _v-4d4f86d2=\"\"></td>\n                            </tr>\n                            <tr _v-4d4f86d2=\"\">\n                                <td _v-4d4f86d2=\"\">Groom</td>\n                                <td _v-4d4f86d2=\"\">{{groomPlayers.length}}</td>\n                                <td _v-4d4f86d2=\"\">{{groomTotal}}</td>\n                                <td style=\"position: relative\" _v-4d4f86d2=\"\">FAILED</td>\n                            </tr>\n                        </tbody>\n                    </table>\n                </div>\n            </div>\n            <h6 class=\"grey-text\" _v-4d4f86d2=\"\">DETAILS</h6>\n            <div class=\"card col s12\" _v-4d4f86d2=\"\">\n                <div class=\"card-content\" _v-4d4f86d2=\"\">\n                    <ul class=\"collection\" _v-4d4f86d2=\"\">\n                        <li class=\"collection-item avatar\" v-for=\"player in players\" _v-4d4f86d2=\"\">\n                            <img src=\"http://materializecss.com/images/yuna.jpg\" class=\"circle\" _v-4d4f86d2=\"\">\n                            <span class=\"title\" _v-4d4f86d2=\"\">{{player.userName}}<span class=\"badge\" _v-4d4f86d2=\"\">{{player.shakeCount}}</span></span>\n                            <div class=\"progress\" v-if=\"player.userType === 'BRIDE'\" _v-4d4f86d2=\"\">\n                                <div class=\"determinate\" :style=\"{width: player.shakeCount/200*100 + '%'}\" _v-4d4f86d2=\"\"></div>\n                            </div>\n                            <div class=\"progress red lighten-4\" v-if=\"player.userType === 'GROOM'\" _v-4d4f86d2=\"\">\n                                <div class=\"determinate red\" :style=\"{width: player.shakeCount/200*100 + '%'}\" _v-4d4f86d2=\"\"></div>\n                            </div>\n                            <p _v-4d4f86d2=\"\">{{player.userType}} side</p>\n                        </li>\n                    </ul>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n";
 
 /***/ },
 /* 72 */
@@ -23961,8 +24014,8 @@
 	if (__vue_script__ &&
 	    __vue_script__.__esModule &&
 	    Object.keys(__vue_script__).length > 1) {
-	  console.warn("[vue-loader] src\\components\\admin\\admin-page.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(81)
+	  console.warn("[vue-loader] src\\components\\player\\visit-page.vue: named exports in *.vue files are ignored.")}
+	__vue_template__ = __webpack_require__(76)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
 	if (__vue_template__) {
@@ -23972,7 +24025,7 @@
 	  var hotAPI = require("vue-hot-reload-api")
 	  hotAPI.install(require("vue"), true)
 	  if (!hotAPI.compatible) return
-	  var id = "C:\\Users\\Administrator\\Documents\\GitHub\\wedding-shake-game\\src\\components\\admin\\admin-page.vue"
+	  var id = "C:\\Users\\Administrator\\Documents\\GitHub\\wedding-shake-game\\src\\components\\player\\visit-page.vue"
 	  if (!module.hot.data) {
 	    hotAPI.createRecord(id, module.exports)
 	  } else {
@@ -23996,8 +24049,8 @@
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../../node_modules/css-loader/index.js?sourceMap!./../../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-0f3d2759&scoped=true!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./admin-page.vue", function() {
-				var newContent = require("!!./../../../node_modules/css-loader/index.js?sourceMap!./../../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-0f3d2759&scoped=true!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./admin-page.vue");
+			module.hot.accept("!!./../../../node_modules/css-loader/index.js?sourceMap!./../../../node_modules/vue-loader/lib/style-rewriter.js!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./visit-page.vue", function() {
+				var newContent = require("!!./../../../node_modules/css-loader/index.js?sourceMap!./../../../node_modules/vue-loader/lib/style-rewriter.js!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./visit-page.vue");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -24015,7 +24068,7 @@
 	
 	
 	// module
-	exports.push([module.id, "\n.hero[_v-0f3d2759] {\n    background-image: url(https://static.artofwhere.net/img/home-slider/girl-sewing.jpg);\n    background-size: cover;\n    background-position: center center;\n    height: 350px;\n    width: 100%;\n}\n", "", {"version":3,"sources":["/./src/components/admin/admin-page.vue?240f6db4"],"names":[],"mappings":";AACA;IACA,qFAAA;IACA,uBAAA;IACA,mCAAA;IACA,cAAA;IACA,YAAA;CACA","file":"admin-page.vue","sourcesContent":["<style scoped>\r\n    .hero {\r\n        background-image: url(https://static.artofwhere.net/img/home-slider/girl-sewing.jpg);\r\n        background-size: cover;\r\n        background-position: center center;\r\n        height: 350px;\r\n        width: 100%;\r\n    }\r\n</style>\r\n\r\n<template>\r\n    <div>\r\n        <div class=\"hero\"></div>\r\n        <div class=\"container\">\r\n            <h5>ROOM LIST</h5>\r\n            <div class=\"row\">\r\n                <div class=\"col s4\" v-for=\"room in rooms\">\r\n                    <div class=\"card cyan lighten-2 white-text waves-effect waves-block waves-light\" @click=\"goToRoom(room.objectId)\">\r\n                        <div class=\"card-image\">\r\n                            <img src=\"http://sd.people.com.cn/mediafile/201007/05/F2010070514353200467.jpg\"/>\r\n                            <span class=\"card-title black-text\">{{room.roomName}}</span>\r\n                        </div>\r\n                        <div class=\"card-content\">\r\n                            <p style=\"margin-bottom: 10px\">{{room.roomDescription}}</p>\r\n                            <p class=\"grey-text text-lighten-3\">SIZE<span class=\"right amber-text\">{{room.players.length}}/{{room.roomSize}}</span></p>\r\n                            <p class=\"grey-text text-lighten-3\">STATUS<span class=\"right amber-text\">{{room.status}}</span></p>\r\n                        </div>\r\n                    </div>\r\n                </div>\r\n            </div>\r\n\r\n            <div class=\"fixed-action-btn\" style=\"bottom: 45px; right: 45px;\">\r\n                <a class=\"btn-floating btn-large waves-effect waves-light red\" @click=\"createRoom()\">\r\n                    <i class=\"material-icons\">add</i>\r\n                </a>\r\n            </div>\r\n\r\n            <room-edit-dialog v-ref:room-edit-dialog :room-id=\"selectRoomId\"></room-edit-dialog>\r\n        </div>\r\n    </div>\r\n</template>\r\n\r\n<script>\r\n    var store = require('../../store');\r\n\r\n    module.exports = {\r\n        components: {\r\n            'room-edit-dialog': require('./room-edit-dialog.vue')\r\n        },\r\n\r\n        computed: {\r\n            rooms: function() {\r\n                return store.state.admin.homePage.roomList;\r\n            }\r\n        },\r\n\r\n        ready: function() {\r\n            store.actions.getAdminRoomList();\r\n        },\r\n\r\n        methods: {\r\n            createRoom: function() {\r\n                store.actions.getEditRoomDialogData('');\r\n                $(this.$refs.roomEditDialog.$el).openModal();\r\n            },\r\n            goToRoom: function(roomId) {\r\n                this.$router.go({name: 'room', params: {roomId: roomId}});\r\n            }\r\n        }\r\n    };\r\n</script>"],"sourceRoot":"webpack://"}]);
+	exports.push([module.id, "\n\n", "", {"version":3,"sources":[],"names":[],"mappings":"","file":"visit-page.vue","sourceRoot":"webpack://"}]);
 	
 	// exports
 
@@ -24029,8 +24082,140 @@
 	var store = __webpack_require__(34);
 	
 	module.exports = {
+	
+	    computed: {
+	        currentPlayer: function currentPlayer() {
+	            return store.state.player.currentPlayer;
+	        },
+	        players: function players() {
+	            return store.state.player.playerList.sort(function (p1, p2) {
+	                return p1.shakeCount < p2.shakeCount;
+	            });
+	        },
+	        bridePlayers: function bridePlayers() {
+	            return store.state.player.playerList.filter(function (player) {
+	                return player.userType === 'BRIDE';
+	            });
+	        },
+	        groomPlayers: function groomPlayers() {
+	            return store.state.player.playerList.filter(function (player) {
+	                return player.userType === 'GROOM';
+	            });
+	        },
+	        brideTotal: function brideTotal() {
+	            var total = 0;
+	            store.state.player.playerList.forEach(function (player) {
+	                if (player.userType === 'BRIDE') total += player.shakeCount;
+	            });
+	            return total;
+	        },
+	        groomTotal: function groomTotal() {
+	            var total = 0;
+	            store.state.player.playerList.forEach(function (player) {
+	                if (player.userType === 'GROOM') total += player.shakeCount;
+	            });
+	            return total;
+	        },
+	        status: function status() {
+	            return store.state.player.currentRoom.status;
+	        }
+	    },
+	
+	    ready: function ready() {
+	        var roomId = this.$route.params.roomId;
+	        store.actions.getRoomDetails(roomId);
+	        store.actions.getRoomPlayers(roomId);
+	        store.actions.listenPlayerShakeSocketMessage(true);
+	        store.actions.listenPlayerStatusChangeSocketMessage(true);
+	    }
+	};
+
+/***/ },
+/* 76 */
+/***/ function(module, exports) {
+
+	module.exports = "\n<div>\n    <div class=\"navbar-fixed\">\n        <nav>\n            <div class=\"nav-wrapper red lighten-2\">\n                <a href=\"#\" class=\"brand-logo\">Visit Mode</a>\n                <ul id=\"nav-mobile\" class=\"left\">\n                    <li><a v-link=\"{name: 'home'}\"><i class=\"material-icons\">open_in_new</i></a></li>\n                </ul>\n            </div>\n        </nav>\n    </div>\n\n    <div class=\"container\">\n        <div class=\"row\">\n            <h6 class=\"grey-text\">STATUS</h6>\n            <div class=\"card\">\n                <div class=\"card-content\" v-if=\"status === 'END'\">\n                    <h4 class=\"card-title center-align\">Game Ended</h4>\n                    <div class=\"center-align\">\n                        <a class=\"waves-effect waves-light btn red lighten-2\" v-link=\"{name: 'ranking', params: {roomId: $route.params.roomId}}\">Check Ranking</a>\n                    </div>\n                </div>\n                <div class=\"card-content\" v-else>\n                    <h4 class=\"card-title center-align\">Game WIP</h4>\n                </div>\n            </div>\n\n            <h6 class=\"grey-text\">ROOM INFO</h6>\n            <div class=\"card col s12\">\n                <div class=\"card-content\">\n                    <div class=\"col s6 teal-text\">\n                        <h6 class=\"center-align text-lighten-3\">Bride({{bridePlayers.length}})</h6>\n                        <h1 class=\"center-align\">{{brideTotal}}</h1>\n                    </div>\n                    <div class=\"col s6 red-text\">\n                        <h6 class=\"center-align text-lighten-3\">Groom({{groomPlayers.length}})</h6>\n                        <h1 class=\"center-align\">{{groomTotal}}</h1>\n                    </div>\n                </div>\n            </div>\n\n            <h6 class=\"grey-text\">PLAYER DATA</h6>\n            <div class=\"card col s12\">\n                <div class=\"card-content\">\n                    <ul class=\"collection\">\n                        <li class=\"collection-item avatar\" v-for=\"player in players\">\n                            <img src=\"http://materializecss.com/images/yuna.jpg\" class=\"circle\">\n                            <span class=\"title\">{{player.userName}}<span class=\"badge\">{{player.shakeCount}}</span></span>\n                            <div class=\"progress\" v-if=\"player.userType === 'BRIDE'\">\n                                <div class=\"determinate\" :style=\"{width: player.shakeCount/200*100 + '%'}\"></div>\n                            </div>\n                            <div class=\"progress red lighten-4\" v-if=\"player.userType === 'GROOM'\">\n                                <div class=\"determinate red\" :style=\"{width: player.shakeCount/200*100 + '%'}\"></div>\n                            </div>\n                            <p>{{player.userType}} side</p>\n                        </li>\n                    </ul>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n";
+
+/***/ },
+/* 77 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __vue_script__, __vue_template__
+	__webpack_require__(78)
+	__vue_script__ = __webpack_require__(80)
+	if (__vue_script__ &&
+	    __vue_script__.__esModule &&
+	    Object.keys(__vue_script__).length > 1) {
+	  console.warn("[vue-loader] src\\components\\admin\\admin-page.vue: named exports in *.vue files are ignored.")}
+	__vue_template__ = __webpack_require__(86)
+	module.exports = __vue_script__ || {}
+	if (module.exports.__esModule) module.exports = module.exports.default
+	if (__vue_template__) {
+	(typeof module.exports === "function" ? (module.exports.options || (module.exports.options = {})) : module.exports).template = __vue_template__
+	}
+	if (false) {(function () {  module.hot.accept()
+	  var hotAPI = require("vue-hot-reload-api")
+	  hotAPI.install(require("vue"), true)
+	  if (!hotAPI.compatible) return
+	  var id = "C:\\Users\\Administrator\\Documents\\GitHub\\wedding-shake-game\\src\\components\\admin\\admin-page.vue"
+	  if (!module.hot.data) {
+	    hotAPI.createRecord(id, module.exports)
+	  } else {
+	    hotAPI.update(id, module.exports, __vue_template__)
+	  }
+	})()}
+
+/***/ },
+/* 78 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+	
+	// load the styles
+	var content = __webpack_require__(79);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(32)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../../../node_modules/css-loader/index.js?sourceMap!./../../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-0f3d2759&scoped=true!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./admin-page.vue", function() {
+				var newContent = require("!!./../../../node_modules/css-loader/index.js?sourceMap!./../../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-0f3d2759&scoped=true!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./admin-page.vue");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 79 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(31)();
+	// imports
+	
+	
+	// module
+	exports.push([module.id, "\n.hero[_v-0f3d2759] {\n    background-image: url(https://static.artofwhere.net/img/home-slider/girl-sewing.jpg);\n    background-size: cover;\n    background-position: center center;\n    height: 350px;\n    width: 100%;\n}\n", "", {"version":3,"sources":["/./src/components/admin/admin-page.vue?240f6db4"],"names":[],"mappings":";AACA;IACA,qFAAA;IACA,uBAAA;IACA,mCAAA;IACA,cAAA;IACA,YAAA;CACA","file":"admin-page.vue","sourcesContent":["<style scoped>\r\n    .hero {\r\n        background-image: url(https://static.artofwhere.net/img/home-slider/girl-sewing.jpg);\r\n        background-size: cover;\r\n        background-position: center center;\r\n        height: 350px;\r\n        width: 100%;\r\n    }\r\n</style>\r\n\r\n<template>\r\n    <div>\r\n        <div class=\"hero\"></div>\r\n        <div class=\"container\">\r\n            <h5>ROOM LIST</h5>\r\n            <div class=\"row\">\r\n                <div class=\"col s4\" v-for=\"room in rooms\">\r\n                    <div class=\"card cyan lighten-2 white-text waves-effect waves-block waves-light\" @click=\"goToRoom(room.objectId)\">\r\n                        <div class=\"card-image\">\r\n                            <img src=\"http://sd.people.com.cn/mediafile/201007/05/F2010070514353200467.jpg\"/>\r\n                            <span class=\"card-title black-text\">{{room.roomName}}</span>\r\n                        </div>\r\n                        <div class=\"card-content\">\r\n                            <p style=\"margin-bottom: 10px\">{{room.roomDescription}}</p>\r\n                            <p class=\"grey-text text-lighten-3\">SIZE<span class=\"right amber-text\">{{room.players.length}}/{{room.roomSize}}</span></p>\r\n                            <p class=\"grey-text text-lighten-3\">STATUS<span class=\"right amber-text\">{{room.status}}</span></p>\r\n                        </div>\r\n                    </div>\r\n                </div>\r\n            </div>\r\n\r\n            <div class=\"fixed-action-btn\" style=\"bottom: 45px; right: 45px;\">\r\n                <a class=\"btn-floating btn-large waves-effect waves-light red\" @click=\"createRoom()\">\r\n                    <i class=\"material-icons\">add</i>\r\n                </a>\r\n            </div>\r\n\r\n            <room-edit-dialog v-ref:room-edit-dialog :room-id=\"selectRoomId\"></room-edit-dialog>\r\n        </div>\r\n    </div>\r\n</template>\r\n\r\n<script>\r\n    var store = require('../../store');\r\n\r\n    module.exports = {\r\n        components: {\r\n            'room-edit-dialog': require('./room-edit-dialog.vue')\r\n        },\r\n\r\n        computed: {\r\n            rooms: function() {\r\n                return store.state.admin.homePage.roomList;\r\n            }\r\n        },\r\n\r\n        ready: function() {\r\n            store.actions.getAdminRoomList();\r\n        },\r\n\r\n        methods: {\r\n            createRoom: function() {\r\n                store.actions.getEditRoomDialogData('');\r\n                $(this.$refs.roomEditDialog.$el).openModal();\r\n            },\r\n            goToRoom: function(roomId) {\r\n                this.$router.go({name: 'room', params: {roomId: roomId}});\r\n            }\r\n        }\r\n    };\r\n</script>"],"sourceRoot":"webpack://"}]);
+	
+	// exports
+
+
+/***/ },
+/* 80 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var store = __webpack_require__(34);
+	
+	module.exports = {
 	    components: {
-	        'room-edit-dialog': __webpack_require__(76)
+	        'room-edit-dialog': __webpack_require__(81)
 	    },
 	
 	    computed: {
@@ -24055,17 +24240,17 @@
 	};
 
 /***/ },
-/* 76 */
+/* 81 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __vue_script__, __vue_template__
-	__webpack_require__(77)
-	__vue_script__ = __webpack_require__(79)
+	__webpack_require__(82)
+	__vue_script__ = __webpack_require__(84)
 	if (__vue_script__ &&
 	    __vue_script__.__esModule &&
 	    Object.keys(__vue_script__).length > 1) {
 	  console.warn("[vue-loader] src\\components\\admin\\room-edit-dialog.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(80)
+	__vue_template__ = __webpack_require__(85)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
 	if (__vue_template__) {
@@ -24084,13 +24269,13 @@
 	})()}
 
 /***/ },
-/* 77 */
+/* 82 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
 	// load the styles
-	var content = __webpack_require__(78);
+	var content = __webpack_require__(83);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(32)(content, {});
@@ -24110,7 +24295,7 @@
 	}
 
 /***/ },
-/* 78 */
+/* 83 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(31)();
@@ -24124,7 +24309,7 @@
 
 
 /***/ },
-/* 79 */
+/* 84 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -24178,29 +24363,29 @@
 	};
 
 /***/ },
-/* 80 */
+/* 85 */
 /***/ function(module, exports) {
 
 	module.exports = "\n<div id=\"modal1\" class=\"modal modal-fixed-footer\">\n    <div class=\"modal-content\">\n        <h4>{{!roomId ? 'Create Room' : 'Update Room'}}</h4>\n        <div class=\"row\">\n            <form class=\"col s12\">\n                <div class=\"input-field col s12\">\n                    <input type=\"text\" class=\"validate\" id=\"roomEditDialogRoomName\" value=\"{{room.roomName}}\" v-el:room-name >\n                    <label for=\"roomEditDialogRoomName\">Room Name</label>\n                </div>\n                <div class=\"input-field col s12\">\n                    <input type=\"text\" id=\"roomEditDialogRoomDesc\" value=\"{{room.roomDescription}}\" v-el:room-description >\n                    <label for=\"roomEditDialogRoomDesc\">Room Description</label>\n                </div>\n                <div class=\"input-field col s12\">\n                    <input type=\"text\" id=\"roomEditDialogRoomSize\" value=\"{{room.roomSize}}\" v-el:room-size >\n                    <label for=\"roomEditDialogRoomSize\">Room Size</label>\n                </div>\n            </form>\n        </div>\n    </div>\n    <div class=\"modal-footer\">\n        <a @click=\"submitForm()\" class=\" modal-action modal-close waves-effect waves-green btn-flat\">Confirm</a>\n        <a class=\" modal-action modal-close waves-effect waves-green btn-flat\">Cancel</a>\n    </div>\n</div>\n";
 
 /***/ },
-/* 81 */
+/* 86 */
 /***/ function(module, exports) {
 
 	module.exports = "\n<div _v-0f3d2759=\"\">\n    <div class=\"hero\" _v-0f3d2759=\"\"></div>\n    <div class=\"container\" _v-0f3d2759=\"\">\n        <h5 _v-0f3d2759=\"\">ROOM LIST</h5>\n        <div class=\"row\" _v-0f3d2759=\"\">\n            <div class=\"col s4\" v-for=\"room in rooms\" _v-0f3d2759=\"\">\n                <div class=\"card cyan lighten-2 white-text waves-effect waves-block waves-light\" @click=\"goToRoom(room.objectId)\" _v-0f3d2759=\"\">\n                    <div class=\"card-image\" _v-0f3d2759=\"\">\n                        <img src=\"http://sd.people.com.cn/mediafile/201007/05/F2010070514353200467.jpg\" _v-0f3d2759=\"\">\n                        <span class=\"card-title black-text\" _v-0f3d2759=\"\">{{room.roomName}}</span>\n                    </div>\n                    <div class=\"card-content\" _v-0f3d2759=\"\">\n                        <p style=\"margin-bottom: 10px\" _v-0f3d2759=\"\">{{room.roomDescription}}</p>\n                        <p class=\"grey-text text-lighten-3\" _v-0f3d2759=\"\">SIZE<span class=\"right amber-text\" _v-0f3d2759=\"\">{{room.players.length}}/{{room.roomSize}}</span></p>\n                        <p class=\"grey-text text-lighten-3\" _v-0f3d2759=\"\">STATUS<span class=\"right amber-text\" _v-0f3d2759=\"\">{{room.status}}</span></p>\n                    </div>\n                </div>\n            </div>\n        </div>\n\n        <div class=\"fixed-action-btn\" style=\"bottom: 45px; right: 45px;\" _v-0f3d2759=\"\">\n            <a class=\"btn-floating btn-large waves-effect waves-light red\" @click=\"createRoom()\" _v-0f3d2759=\"\">\n                <i class=\"material-icons\" _v-0f3d2759=\"\">add</i>\n            </a>\n        </div>\n\n        <room-edit-dialog v-ref:room-edit-dialog=\"\" :room-id=\"selectRoomId\" _v-0f3d2759=\"\"></room-edit-dialog>\n    </div>\n</div>\n";
 
 /***/ },
-/* 82 */
+/* 87 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __vue_script__, __vue_template__
-	__webpack_require__(83)
-	__vue_script__ = __webpack_require__(85)
+	__webpack_require__(88)
+	__vue_script__ = __webpack_require__(90)
 	if (__vue_script__ &&
 	    __vue_script__.__esModule &&
 	    Object.keys(__vue_script__).length > 1) {
 	  console.warn("[vue-loader] src\\components\\admin\\room-page.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(86)
+	__vue_template__ = __webpack_require__(91)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
 	if (__vue_template__) {
@@ -24219,13 +24404,13 @@
 	})()}
 
 /***/ },
-/* 83 */
+/* 88 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
 	// load the styles
-	var content = __webpack_require__(84);
+	var content = __webpack_require__(89);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(32)(content, {});
@@ -24245,7 +24430,7 @@
 	}
 
 /***/ },
-/* 84 */
+/* 89 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(31)();
@@ -24259,7 +24444,7 @@
 
 
 /***/ },
-/* 85 */
+/* 90 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -24268,7 +24453,7 @@
 	
 	module.exports = {
 	    components: {
-	        'room-edit-dialog': __webpack_require__(76)
+	        'room-edit-dialog': __webpack_require__(81)
 	    },
 	
 	    computed: {
@@ -24324,7 +24509,7 @@
 	};
 
 /***/ },
-/* 86 */
+/* 91 */
 /***/ function(module, exports) {
 
 	module.exports = "\n<div class=\"container\" _v-69b23236=\"\">\n\n    <div class=\"row\" _v-69b23236=\"\">\n        <div class=\"card cyan lighten-2\" _v-69b23236=\"\">\n            <a class=\"waves-effect btn right white black-text room-edit-button\" @click=\"editRoom()\" _v-69b23236=\"\">edit</a>\n            <div class=\"card-content white-text\" _v-69b23236=\"\">\n                <span class=\"card-title\" _v-69b23236=\"\">{{room.roomName}} ({{room.status}})</span>\n                <p style=\"margin-bottom: 10px\" _v-69b23236=\"\">{{room.roomDescription}}</p>\n                <p _v-69b23236=\"\">size: {{room.roomSize}}</p>\n            </div>\n        </div>\n    </div>\n\n    <div class=\"row\" _v-69b23236=\"\">\n        <div class=\"col s6\" _v-69b23236=\"\">\n            <h5 _v-69b23236=\"\">BRIDE CUSTOMERS<span class=\"right\" _v-69b23236=\"\">{{bridePlayers.length}}/{{room.roomSize}}</span></h5>\n            <div class=\"card\" _v-69b23236=\"\">\n                <div class=\"card-content\" _v-69b23236=\"\">\n                    <ul class=\"collection with-header\" _v-69b23236=\"\">\n                        <li class=\"collection-header\" _v-69b23236=\"\">\n                            <h4 _v-69b23236=\"\">Total <span class=\"right\" _v-69b23236=\"\">{{brideShakeTotal}}</span></h4>\n                        </li>\n                        <li v-for=\"player in bridePlayers\" class=\"collection-item avatar\" _v-69b23236=\"\">\n                            <img src=\"http://materializecss.com/images/yuna.jpg\" class=\"circle\" _v-69b23236=\"\">\n                            <span class=\"title\" _v-69b23236=\"\">{{player.userName}}</span>\n                            <p _v-69b23236=\"\">count: {{player.shakeCount}}</p>\n                            <div class=\"progress\" _v-69b23236=\"\">\n                                <div class=\"determinate\" :style=\"{width: player.shakeCount/200*100 + '%'}\" _v-69b23236=\"\"></div>\n                            </div>\n                        </li>\n                    </ul>\n                </div>\n            </div>\n        </div>\n        <div class=\"col s6\" _v-69b23236=\"\">\n            <h5 _v-69b23236=\"\">GROOM CUSTOMERS<span class=\"right\" _v-69b23236=\"\">{{groomPlayers.length}}/{{room.roomSize}}</span></h5>\n            <div class=\"card\" _v-69b23236=\"\">\n                <div class=\"card-content\" _v-69b23236=\"\">\n                    <ul class=\"collection with-header\" _v-69b23236=\"\">\n                        <li class=\"collection-header\" _v-69b23236=\"\"><h4 _v-69b23236=\"\">Total<span class=\"right\" _v-69b23236=\"\">{{groomShakeTotal}}</span></h4></li>\n                        <li v-for=\"player in groomPlayers\" class=\"collection-item avatar\" _v-69b23236=\"\">\n                            <img src=\"http://materializecss.com/images/yuna.jpg\" class=\"circle\" _v-69b23236=\"\">\n                            <span class=\"title\" _v-69b23236=\"\">{{player.userName}}</span>\n                            <p _v-69b23236=\"\">count: {{player.shakeCount}}</p>\n                            <div class=\"progress pink lighten-4\" _v-69b23236=\"\">\n                                <div class=\"determinate pink\" :style=\"{width: player.shakeCount/200*100 + '%'}\" _v-69b23236=\"\"></div>\n                            </div>\n                        </li>\n                    </ul>\n                </div>\n            </div>\n        </div>\n    </div>\n\n    <div class=\"fixed-action-btn horizontal\" style=\"bottom: 45px; right: 45px;\" _v-69b23236=\"\">\n        <a class=\"btn-floating btn-large red\" _v-69b23236=\"\">\n            <i class=\"large material-icons\" _v-69b23236=\"\">games</i>\n        </a>\n        <ul _v-69b23236=\"\">\n            <li _v-69b23236=\"\">\n                <a @click=\"allowToJoin()\" class=\"btn-floating yellow darken-1 tooltipped\" data-position=\"top\" data-delay=\"50\" data-tooltip=\"allow join\" _v-69b23236=\"\">\n                    <i class=\"material-icons\" _v-69b23236=\"\">input</i>\n                </a>\n            </li>\n            <li _v-69b23236=\"\">\n                <a @click=\"start()\" class=\"btn-floating green darken-1 tooltipped\" data-position=\"top\" data-delay=\"50\" data-tooltip=\"start game\" _v-69b23236=\"\">\n                    <i class=\"material-icons\" _v-69b23236=\"\">play_circle_outline</i>\n                </a>\n            </li>\n        </ul>\n    </div>\n\n    <room-edit-dialog v-ref:room-edit-dialog=\"\" :room-id=\"$route.params.roomId\" _v-69b23236=\"\"></room-edit-dialog>\n</div>\n";

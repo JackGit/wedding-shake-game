@@ -3,16 +3,13 @@
 
 <template>
     <div>
-        <nav>
-            <div class="nav-wrapper red lighten-2">
-                <a href="#" class="brand-logo">{{currentPlayer.userName}}</a>
-                <ul id="nav-mobile" class="right hide-on-med-and-down">
-                    <li><a href="sass.html">Sass</a></li>
-                    <li><a href="badges.html">Components</a></li>
-                    <li><a href="collapsible.html">JavaScript</a></li>
-                </ul>
-            </div>
-        </nav>
+        <div class="navbar-fixed">
+            <nav>
+                <div class="nav-wrapper red lighten-2">
+                    <a href="#" class="brand-logo">{{currentPlayer.userName}}</a>
+                </div>
+            </nav>
+        </div>
 
         <div class="container">
             <div class="row">
@@ -24,14 +21,14 @@
                         <p v-if="room.status === 'PLAYING'">Game is playing right now. You can't join right now.</p>
                         <p v-if="room.status === 'END'">Game is ended.</p>
                     </div>
-                    <div class="card-action" v-if="room.status === 'JOINING'">
-                        <a @click="join(room.objectId)" class="waves-effect waves-red btn-flat">Join Now</a>
+                    <div class="card-content center-align" v-if="room.status === 'JOINING'">
+                        <a @click="join(room.objectId)" class="waves-effect waves-light btn red lighten-2">Join Now</a>
                     </div>
-                    <div class="card-action" v-if="room.status === 'PLAYING'">
-                        <a @click="visit(room.objectId)" class="waves-effect waves-red btn-flat">Pay Visit</a>
+                    <div class="card-content center-align" v-if="room.status === 'PLAYING'">
+                        <a @click="visit(room.objectId)" class="waves-effect waves-light btn red lighten-2">Pay Visit</a>
                     </div>
-                    <div class="card-action" v-if="room.status === 'END'">
-                        <a @click="ranking(room.objectId)" class="waves-effect waves-red btn-flat">Check Rankings</a>
+                    <div class="card-content center-align" v-if="room.status === 'END'">
+                        <a @click="ranking(room.objectId)" class="waves-effect waves-light btn red lighten-2">Check Rankings</a>
                     </div>
                 </div>
             </div>
@@ -49,7 +46,7 @@
                 return store.state.player.currentPlayer;
             },
             roomList: function() {
-                return store.state.player.homePage.roomList;
+                return store.state.player.roomList;
             }
         },
 
@@ -68,30 +65,29 @@
                     user: store.state.player.currentPlayer,
                     roomId: roomId
                 }).then(function() {
-                    router.go({name: 'ready', params: {roomId: roomId}});
+                    router.go({name: 'ready'});
                 }, function() {
 
                 });
             },
             visit: function(roomId) {
                 console.log('visit');
+                this.$router.go({name: 'visit', params: {roomId: roomId}});
             },
             ranking: function(roomId) {
                 console.log('ranking');
+                this.$router.go({name: 'ranking', params: {roomId: roomId}});
             }
         },
 
         route: {
-            data: function(transition) {
-                var userId = this.$route.params.userId;
+            canActivate: function(transition) {
+                var userId = store.state.player.currentPlayer.objectId;
 
-                // validate the user by userId
-                // if user is not valid, clear user data and return to welcome page
-                store.actions.getUserDetails(userId).then(function(user) {
+                store.actions.getUserDetails(userId).then(function() {
                     transition.next();
-                }, function(error) {
+                }, function() {
                     console.log('home-page validate user failed, redirect to welcome page, userId', userId);
-                    store.actions.clearUserData();
                     transition.redirect({name: 'welcome'});
                 });
             }

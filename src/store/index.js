@@ -64,34 +64,15 @@ function listenPlayerSocketMessage(type, enable) {
         socket.off(type);
     }
 }
-
+console.log('--- new store');
 module.exports = window.store = new Vuex.Store({
     state: {
         /* player pages states */
         player: {
-            currentPlayer: {
-                userId: localStorage.userId || '',
-                userName: '',
-                userType: '',
-                shakeCount: 0
-            },
-            welcomePage: {
-
-            },
-            pageMask: false,
-            homePage: {
-                roomList: []            // need socket.io to update this field
-            },
-            readyPage: {
-                roomDetails: {},         // need socket.io to update this field
-                players: []
-            },
-            shakePage: {
-
-            },
-            rankingPage: {
-                players: [{userName: 'Jack', userType: 'BRIDE', shakeCount: 11}, {userName: 'Tom', userType: 'GROOM', shakeCount: 21}]
-            }
+            currentPlayer: localStorage.userJSON ? JSON.parse(localStorage.userJSON) : {},
+            currentRoom: {},
+            playerList: [],         // player list in current room
+            roomList: [],           // room list
         },
 
         /* admin pages states */
@@ -116,11 +97,12 @@ module.exports = window.store = new Vuex.Store({
 
             return new Promise(function(resolve, reject) {
                 api.createUser(user).then(function(data) {
-                    store.state.player.currentPlayer.userId = localStorage.userId = data.user.objectId;
-                    store.state.player.currentPlayer.userName = data.user.userName;
-                    store.state.player.currentPlayer.userType = data.user.userType;
+                    localStorage.userJSON = JSON.stringify(data.user);
+                    store.state.player.currentPlayer = data.user;
                     resolve(data.user);
                 }, function(error) {
+                    localStorage.userJSON = '';
+                    store.state.player.currentPlayer = {};
                     reject(error);
                 });
             });
@@ -129,27 +111,21 @@ module.exports = window.store = new Vuex.Store({
             console.log('store.actions.getUserDetails', userId);
             return new Promise(function(resolve, reject) {
                 api.getUser({userId: userId}).then(function(data) {
-                    var user = data.user;
-                    store.state.player.currentPlayer.userName = user.userName;
-                    store.state.player.currentPlayer.userType = user.userType;
-                    resolve(user);
+                    localStorage.userJSON = JSON.stringify(data.user);
+                    store.state.player.currentPlayer = data.user;
+                    resolve(data.user);
                 }, function(error) {
+                    localStorage.userJSON = '';
+                    store.state.player.currentPlayer = {};
                     reject(error);
                 });
             });
-        },
-        clearUserData: function(store) {
-            localStorage.userId = '';
-            store.state.player.currentPlayer.userId = '';
-            store.state.player.currentPlayer.userName = '';
-            store.state.player.currentPlayer.userType = '';
-            store.state.player.currentPlayer.shakeCount = 0;
         },
         getRoomDetails: function(store, roomId) {
             console.log('store.actions.getRoomDetails', roomId);
 
             api.getRoom(roomId).then(function(data) {
-                store.state.player.readyPage.roomDetails = data.room;
+                store.state.player.currentRoom = data.room;
             }, function(error) {
                 console.log('store.actions.getRoomDetails error', error);
             });
@@ -157,18 +133,20 @@ module.exports = window.store = new Vuex.Store({
         getRoomPlayers: function(store, roomId) {
             console.log('store.actions.getRoomPlayers', roomId);
             api.getRoomPlayers(roomId).then(function(data) {
-                store.state.player.readyPage.players = data.players;
+                store.state.player.playerList = data.players;
             }, function(error) {
                 console.log('store.actions.getRoomPlayers error', error);
+                store.state.player.playerList = [];
             });
         },
         getRoomList: function(store) {
             console.log('store.actions.getRoomList');
 
             api.listRoom().then(function(data) {
-                store.state.player.homePage.roomList = data.roomList;
+                store.state.player.roomList = data.roomList;
             }, function(error) {
                 console.log('store.actions.getRoomList error', error);
+                store.state.player.roomList = [];
             });
         },
         joinRoom: function(store, request) {
@@ -176,10 +154,13 @@ module.exports = window.store = new Vuex.Store({
             var user = request.user, roomId = request.roomId;
 
             return new Promise(function(resolve, reject) {
-                api.joinRoom(roomId, user.userId, user.userType).then(function(data) {
-                    socket.emit('join', {userId: user.userId, roomId: roomId});
+                api.joinRoom(roomId, user.objectId, user.userType).then(function(data) {
+                    store.state.player.currentRoom = data.room;
+                    socket.emit('join', {userId: user.objectId, roomId: data.room.objectId});
                     resolve(data.room);
                 }, function(error) {
+                    store.state.player.currentRoom = {};
+                    store.state.player.playerList = [];
                     reject(error);
                 });
             });
@@ -188,6 +169,8 @@ module.exports = window.store = new Vuex.Store({
             console.log('store.actions.leaveRoom', roomId, userId);
             return new Promise(function(resolve, reject) {
                 api.leaveRoom(roomId, userId).then(function(data) {
+                    store.state.player.currentRoom = {};
+                    store.state.player.playerList = [];
                     socket.emit('leave', {userId: userId, roomId: roomId});
                     resolve(data.room);
                 }, function(error) {
@@ -197,7 +180,7 @@ module.exports = window.store = new Vuex.Store({
         },
         clearShakeCount: function(store) {
             api.updateUser({
-                userId: store.state.player.currentPlayer.userId,
+                objectId: store.state.player.currentPlayer.objectId,
                 shakeCount: 0
             });
             store.state.player.currentPlayer.shakeCount = 0;
@@ -205,18 +188,18 @@ module.exports = window.store = new Vuex.Store({
         shake: function(store) {
             var shakeCount = ++ store.state.player.currentPlayer.shakeCount;
 
-            store.state.player.readyPage.players.forEach(function(p) {
-                if(p.objectId === store.state.player.currentPlayer.userId)
+            store.state.player.playerList.forEach(function(p) {
+                if(p.objectId === store.state.player.currentPlayer.objectId)
                     p.shakeCount = shakeCount;
             });
 
             api.updateUser({
-                userId: store.state.player.currentPlayer.userId,
+                objectId: store.state.player.currentPlayer.objectId,
                 shakeCount: shakeCount
             });
 
             socket.emit('shake', {
-                userId: store.state.player.currentPlayer.userId,
+                userId: store.state.player.currentPlayer.objectId,
                 shakeCount: shakeCount
             });
         },
@@ -237,12 +220,12 @@ module.exports = window.store = new Vuex.Store({
 
             console.log('store.actions.onJoin', userId);
             api.getUser({userId: userId}).then(function(data) {
-                var exist = store.state.player.readyPage.players.filter(function(p) {
+                var exist = store.state.player.playerList.filter(function(p) {
                         return p.objectId === userId;
                     }).length !== 0;
 
                 if(!exist)
-                    store.state.player.readyPage.players.push(data.user);
+                    store.state.player.playerList.push(data.user);
             }, function(error) {
                 console.log('store.actions.onJoin get user error', error);
             });
@@ -250,7 +233,7 @@ module.exports = window.store = new Vuex.Store({
         onLeave: function(store, message) {
             var userId = message.userId, roomId = message.roomId;
 
-            store.state.player.readyPage.players = store.state.player.readyPage.players.filter(function(player) {
+            store.state.player.playerList = store.state.player.playerList.filter(function(player) {
                 return player.objectId !== userId;
             });
         },
@@ -259,9 +242,9 @@ module.exports = window.store = new Vuex.Store({
                 count = data.shakeCount,
                 i;
 
-            for(i = 0; i < store.state.player.readyPage.players.length; i ++) {
-                if(store.state.player.readyPage.players[i].objectId === userId) {
-                    store.state.player.readyPage.players[i].shakeCount = count;
+            for(i = 0; i < store.state.player.playerList.length; i ++) {
+                if(store.state.player.playerList[i].objectId === userId) {
+                    store.state.player.playerList[i].shakeCount = count;
                     break;
                 }
             }
@@ -270,10 +253,10 @@ module.exports = window.store = new Vuex.Store({
             var roomId = message.roomId,
                 status = message.status;
 
-            if(roomId === store.state.player.readyPage.roomDetails.objectId)
-                store.state.player.readyPage.roomDetails.status = status;
+            if(roomId === store.state.player.currentRoom.objectId)
+                store.state.player.currentRoom.status = status;
 
-            store.state.player.homePage.roomList.forEach(function(room) {
+            store.state.player.roomList.forEach(function(room) {
                 if(room.objectId === roomId)
                     room.status = status;
             });

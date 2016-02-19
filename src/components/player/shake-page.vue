@@ -6,14 +6,16 @@
 
 <template>
     <div>
-        <nav>
-            <div class="nav-wrapper red lighten-2">
-                <a href="#" class="brand-logo">Shaking</a>
-                <ul id="nav-mobile" class="left">
-                    <li><a><i class="material-icons">open_in_new</i></a></li>
-                </ul>
-            </div>
-        </nav>
+        <div class="navbar-fixed">
+            <nav>
+                <div class="nav-wrapper red lighten-2">
+                    <a href="#" class="brand-logo">Shaking</a>
+                    <ul id="nav-mobile" class="left">
+                        <li><a v-link="{name: 'home'}"><i class="material-icons">open_in_new</i></a></li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
 
         <div class="container">
             <div class="row">
@@ -26,8 +28,8 @@
                     <div class="card-content red lighten-3 white-text">
                         a chart here
                     </div>
-                    <div class="card-action">
-                        <a class="waves-effect waves-teal btn-flat">Check RANKING</a>
+                    <div class="card-content center-align">
+                        <a class="waves-effect waves-light btn red lighten-2" v-link="{name: 'ranking', params: {roomId: room.objectId}}">Check Ranking</a>
                     </div>
                 </div>
 
@@ -50,9 +52,9 @@
 </template>
 
 <script>
+    var store = require('../../store');
     var Stopwatch = require('timer-stopwatch');
-    // threshold = 15, timeout = 100 => 80 times / 10s, for both iphone and android
-    var ShakeJS = require('shake.js');
+    var ShakeJS = require('shake.js'); // threshold = 15, timeout = 100 => 80 times / 10s, for both iphone and android
     var shake = null;
 
     module.exports = {
@@ -67,6 +69,9 @@
         computed: {
             shakeCount: function() {
                 return store.state.player.currentPlayer.shakeCount;
+            },
+            room: function() {
+                return store.state.player.currentRoom;
             }
         },
 
@@ -106,6 +111,20 @@
                 });
             }
             shake.start();
+        },
+
+        route: {
+            canActivate: function(transition) {
+                var room = store.state.player.currentRoom;
+
+                if(room.objectId) {
+                    if(room.status !== 'PLAYING')
+                        transition.redirect({name: 'ready'});
+                    else
+                        transition.next();
+                } else
+                    transition.redirect({name: 'home'});
+            }
         }
     };
 </script>
