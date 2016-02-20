@@ -73,6 +73,12 @@ module.exports = window.store = new Vuex.Store({
             currentRoom: {},
             playerList: [],         // player list in current room
             roomList: [],           // room list
+            shakePage: {
+                STOPWATCH_UNIT: 100,
+                TOTAL_GAME_TIME: 20 * 1000,
+                timeBalance: 20 * 1000,
+                stopwatchString: '00:00.0'
+            }
         },
 
         /* admin pages states */
@@ -202,6 +208,14 @@ module.exports = window.store = new Vuex.Store({
                 userId: store.state.player.currentPlayer.objectId,
                 shakeCount: shakeCount
             });
+        },
+        updateStopwatch: function(store, balance) {
+            var s = '00' + Math.floor(balance / 1000);
+            var sStr = s.substring(s.length - 2, s.length);
+            var ss = balance % 1000 / store.state.player.shakePage.STOPWATCH_UNIT;
+
+            store.state.player.shakePage.timeBalance = balance;
+            store.state.player.shakePage.stopwatchString = '00:' + sStr + '.' + ss;
         },
         listenPlayerJoinSocketMessage: function(store, enable) {
             listenPlayerSocketMessage('join', enable);

@@ -9,18 +9,15 @@
         <div class="navbar-fixed">
             <nav>
                 <div class="nav-wrapper red lighten-2">
-                    <a href="#" class="brand-logo">Shaking</a>
-                    <ul id="nav-mobile" class="left">
-                        <li><a v-link="{name: 'home'}"><i class="material-icons">open_in_new</i></a></li>
-                    </ul>
+                    <a href="#" class="brand-logo center">Shaking</a>
                 </div>
             </nav>
         </div>
 
         <div class="container">
             <div class="row">
-                <h6 class="grey-text" v-if="showResult">YOUR RESULT</h6>
-                <div class="card" v-if="showResult">
+                <h6 class="grey-text" v-if="shakeCompleted">YOUR RESULT</h6>
+                <div class="card" v-if="shakeCompleted">
                     <div class="card-content">
                         <h4 class="card-title center-align">GAME END~</h4>
                         <p>Congratulations! You just shaked <span class="teal-text" style="font-size: 1.5em">{{shakeCount}}</span> times in last <span class="red-text" style="font-size: 1.5em">{{time / 1000}}</span> seconds!</p>
@@ -33,17 +30,36 @@
                     </div>
                 </div>
 
-                <h6 class="grey-text" v-if="!showResult">SHAKE COUNT</h6>
-                <div class="card" v-if="!showResult">
+                <h6 class="grey-text" v-if="!shakeCompleted">SHAKE COUNT</h6>
+                <div class="card" v-if="!shakeCompleted">
                     <div class="card-content">
                         <h1 class="center-align teal-text">{{shakeCount}}<span class="shake-page-unit">times</span></h1>
                     </div>
                 </div>
 
-                <h6 class="grey-text" v-if="!showResult">TIME</h6>
-                <div class="card" v-if="!showResult">
+                <h6 class="grey-text" v-if="!shakeCompleted">TIME</h6>
+                <div class="card" v-if="!shakeCompleted">
                     <div class="card-content">
                         <h4 class="center-align red-text">{{stopwatchString}}<i class="material-icons shake-page-unit">restore</i></h4>
+                    </div>
+                </div>
+
+                <h6 class="grey-text">OTHER PLAYER DATA</h6>
+                <div class="card">
+                    <div class="card-content">
+                        <ul class="collection">
+                            <li class="collection-item avatar" v-for="player in players">
+                                <img src="http://materializecss.com/images/yuna.jpg" class="circle">
+                                <span class="title">{{player.userName}}<span class="badge">{{player.shakeCount}}</span></span>
+                                <div class="progress" v-if="player.userType === 'BRIDE'">
+                                    <div class="determinate" :style="{width: player.shakeCount/200*100 + '%'}"></div>
+                                </div>
+                                <div class="progress red lighten-4" v-if="player.userType === 'GROOM'">
+                                    <div class="determinate red" :style="{width: player.shakeCount/200*100 + '%'}"></div>
+                                </div>
+                                <p>{{player.userType}} side</p>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -55,15 +71,16 @@
     var store = require('../../store');
     var Stopwatch = require('timer-stopwatch');
     var ShakeJS = require('shake.js'); // threshold = 15, timeout = 100 => 80 times / 10s, for both iphone and android
+    var GAME_TIME = 20 * 1000;
     var shake = null;
+    var timer = null;
 
     module.exports = {
+
         data: function() {
             return {
-                time: 20 * 1000,
-                stopwatchString: '00:00.0',
-                showResult: false
-            }
+                time: GAME_TIME
+            };
         },
 
         computed: {
@@ -72,45 +89,62 @@
             },
             room: function() {
                 return store.state.player.currentRoom;
+            },
+            players: function() {
+                return store.state.player.playerList.filter(function(p) {
+                    return p.objectId !== store.state.player.currentPlayer.objectId;
+                });
+            },
+            shakeCompleted: function() {
+                return store.state.player.shakePage.timeBalance <= 0;
+            },
+            stopwatchString: function() {
+                return store.state.player.shakePage.stopwatchString;
             }
         },
 
         ready: function() {
-            var unit = 100;
-            var that = this;
-            var timer = new Stopwatch(this.$data.time, {refreshRateMS: unit});
-            var total = this.$data.time;
+            var unit = store.state.player.shakePage.STOPWATCH_UNIT;
+            var total = store.state.player.shakePage.timeBalance;
 
-            timer.onTime(function() {
-                if(total > 0) {
-                    var s = '00' + Math.floor(total / 1000);
-                    var sStr = s.substring(s.length - 2, s.length);
-                    var ss = total % 1000 / unit;
-                    that.$data.stopwatchString = '00:' + sStr + '.' + ss;
-                }
-                total -= unit;
+            /** init shake **/
+            shake = new ShakeJS({
+                threshold: 15,
+                timeout: 100
             });
-            timer.onDone(function() {
-                shake.stop();
-                that.$data.stopwatchString = '00:00.0';
-                that.showResult = true;
-            });
+            window.addEventListener('shake', store.actions.shake, false);
 
-            timer.start();
+            /** init timer **/
+            // total, by default would be 20 * 1000
+            // if the first time to get shake page, the total would be 20 * 1000
+            // if shake started, time will be counting down until total = 0
+            // if shake not done, and user moves to other page, and move back again, and total > 0, will count again
+            if(total > 0) {
+                timer = new Stopwatch(total, {refreshRateMS: unit});
 
-            if(shake) {
-                shake.stop();
-            } else {
-                window.addEventListener('shake', function() {
-                    store.actions.shake();
-                }, false);
+                timer.onTime(function() {
+                    if(total > 0)
+                        store.actions.updateStopwatch(total);
 
-                shake = new ShakeJS({
-                    threshold: 15,
-                    timeout: 100
+                    total -= unit;
                 });
+
+                timer.onDone(function() {
+                    shake.stop();
+                    store.actions.updateStopwatch(0);
+                });
+
+                timer.start();
+                shake.start();
             }
-            shake.start();
+
+            store.actions.listenPlayerShakeSocketMessage(true);
+        },
+
+        beforeDestroy: function() {
+            shake.stop();
+            shake = null;
+            window.removeEventListener('shake', store.actions.shake);
         },
 
         route: {
@@ -122,6 +156,7 @@
                         transition.redirect({name: 'ready'});
                     else
                         transition.next();
+
                 } else
                     transition.redirect({name: 'home'});
             }

@@ -6,7 +6,7 @@
         <div class="navbar-fixed">
             <nav>
                 <div class="nav-wrapper red lighten-2">
-                    <a href="#" class="brand-logo">{{currentPlayer.userName}}</a>
+                    <a href="#" class="brand-logo center">{{currentPlayer.userName}}</a>
                 </div>
             </nav>
         </div>

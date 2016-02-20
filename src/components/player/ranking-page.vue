@@ -14,7 +14,7 @@
         <div class="navbar-fixed">
             <nav>
                 <div class="nav-wrapper red lighten-2">
-                    <a href="#" class="brand-logo">Ranking</a>
+                    <a href="#" class="brand-logo center">Ranking</a>
                     <ul id="nav-mobile" class="left">
                         <li><a v-link="{name: 'home', params: {userId: currentPlayer.userId}}"><i class="material-icons">open_in_new</i></a></li>
                     </ul>

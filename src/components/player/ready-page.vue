@@ -7,7 +7,7 @@
         <div class="navbar-fixed">
             <nav>
                 <div class="nav-wrapper red lighten-2">
-                    <a href="#" class="brand-logo">{{currentPlayer.userName}}</a>
+                    <a href="#" class="brand-logo center">{{currentPlayer.userName}}</a>
                     <ul id="nav-mobile" class="left">
                         <li><a @click="leaveRoom()"><i class="material-icons">open_in_new</i></a></li>
                     </ul>
@@ -36,23 +36,17 @@
                         </div>
                         <div id="brideTab" class="col s12">
                             <ul class="collection">
-                                <li class="collection-item avatar" v-for="player in bridePlayers">
+                                <li class="collection-item avatar" style="min-height: 62px" v-for="player in bridePlayers">
                                     <img src="http://materializecss.com/images/yuna.jpg" class="circle">
-                                    <span class="title">{{player.userName}}<span class="badge">{{player.shakeCount}}</span></span>
-                                    <div class="progress">
-                                        <div class="determinate" :style="{width: player.shakeCount/200*100 + '%'}"></div>
-                                    </div>
+                                    <span class="title">{{player.userName}}</span>
                                 </li>
                             </ul>
                         </div>
                         <div id="groomTab" class="col s12">
                             <ul class="collection">
-                                <li class="collection-item avatar" v-for="player in groomPlayers">
+                                <li class="collection-item avatar" style="min-height: 62px" v-for="player in groomPlayers">
                                     <img src="http://materializecss.com/images/yuna.jpg" class="circle">
-                                    <span class="title">{{player.userName}}<span class="badge">{{player.shakeCount}}</span></span>
-                                    <div class="progress pink lighten-4">
-                                        <div class="determinate pink" :style="{width: player.shakeCount/200*100 + '%'}"></div>
-                                    </div>
+                                    <span class="title">{{player.userName}}</span>
                                 </li>
                             </ul>
                         </div>
@@ -96,6 +90,7 @@
                 console.log('game status change from ' + oldValue + ' to ' + value);
                 switch(value) {
                     case 'PLAYING':
+                        store.actions.updateStopwatch(store.state.player.shakePage.TOTAL_GAME_TIME);
                         this.start();
                         break;
                     case 'END':

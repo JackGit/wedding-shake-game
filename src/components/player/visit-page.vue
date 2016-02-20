@@ -7,7 +7,7 @@
         <div class="navbar-fixed">
             <nav>
                 <div class="nav-wrapper red lighten-2">
-                    <a href="#" class="brand-logo">Visit Mode</a>
+                    <a href="#" class="brand-logo center">Visit Mode</a>
                     <ul id="nav-mobile" class="left">
                         <li><a v-link="{name: 'home'}"><i class="material-icons">open_in_new</i></a></li>
                     </ul>
