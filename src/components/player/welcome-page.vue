@@ -1,19 +1,28 @@
 <style scoped>
+    .avatar-container {
+        padding: 50px 0 30px 0;
+    }
 
+    .avatar {
+        border-radius: 50%;
+        width: 60px;
+        height: 60px;
+    }
 </style>
 
 <template>
     <div class="container">
         <div class="row">
+            <div class="col s12 avatar-container">
+                <div class="col s12 center-align">
+                    <img :src="player.avatarImageUrl" class="avatar"/>
+                </div>
+                <h6 class="center-align">{{player.userName}}</h6>
+            </div>
+        </div>
+        <div class="row">
             <div class="card">
                 <div class="card-content">
-                    <span class="card-title">welcome</span>
-                    <div class="row">
-                        <div class="input-field col s12">
-                            <input type="text" id="welcome_user_name_input" placeholder="user name" v-el:user-name/>
-                            <label class="" for="welcome_user_name_input">User Name</label>
-                        </div>
-                    </div>
                     <div class="row">
                         <div class="input-field col s12">
                             <select v-el:user-type>
@@ -21,7 +30,7 @@
                                 <option value="BRIDE">Bride Guest</option>
                                 <option value="GROOM">Groom Guest</option>
                             </select>
-                            <label>Guest Type {{selected}}</label>
+                            <label>Please select your guest type</label>
                         </div>
                     </div>
                 </div>
@@ -44,6 +53,12 @@
 
     module.exports = {
 
+        computed: {
+            player: function() {
+                return store.state.player.currentPlayer;
+            }
+        },
+
         ready: function() {
             $('select').material_select();
         },
@@ -53,10 +68,10 @@
                 var router = this.$router;
 
                 store.actions.registerPlayer({
-                    userName: this.$els.userName.value,
+                    objectId: store.state.player.currentPlayer.objectId,
                     userType: this.$els.userType.value
-                }).then(function(user) {
-                    router.go({name: 'home', params: {userId: user.objectId}});
+                }).then(function() {
+                    router.go({name: 'home'});
                 });
             }
         },
@@ -64,11 +79,17 @@
         route: {
             data: function(transition) {
                 var userId = store.state.player.currentPlayer.objectId;
+                var userType = store.state.player.currentPlayer.userType;
 
-                if(userId)
-                    transition.redirect({name: 'home', params: {userId: userId}});
-                else
-                    transition.next();
+                if(userId) {
+                    if(userType) {
+                        transition.redirect({name: 'home'});
+                    } else {
+                        transition.next();
+                    }
+                } else {
+                    window.location.href = window.location.origin + '/qq_login.html';
+                }
             }
         }
     };

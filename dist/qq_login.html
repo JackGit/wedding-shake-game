@@ -2,19 +2,34 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0 ">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="static/materialize/css/materialize.min.css"  media="screen,projection"/>
 
-    <title>shake game</title>
+    <title>Login</title>
 
+    <style>
+        html, body {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
     <script type="text/javascript"
             src="http://qzonestyle.gtimg.cn/qzone/openapi/qc_loader.js"
             data-appid="101295012"
-            data-redirecturi="http://wedding.jackyang.me/login.html"
+            data-redirecturi="http://wedding.jackyang.me/qq_login_callback.html"
             charset="utf-8">
     </script>
-    <!-- redirect: http://wedding.jackyang.me/?#!/access_token=0C501C4D58FDD8CDF997D61891D9FB87&expires_in=7776000 -->
 </head>
-<body class="grey lighten-4">
-    <a href="https://graph.qq.com/oauth2.0/authorize?response_type=code&client_id=101295012&redirect_uri=http%3A%2F%2Fwedding.jackyang.me%2Flogin.html&state=test&scope=all">login</a>
-
+<body class="grey lighten-4 valign-wrapper">
+    <div class="container">
+        <div class="row">
+            <div class="center-align">
+                <a href="https://graph.qq.com/oauth2.0/authorize?response_type=code&client_id=101295012&redirect_uri=http%3A%2F%2Fwedding.jackyang.me%2Fqq_login_callback.html&state=test&scope=all">
+                    <img src="static/images/Connect_logo_5.png">
+                </a>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

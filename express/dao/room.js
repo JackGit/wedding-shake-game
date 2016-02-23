@@ -110,26 +110,29 @@ var roomDAO = {
     },
     allowPlayerJoin: function(roomId) {
         var room = {
-            objectId: roomId,
+            roomId: roomId,
             status: 'JOINING'
         };
         return roomDAO.updateRoom(room);
     },
     startGame: function(roomId) {
         var room = {
-            objectId: roomId,
+            roomId: roomId,
             status: 'PLAYING',
             ranking: []
         };
 
-        return roomDAO.get(roomId).try(function(roomAVObj) {
-            var playerList = roomAVObj.get('playerList'),
+        console.log('startGame');
+        return roomDAO.getRoom(roomId).try(function(roomAVObj) {
+            var playerList = roomAVObj.get('players'),
                 ranking = [];
 
+            console.log('startGame players', playerList);
             // init ranking object
-            playerList.forEach(function(playerId) {
+            playerList.forEach(function(player) {
                 ranking.push({
-                    playerId: playerId,
+                    playerId: player.playerId,
+                    playerType: player.playerType,
                     shakeCount: 0
                 });
             });
@@ -140,27 +143,41 @@ var roomDAO = {
     },
     stopGame: function(roomId) {
         var room = {
-            objectId: roomId,
+            roomId: roomId,
             status: 'END',
             ranking: []
         };
 
         // sync shakeCount from player records
         return roomDAO.getRoom(roomId).try(function(roomAVObj) {
+            /*
+             {
+                 "player": {
+                     "playerId": "56cc22422e958a00593007ec",
+                     "playerType": "GROOM",
+                     "joinedAt": {
+                        "__type": "Date",
+                        "iso": "2016-02-23T10:06:35.045Z"
+                     }
+                    },
+                "shakeCount": 0
+             }
+             */
             var ranking = roomAVObj.get('ranking'),
-                playerList = roomAVObj.get('playerList'),
+                playerList = roomAVObj.get('players'),
 
                 // for players who are not left game when the game ended
                 playerIds = ranking.filter(function(r) {
-                    return playerList.indexOf(r.playerId) !== -1;
+                    return playerList.filter(function(p) { return p.playerId === r.player.playerId}).length !== -1;
                 }).map(function(r) {
-                    return r.playerId;
+                    return r.player.playerId;
                 });
 
             return playerDAO.getPlayerList(playerIds).try(function(results) {
                 results.forEach(function(playerAVObj) {
                     room.ranking.push({
                         playerId: playerAVObj.get('objectId'),
+                        playerType: playerAVObj.get('userType'),
                         shakeCount: playerAVObj.get('shakeCount')
                     });
                     // clear the shakeCount of each player record

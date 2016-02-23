@@ -28,7 +28,7 @@
                                 <h4>Total <span class="right">{{brideShakeTotal}}</span></h4>
                             </li>
                             <li v-for="player in bridePlayers" class="collection-item avatar">
-                                <img src="http://materializecss.com/images/yuna.jpg" class="circle">
+                                <img :src="player.avatarImageUrl" class="circle">
                                 <span class="title">{{player.userName}}</span>
                                 <p>count: {{player.shakeCount}}</p>
                                 <div class="progress">
@@ -46,7 +46,7 @@
                         <ul class="collection with-header">
                             <li class="collection-header"><h4>Total<span class="right">{{groomShakeTotal}}</span></h4></li>
                             <li v-for="player in groomPlayers" class="collection-item avatar">
-                                <img src="http://materializecss.com/images/yuna.jpg" class="circle">
+                                <img :src="player.avatarImageUrl" class="circle">
                                 <span class="title">{{player.userName}}</span>
                                 <p>count: {{player.shakeCount}}</p>
                                 <div class="progress pink lighten-4">

@@ -1,9 +1,65 @@
-var AV = require('avoscloud-sdk');
 var PlayerDAO = require('../dao/player.js');
 var RoomDAO = require('../dao/room.js');
+var OauthQQ = require('../oauth/connect.qq.js');
 
-module.exports = function(app, io) {
+module.exports = function(app) {
     var router = app;
+
+    router.post('/passport/qq/login', function(req, res) {
+        var authroizeCode = req.body.code;
+        var token = '';
+        var refreshToken = '';
+        var expiresIn = 0;
+        var openId = '';
+
+        OauthQQ.getAccessToken(authroizeCode).then(function(response) {
+            token = response.access_token;
+            refreshToken = response.refresh_token;
+            expiresIn = response.expires_in;
+
+            return OauthQQ.getOpenId(token);
+        }).then(function(response) {
+            openId = response.openid;
+            return OauthQQ.getUserInfo(token, openId);
+        }).then(function(response) {
+            // "nickname": "StupidJack",
+            // "gender": "ÄÐ",
+            // "province": "ºþ±±",
+            // "city": "Îäºº",
+            // "year": "1989",
+            // "figureurl": "http:\/\/qzapp.qlogo.cn\/qzapp\/101295012\/C556321FC9B2E9568B24D06654A4091C\/30",
+            // "figureurl_1": "http:\/\/qzapp.qlogo.cn\/qzapp\/101295012\/C556321FC9B2E9568B24D06654A4091C\/50",
+            // "figureurl_2": "http:\/\/qzapp.qlogo.cn\/qzapp\/101295012\/C556321FC9B2E9568B24D06654A4091C\/100",
+            // "figureurl_qq_1": "http:\/\/q.qlogo.cn\/qqapp\/101295012\/C556321FC9B2E9568B24D06654A4091C\/40",
+            // "figureurl_qq_2": "http:\/\/q.qlogo.cn\/qqapp\/101295012\/C556321FC9B2E9568B24D06654A4091C\/100",
+            // "is_yellow_vip": "0",
+            // "vip": "0",
+            // "yellow_vip_level": "0",
+            // "level": "0",
+            // "is_yellow_year_vip": "0"
+            return PlayerDAO.saveQQUser({
+                userName: response.nickname,
+                avatarImageUrl: response.figureurl_qq_2 || response.figureurl_qq_1,
+                qqOpenId: openId,
+                qqAccessToken: token,
+                qqRefreshAccessToken: refreshToken,
+                expiresIn: expiresIn
+            });
+        }).then(function(response) {
+            res.send({
+                statusCode: 0,
+                message: '',
+                user: response
+            });
+        }).catch(function(error) {
+            res.send({
+                statusCode: -1,
+                message: 'login via qq failed',
+                error: error
+            });
+        });
+    });
+
 
     router.post('/game/user/create', function(req, res) {
         var player = {
@@ -71,7 +127,7 @@ module.exports = function(app, io) {
         }, function(error) {
             res.send({
                 statusCode: 1,
-                message: 'get user error ' + id,
+                message: 'get user error',
                 error: error
             });
         });
@@ -222,10 +278,52 @@ module.exports = function(app, io) {
     });
 
     router.post('/game/rankings', function(req, res) {});
-    router.post('/game/controls/start', function(req, res) {
 
+    router.post('/game/controls/joining', function(req, res) {
+        RoomDAO.allowPlayerJoin(req.body.roomId).then(function(response) {
+            res.send({
+                statusCode: 0,
+                message: '',
+                room: response
+            });
+        }, function(error) {
+            res.send({
+                statusCode: -1,
+                message: 'allow join room error',
+                error: error
+            });
+        });
     });
-    router.post('/game/controls/stop', function(req, res) {
 
+    router.post('/game/controls/start', function(req, res) {
+        RoomDAO.startGame(req.body.roomId).then(function(response) {
+            res.send({
+                statusCode: 0,
+                message: '',
+                room: response
+            });
+        }, function(error) {
+            res.send({
+                statusCode: -1,
+                message: 'start room error',
+                error: error
+            });
+        });
+    });
+
+    router.post('/game/controls/stop', function(req, res) {
+        RoomDAO.stopGame(req.body.roomId).then(function(response) {
+            res.send({
+                statusCode: 0,
+                message: '',
+                room: response
+            });
+        }, function(error) {
+            res.send({
+                statusCode: -1,
+                message: 'stop room error',
+                error: error
+            });
+        });
     });
 };

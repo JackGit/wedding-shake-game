@@ -37,7 +37,7 @@
                         <div id="brideTab" class="col s12">
                             <ul class="collection">
                                 <li class="collection-item avatar" style="min-height: 62px" v-for="player in bridePlayers">
-                                    <img src="http://materializecss.com/images/yuna.jpg" class="circle">
+                                    <img :src="player.avatarImageUrl" class="circle">
                                     <span class="title">{{player.userName}}</span>
                                 </li>
                             </ul>
@@ -45,7 +45,7 @@
                         <div id="groomTab" class="col s12">
                             <ul class="collection">
                                 <li class="collection-item avatar" style="min-height: 62px" v-for="player in groomPlayers">
-                                    <img src="http://materializecss.com/images/yuna.jpg" class="circle">
+                                    <img :src="player.avatarImageUrl" class="circle">
                                     <span class="title">{{player.userName}}</span>
                                 </li>
                             </ul>

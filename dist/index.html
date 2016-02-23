@@ -8,21 +8,8 @@
 
     <title>shake game</title>
 
-    <script src="http://qzonestyle.gtimg.cn/qzone/openapi/qc_loader.js" data-appid="101295012" data-redirecturi="http://wedding.jackyang.me/login.html" charset="utf-8"></script>
-    <!-- redirect: http://wedding.jackyang.me/?#!/access_token=0C501C4D58FDD8CDF997D61891D9FB87&expires_in=7776000 -->
 </head>
 <body class="grey lighten-4">
-
-    <span id="qqLoginBtn"></span>
-    <script type="text/javascript">
-        QC.Login({
-            btnId:"qqLoginBtn"    //插入按钮的节点id
-        }, function(oInfo, oOpts){
-            alert(oInfo.nickname); // 昵称
-            alert(oOpts.btnId);    // 点击登录的按钮Id
-        });
-    </script>
-
     <div id="app"></div>
 
     <script src="static/javascripts/jquery-2.1.1.min.js"></script>

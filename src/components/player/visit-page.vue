@@ -49,7 +49,7 @@
                     <div class="card-content">
                         <ul class="collection">
                             <li class="collection-item avatar" v-for="player in players">
-                                <img src="http://materializecss.com/images/yuna.jpg" class="circle">
+                                <img :src="player.avatarImageUrl" class="circle">
                                 <span class="title">{{player.userName}}<span class="badge">{{player.shakeCount}}</span></span>
                                 <div class="progress" v-if="player.userType === 'BRIDE'">
                                     <div class="determinate" :style="{width: player.shakeCount/200*100 + '%'}"></div>

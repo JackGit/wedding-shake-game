@@ -3,7 +3,12 @@ var Player = AV.Object.extend('Player');
 var PLAYER_PROPERTIES = {
     userName: '',
     userType: '',
-    shakeCount: 0               // this shakeCount will be used to record playing data. When game is stopped, this data will be synced to room.ranking
+    shakeCount: 0,               // this shakeCount will be used to record playing data. When game is stopped, this data will be synced to room.ranking
+    avatarImageUrl: '',
+    qqOpenId: '',
+    qqAccessToken: '',
+    qqRefreshAccessToken: '',
+    expiresIn: 0
 };
 
 var playerDAO = {
@@ -16,6 +21,21 @@ var playerDAO = {
                 playerAVObj.set(p, player[p]);
 
         return playerAVObj.save();
+    },
+    saveQQUser: function(player) {
+        var playerQueryObj = new AV.Query('Player');
+        playerQueryObj.equalTo('qqOpenId', player.qqOpenId);
+
+        return playerQueryObj.find().then(function(results) {
+            if(results.length === 0) {
+                console.log('PlayerDAO.saveQQPlayer -- create one');
+                return playerDAO.createPlayer(player);
+            } else {
+                console.log('PlayerDAO.saveQQPlayer -- update one', results[0].id);
+                player.objectId = results[0].id;
+                return playerDAO.updatePlayer(player);
+            }
+        });
     },
     getPlayer: function(userId) {
         var playerQueryObj = new AV.Query('Player');

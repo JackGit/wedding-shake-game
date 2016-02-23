@@ -64,7 +64,7 @@ function listenPlayerSocketMessage(type, enable) {
         socket.off(type);
     }
 }
-console.log('--- new store');
+
 module.exports = window.store = new Vuex.Store({
     state: {
         /* player pages states */
@@ -102,6 +102,18 @@ module.exports = window.store = new Vuex.Store({
             console.log('store.actions.registerPlayer', user);
 
             return new Promise(function(resolve, reject) {
+                api.updateUser(user).then(function(data) {
+                    localStorage.userJSON = JSON.stringify(data.user);
+                    store.state.player.currentPlayer = data.user;
+                    resolve(data.user);
+                }, function(error) {
+                    localStorage.userId = '';       // localStorage.userId is inited in qq_login_callback.html
+                    localStorage.userJSON = '';
+                    store.state.player.currentPlayer = {};
+                    reject(error);
+                });
+            });
+            /*return new Promise(function(resolve, reject) {
                 api.createUser(user).then(function(data) {
                     localStorage.userJSON = JSON.stringify(data.user);
                     store.state.player.currentPlayer = data.user;
@@ -111,7 +123,7 @@ module.exports = window.store = new Vuex.Store({
                     store.state.player.currentPlayer = {};
                     reject(error);
                 });
-            });
+            });*/
         },
         getUserDetails: function(store, userId) {
             console.log('store.actions.getUserDetails', userId);
@@ -346,7 +358,7 @@ module.exports = window.store = new Vuex.Store({
             if(store.state.admin.roomPage.roomDetails.status === 'JOINING')
                 return;
 
-            api.updateRoom({roomId: roomId, status: 'JOINING'}).then(function(data) {
+            api.allowJoin(roomId).then(function(data) {
                 console.log('store.actions.allowToJoinRoom success');
                 store.state.admin.roomPage.roomDetails = data.room;
                 socket.emit('status-change', {roomId: roomId, status: 'JOINING'});
@@ -358,7 +370,7 @@ module.exports = window.store = new Vuex.Store({
             if(store.state.admin.roomPage.roomDetails.status === 'PLAYING')
                 return;
 
-            api.updateRoom({roomId: roomId, status: 'PLAYING'}).then(function(data) {
+            api.startGame(roomId).then(function(data) {
                 console.log('store.actions.startRoom success');
                 store.state.admin.roomPage.roomDetails = data.room;
                 socket.emit('status-change', {roomId: roomId, status: 'PLAYING'});
@@ -367,7 +379,7 @@ module.exports = window.store = new Vuex.Store({
             });
         },
         stopRoom: function(store, roomId) {
-            api.updateRoom({roomId: roomId, status: 'END'}).then(function(data) {
+            api.stopGame(roomId).then(function(data) {
                 console.log('store.actions.stopRoom success');
                 socket.emit('status-change', {roomId: roomId, status: 'END'});
             }, function(error) {

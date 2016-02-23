@@ -70,6 +70,21 @@ var API = {
             roomId: roomId,
             userId: userId
         });
+    },
+    startGame: function(roomId) {
+        return callservice('/game/controls/start', {
+            roomId: roomId
+        });
+    },
+    stopGame: function(roomId) {
+        return callservice('/game/controls/stop', {
+            roomId: roomId
+        });
+    },
+    allowJoin: function(roomId) {
+        return callservice('/game/controls/joining', {
+            roomId: roomId
+        });
     }
 };
 

@@ -5,18 +5,9 @@
     <title>QQ Login Callback</title>
 </head>
 <body>
-    <!-- direct open this html with url, should redirect to the login page -->
-    <!-- http://wedding.jackyang.me/login_callback.html?code=1B86ABAC298136ED99E132EC5B519F17&state=test -->
     <script src="static/javascripts/jquery-2.1.1.min.js"></script>
     <script>
-        /**
-         * from url: code
-         *      => ajax to get access token
-         *      => get openId
-         *      => get user info
-         *  => close this window
-         *  => refresh opener
-         */
+
         $(document).ready(function() {
             var url = window.location.href;
             var paramsString = url.split('?')[1];
@@ -29,14 +20,19 @@
                     code = pair[1];
             });
 
-            $.get('/passport/', {code: code}, function() {
-                // server save login qq user
-                // send message to main window
-                // main window would close this window
+            $.post('/passport/qq/login', {code: code}, function(response) {
+                if(response.statusCode === 0) {
+                    var user = response.user;
+                    console.log('qq user login success', user);
+                    localStorage.userId = user.objectId;
+                    localStorage.userJSON = JSON.stringify(user);
+                    window.location.href = 'http://wedding.jackyang.me';
+                } else {
+                    console.log('qq user login failed', response.error);
+                }
             });
+
         });
-
-
 
     </script>
 </body>
