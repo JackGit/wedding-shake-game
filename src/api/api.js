@@ -52,6 +52,9 @@ var API = {
     getRoomPlayers: function(roomId) {
         return callservice('/game/room/playerList', {roomId: roomId});
     },
+    getRoomRanking: function(roomId) {
+        return callservice('/game/room/ranking', {roomId: roomId});
+    },
     updateRoom: function(room) {
         return callservice('/game/room/update', room);
     },

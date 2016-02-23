@@ -58,7 +58,7 @@
                     <div class="card-content">
                         <ul class="collection">
                             <li class="collection-item avatar" v-for="player in players">
-                                <img src="http://materializecss.com/images/yuna.jpg" class="circle">
+                                <img :src="player.avatarImageUrl" class="circle">
                                 <span class="title">{{player.userName}}<span class="badge">{{player.shakeCount}}</span></span>
                                 <div class="progress" v-if="player.userType === 'BRIDE'">
                                     <div class="determinate" :style="{width: player.shakeCount/200*100 + '%'}"></div>
@@ -66,7 +66,7 @@
                                 <div class="progress red lighten-4" v-if="player.userType === 'GROOM'">
                                     <div class="determinate red" :style="{width: player.shakeCount/200*100 + '%'}"></div>
                                 </div>
-                                <p>{{player.userType}} side</p>
+                                <p>{{player.userType}}</p>
                             </li>
                         </ul>
                     </div>
@@ -86,34 +86,58 @@
                 return store.state.player.currentPlayer;
             },
             players: function() {
-                return store.state.player.playerList.sort(function(p1, p2) {
+                var ranking = store.state.player.currentRoom.ranking;
+                var players = [];
+
+                ranking.forEach(function(r) {
+                    var player = store.state.player.playerList.filter(function(p) {
+                        return p.objectId === r.playerId;
+                    })[0];
+                    // after generate ranking in server side, user.shakeCount will be reset as 0;
+                    player.shakeCount = r.shakeCount;
+                    players.push(player);
+                });
+
+                return players.sort(function(p1, p2) {
                     // descend order
                     return p1.shakeCount < p2.shakeCount;
                 });
             },
             bridePlayers: function() {
-                return store.state.player.playerList.filter(function(player) {
-                    return player.userType === 'BRIDE';
+                var ranking = store.state.player.currentRoom.ranking;
+                var players = [];
+
+                ranking.forEach(function(r) {
+                    players.push(store.state.player.playerList.filter(function(p) {
+                        return p.objectId === r.playerId && p.userType === 'BRIDE';
+                    }));
                 });
+                return players;
             },
             groomPlayers: function() {
-                return store.state.player.playerList.filter(function(player) {
-                    return player.userType === 'GROOM';
+                var ranking = store.state.player.currentRoom.ranking;
+                var players = [];
+
+                ranking.forEach(function(r) {
+                    players.push(store.state.player.playerList.filter(function(p) {
+                        return p.objectId === r.playerId && p.userType === 'GROOM';
+                    }));
                 });
+                return players;
             },
             brideTotal: function() {
                 var total = 0;
-                store.state.player.playerList.forEach(function(player) {
-                    if(player.userType === 'BRIDE')
-                        total += player.shakeCount;
+                store.state.player.currentRoom.ranking.forEach(function(r) {
+                    if(r.playerType === 'BRIDE')
+                        total += r.shakeCount;
                 });
                 return total;
             },
             groomTotal: function() {
                 var total = 0;
-                store.state.player.playerList.forEach(function(player) {
-                    if(player.userType === 'GROOM')
-                        total += player.shakeCount;
+                store.state.player.currentRoom.ranking.forEach(function(r) {
+                    if(r.playerType === 'GROOM')
+                        total += r.shakeCount;
                 });
                 return total;
             }

@@ -23,9 +23,9 @@ module.exports = function(app) {
             return OauthQQ.getUserInfo(token, openId);
         }).then(function(response) {
             // "nickname": "StupidJack",
-            // "gender": "ÄÐ",
-            // "province": "ºþ±±",
-            // "city": "Îäºº",
+            // "gender": "ï¿½ï¿½",
+            // "province": "ï¿½ï¿½ï¿½ï¿½",
+            // "city": "ï¿½äºº",
             // "year": "1989",
             // "figureurl": "http:\/\/qzapp.qlogo.cn\/qzapp\/101295012\/C556321FC9B2E9568B24D06654A4091C\/30",
             // "figureurl_1": "http:\/\/qzapp.qlogo.cn\/qzapp\/101295012\/C556321FC9B2E9568B24D06654A4091C\/50",
@@ -276,8 +276,6 @@ module.exports = function(app) {
             });
         });
     });
-
-    router.post('/game/rankings', function(req, res) {});
 
     router.post('/game/controls/joining', function(req, res) {
         RoomDAO.allowPlayerJoin(req.body.roomId).then(function(response) {

@@ -381,6 +381,7 @@ module.exports = window.store = new Vuex.Store({
         stopRoom: function(store, roomId) {
             api.stopGame(roomId).then(function(data) {
                 console.log('store.actions.stopRoom success');
+                store.state.admin.roomPage.roomDetails = data.room;
                 socket.emit('status-change', {roomId: roomId, status: 'END'});
             }, function(error) {
                 console.log('store.actions.stopRoom error', error);
