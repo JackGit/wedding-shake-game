@@ -14,9 +14,9 @@
         <div class="navbar-fixed">
             <nav>
                 <div class="nav-wrapper red lighten-2">
-                    <a href="#" class="brand-logo center">Ranking</a>
-                    <ul id="nav-mobile" class="left">
-                        <li><a v-link="{name: 'home', params: {userId: currentPlayer.userId}}"><i class="material-icons">open_in_new</i></a></li>
+                    <a class="brand-logo center">Ranking</a>
+                    <ul class="left">
+                        <li><a v-link="{name:'home'}"><i class="material-icons fa fa-angle-left"></i></a></li>
                     </ul>
                 </div>
             </nav>
@@ -147,19 +147,6 @@
             var roomId = this.$route.params.roomId;
             store.actions.getRoomPlayers(roomId);
             store.actions.getRoomDetails(roomId);
-        },
-
-        route: {
-            canActivate: function(transition) {
-                var room = store.state.player.currentRoom;
-
-                if(room.status === 'END')
-                    transition.next();
-                else if(room.status === 'PLAYING')
-                    transition.redirect({name: 'visit', params: {roomId: room.objectId}});
-                else
-                    transition.abort();
-            }
         }
     };
 </script>

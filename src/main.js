@@ -32,6 +32,10 @@ router.map({
         name: 'home',
         component: require('./components/player/home-page.vue')
     },
+    '/profile': {
+        name: 'profile',
+        component: require('./components/player/profile-page.vue')
+    },
 
     // pages after join room start
     // refresh these pages will route to home page

@@ -125,6 +125,23 @@ module.exports = window.store = new Vuex.Store({
                 });
             });*/
         },
+        signout: function(store) {
+            localStorage.userId = '';
+            localStorage.userJSON = '';
+            store.state.player.currentPlayer = {};
+        },
+        updateUserDetails: function(store, user) {
+            console.log('store.actions.updateUserDetails', user);
+            return new Promise(function(resolve, reject) {
+                api.updateUser(user).then(function(data) {
+                    localStorage.userJSON = JSON.stringify(data.user);
+                    store.state.player.currentPlayer = data.user;
+                    resolve(data.user);
+                }, function(error) {
+                    reject(error);
+                });
+            });
+        },
         getUserDetails: function(store, userId) {
             console.log('store.actions.getUserDetails', userId);
             return new Promise(function(resolve, reject) {

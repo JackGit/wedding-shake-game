@@ -6,7 +6,10 @@
         <div class="navbar-fixed">
             <nav>
                 <div class="nav-wrapper red lighten-2">
-                    <a href="#" class="brand-logo">{{currentPlayer.userName}}</a>
+                    <a class="brand-logo">{{currentPlayer.userName}}</a>
+                    <ul class="right">
+                        <li><a v-link="{name:'profile'}"><i class="material-icons fa fa-user"></i></a></li>
+                    </ul>
                 </div>
             </nav>
         </div>

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0 ">
+    <link type="text/css" rel="stylesheet" href="static/font-awesome/font-awesome.min.css">
+    <link type="text/css" rel="stylesheet" href="static/materialize/css/materialize.min.css"  media="screen,projection">
+    <link type="text/css" rel="stylesheet" href="static/stylesheets/animate.css">
+    <title></title>
+    <style>
+        main {
+            overflow: hidden;
+        }
+
+        .welcome-to {
+            margin: 40px 0 0 0;
+            letter-spacing: 5px;
+            font-weight: bold;
+            font-family: monospace;
+        }
+        .cp-names {
+            margin: 0;
+            font-size: 1.5em;
+            font-family: monospace;
+        }
+        .wedding-of {
+            margin: 0;
+            font-size: 3em;
+            font-family: serif;
+        }
+        .block {
+            padding: 20px 0 40px 0;
+            visibility: hidden;
+        }
+        .block.animated {
+            visibility: visible;
+        }
+
+    </style>
+</head>
+<body>
+    <header>
+        <div id="greetingBlock" class="block animated">
+            <div class="container">
+                <p class="center-align welcome-to">WELCOME TO THE</p>
+                <p class="center-align wedding-of"><span>W</span>EDDING OF</p>
+                <p class="center-align cp-names grey-text text-lighten-1">JACK <i class="fa fa-heart red-text"></i> ANGEL</p>
+                <p class="center-align">INITE YOU TO SHARE IN THEIR JOY</p>
+            </div>
+        </div>
+    </header>
+    <main>
+        <div id="groomBlock" class="block">
+            <div class="container row">
+                <div class="col s3">
+                    <img class="circle responsive-img" src="http://materializecss.com/images/yuna.jpg">
+                </div>
+                <div class="col s9">
+                    <span class="black-text flow-text">
+                        This is a square image. Add the "circle" class to it to make it appear circular.
+                        This is a square image. Add the "circle" class to it to make it appear circular.
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div id="brideBlock" class="block">
+            <div class="container row">
+                <div class="col s9">
+                    <span class="black-text flow-text">
+                        This is a square image. Add the "circle" class to it to make it appear circular.
+                        This is a square image. Add the "circle" class to it to make it appear circular.
+                    </span>
+                </div>
+                <div class="col s3">
+                    <img class="circle responsive-img" src="http://materializecss.com/images/yuna.jpg">
+                </div>
+            </div>
+        </div>
+        <div id="coupleBlock" class="block">
+            <div class="container row">
+                <div class="col s12">
+                    <span class="black-text flow-text">
+                        This is a square image. Add the "circle" class to it to make it appear circular.
+                        This is a square image. Add the "circle" class to it to make it appear circular.
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div id="coupleBlock" class="block"></div>
+    </main>
+
+    <footer class="page-footer">
+        <div class="container">
+            <div class="row">
+                <div class="col l4 offset-l2 s12">
+                    <h5 class="white-text">时间</h5>
+                    <ul>
+                        <li><a class="grey-text text-lighten-3" href="#!">2016年4月23日 周六</a></li>
+                        <li><a class="grey-text text-lighten-3" href="#!">中午 12: 18</a></li>
+                    </ul>
+                </div>
+                <div class="col l6 s12">
+                    <h5 class="white-text">地址</h5>
+                    <p class="grey-text text-lighten-4">湖锦酒楼（锦江店）武昌区临江大道88号锦江国际城旁<a href="http://j.map.baidu.com/XmjGk"><i class="fa fa-location-arrow"></i></i></a></p>
+                    <p class="grey-text text-lighten-4">二楼宴会厅</p>
+                </div>
+            </div>
+        </div>
+        <div class="footer-copyright">
+            <div class="container">
+                Made By Jack Yang
+            </div>
+        </div>
+    </footer>
+
+    <script src="static/javascripts/jquery-2.1.1.min.js"></script>
+    <script src="static/javascripts/scrollspy.js"></script>
+    <script src="static/javascripts/snabbt.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#groomBlock').one('scrollSpy:enter', function() {
+                $(this).addClass('animated').addClass('slideInLeft');
+            })
+
+            $('#brideBlock').one('scrollSpy:enter', function() {
+                $(this).addClass('animated').addClass('slideInRight');
+            });
+
+            $('#coupleBlock').one('scrollSpy:enter', function() {
+                $(this).addClass('animated').addClass('slideInLeft');
+            });
+
+            setTimeout(function() {
+                $('.block').scrollSpy();
+            }, 500);
+
+        });
+    </script>
+</body>
+</html>

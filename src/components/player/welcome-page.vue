@@ -77,7 +77,7 @@
         },
 
         route: {
-            data: function(transition) {
+            canActivate: function(transition) {
                 var userId = store.state.player.currentPlayer.objectId;
                 var userType = store.state.player.currentPlayer.userType;
 
