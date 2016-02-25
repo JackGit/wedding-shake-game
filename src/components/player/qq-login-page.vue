@@ -67,7 +67,7 @@
             start: function() {
                 var router = this.$router;
 
-                store.actions.registerPlayer({
+                store.actions.updateUserDetails({
                     objectId: store.state.player.currentPlayer.objectId,
                     userType: this.$els.userType.value
                 }).then(function() {
@@ -88,7 +88,7 @@
                         transition.next();
                     }
                 } else {
-                    window.location.href = window.location.origin + '/qq_login.html';
+                    transition.redirect({name: 'login'});
                 }
             }
         }

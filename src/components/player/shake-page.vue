@@ -9,7 +9,7 @@
         <div class="navbar-fixed">
             <nav>
                 <div class="nav-wrapper red lighten-2">
-                    <a href="#" class="brand-logo center">Shaking</a>
+                    <a class="brand-logo center">Shaking</a>
                 </div>
             </nav>
         </div>
@@ -40,7 +40,7 @@
                 <h6 class="grey-text" v-if="!shakeCompleted">TIME</h6>
                 <div class="card" v-if="!shakeCompleted">
                     <div class="card-content">
-                        <h4 class="center-align red-text">{{stopwatchString}}<i class="material-icons shake-page-unit">restore</i></h4>
+                        <h4 class="center-align red-text">{{stopwatchString}}<i class="material-icons shake-page-unit fa fa-clock-o"></i></h4>
                     </div>
                 </div>
 

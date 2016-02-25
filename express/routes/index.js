@@ -271,10 +271,26 @@ module.exports = function(app) {
         }, function(error) {
             res.send({
                 statusCode: -1,
-                message: '',
+                message: 'get room player list error',
                 error: error
             });
         });
+    });
+
+    router.post('/game/room/rankingPlayerList', function(req, res) {
+       RoomDAO.getRoomRankingPlayerList(req.body.roomId).then(function(response) {
+           res.send({
+               statusCode: 0,
+               message: '',
+               players: response
+           });
+       }, function(error) {
+           res.send({
+               statusCode: -1,
+               message: 'get room ranking player list error',
+               error: error
+           });
+       });
     });
 
     router.post('/game/controls/joining', function(req, res) {

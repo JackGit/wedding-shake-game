@@ -91,7 +91,7 @@
                     transition.next();
                 }, function() {
                     console.log('home-page validate user failed, redirect to welcome page, userId', userId);
-                    transition.redirect({name: 'welcome'});
+                    transition.redirect({name: 'login'});
                 });
             }
         }

@@ -70,53 +70,57 @@
 	});*/
 	
 	router.map({
-	    '/welcome': {
-	        name: 'welcome',
+	    '/qqlogin': {
+	        name: 'qqLogin',
 	        component: __webpack_require__(41)
+	    },
+	    '/login': {
+	        name: 'login',
+	        component: __webpack_require__(46)
 	    },
 	    '/home': {
 	        name: 'home',
-	        component: __webpack_require__(46)
+	        component: __webpack_require__(51)
 	    },
 	    '/profile': {
 	        name: 'profile',
-	        component: __webpack_require__(51)
+	        component: __webpack_require__(56)
 	    },
 	
 	    // pages after join room start
 	    // refresh these pages will route to home page
 	    '/ready': {
 	        name: 'ready',
-	        component: __webpack_require__(56)
+	        component: __webpack_require__(61)
 	    },
 	    '/shake': {
 	        name: 'shake',
-	        component: __webpack_require__(66)
+	        component: __webpack_require__(71)
 	    },
 	    // pages after join room end
 	
 	    '/ranking/:roomId': {
 	        name: 'ranking',
-	        component: __webpack_require__(72)
+	        component: __webpack_require__(77)
 	    },
 	    '/visit/:roomId': {
 	        name: 'visit',
-	        component: __webpack_require__(77)
+	        component: __webpack_require__(82)
 	    },
 	
 	    // admin pages
 	    '/admin': {
 	        name: 'admin',
-	        component: __webpack_require__(82)
+	        component: __webpack_require__(87)
 	    },
 	    '/room/:roomId': {
 	        name: 'room',
-	        component: __webpack_require__(92)
+	        component: __webpack_require__(97)
 	    }
 	});
 	
 	router.redirect({
-	   '/': '/welcome'
+	   '/': '/login'
 	});
 	
 	
@@ -14144,7 +14148,7 @@
 	
 	
 	// module
-	exports.push([module.id, "\n.mask {\n    position: fixed;\n    top: 0;\n    bottom: 0;\n    left: 0;\n    right: 0;\n    background-color: rgba(0,0,0,0.5);\n}\n\n.fade-transition {\n    -webkit-transition: all 0.3s ease;\n    transition: all 0.3s ease;\n}\n\n.fade-enter {\n    opacity: 0;\n    margin-top: 5%;\n}\n\n.fade-leave {\n    opacity: 0;\n}\n", "", {"version":3,"sources":["/./src/app.vue?2614c104"],"names":[],"mappings":";AACA;IACA,gBAAA;IACA,OAAA;IACA,UAAA;IACA,QAAA;IACA,SAAA;IACA,kCAAA;CACA;;AAEA;IACA,kCAAA;IAAA,0BAAA;CACA;;AAEA;IACA,WAAA;IACA,eAAA;CACA;;AAEA;IACA,WAAA;CACA","file":"app.vue","sourcesContent":["<style>\r\n    .mask {\r\n        position: fixed;\r\n        top: 0;\r\n        bottom: 0;\r\n        left: 0;\r\n        right: 0;\r\n        background-color: rgba(0,0,0,0.5);\r\n    }\r\n\r\n    .fade-transition {\r\n        transition: all 0.3s ease;\r\n    }\r\n\r\n    .fade-enter {\r\n        opacity: 0;\r\n        margin-top: 5%;\r\n    }\r\n\r\n    .fade-leave {\r\n        opacity: 0;\r\n    }\r\n</style>\r\n\r\n<template>\r\n    <div>\r\n        <router-view transition=\"fade\" transition-mode=\"out-in\"></router-view>\r\n        <div class=\"mask\" v-if=\"mask\"></div>\r\n    </div>\r\n</template>\r\n\r\n<script>\r\n    var store = require('./store');\r\n\r\n    module.exports = {\r\n        components: {\r\n\r\n        },\r\n\r\n        computed: {\r\n            mask: function() {\r\n                return store.state.mask;\r\n            }\r\n        }\r\n    }\r\n</script>"],"sourceRoot":"webpack://"}]);
+	exports.push([module.id, "\n.mask {\n    position: fixed;\n    top: 0;\n    bottom: 0;\n    left: 0;\n    right: 0;\n    background-color: rgba(0,0,0,0.5);\n}\n\n.fade-transition {\n    -webkit-transition: all 0.2s ease;\n    transition: all 0.2s ease;\n}\n\n.fade-enter {\n    opacity: 0;\n    /*margin-top: 5%;*/\n}\n\n.fade-leave {\n    opacity: 0;\n}\n", "", {"version":3,"sources":["/./src/app.vue?4c31d4b9"],"names":[],"mappings":";AACA;IACA,gBAAA;IACA,OAAA;IACA,UAAA;IACA,QAAA;IACA,SAAA;IACA,kCAAA;CACA;;AAEA;IACA,kCAAA;IAAA,0BAAA;CACA;;AAEA;IACA,WAAA;IACA,mBAAA;CACA;;AAEA;IACA,WAAA;CACA","file":"app.vue","sourcesContent":["<style>\r\n    .mask {\r\n        position: fixed;\r\n        top: 0;\r\n        bottom: 0;\r\n        left: 0;\r\n        right: 0;\r\n        background-color: rgba(0,0,0,0.5);\r\n    }\r\n\r\n    .fade-transition {\r\n        transition: all 0.2s ease;\r\n    }\r\n\r\n    .fade-enter {\r\n        opacity: 0;\r\n        /*margin-top: 5%;*/\r\n    }\r\n\r\n    .fade-leave {\r\n        opacity: 0;\r\n    }\r\n</style>\r\n\r\n<template>\r\n    <div>\r\n        <router-view transition=\"fade\" transition-mode=\"out-in\"></router-view>\r\n        <div class=\"mask\" v-if=\"mask\"></div>\r\n    </div>\r\n</template>\r\n\r\n<script>\r\n    var store = require('./store');\r\n\r\n    module.exports = {\r\n        components: {\r\n\r\n        },\r\n\r\n        computed: {\r\n            mask: function() {\r\n                return store.state.mask;\r\n            }\r\n        }\r\n    }\r\n</script>"],"sourceRoot":"webpack://"}]);
 	
 	// exports
 
@@ -14529,6 +14533,9 @@
 	                TOTAL_GAME_TIME: 20 * 1000,
 	                timeBalance: 20 * 1000,
 	                stopwatchString: '00:00.0'
+	            },
+	            rankingPage: {
+	                playerList: []
 	            }
 	        },
 	
@@ -14549,32 +14556,22 @@
 	
 	    actions: {
 	        /* player actions */
-	        registerPlayer: function(store, user) {
-	            console.log('store.actions.registerPlayer', user);
+	        createUser: function(store, user) {
+	            console.log('store.actions.createUser', user);
 	
 	            return new Promise(function(resolve, reject) {
-	                api.updateUser(user).then(function(data) {
+	                api.createUser(user).then(function(data) {
+	                    localStorage.userId = data.user.objectId;
 	                    localStorage.userJSON = JSON.stringify(data.user);
 	                    store.state.player.currentPlayer = data.user;
 	                    resolve(data.user);
 	                }, function(error) {
-	                    localStorage.userId = '';       // localStorage.userId is inited in qq_login_callback.html
+	                    localStorage.userId = '';
 	                    localStorage.userJSON = '';
 	                    store.state.player.currentPlayer = {};
 	                    reject(error);
 	                });
 	            });
-	            /*return new Promise(function(resolve, reject) {
-	                api.createUser(user).then(function(data) {
-	                    localStorage.userJSON = JSON.stringify(data.user);
-	                    store.state.player.currentPlayer = data.user;
-	                    resolve(data.user);
-	                }, function(error) {
-	                    localStorage.userJSON = '';
-	                    store.state.player.currentPlayer = {};
-	                    reject(error);
-	                });
-	            });*/
 	        },
 	        signout: function(store) {
 	            localStorage.userId = '';
@@ -14623,6 +14620,15 @@
 	            }, function(error) {
 	                console.log('store.actions.getRoomPlayers error', error);
 	                store.state.player.playerList = [];
+	            });
+	        },
+	        getRoomRankingPlayers: function(store, roomId) {
+	            console.log('store.actions.getRankingPlayers', roomId);
+	            api.getRoomRankingPlayerList(roomId).then(function(data) {
+	                store.state.player.rankingPage.playerList = data.players;
+	            }, function(error) {
+	                console.log('store.actions.getRankingPlayers error', error);
+	                store.state.player.rankingPage.playerList = [];
 	            });
 	        },
 	        getRoomList: function(store) {
@@ -15446,6 +15452,9 @@
 	    getRoomRanking: function(roomId) {
 	        return callservice('/game/room/ranking', {roomId: roomId});
 	    },
+	    getRoomRankingPlayerList: function(roomId) {
+	        return callservice('/game/room/rankingPlayerList', {roomId: roomId});
+	    },
 	    updateRoom: function(room) {
 	        return callservice('/game/room/update', room);
 	    },
@@ -15500,7 +15509,7 @@
 	if (__vue_script__ &&
 	    __vue_script__.__esModule &&
 	    Object.keys(__vue_script__).length > 1) {
-	  console.warn("[vue-loader] src\\components\\player\\welcome-page.vue: named exports in *.vue files are ignored.")}
+	  console.warn("[vue-loader] src\\components\\player\\qq-login-page.vue: named exports in *.vue files are ignored.")}
 	__vue_template__ = __webpack_require__(45)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
@@ -15511,7 +15520,7 @@
 	  var hotAPI = require("vue-hot-reload-api")
 	  hotAPI.install(require("vue"), true)
 	  if (!hotAPI.compatible) return
-	  var id = "C:\\Users\\Administrator\\Documents\\GitHub\\wedding-shake-game\\src\\components\\player\\welcome-page.vue"
+	  var id = "C:\\Users\\Administrator\\Documents\\GitHub\\wedding-shake-game\\src\\components\\player\\qq-login-page.vue"
 	  if (!module.hot.data) {
 	    hotAPI.createRecord(id, module.exports)
 	  } else {
@@ -15535,8 +15544,8 @@
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../../node_modules/css-loader/index.js?sourceMap!./../../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-d515edb4&scoped=true!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./welcome-page.vue", function() {
-				var newContent = require("!!./../../../node_modules/css-loader/index.js?sourceMap!./../../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-d515edb4&scoped=true!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./welcome-page.vue");
+			module.hot.accept("!!./../../../node_modules/css-loader/index.js?sourceMap!./../../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-4dd3c838&scoped=true!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./qq-login-page.vue", function() {
+				var newContent = require("!!./../../../node_modules/css-loader/index.js?sourceMap!./../../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-4dd3c838&scoped=true!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./qq-login-page.vue");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -15554,7 +15563,7 @@
 	
 	
 	// module
-	exports.push([module.id, "\n.avatar-container[_v-d515edb4] {\n    padding: 50px 0 30px 0;\n}\n\n.avatar[_v-d515edb4] {\n    border-radius: 50%;\n    width: 60px;\n    height: 60px;\n}\n", "", {"version":3,"sources":["/./src/components/player/welcome-page.vue?013b5608"],"names":[],"mappings":";AACA;IACA,uBAAA;CACA;;AAEA;IACA,mBAAA;IACA,YAAA;IACA,aAAA;CACA","file":"welcome-page.vue","sourcesContent":["<style scoped>\r\n    .avatar-container {\r\n        padding: 50px 0 30px 0;\r\n    }\r\n\r\n    .avatar {\r\n        border-radius: 50%;\r\n        width: 60px;\r\n        height: 60px;\r\n    }\r\n</style>\r\n\r\n<template>\r\n    <div class=\"container\">\r\n        <div class=\"row\">\r\n            <div class=\"col s12 avatar-container\">\r\n                <div class=\"col s12 center-align\">\r\n                    <img :src=\"player.avatarImageUrl\" class=\"avatar\"/>\r\n                </div>\r\n                <h6 class=\"center-align\">{{player.userName}}</h6>\r\n            </div>\r\n        </div>\r\n        <div class=\"row\">\r\n            <div class=\"card\">\r\n                <div class=\"card-content\">\r\n                    <div class=\"row\">\r\n                        <div class=\"input-field col s12\">\r\n                            <select v-el:user-type>\r\n                                <option value=\"\" disabled selected>Choose your option</option>\r\n                                <option value=\"BRIDE\">Bride Guest</option>\r\n                                <option value=\"GROOM\">Groom Guest</option>\r\n                            </select>\r\n                            <label>Please select your guest type</label>\r\n                        </div>\r\n                    </div>\r\n                </div>\r\n                <div class=\"card-action row\">\r\n                    <a class=\"col s12 waves-effect waves-light btn btn-large red white-text\" @click=\"start()\">Start</a>\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</template>\r\n\r\n<script>\r\n    /**\r\n     * welcome page\r\n     *  1. 1st time to open this page, need to input user name and user type, then click start\r\n     *  2. not 1st time to open this page, with user information, just route to home page\r\n     */\r\n\r\n    var store = require('../../store');\r\n\r\n    module.exports = {\r\n\r\n        computed: {\r\n            player: function() {\r\n                return store.state.player.currentPlayer;\r\n            }\r\n        },\r\n\r\n        ready: function() {\r\n            $('select').material_select();\r\n        },\r\n\r\n        methods: {\r\n            start: function() {\r\n                var router = this.$router;\r\n\r\n                store.actions.registerPlayer({\r\n                    objectId: store.state.player.currentPlayer.objectId,\r\n                    userType: this.$els.userType.value\r\n                }).then(function() {\r\n                    router.go({name: 'home'});\r\n                });\r\n            }\r\n        },\r\n\r\n        route: {\r\n            canActivate: function(transition) {\r\n                var userId = store.state.player.currentPlayer.objectId;\r\n                var userType = store.state.player.currentPlayer.userType;\r\n\r\n                if(userId) {\r\n                    if(userType) {\r\n                        transition.redirect({name: 'home'});\r\n                    } else {\r\n                        transition.next();\r\n                    }\r\n                } else {\r\n                    window.location.href = window.location.origin + '/qq_login.html';\r\n                }\r\n            }\r\n        }\r\n    };\r\n</script>"],"sourceRoot":"webpack://"}]);
+	exports.push([module.id, "\n.avatar-container[_v-4dd3c838] {\n    padding: 50px 0 30px 0;\n}\n\n.avatar[_v-4dd3c838] {\n    border-radius: 50%;\n    width: 60px;\n    height: 60px;\n}\n", "", {"version":3,"sources":["/./src/components/player/qq-login-page.vue?cb12cdfa"],"names":[],"mappings":";AACA;IACA,uBAAA;CACA;;AAEA;IACA,mBAAA;IACA,YAAA;IACA,aAAA;CACA","file":"qq-login-page.vue","sourcesContent":["<style scoped>\r\n    .avatar-container {\r\n        padding: 50px 0 30px 0;\r\n    }\r\n\r\n    .avatar {\r\n        border-radius: 50%;\r\n        width: 60px;\r\n        height: 60px;\r\n    }\r\n</style>\r\n\r\n<template>\r\n    <div class=\"container\">\r\n        <div class=\"row\">\r\n            <div class=\"col s12 avatar-container\">\r\n                <div class=\"col s12 center-align\">\r\n                    <img :src=\"player.avatarImageUrl\" class=\"avatar\"/>\r\n                </div>\r\n                <h6 class=\"center-align\">{{player.userName}}</h6>\r\n            </div>\r\n        </div>\r\n        <div class=\"row\">\r\n            <div class=\"card\">\r\n                <div class=\"card-content\">\r\n                    <div class=\"row\">\r\n                        <div class=\"input-field col s12\">\r\n                            <select v-el:user-type>\r\n                                <option value=\"\" disabled selected>Choose your option</option>\r\n                                <option value=\"BRIDE\">Bride Guest</option>\r\n                                <option value=\"GROOM\">Groom Guest</option>\r\n                            </select>\r\n                            <label>Please select your guest type</label>\r\n                        </div>\r\n                    </div>\r\n                </div>\r\n                <div class=\"card-action row\">\r\n                    <a class=\"col s12 waves-effect waves-light btn btn-large red white-text\" @click=\"start()\">Start</a>\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</template>\r\n\r\n<script>\r\n    /**\r\n     * welcome page\r\n     *  1. 1st time to open this page, need to input user name and user type, then click start\r\n     *  2. not 1st time to open this page, with user information, just route to home page\r\n     */\r\n\r\n    var store = require('../../store');\r\n\r\n    module.exports = {\r\n\r\n        computed: {\r\n            player: function() {\r\n                return store.state.player.currentPlayer;\r\n            }\r\n        },\r\n\r\n        ready: function() {\r\n            $('select').material_select();\r\n        },\r\n\r\n        methods: {\r\n            start: function() {\r\n                var router = this.$router;\r\n\r\n                store.actions.updateUserDetails({\r\n                    objectId: store.state.player.currentPlayer.objectId,\r\n                    userType: this.$els.userType.value\r\n                }).then(function() {\r\n                    router.go({name: 'home'});\r\n                });\r\n            }\r\n        },\r\n\r\n        route: {\r\n            canActivate: function(transition) {\r\n                var userId = store.state.player.currentPlayer.objectId;\r\n                var userType = store.state.player.currentPlayer.userType;\r\n\r\n                if(userId) {\r\n                    if(userType) {\r\n                        transition.redirect({name: 'home'});\r\n                    } else {\r\n                        transition.next();\r\n                    }\r\n                } else {\r\n                    transition.redirect({name: 'login'});\r\n                }\r\n            }\r\n        }\r\n    };\r\n</script>"],"sourceRoot":"webpack://"}]);
 	
 	// exports
 
@@ -15583,7 +15592,7 @@
 	        start: function start() {
 	            var router = this.$router;
 	
-	            store.actions.registerPlayer({
+	            store.actions.updateUserDetails({
 	                objectId: store.state.player.currentPlayer.objectId,
 	                userType: this.$els.userType.value
 	            }).then(function () {
@@ -15604,7 +15613,7 @@
 	                    transition.next();
 	                }
 	            } else {
-	                window.location.href = window.location.origin + '/qq_login.html';
+	                transition.redirect({ name: 'login' });
 	            }
 	        }
 	    }
@@ -15614,7 +15623,7 @@
 /* 45 */
 /***/ function(module, exports) {
 
-	module.exports = "\n<div class=\"container\" _v-d515edb4=\"\">\n    <div class=\"row\" _v-d515edb4=\"\">\n        <div class=\"col s12 avatar-container\" _v-d515edb4=\"\">\n            <div class=\"col s12 center-align\" _v-d515edb4=\"\">\n                <img :src=\"player.avatarImageUrl\" class=\"avatar\" _v-d515edb4=\"\">\n            </div>\n            <h6 class=\"center-align\" _v-d515edb4=\"\">{{player.userName}}</h6>\n        </div>\n    </div>\n    <div class=\"row\" _v-d515edb4=\"\">\n        <div class=\"card\" _v-d515edb4=\"\">\n            <div class=\"card-content\" _v-d515edb4=\"\">\n                <div class=\"row\" _v-d515edb4=\"\">\n                    <div class=\"input-field col s12\" _v-d515edb4=\"\">\n                        <select v-el:user-type=\"\" _v-d515edb4=\"\">\n                            <option value=\"\" disabled=\"\" selected=\"\" _v-d515edb4=\"\">Choose your option</option>\n                            <option value=\"BRIDE\" _v-d515edb4=\"\">Bride Guest</option>\n                            <option value=\"GROOM\" _v-d515edb4=\"\">Groom Guest</option>\n                        </select>\n                        <label _v-d515edb4=\"\">Please select your guest type</label>\n                    </div>\n                </div>\n            </div>\n            <div class=\"card-action row\" _v-d515edb4=\"\">\n                <a class=\"col s12 waves-effect waves-light btn btn-large red white-text\" @click=\"start()\" _v-d515edb4=\"\">Start</a>\n            </div>\n        </div>\n    </div>\n</div>\n";
+	module.exports = "\n<div class=\"container\" _v-4dd3c838=\"\">\n    <div class=\"row\" _v-4dd3c838=\"\">\n        <div class=\"col s12 avatar-container\" _v-4dd3c838=\"\">\n            <div class=\"col s12 center-align\" _v-4dd3c838=\"\">\n                <img :src=\"player.avatarImageUrl\" class=\"avatar\" _v-4dd3c838=\"\">\n            </div>\n            <h6 class=\"center-align\" _v-4dd3c838=\"\">{{player.userName}}</h6>\n        </div>\n    </div>\n    <div class=\"row\" _v-4dd3c838=\"\">\n        <div class=\"card\" _v-4dd3c838=\"\">\n            <div class=\"card-content\" _v-4dd3c838=\"\">\n                <div class=\"row\" _v-4dd3c838=\"\">\n                    <div class=\"input-field col s12\" _v-4dd3c838=\"\">\n                        <select v-el:user-type=\"\" _v-4dd3c838=\"\">\n                            <option value=\"\" disabled=\"\" selected=\"\" _v-4dd3c838=\"\">Choose your option</option>\n                            <option value=\"BRIDE\" _v-4dd3c838=\"\">Bride Guest</option>\n                            <option value=\"GROOM\" _v-4dd3c838=\"\">Groom Guest</option>\n                        </select>\n                        <label _v-4dd3c838=\"\">Please select your guest type</label>\n                    </div>\n                </div>\n            </div>\n            <div class=\"card-action row\" _v-4dd3c838=\"\">\n                <a class=\"col s12 waves-effect waves-light btn btn-large red white-text\" @click=\"start()\" _v-4dd3c838=\"\">Start</a>\n            </div>\n        </div>\n    </div>\n</div>\n";
 
 /***/ },
 /* 46 */
@@ -15626,7 +15635,7 @@
 	if (__vue_script__ &&
 	    __vue_script__.__esModule &&
 	    Object.keys(__vue_script__).length > 1) {
-	  console.warn("[vue-loader] src\\components\\player\\home-page.vue: named exports in *.vue files are ignored.")}
+	  console.warn("[vue-loader] src\\components\\player\\login-page.vue: named exports in *.vue files are ignored.")}
 	__vue_template__ = __webpack_require__(50)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
@@ -15637,7 +15646,7 @@
 	  var hotAPI = require("vue-hot-reload-api")
 	  hotAPI.install(require("vue"), true)
 	  if (!hotAPI.compatible) return
-	  var id = "C:\\Users\\Administrator\\Documents\\GitHub\\wedding-shake-game\\src\\components\\player\\home-page.vue"
+	  var id = "C:\\Users\\Administrator\\Documents\\GitHub\\wedding-shake-game\\src\\components\\player\\login-page.vue"
 	  if (!module.hot.data) {
 	    hotAPI.createRecord(id, module.exports)
 	  } else {
@@ -15661,8 +15670,8 @@
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../../node_modules/css-loader/index.js?sourceMap!./../../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-6ab4b43e&scoped=true!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./home-page.vue", function() {
-				var newContent = require("!!./../../../node_modules/css-loader/index.js?sourceMap!./../../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-6ab4b43e&scoped=true!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./home-page.vue");
+			module.hot.accept("!!./../../../node_modules/css-loader/index.js?sourceMap!./../../../node_modules/vue-loader/lib/style-rewriter.js!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./login-page.vue", function() {
+				var newContent = require("!!./../../../node_modules/css-loader/index.js?sourceMap!./../../../node_modules/vue-loader/lib/style-rewriter.js!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./login-page.vue");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -15680,13 +15689,133 @@
 	
 	
 	// module
-	exports.push([module.id, "\n", "", {"version":3,"sources":[],"names":[],"mappings":"","file":"home-page.vue","sourceRoot":"webpack://"}]);
+	exports.push([module.id, "\n\n", "", {"version":3,"sources":[],"names":[],"mappings":"","file":"login-page.vue","sourceRoot":"webpack://"}]);
 	
 	// exports
 
 
 /***/ },
 /* 49 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var store = __webpack_require__(34);
+	
+	module.exports = {
+	    data: function data() {
+	        return {
+	            qqLoginUrl: 'https://graph.qq.com/oauth2.0/authorize?response_type=code&client_id=101295012&redirect_uri=http%3A%2F%2Fwedding.jackyang.me%2Fqq_login_callback.html&state=test&scope=all',
+	            qqLoginImage: 'static/images/Connect_logo_4.png'
+	        };
+	    },
+	
+	    ready: function ready() {
+	        $('select').material_select();
+	        $(this.$els.tabs).tabs();
+	    },
+	
+	    methods: {
+	        start: function start() {
+	            var router = this.$router;
+	            var user = {
+	                userName: this.$els.userName.value,
+	                userType: this.$els.userType.value
+	            };
+	
+	            store.actions.createUser(user).then(function () {
+	                router.go({ name: 'home' });
+	            });
+	        }
+	    },
+	
+	    route: {
+	        canActivate: function canActivate(transition) {
+	            var userId = store.state.player.currentPlayer.objectId;
+	            var userType = store.state.player.currentPlayer.userType;
+	
+	            if (userId && userType) transition.redirect({ name: 'home' });else if (userId) transition.redirect({ name: 'qqLogin' });else transition.next();
+	        }
+	    }
+	};
+
+/***/ },
+/* 50 */
+/***/ function(module, exports) {
+
+	module.exports = "\n<div>\n    <div class=\"container\">\n        <div class=\"row\">\n            <div class=\"card\">\n                <div class=\"card-content\">\n                    <span class=\"card-title\">welcome, please login</span>\n                    <div class=\"row\">\n                        <div class=\"col s12\">\n                            <ul class=\"tabs\" v-el:tabs>\n                                <li class=\"tab col s6\"><a href=\"#normalLoginTab\" >login</a></li>\n                                <li class=\"tab col s6\"><a href=\"#qqLoginTab\" class=\"active\">QQ</a></li>\n                            </ul>\n                        </div>\n                        <div id=\"normalLoginTab\" class=\"col s12\">\n                            <div class=\"row\">\n                                <div class=\"input-field col s12\">\n                                    <input v-el:user-name placeholder=\"user name\" id=\"loginPageUserName\" type=\"text\">\n                                    <label for=\"loginPageUserName\" class=\"active\">User Name</label>\n                                </div>\n                                <div class=\"input-field col s12\">\n                                    <select v-el:user-type>\n                                        <option value=\"\" disabled selected>Choose your option</option>\n                                        <option value=\"BRIDE\">Bride Guest</option>\n                                        <option value=\"GROOM\">Groom Guest</option>\n                                    </select>\n                                    <label>Please select your guest type</label>\n                                </div>\n                            </div>\n                            <div class=\"card-action row\">\n                                <a class=\"col s12 waves-effect waves-light btn btn-large red white-text\" @click=\"start()\">Start</a>\n                            </div>\n                        </div>\n                        <div id=\"qqLoginTab\" class=\"col s12\">\n                            <div class=\"row center-align\">\n                                <div class=\"row\"></div>\n                                <a :href=\"qqLoginUrl\">\n                                    <img :src=\"qqLoginImage\">\n                                </a>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n";
+
+/***/ },
+/* 51 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __vue_script__, __vue_template__
+	__webpack_require__(52)
+	__vue_script__ = __webpack_require__(54)
+	if (__vue_script__ &&
+	    __vue_script__.__esModule &&
+	    Object.keys(__vue_script__).length > 1) {
+	  console.warn("[vue-loader] src\\components\\player\\home-page.vue: named exports in *.vue files are ignored.")}
+	__vue_template__ = __webpack_require__(55)
+	module.exports = __vue_script__ || {}
+	if (module.exports.__esModule) module.exports = module.exports.default
+	if (__vue_template__) {
+	(typeof module.exports === "function" ? (module.exports.options || (module.exports.options = {})) : module.exports).template = __vue_template__
+	}
+	if (false) {(function () {  module.hot.accept()
+	  var hotAPI = require("vue-hot-reload-api")
+	  hotAPI.install(require("vue"), true)
+	  if (!hotAPI.compatible) return
+	  var id = "C:\\Users\\Administrator\\Documents\\GitHub\\wedding-shake-game\\src\\components\\player\\home-page.vue"
+	  if (!module.hot.data) {
+	    hotAPI.createRecord(id, module.exports)
+	  } else {
+	    hotAPI.update(id, module.exports, __vue_template__)
+	  }
+	})()}
+
+/***/ },
+/* 52 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+	
+	// load the styles
+	var content = __webpack_require__(53);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(32)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../../../node_modules/css-loader/index.js?sourceMap!./../../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-6ab4b43e&scoped=true!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./home-page.vue", function() {
+				var newContent = require("!!./../../../node_modules/css-loader/index.js?sourceMap!./../../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-6ab4b43e&scoped=true!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./home-page.vue");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 53 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(31)();
+	// imports
+	
+	
+	// module
+	exports.push([module.id, "\n", "", {"version":3,"sources":[],"names":[],"mappings":"","file":"home-page.vue","sourceRoot":"webpack://"}]);
+	
+	// exports
+
+
+/***/ },
+/* 54 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -15740,30 +15869,30 @@
 	                transition.next();
 	            }, function () {
 	                console.log('home-page validate user failed, redirect to welcome page, userId', userId);
-	                transition.redirect({ name: 'welcome' });
+	                transition.redirect({ name: 'login' });
 	            });
 	        }
 	    }
 	};
 
 /***/ },
-/* 50 */
+/* 55 */
 /***/ function(module, exports) {
 
 	module.exports = "\n<div _v-6ab4b43e=\"\">\n    <div class=\"navbar-fixed\" _v-6ab4b43e=\"\">\n        <nav _v-6ab4b43e=\"\">\n            <div class=\"nav-wrapper red lighten-2\" _v-6ab4b43e=\"\">\n                <a class=\"brand-logo\" _v-6ab4b43e=\"\">{{currentPlayer.userName}}</a>\n                <ul class=\"right\" _v-6ab4b43e=\"\">\n                    <li _v-6ab4b43e=\"\"><a v-link=\"{name:'profile'}\" _v-6ab4b43e=\"\"><i class=\"material-icons fa fa-user\" _v-6ab4b43e=\"\"></i></a></li>\n                </ul>\n            </div>\n        </nav>\n    </div>\n\n    <div class=\"container\" _v-6ab4b43e=\"\">\n        <div class=\"row\" _v-6ab4b43e=\"\">\n            <div class=\"card col s12\" v-for=\"room in roomList\" _v-6ab4b43e=\"\">\n                <div class=\"card-content\" _v-6ab4b43e=\"\">\n                    <span class=\"card-title red-text text-lighten-2\" _v-6ab4b43e=\"\">{{room.roomName}}</span>\n                    <p v-if=\"room.status === 'INIT'\" _v-6ab4b43e=\"\">Game is not started yet, please wait.</p>\n                    <p v-if=\"room.status === 'JOINING'\" _v-6ab4b43e=\"\">People are joining, there are {{room.players.length}} players joined the game.</p>\n                    <p v-if=\"room.status === 'PLAYING'\" _v-6ab4b43e=\"\">Game is playing right now. You can't join right now.</p>\n                    <p v-if=\"room.status === 'END'\" _v-6ab4b43e=\"\">Game is ended.</p>\n                </div>\n                <div class=\"card-content center-align\" v-if=\"room.status === 'JOINING'\" _v-6ab4b43e=\"\">\n                    <a @click=\"join(room.objectId)\" class=\"waves-effect waves-light btn red lighten-2\" _v-6ab4b43e=\"\">Join Now</a>\n                </div>\n                <div class=\"card-content center-align\" v-if=\"room.status === 'PLAYING'\" _v-6ab4b43e=\"\">\n                    <a @click=\"visit(room.objectId)\" class=\"waves-effect waves-light btn red lighten-2\" _v-6ab4b43e=\"\">Pay Visit</a>\n                </div>\n                <div class=\"card-content center-align\" v-if=\"room.status === 'END'\" _v-6ab4b43e=\"\">\n                    <a @click=\"ranking(room.objectId)\" class=\"waves-effect waves-light btn red lighten-2\" _v-6ab4b43e=\"\">Check Rankings</a>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n";
 
 /***/ },
-/* 51 */
+/* 56 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __vue_script__, __vue_template__
-	__webpack_require__(52)
-	__vue_script__ = __webpack_require__(54)
+	__webpack_require__(57)
+	__vue_script__ = __webpack_require__(59)
 	if (__vue_script__ &&
 	    __vue_script__.__esModule &&
 	    Object.keys(__vue_script__).length > 1) {
 	  console.warn("[vue-loader] src\\components\\player\\profile-page.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(55)
+	__vue_template__ = __webpack_require__(60)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
 	if (__vue_template__) {
@@ -15782,13 +15911,13 @@
 	})()}
 
 /***/ },
-/* 52 */
+/* 57 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
 	// load the styles
-	var content = __webpack_require__(53);
+	var content = __webpack_require__(58);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(32)(content, {});
@@ -15808,7 +15937,7 @@
 	}
 
 /***/ },
-/* 53 */
+/* 58 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(31)();
@@ -15816,13 +15945,13 @@
 	
 	
 	// module
-	exports.push([module.id, "\n.avatar-container[_v-ae9f8a82] {\n    padding: 50px 0 30px 0;\n}\n\n.avatar[_v-ae9f8a82] {\n    border-radius: 50%;\n    width: 80px;\n    height: 80px;\n}\n", "", {"version":3,"sources":["/./src/components/player/profile-page.vue?6cc4c76f"],"names":[],"mappings":";AACA;IACA,uBAAA;CACA;;AAEA;IACA,mBAAA;IACA,YAAA;IACA,aAAA;CACA","file":"profile-page.vue","sourcesContent":["<style scoped>\r\n    .avatar-container {\r\n        padding: 50px 0 30px 0;\r\n    }\r\n\r\n    .avatar {\r\n        border-radius: 50%;\r\n        width: 80px;\r\n        height: 80px;\r\n    }\r\n</style>\r\n\r\n<template>\r\n    <div>\r\n        <div class=\"navbar-fixed\">\r\n            <nav>\r\n                <div class=\"nav-wrapper red lighten-2\">\r\n                    <a class=\"brand-logo\">Profile</a>\r\n                    <ul class=\"left\">\r\n                        <li><a @click=\"back()\"><i class=\"material-icons fa fa-angle-left\"></i></a></li>\r\n                    </ul>\r\n                </div>\r\n            </nav>\r\n        </div>\r\n\r\n        <div class=\"container\" v-if=\"mode === 'read'\">\r\n            <div class=\"row\">\r\n                <div class=\"col s12 avatar-container\">\r\n                    <div class=\"col s12 center-align\">\r\n                        <img :src=\"player.avatarImageUrl\" class=\"avatar\"/>\r\n                        <i class=\"material-icons right grey-text fa fa-pencil\" style=\"position: absolute;\" @click=\"edit()\"></i>\r\n                    </div>\r\n                    <h5 class=\"center-align\">{{player.userName}}</h5>\r\n                    <h6 class=\"center-align\">{{player.userType}} GUEST</h6>\r\n                </div>\r\n            </div>\r\n            <div class=\"row\">\r\n                <a class=\"col s12 waves-effect waves-light btn btn-large red white-text\" @click=\"quit()\">Quit</a>\r\n            </div>\r\n        </div>\r\n\r\n        <div class=\"container\" v-if=\"mode === 'edit'\">\r\n            <div class=\"row\">\r\n                <div class=\"col s12\">\r\n                    <div class=\"row\">\r\n                        <h6 class=\"grey-text\" _v-ae9f8a82=\"\">EDIT PROFILE</h6>\r\n                    </div>\r\n                    <div class=\"row\">\r\n                        <div class=\"input-field col s12\">\r\n                            <input id=\"profile-page-user-name-input\" type=\"text\" value=\"{{player.userName}}\" v-el:user-name>\r\n                            <label for=\"profile-page-user-name-input\" class=\"active\">User Name</label>\r\n                        </div>\r\n                    </div>\r\n                    <div class=\"row\">\r\n                        <div class=\"input-field col s12\">\r\n                            <select v-el:user-type>\r\n                                <option value=\"\" disabled>Choose your option</option>\r\n                                <option value=\"BRIDE\" :selected=\"player.userType === 'BRIDE'\">Bride Guest</option>\r\n                                <option value=\"GROOM\" :selected=\"player.userType === 'GROOM'\">Groom Guest</option>\r\n                            </select>\r\n                            <label>User Type</label>\r\n                        </div>\r\n                    </div>\r\n                </div>\r\n            </div>\r\n            <div class=\"row\">\r\n                <a class=\"col s12 waves-effect waves-light btn btn-large white red-text\" @click=\"submitEdit()\">OK</a>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</template>\r\n\r\n<script>\r\n    var store = require('../../store');\r\n    var Vue = require('vue');\r\n\r\n    module.exports = {\r\n        data: function() {\r\n            return {\r\n                mode: 'read'\r\n            }\r\n        },\r\n\r\n        computed: {\r\n            player: function() {\r\n                return store.state.player.currentPlayer;\r\n            }\r\n        },\r\n\r\n        ready: function() {\r\n            store.actions.getUserDetails(store.state.player.currentPlayer.objectId);\r\n        },\r\n\r\n        methods: {\r\n            quit: function() {\r\n                store.actions.signout();\r\n                this.$router.go({name: 'welcome'});\r\n            },\r\n            edit: function() {\r\n                this.mode = 'edit';\r\n                Vue.nextTick(function() {\r\n                    $('select').material_select();\r\n                });\r\n            },\r\n            submitEdit: function() {\r\n                var that = this;\r\n                var user = {\r\n                    objectId: store.state.player.currentPlayer.objectId,\r\n                    userName: this.$els.userName.value,\r\n                    userType: this.$els.userType.value\r\n                };\r\n                store.actions.updateUserDetails(user).then(function() {\r\n                    that.mode = 'read';\r\n                    Materialize.toast('update successfully', 1000);\r\n                }, function() {\r\n                    Materialize.toast('update failed', 1000);\r\n                });\r\n            },\r\n            cancelEdit: function() {\r\n                this.mode = 'read';\r\n            },\r\n            back: function() {\r\n                if(this.mode === 'read') {\r\n                    this.$router.go({name: 'home'});\r\n                } else {\r\n                    this.mode = 'read';\r\n                }\r\n            }\r\n        }\r\n    };\r\n</script>"],"sourceRoot":"webpack://"}]);
+	exports.push([module.id, "\n.avatar-container[_v-ae9f8a82] {\n    padding: 50px 0 30px 0;\n}\n\n.avatar[_v-ae9f8a82] {\n    border-radius: 50%;\n    width: 80px;\n    height: 80px;\n}\n", "", {"version":3,"sources":["/./src/components/player/profile-page.vue?6d051614"],"names":[],"mappings":";AACA;IACA,uBAAA;CACA;;AAEA;IACA,mBAAA;IACA,YAAA;IACA,aAAA;CACA","file":"profile-page.vue","sourcesContent":["<style scoped>\r\n    .avatar-container {\r\n        padding: 50px 0 30px 0;\r\n    }\r\n\r\n    .avatar {\r\n        border-radius: 50%;\r\n        width: 80px;\r\n        height: 80px;\r\n    }\r\n</style>\r\n\r\n<template>\r\n    <div>\r\n        <div class=\"navbar-fixed\">\r\n            <nav>\r\n                <div class=\"nav-wrapper red lighten-2\">\r\n                    <a class=\"brand-logo\">Profile</a>\r\n                    <ul class=\"left\">\r\n                        <li><a @click=\"back()\"><i class=\"material-icons fa fa-angle-left\"></i></a></li>\r\n                    </ul>\r\n                </div>\r\n            </nav>\r\n        </div>\r\n\r\n        <div class=\"container\" v-if=\"mode === 'read'\">\r\n            <div class=\"row\">\r\n                <div class=\"col s12 avatar-container\">\r\n                    <div class=\"col s12 center-align\">\r\n                        <img :src=\"player.avatarImageUrl\" class=\"avatar\"/>\r\n                        <i class=\"material-icons right grey-text fa fa-pencil\" style=\"position: absolute;\" @click=\"edit()\"></i>\r\n                    </div>\r\n                    <h5 class=\"center-align\">{{player.userName}}</h5>\r\n                    <h6 class=\"center-align\">{{player.userType}} GUEST</h6>\r\n                </div>\r\n            </div>\r\n            <div class=\"row\">\r\n                <a class=\"col s12 waves-effect waves-light btn btn-large red white-text\" @click=\"quit()\">Quit</a>\r\n            </div>\r\n        </div>\r\n\r\n        <div class=\"container\" v-if=\"mode === 'edit'\">\r\n            <div class=\"row\">\r\n                <div class=\"col s12\">\r\n                    <div class=\"row\">\r\n                        <h6 class=\"grey-text\" _v-ae9f8a82=\"\">EDIT PROFILE</h6>\r\n                    </div>\r\n                    <div class=\"row\">\r\n                        <div class=\"input-field col s12\">\r\n                            <input id=\"profile-page-user-name-input\" type=\"text\" value=\"{{player.userName}}\" v-el:user-name>\r\n                            <label for=\"profile-page-user-name-input\" class=\"active\">User Name</label>\r\n                        </div>\r\n                    </div>\r\n                    <div class=\"row\">\r\n                        <div class=\"input-field col s12\">\r\n                            <select v-el:user-type>\r\n                                <option value=\"\" disabled>Choose your option</option>\r\n                                <option value=\"BRIDE\" :selected=\"player.userType === 'BRIDE'\">Bride Guest</option>\r\n                                <option value=\"GROOM\" :selected=\"player.userType === 'GROOM'\">Groom Guest</option>\r\n                            </select>\r\n                            <label>User Type</label>\r\n                        </div>\r\n                    </div>\r\n                </div>\r\n            </div>\r\n            <div class=\"row\">\r\n                <a class=\"col s12 waves-effect waves-light btn btn-large white red-text\" @click=\"submitEdit()\">OK</a>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</template>\r\n\r\n<script>\r\n    var store = require('../../store');\r\n    var Vue = require('vue');\r\n\r\n    module.exports = {\r\n        data: function() {\r\n            return {\r\n                mode: 'read'\r\n            }\r\n        },\r\n\r\n        computed: {\r\n            player: function() {\r\n                return store.state.player.currentPlayer;\r\n            }\r\n        },\r\n\r\n        ready: function() {\r\n            store.actions.getUserDetails(store.state.player.currentPlayer.objectId);\r\n        },\r\n\r\n        methods: {\r\n            quit: function() {\r\n                store.actions.signout();\r\n                this.$router.go({name: 'login'});\r\n            },\r\n            edit: function() {\r\n                this.mode = 'edit';\r\n                Vue.nextTick(function() {\r\n                    $('select').material_select();\r\n                });\r\n            },\r\n            submitEdit: function() {\r\n                var that = this;\r\n                var user = {\r\n                    objectId: store.state.player.currentPlayer.objectId,\r\n                    userName: this.$els.userName.value,\r\n                    userType: this.$els.userType.value\r\n                };\r\n                store.actions.updateUserDetails(user).then(function() {\r\n                    that.mode = 'read';\r\n                    Materialize.toast('update successfully', 1000);\r\n                }, function() {\r\n                    Materialize.toast('update failed', 1000);\r\n                });\r\n            },\r\n            cancelEdit: function() {\r\n                this.mode = 'read';\r\n            },\r\n            back: function() {\r\n                if(this.mode === 'read') {\r\n                    this.$router.go({name: 'home'});\r\n                } else {\r\n                    this.mode = 'read';\r\n                }\r\n            }\r\n        }\r\n    };\r\n</script>"],"sourceRoot":"webpack://"}]);
 	
 	// exports
 
 
 /***/ },
-/* 54 */
+/* 59 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -15850,7 +15979,7 @@
 	    methods: {
 	        quit: function quit() {
 	            store.actions.signout();
-	            this.$router.go({ name: 'welcome' });
+	            this.$router.go({ name: 'login' });
 	        },
 	        edit: function edit() {
 	            this.mode = 'edit';
@@ -15886,23 +16015,23 @@
 	};
 
 /***/ },
-/* 55 */
+/* 60 */
 /***/ function(module, exports) {
 
 	module.exports = "\n<div _v-ae9f8a82=\"\">\n    <div class=\"navbar-fixed\" _v-ae9f8a82=\"\">\n        <nav _v-ae9f8a82=\"\">\n            <div class=\"nav-wrapper red lighten-2\" _v-ae9f8a82=\"\">\n                <a class=\"brand-logo\" _v-ae9f8a82=\"\">Profile</a>\n                <ul class=\"left\" _v-ae9f8a82=\"\">\n                    <li _v-ae9f8a82=\"\"><a @click=\"back()\" _v-ae9f8a82=\"\"><i class=\"material-icons fa fa-angle-left\" _v-ae9f8a82=\"\"></i></a></li>\n                </ul>\n            </div>\n        </nav>\n    </div>\n\n    <div class=\"container\" v-if=\"mode === 'read'\" _v-ae9f8a82=\"\">\n        <div class=\"row\" _v-ae9f8a82=\"\">\n            <div class=\"col s12 avatar-container\" _v-ae9f8a82=\"\">\n                <div class=\"col s12 center-align\" _v-ae9f8a82=\"\">\n                    <img :src=\"player.avatarImageUrl\" class=\"avatar\" _v-ae9f8a82=\"\">\n                    <i class=\"material-icons right grey-text fa fa-pencil\" style=\"position: absolute;\" @click=\"edit()\" _v-ae9f8a82=\"\"></i>\n                </div>\n                <h5 class=\"center-align\" _v-ae9f8a82=\"\">{{player.userName}}</h5>\n                <h6 class=\"center-align\" _v-ae9f8a82=\"\">{{player.userType}} GUEST</h6>\n            </div>\n        </div>\n        <div class=\"row\" _v-ae9f8a82=\"\">\n            <a class=\"col s12 waves-effect waves-light btn btn-large red white-text\" @click=\"quit()\" _v-ae9f8a82=\"\">Quit</a>\n        </div>\n    </div>\n\n    <div class=\"container\" v-if=\"mode === 'edit'\" _v-ae9f8a82=\"\">\n        <div class=\"row\" _v-ae9f8a82=\"\">\n            <div class=\"col s12\" _v-ae9f8a82=\"\">\n                <div class=\"row\" _v-ae9f8a82=\"\">\n                    <h6 class=\"grey-text\" _v-ae9f8a82=\"\" _v-ae9f8a82=\"\">EDIT PROFILE</h6>\n                </div>\n                <div class=\"row\" _v-ae9f8a82=\"\">\n                    <div class=\"input-field col s12\" _v-ae9f8a82=\"\">\n                        <input id=\"profile-page-user-name-input\" type=\"text\" value=\"{{player.userName}}\" v-el:user-name=\"\" _v-ae9f8a82=\"\">\n                        <label for=\"profile-page-user-name-input\" class=\"active\" _v-ae9f8a82=\"\">User Name</label>\n                    </div>\n                </div>\n                <div class=\"row\" _v-ae9f8a82=\"\">\n                    <div class=\"input-field col s12\" _v-ae9f8a82=\"\">\n                        <select v-el:user-type=\"\" _v-ae9f8a82=\"\">\n                            <option value=\"\" disabled=\"\" _v-ae9f8a82=\"\">Choose your option</option>\n                            <option value=\"BRIDE\" :selected=\"player.userType === 'BRIDE'\" _v-ae9f8a82=\"\">Bride Guest</option>\n                            <option value=\"GROOM\" :selected=\"player.userType === 'GROOM'\" _v-ae9f8a82=\"\">Groom Guest</option>\n                        </select>\n                        <label _v-ae9f8a82=\"\">User Type</label>\n                    </div>\n                </div>\n            </div>\n        </div>\n        <div class=\"row\" _v-ae9f8a82=\"\">\n            <a class=\"col s12 waves-effect waves-light btn btn-large white red-text\" @click=\"submitEdit()\" _v-ae9f8a82=\"\">OK</a>\n        </div>\n    </div>\n</div>\n";
 
 /***/ },
-/* 56 */
+/* 61 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __vue_script__, __vue_template__
-	__webpack_require__(57)
-	__vue_script__ = __webpack_require__(59)
+	__webpack_require__(62)
+	__vue_script__ = __webpack_require__(64)
 	if (__vue_script__ &&
 	    __vue_script__.__esModule &&
 	    Object.keys(__vue_script__).length > 1) {
 	  console.warn("[vue-loader] src\\components\\player\\ready-page.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(65)
+	__vue_template__ = __webpack_require__(70)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
 	if (__vue_template__) {
@@ -15921,13 +16050,13 @@
 	})()}
 
 /***/ },
-/* 57 */
+/* 62 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
 	// load the styles
-	var content = __webpack_require__(58);
+	var content = __webpack_require__(63);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(32)(content, {});
@@ -15947,7 +16076,7 @@
 	}
 
 /***/ },
-/* 58 */
+/* 63 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(31)();
@@ -15961,13 +16090,13 @@
 
 
 /***/ },
-/* 59 */
+/* 64 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var store = __webpack_require__(34);
-	var Stopwatch = __webpack_require__(60);
+	var Stopwatch = __webpack_require__(65);
 	
 	module.exports = {
 	
@@ -16067,14 +16196,14 @@
 	};
 
 /***/ },
-/* 60 */
+/* 65 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// Export lib/mongule
-	module.exports = __webpack_require__(61);
+	module.exports = __webpack_require__(66);
 
 /***/ },
-/* 61 */
+/* 66 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// Developed for TKD-Score-Server by Mick Crozier 2015
@@ -16082,8 +16211,8 @@
 	
 	
 	
-	var EventEmitter = __webpack_require__(62).EventEmitter;
-	var _ = __webpack_require__(63);
+	var EventEmitter = __webpack_require__(67).EventEmitter;
+	var _ = __webpack_require__(68);
 	
 	
 	
@@ -16315,7 +16444,7 @@
 
 
 /***/ },
-/* 62 */
+/* 67 */
 /***/ function(module, exports) {
 
 	// Copyright Joyent, Inc. and other Node contributors.
@@ -16619,7 +16748,7 @@
 
 
 /***/ },
-/* 63 */
+/* 68 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(module, global) {/**
@@ -23781,10 +23910,10 @@
 	  }
 	}.call(this));
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(64)(module), (function() { return this; }())))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(69)(module), (function() { return this; }())))
 
 /***/ },
-/* 64 */
+/* 69 */
 /***/ function(module, exports) {
 
 	module.exports = function(module) {
@@ -23800,23 +23929,23 @@
 
 
 /***/ },
-/* 65 */
+/* 70 */
 /***/ function(module, exports) {
 
 	module.exports = "\n<div _v-9d39ddf6=\"\">\n    <div class=\"navbar-fixed\" _v-9d39ddf6=\"\">\n        <nav _v-9d39ddf6=\"\">\n            <div class=\"nav-wrapper red lighten-2\" _v-9d39ddf6=\"\">\n                <a class=\"brand-logo center\" _v-9d39ddf6=\"\">{{currentPlayer.userName}}</a>\n                <ul class=\"left\" _v-9d39ddf6=\"\">\n                    <li _v-9d39ddf6=\"\"><a @click=\"back()\" _v-9d39ddf6=\"\"><i class=\"material-icons fa fa-angle-left\" _v-9d39ddf6=\"\"></i></a></li>\n                </ul>\n            </div>\n        </nav>\n    </div>\n\n    <div class=\"container\" _v-9d39ddf6=\"\">\n        <div class=\"row\" _v-9d39ddf6=\"\">\n            <h6 class=\"grey-text\" _v-9d39ddf6=\"\">ROOM INFORMATION</h6>\n            <div class=\"card col s12\" _v-9d39ddf6=\"\">\n                <div class=\"card-content\" _v-9d39ddf6=\"\">\n                    <span class=\"card-title\" _v-9d39ddf6=\"\">room info</span>\n                    <p _v-9d39ddf6=\"\">All players shake mobile for 30 seconds, total of shake count of which side is bigger, is the winner.</p>\n                </div>\n            </div>\n\n            <h6 class=\"grey-text\" _v-9d39ddf6=\"\">JOINED PLAYERS</h6>\n            <div class=\"card col s12\" _v-9d39ddf6=\"\">\n                <div class=\"card-content row\" _v-9d39ddf6=\"\">\n                    <div class=\"col s12\" _v-9d39ddf6=\"\">\n                        <ul class=\"tabs\" v-el:tabs=\"\" _v-9d39ddf6=\"\">\n                            <li class=\"tab col s6\" _v-9d39ddf6=\"\"><a href=\"#brideTab\" :class=\"currentPlayer.userType === 'BRIDE' ? 'active' : ''\" _v-9d39ddf6=\"\">Bride ({{bridePlayers.length}}/{{room.roomSize}})</a></li>\n                            <li class=\"tab col s6\" _v-9d39ddf6=\"\"><a href=\"#groomTab\" :class=\"currentPlayer.userType === 'GROOM' ? 'active' : ''\" _v-9d39ddf6=\"\">Groom ({{groomPlayers.length}}/{{room.roomSize}})</a></li>\n                        </ul>\n                    </div>\n                    <div id=\"brideTab\" class=\"col s12\" _v-9d39ddf6=\"\">\n                        <ul class=\"collection\" _v-9d39ddf6=\"\">\n                            <li class=\"collection-item avatar\" style=\"min-height: 62px\" v-for=\"player in bridePlayers\" _v-9d39ddf6=\"\">\n                                <img :src=\"player.avatarImageUrl\" class=\"circle\" _v-9d39ddf6=\"\">\n                                <span class=\"title\" _v-9d39ddf6=\"\">{{player.userName}}</span>\n                            </li>\n                        </ul>\n                    </div>\n                    <div id=\"groomTab\" class=\"col s12\" _v-9d39ddf6=\"\">\n                        <ul class=\"collection\" _v-9d39ddf6=\"\">\n                            <li class=\"collection-item avatar\" style=\"min-height: 62px\" v-for=\"player in groomPlayers\" _v-9d39ddf6=\"\">\n                                <img :src=\"player.avatarImageUrl\" class=\"circle\" _v-9d39ddf6=\"\">\n                                <span class=\"title\" _v-9d39ddf6=\"\">{{player.userName}}</span>\n                            </li>\n                        </ul>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n";
 
 /***/ },
-/* 66 */
+/* 71 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __vue_script__, __vue_template__
-	__webpack_require__(67)
-	__vue_script__ = __webpack_require__(69)
+	__webpack_require__(72)
+	__vue_script__ = __webpack_require__(74)
 	if (__vue_script__ &&
 	    __vue_script__.__esModule &&
 	    Object.keys(__vue_script__).length > 1) {
 	  console.warn("[vue-loader] src\\components\\player\\shake-page.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(71)
+	__vue_template__ = __webpack_require__(76)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
 	if (__vue_template__) {
@@ -23835,13 +23964,13 @@
 	})()}
 
 /***/ },
-/* 67 */
+/* 72 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
 	// load the styles
-	var content = __webpack_require__(68);
+	var content = __webpack_require__(73);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(32)(content, {});
@@ -23861,7 +23990,7 @@
 	}
 
 /***/ },
-/* 68 */
+/* 73 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(31)();
@@ -23869,20 +23998,20 @@
 	
 	
 	// module
-	exports.push([module.id, "\n.shake-page-unit[_v-5b4dfb02] {\n    font-size: 20px;\n}\n", "", {"version":3,"sources":["/./src/components/player/shake-page.vue?c8ca1f40"],"names":[],"mappings":";AACA;IACA,gBAAA;CACA","file":"shake-page.vue","sourcesContent":["<style scoped>\r\n    .shake-page-unit {\r\n        font-size: 20px;\r\n    }\r\n</style>\r\n\r\n<template>\r\n    <div>\r\n        <div class=\"navbar-fixed\">\r\n            <nav>\r\n                <div class=\"nav-wrapper red lighten-2\">\r\n                    <a href=\"#\" class=\"brand-logo center\">Shaking</a>\r\n                </div>\r\n            </nav>\r\n        </div>\r\n\r\n        <div class=\"container\">\r\n            <div class=\"row\">\r\n                <h6 class=\"grey-text\" v-if=\"shakeCompleted\">YOUR RESULT</h6>\r\n                <div class=\"card\" v-if=\"shakeCompleted\">\r\n                    <div class=\"card-content\">\r\n                        <h4 class=\"card-title center-align\">GAME END~</h4>\r\n                        <p>Congratulations! You just shaked <span class=\"teal-text\" style=\"font-size: 1.5em\">{{shakeCount}}</span> times in last <span class=\"red-text\" style=\"font-size: 1.5em\">{{time / 1000}}</span> seconds!</p>\r\n                    </div>\r\n                    <div class=\"card-content red lighten-3 white-text\">\r\n                        a chart here\r\n                    </div>\r\n                    <div class=\"card-content center-align\">\r\n                        <a class=\"waves-effect waves-light btn red lighten-2\" v-link=\"{name: 'ranking', params: {roomId: room.objectId}}\">Check Ranking</a>\r\n                    </div>\r\n                </div>\r\n\r\n                <h6 class=\"grey-text\" v-if=\"!shakeCompleted\">SHAKE COUNT</h6>\r\n                <div class=\"card\" v-if=\"!shakeCompleted\">\r\n                    <div class=\"card-content\">\r\n                        <h1 class=\"center-align teal-text\">{{shakeCount}}<span class=\"shake-page-unit\">times</span></h1>\r\n                    </div>\r\n                </div>\r\n\r\n                <h6 class=\"grey-text\" v-if=\"!shakeCompleted\">TIME</h6>\r\n                <div class=\"card\" v-if=\"!shakeCompleted\">\r\n                    <div class=\"card-content\">\r\n                        <h4 class=\"center-align red-text\">{{stopwatchString}}<i class=\"material-icons shake-page-unit\">restore</i></h4>\r\n                    </div>\r\n                </div>\r\n\r\n                <h6 class=\"grey-text\">OTHER PLAYER DATA</h6>\r\n                <div class=\"card\">\r\n                    <div class=\"card-content\">\r\n                        <ul class=\"collection\">\r\n                            <li class=\"collection-item avatar\" v-for=\"player in players\">\r\n                                <img :src=\"player.avatarImageUrl\" class=\"circle\">\r\n                                <span class=\"title\">{{player.userName}}<span class=\"badge\">{{player.shakeCount}}</span></span>\r\n                                <div class=\"progress\" v-if=\"player.userType === 'BRIDE'\">\r\n                                    <div class=\"determinate\" :style=\"{width: player.shakeCount/200*100 + '%'}\"></div>\r\n                                </div>\r\n                                <div class=\"progress red lighten-4\" v-if=\"player.userType === 'GROOM'\">\r\n                                    <div class=\"determinate red\" :style=\"{width: player.shakeCount/200*100 + '%'}\"></div>\r\n                                </div>\r\n                                <p>{{player.userType}} side</p>\r\n                            </li>\r\n                        </ul>\r\n                    </div>\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</template>\r\n\r\n<script>\r\n    var store = require('../../store');\r\n    var Stopwatch = require('timer-stopwatch');\r\n    var ShakeJS = require('shake.js'); // threshold = 15, timeout = 100 => 80 times / 10s, for both iphone and android\r\n    var GAME_TIME = 20 * 1000;\r\n    var shake = null;\r\n    var timer = null;\r\n\r\n    module.exports = {\r\n\r\n        data: function() {\r\n            return {\r\n                time: GAME_TIME\r\n            };\r\n        },\r\n\r\n        computed: {\r\n            shakeCount: function() {\r\n                return store.state.player.currentPlayer.shakeCount;\r\n            },\r\n            room: function() {\r\n                return store.state.player.currentRoom;\r\n            },\r\n            players: function() {\r\n                return store.state.player.playerList.filter(function(p) {\r\n                    return p.objectId !== store.state.player.currentPlayer.objectId;\r\n                });\r\n            },\r\n            shakeCompleted: function() {\r\n                return store.state.player.shakePage.timeBalance <= 0;\r\n            },\r\n            stopwatchString: function() {\r\n                return store.state.player.shakePage.stopwatchString;\r\n            }\r\n        },\r\n\r\n        ready: function() {\r\n            var unit = store.state.player.shakePage.STOPWATCH_UNIT;\r\n            var total = store.state.player.shakePage.timeBalance;\r\n\r\n            /** init shake **/\r\n            shake = new ShakeJS({\r\n                threshold: 15,\r\n                timeout: 100\r\n            });\r\n            window.addEventListener('shake', store.actions.shake, false);\r\n\r\n            /** init timer **/\r\n            // total, by default would be 20 * 1000\r\n            // if the first time to get shake page, the total would be 20 * 1000\r\n            // if shake started, time will be counting down until total = 0\r\n            // if shake not done, and user moves to other page, and move back again, and total > 0, will count again\r\n            if(total > 0) {\r\n                timer = new Stopwatch(total, {refreshRateMS: unit});\r\n\r\n                timer.onTime(function() {\r\n                    if(total > 0)\r\n                        store.actions.updateStopwatch(total);\r\n\r\n                    total -= unit;\r\n                });\r\n\r\n                timer.onDone(function() {\r\n                    shake.stop();\r\n                    store.actions.updateStopwatch(0);\r\n                });\r\n\r\n                timer.start();\r\n                shake.start();\r\n            }\r\n\r\n            store.actions.listenPlayerShakeSocketMessage(true);\r\n        },\r\n\r\n        beforeDestroy: function() {\r\n            shake.stop();\r\n            shake = null;\r\n            window.removeEventListener('shake', store.actions.shake);\r\n        },\r\n\r\n        route: {\r\n            canActivate: function(transition) {\r\n                var room = store.state.player.currentRoom;\r\n\r\n                if(room.objectId) {\r\n                    if(room.status !== 'PLAYING')\r\n                        transition.redirect({name: 'ready'});\r\n                    else\r\n                        transition.next();\r\n\r\n                } else\r\n                    transition.redirect({name: 'home'});\r\n            }\r\n        }\r\n    };\r\n</script>"],"sourceRoot":"webpack://"}]);
+	exports.push([module.id, "\n.shake-page-unit[_v-5b4dfb02] {\n    font-size: 20px;\n}\n", "", {"version":3,"sources":["/./src/components/player/shake-page.vue?457fc82a"],"names":[],"mappings":";AACA;IACA,gBAAA;CACA","file":"shake-page.vue","sourcesContent":["<style scoped>\r\n    .shake-page-unit {\r\n        font-size: 20px;\r\n    }\r\n</style>\r\n\r\n<template>\r\n    <div>\r\n        <div class=\"navbar-fixed\">\r\n            <nav>\r\n                <div class=\"nav-wrapper red lighten-2\">\r\n                    <a class=\"brand-logo center\">Shaking</a>\r\n                </div>\r\n            </nav>\r\n        </div>\r\n\r\n        <div class=\"container\">\r\n            <div class=\"row\">\r\n                <h6 class=\"grey-text\" v-if=\"shakeCompleted\">YOUR RESULT</h6>\r\n                <div class=\"card\" v-if=\"shakeCompleted\">\r\n                    <div class=\"card-content\">\r\n                        <h4 class=\"card-title center-align\">GAME END~</h4>\r\n                        <p>Congratulations! You just shaked <span class=\"teal-text\" style=\"font-size: 1.5em\">{{shakeCount}}</span> times in last <span class=\"red-text\" style=\"font-size: 1.5em\">{{time / 1000}}</span> seconds!</p>\r\n                    </div>\r\n                    <div class=\"card-content red lighten-3 white-text\">\r\n                        a chart here\r\n                    </div>\r\n                    <div class=\"card-content center-align\">\r\n                        <a class=\"waves-effect waves-light btn red lighten-2\" v-link=\"{name: 'ranking', params: {roomId: room.objectId}}\">Check Ranking</a>\r\n                    </div>\r\n                </div>\r\n\r\n                <h6 class=\"grey-text\" v-if=\"!shakeCompleted\">SHAKE COUNT</h6>\r\n                <div class=\"card\" v-if=\"!shakeCompleted\">\r\n                    <div class=\"card-content\">\r\n                        <h1 class=\"center-align teal-text\">{{shakeCount}}<span class=\"shake-page-unit\">times</span></h1>\r\n                    </div>\r\n                </div>\r\n\r\n                <h6 class=\"grey-text\" v-if=\"!shakeCompleted\">TIME</h6>\r\n                <div class=\"card\" v-if=\"!shakeCompleted\">\r\n                    <div class=\"card-content\">\r\n                        <h4 class=\"center-align red-text\">{{stopwatchString}}<i class=\"material-icons shake-page-unit fa fa-clock-o\"></i></h4>\r\n                    </div>\r\n                </div>\r\n\r\n                <h6 class=\"grey-text\">OTHER PLAYER DATA</h6>\r\n                <div class=\"card\">\r\n                    <div class=\"card-content\">\r\n                        <ul class=\"collection\">\r\n                            <li class=\"collection-item avatar\" v-for=\"player in players\">\r\n                                <img :src=\"player.avatarImageUrl\" class=\"circle\">\r\n                                <span class=\"title\">{{player.userName}}<span class=\"badge\">{{player.shakeCount}}</span></span>\r\n                                <div class=\"progress\" v-if=\"player.userType === 'BRIDE'\">\r\n                                    <div class=\"determinate\" :style=\"{width: player.shakeCount/200*100 + '%'}\"></div>\r\n                                </div>\r\n                                <div class=\"progress red lighten-4\" v-if=\"player.userType === 'GROOM'\">\r\n                                    <div class=\"determinate red\" :style=\"{width: player.shakeCount/200*100 + '%'}\"></div>\r\n                                </div>\r\n                                <p>{{player.userType}} side</p>\r\n                            </li>\r\n                        </ul>\r\n                    </div>\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</template>\r\n\r\n<script>\r\n    var store = require('../../store');\r\n    var Stopwatch = require('timer-stopwatch');\r\n    var ShakeJS = require('shake.js'); // threshold = 15, timeout = 100 => 80 times / 10s, for both iphone and android\r\n    var GAME_TIME = 20 * 1000;\r\n    var shake = null;\r\n    var timer = null;\r\n\r\n    module.exports = {\r\n\r\n        data: function() {\r\n            return {\r\n                time: GAME_TIME\r\n            };\r\n        },\r\n\r\n        computed: {\r\n            shakeCount: function() {\r\n                return store.state.player.currentPlayer.shakeCount;\r\n            },\r\n            room: function() {\r\n                return store.state.player.currentRoom;\r\n            },\r\n            players: function() {\r\n                return store.state.player.playerList.filter(function(p) {\r\n                    return p.objectId !== store.state.player.currentPlayer.objectId;\r\n                });\r\n            },\r\n            shakeCompleted: function() {\r\n                return store.state.player.shakePage.timeBalance <= 0;\r\n            },\r\n            stopwatchString: function() {\r\n                return store.state.player.shakePage.stopwatchString;\r\n            }\r\n        },\r\n\r\n        ready: function() {\r\n            var unit = store.state.player.shakePage.STOPWATCH_UNIT;\r\n            var total = store.state.player.shakePage.timeBalance;\r\n\r\n            /** init shake **/\r\n            shake = new ShakeJS({\r\n                threshold: 15,\r\n                timeout: 100\r\n            });\r\n            window.addEventListener('shake', store.actions.shake, false);\r\n\r\n            /** init timer **/\r\n            // total, by default would be 20 * 1000\r\n            // if the first time to get shake page, the total would be 20 * 1000\r\n            // if shake started, time will be counting down until total = 0\r\n            // if shake not done, and user moves to other page, and move back again, and total > 0, will count again\r\n            if(total > 0) {\r\n                timer = new Stopwatch(total, {refreshRateMS: unit});\r\n\r\n                timer.onTime(function() {\r\n                    if(total > 0)\r\n                        store.actions.updateStopwatch(total);\r\n\r\n                    total -= unit;\r\n                });\r\n\r\n                timer.onDone(function() {\r\n                    shake.stop();\r\n                    store.actions.updateStopwatch(0);\r\n                });\r\n\r\n                timer.start();\r\n                shake.start();\r\n            }\r\n\r\n            store.actions.listenPlayerShakeSocketMessage(true);\r\n        },\r\n\r\n        beforeDestroy: function() {\r\n            shake.stop();\r\n            shake = null;\r\n            window.removeEventListener('shake', store.actions.shake);\r\n        },\r\n\r\n        route: {\r\n            canActivate: function(transition) {\r\n                var room = store.state.player.currentRoom;\r\n\r\n                if(room.objectId) {\r\n                    if(room.status !== 'PLAYING')\r\n                        transition.redirect({name: 'ready'});\r\n                    else\r\n                        transition.next();\r\n\r\n                } else\r\n                    transition.redirect({name: 'home'});\r\n            }\r\n        }\r\n    };\r\n</script>"],"sourceRoot":"webpack://"}]);
 	
 	// exports
 
 
 /***/ },
-/* 69 */
+/* 74 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var store = __webpack_require__(34);
-	var Stopwatch = __webpack_require__(60);
-	var ShakeJS = __webpack_require__(70);
+	var Stopwatch = __webpack_require__(65);
+	var ShakeJS = __webpack_require__(75);
 	var GAME_TIME = 20 * 1000;
 	var shake = null;
 	var timer = null;
@@ -23964,7 +24093,7 @@
 	};
 
 /***/ },
-/* 70 */
+/* 75 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/*
@@ -24099,161 +24228,10 @@
 
 
 /***/ },
-/* 71 */
-/***/ function(module, exports) {
-
-	module.exports = "\n<div _v-5b4dfb02=\"\">\n    <div class=\"navbar-fixed\" _v-5b4dfb02=\"\">\n        <nav _v-5b4dfb02=\"\">\n            <div class=\"nav-wrapper red lighten-2\" _v-5b4dfb02=\"\">\n                <a href=\"#\" class=\"brand-logo center\" _v-5b4dfb02=\"\">Shaking</a>\n            </div>\n        </nav>\n    </div>\n\n    <div class=\"container\" _v-5b4dfb02=\"\">\n        <div class=\"row\" _v-5b4dfb02=\"\">\n            <h6 class=\"grey-text\" v-if=\"shakeCompleted\" _v-5b4dfb02=\"\">YOUR RESULT</h6>\n            <div class=\"card\" v-if=\"shakeCompleted\" _v-5b4dfb02=\"\">\n                <div class=\"card-content\" _v-5b4dfb02=\"\">\n                    <h4 class=\"card-title center-align\" _v-5b4dfb02=\"\">GAME END~</h4>\n                    <p _v-5b4dfb02=\"\">Congratulations! You just shaked <span class=\"teal-text\" style=\"font-size: 1.5em\" _v-5b4dfb02=\"\">{{shakeCount}}</span> times in last <span class=\"red-text\" style=\"font-size: 1.5em\" _v-5b4dfb02=\"\">{{time / 1000}}</span> seconds!</p>\n                </div>\n                <div class=\"card-content red lighten-3 white-text\" _v-5b4dfb02=\"\">\n                    a chart here\n                </div>\n                <div class=\"card-content center-align\" _v-5b4dfb02=\"\">\n                    <a class=\"waves-effect waves-light btn red lighten-2\" v-link=\"{name: 'ranking', params: {roomId: room.objectId}}\" _v-5b4dfb02=\"\">Check Ranking</a>\n                </div>\n            </div>\n\n            <h6 class=\"grey-text\" v-if=\"!shakeCompleted\" _v-5b4dfb02=\"\">SHAKE COUNT</h6>\n            <div class=\"card\" v-if=\"!shakeCompleted\" _v-5b4dfb02=\"\">\n                <div class=\"card-content\" _v-5b4dfb02=\"\">\n                    <h1 class=\"center-align teal-text\" _v-5b4dfb02=\"\">{{shakeCount}}<span class=\"shake-page-unit\" _v-5b4dfb02=\"\">times</span></h1>\n                </div>\n            </div>\n\n            <h6 class=\"grey-text\" v-if=\"!shakeCompleted\" _v-5b4dfb02=\"\">TIME</h6>\n            <div class=\"card\" v-if=\"!shakeCompleted\" _v-5b4dfb02=\"\">\n                <div class=\"card-content\" _v-5b4dfb02=\"\">\n                    <h4 class=\"center-align red-text\" _v-5b4dfb02=\"\">{{stopwatchString}}<i class=\"material-icons shake-page-unit\" _v-5b4dfb02=\"\">restore</i></h4>\n                </div>\n            </div>\n\n            <h6 class=\"grey-text\" _v-5b4dfb02=\"\">OTHER PLAYER DATA</h6>\n            <div class=\"card\" _v-5b4dfb02=\"\">\n                <div class=\"card-content\" _v-5b4dfb02=\"\">\n                    <ul class=\"collection\" _v-5b4dfb02=\"\">\n                        <li class=\"collection-item avatar\" v-for=\"player in players\" _v-5b4dfb02=\"\">\n                            <img :src=\"player.avatarImageUrl\" class=\"circle\" _v-5b4dfb02=\"\">\n                            <span class=\"title\" _v-5b4dfb02=\"\">{{player.userName}}<span class=\"badge\" _v-5b4dfb02=\"\">{{player.shakeCount}}</span></span>\n                            <div class=\"progress\" v-if=\"player.userType === 'BRIDE'\" _v-5b4dfb02=\"\">\n                                <div class=\"determinate\" :style=\"{width: player.shakeCount/200*100 + '%'}\" _v-5b4dfb02=\"\"></div>\n                            </div>\n                            <div class=\"progress red lighten-4\" v-if=\"player.userType === 'GROOM'\" _v-5b4dfb02=\"\">\n                                <div class=\"determinate red\" :style=\"{width: player.shakeCount/200*100 + '%'}\" _v-5b4dfb02=\"\"></div>\n                            </div>\n                            <p _v-5b4dfb02=\"\">{{player.userType}} side</p>\n                        </li>\n                    </ul>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n";
-
-/***/ },
-/* 72 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var __vue_script__, __vue_template__
-	__webpack_require__(73)
-	__vue_script__ = __webpack_require__(75)
-	if (__vue_script__ &&
-	    __vue_script__.__esModule &&
-	    Object.keys(__vue_script__).length > 1) {
-	  console.warn("[vue-loader] src\\components\\player\\ranking-page.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(76)
-	module.exports = __vue_script__ || {}
-	if (module.exports.__esModule) module.exports = module.exports.default
-	if (__vue_template__) {
-	(typeof module.exports === "function" ? (module.exports.options || (module.exports.options = {})) : module.exports).template = __vue_template__
-	}
-	if (false) {(function () {  module.hot.accept()
-	  var hotAPI = require("vue-hot-reload-api")
-	  hotAPI.install(require("vue"), true)
-	  if (!hotAPI.compatible) return
-	  var id = "C:\\Users\\Administrator\\Documents\\GitHub\\wedding-shake-game\\src\\components\\player\\ranking-page.vue"
-	  if (!module.hot.data) {
-	    hotAPI.createRecord(id, module.exports)
-	  } else {
-	    hotAPI.update(id, module.exports, __vue_template__)
-	  }
-	})()}
-
-/***/ },
-/* 73 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-	
-	// load the styles
-	var content = __webpack_require__(74);
-	if(typeof content === 'string') content = [[module.id, content, '']];
-	// add the styles to the DOM
-	var update = __webpack_require__(32)(content, {});
-	if(content.locals) module.exports = content.locals;
-	// Hot Module Replacement
-	if(false) {
-		// When the styles change, update the <style> tags
-		if(!content.locals) {
-			module.hot.accept("!!./../../../node_modules/css-loader/index.js?sourceMap!./../../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-4d4f86d2&scoped=true!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./ranking-page.vue", function() {
-				var newContent = require("!!./../../../node_modules/css-loader/index.js?sourceMap!./../../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-4d4f86d2&scoped=true!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./ranking-page.vue");
-				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-				update(newContent);
-			});
-		}
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
-
-/***/ },
-/* 74 */
-/***/ function(module, exports, __webpack_require__) {
-
-	exports = module.exports = __webpack_require__(31)();
-	// imports
-	
-	
-	// module
-	exports.push([module.id, "\n.win-stamp[_v-4d4f86d2] {\n    width: 40px;\n    position: absolute;\n    top: -5px;\n    right: -5px;\n    -webkit-transform: rotate(30deg);\n    border-radius: 50%;\n}\n", "", {"version":3,"sources":["/./src/components/player/ranking-page.vue?67419f22"],"names":[],"mappings":";AACA;IACA,YAAA;IACA,mBAAA;IACA,UAAA;IACA,YAAA;IACA,iCAAA;IACA,mBAAA;CACA","file":"ranking-page.vue","sourcesContent":["<style scoped>\r\n    .win-stamp {\r\n        width: 40px;\r\n        position: absolute;\r\n        top: -5px;\r\n        right: -5px;\r\n        -webkit-transform: rotate(30deg);\r\n        border-radius: 50%;\r\n    }\r\n</style>\r\n\r\n<template>\r\n    <div>\r\n        <div class=\"navbar-fixed\">\r\n            <nav>\r\n                <div class=\"nav-wrapper red lighten-2\">\r\n                    <a class=\"brand-logo center\">Ranking</a>\r\n                    <ul class=\"left\">\r\n                        <li><a v-link=\"{name:'home'}\"><i class=\"material-icons fa fa-angle-left\"></i></a></li>\r\n                    </ul>\r\n                </div>\r\n            </nav>\r\n        </div>\r\n\r\n        <div class=\"container\">\r\n            <div class=\"row\">\r\n                <h6 class=\"grey-text\">RESULT</h6>\r\n                <div class=\"card col s12\">\r\n                    <div class=\"card-content\">\r\n                        <table>\r\n                            <thead>\r\n                                <tr>\r\n                                    <th data-field=\"side\">Side</th>\r\n                                    <th data-field=\"players\">Players</th>\r\n                                    <th data-field=\"total\">Total</th>\r\n                                    <th data-field=\"result\">Result</th>\r\n                                </tr>\r\n                            </thead>\r\n                            <tbody>\r\n                                <tr>\r\n                                    <td>Bride</td>\r\n                                    <td>{{bridePlayers.length}}</td>\r\n                                    <td>{{brideTotal}}</td>\r\n                                    <td style=\"position: relative\">WIN<img src=\"http://img.aiyidu.com/forum/201309/08/192346u5dud4wi14uw1e4w.jpg\" class=\"win-stamp\"></td>\r\n                                </tr>\r\n                                <tr>\r\n                                    <td>Groom</td>\r\n                                    <td>{{groomPlayers.length}}</td>\r\n                                    <td>{{groomTotal}}</td>\r\n                                    <td style=\"position: relative\">FAILED</td>\r\n                                </tr>\r\n                            </tbody>\r\n                        </table>\r\n                    </div>\r\n                </div>\r\n                <h6 class=\"grey-text\">DETAILS</h6>\r\n                <div class=\"card col s12\">\r\n                    <div class=\"card-content\">\r\n                        <ul class=\"collection\">\r\n                            <li class=\"collection-item avatar\" v-for=\"player in players\">\r\n                                <img :src=\"player.avatarImageUrl\" class=\"circle\">\r\n                                <span class=\"title\">{{player.userName}}<span class=\"badge\">{{player.shakeCount}}</span></span>\r\n                                <div class=\"progress\" v-if=\"player.userType === 'BRIDE'\">\r\n                                    <div class=\"determinate\" :style=\"{width: player.shakeCount/200*100 + '%'}\"></div>\r\n                                </div>\r\n                                <div class=\"progress red lighten-4\" v-if=\"player.userType === 'GROOM'\">\r\n                                    <div class=\"determinate red\" :style=\"{width: player.shakeCount/200*100 + '%'}\"></div>\r\n                                </div>\r\n                                <p>{{player.userType}}</p>\r\n                            </li>\r\n                        </ul>\r\n                    </div>\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</template>\r\n\r\n<script>\r\n    var store = require('../../store');\r\n\r\n    module.exports = {\r\n\r\n        computed: {\r\n            currentPlayer: function() {\r\n                return store.state.player.currentPlayer;\r\n            },\r\n            players: function() {\r\n                var ranking = store.state.player.currentRoom.ranking;\r\n                var players = [];\r\n\r\n                ranking.forEach(function(r) {\r\n                    var player = store.state.player.playerList.filter(function(p) {\r\n                        return p.objectId === r.playerId;\r\n                    })[0];\r\n                    // after generate ranking in server side, user.shakeCount will be reset as 0;\r\n                    player.shakeCount = r.shakeCount;\r\n                    players.push(player);\r\n                });\r\n\r\n                return players.sort(function(p1, p2) {\r\n                    // descend order\r\n                    return p1.shakeCount < p2.shakeCount;\r\n                });\r\n            },\r\n            bridePlayers: function() {\r\n                var ranking = store.state.player.currentRoom.ranking;\r\n                var players = [];\r\n\r\n                ranking.forEach(function(r) {\r\n                    players.push(store.state.player.playerList.filter(function(p) {\r\n                        return p.objectId === r.playerId && p.userType === 'BRIDE';\r\n                    }));\r\n                });\r\n                return players;\r\n            },\r\n            groomPlayers: function() {\r\n                var ranking = store.state.player.currentRoom.ranking;\r\n                var players = [];\r\n\r\n                ranking.forEach(function(r) {\r\n                    players.push(store.state.player.playerList.filter(function(p) {\r\n                        return p.objectId === r.playerId && p.userType === 'GROOM';\r\n                    }));\r\n                });\r\n                return players;\r\n            },\r\n            brideTotal: function() {\r\n                var total = 0;\r\n                store.state.player.currentRoom.ranking.forEach(function(r) {\r\n                    if(r.playerType === 'BRIDE')\r\n                        total += r.shakeCount;\r\n                });\r\n                return total;\r\n            },\r\n            groomTotal: function() {\r\n                var total = 0;\r\n                store.state.player.currentRoom.ranking.forEach(function(r) {\r\n                    if(r.playerType === 'GROOM')\r\n                        total += r.shakeCount;\r\n                });\r\n                return total;\r\n            }\r\n        },\r\n\r\n        ready: function() {\r\n            var roomId = this.$route.params.roomId;\r\n            store.actions.getRoomPlayers(roomId);\r\n            store.actions.getRoomDetails(roomId);\r\n        }\r\n    };\r\n</script>"],"sourceRoot":"webpack://"}]);
-	
-	// exports
-
-
-/***/ },
-/* 75 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var store = __webpack_require__(34);
-	
-	module.exports = {
-	
-	    computed: {
-	        currentPlayer: function currentPlayer() {
-	            return store.state.player.currentPlayer;
-	        },
-	        players: function players() {
-	            var ranking = store.state.player.currentRoom.ranking;
-	            var players = [];
-	
-	            ranking.forEach(function (r) {
-	                var player = store.state.player.playerList.filter(function (p) {
-	                    return p.objectId === r.playerId;
-	                })[0];
-	
-	                player.shakeCount = r.shakeCount;
-	                players.push(player);
-	            });
-	
-	            return players.sort(function (p1, p2) {
-	                return p1.shakeCount < p2.shakeCount;
-	            });
-	        },
-	        bridePlayers: function bridePlayers() {
-	            var ranking = store.state.player.currentRoom.ranking;
-	            var players = [];
-	
-	            ranking.forEach(function (r) {
-	                players.push(store.state.player.playerList.filter(function (p) {
-	                    return p.objectId === r.playerId && p.userType === 'BRIDE';
-	                }));
-	            });
-	            return players;
-	        },
-	        groomPlayers: function groomPlayers() {
-	            var ranking = store.state.player.currentRoom.ranking;
-	            var players = [];
-	
-	            ranking.forEach(function (r) {
-	                players.push(store.state.player.playerList.filter(function (p) {
-	                    return p.objectId === r.playerId && p.userType === 'GROOM';
-	                }));
-	            });
-	            return players;
-	        },
-	        brideTotal: function brideTotal() {
-	            var total = 0;
-	            store.state.player.currentRoom.ranking.forEach(function (r) {
-	                if (r.playerType === 'BRIDE') total += r.shakeCount;
-	            });
-	            return total;
-	        },
-	        groomTotal: function groomTotal() {
-	            var total = 0;
-	            store.state.player.currentRoom.ranking.forEach(function (r) {
-	                if (r.playerType === 'GROOM') total += r.shakeCount;
-	            });
-	            return total;
-	        }
-	    },
-	
-	    ready: function ready() {
-	        var roomId = this.$route.params.roomId;
-	        store.actions.getRoomPlayers(roomId);
-	        store.actions.getRoomDetails(roomId);
-	    }
-	};
-
-/***/ },
 /* 76 */
 /***/ function(module, exports) {
 
-	module.exports = "\n<div _v-4d4f86d2=\"\">\n    <div class=\"navbar-fixed\" _v-4d4f86d2=\"\">\n        <nav _v-4d4f86d2=\"\">\n            <div class=\"nav-wrapper red lighten-2\" _v-4d4f86d2=\"\">\n                <a class=\"brand-logo center\" _v-4d4f86d2=\"\">Ranking</a>\n                <ul class=\"left\" _v-4d4f86d2=\"\">\n                    <li _v-4d4f86d2=\"\"><a v-link=\"{name:'home'}\" _v-4d4f86d2=\"\"><i class=\"material-icons fa fa-angle-left\" _v-4d4f86d2=\"\"></i></a></li>\n                </ul>\n            </div>\n        </nav>\n    </div>\n\n    <div class=\"container\" _v-4d4f86d2=\"\">\n        <div class=\"row\" _v-4d4f86d2=\"\">\n            <h6 class=\"grey-text\" _v-4d4f86d2=\"\">RESULT</h6>\n            <div class=\"card col s12\" _v-4d4f86d2=\"\">\n                <div class=\"card-content\" _v-4d4f86d2=\"\">\n                    <table _v-4d4f86d2=\"\">\n                        <thead _v-4d4f86d2=\"\">\n                            <tr _v-4d4f86d2=\"\">\n                                <th data-field=\"side\" _v-4d4f86d2=\"\">Side</th>\n                                <th data-field=\"players\" _v-4d4f86d2=\"\">Players</th>\n                                <th data-field=\"total\" _v-4d4f86d2=\"\">Total</th>\n                                <th data-field=\"result\" _v-4d4f86d2=\"\">Result</th>\n                            </tr>\n                        </thead>\n                        <tbody _v-4d4f86d2=\"\">\n                            <tr _v-4d4f86d2=\"\">\n                                <td _v-4d4f86d2=\"\">Bride</td>\n                                <td _v-4d4f86d2=\"\">{{bridePlayers.length}}</td>\n                                <td _v-4d4f86d2=\"\">{{brideTotal}}</td>\n                                <td style=\"position: relative\" _v-4d4f86d2=\"\">WIN<img src=\"http://img.aiyidu.com/forum/201309/08/192346u5dud4wi14uw1e4w.jpg\" class=\"win-stamp\" _v-4d4f86d2=\"\"></td>\n                            </tr>\n                            <tr _v-4d4f86d2=\"\">\n                                <td _v-4d4f86d2=\"\">Groom</td>\n                                <td _v-4d4f86d2=\"\">{{groomPlayers.length}}</td>\n                                <td _v-4d4f86d2=\"\">{{groomTotal}}</td>\n                                <td style=\"position: relative\" _v-4d4f86d2=\"\">FAILED</td>\n                            </tr>\n                        </tbody>\n                    </table>\n                </div>\n            </div>\n            <h6 class=\"grey-text\" _v-4d4f86d2=\"\">DETAILS</h6>\n            <div class=\"card col s12\" _v-4d4f86d2=\"\">\n                <div class=\"card-content\" _v-4d4f86d2=\"\">\n                    <ul class=\"collection\" _v-4d4f86d2=\"\">\n                        <li class=\"collection-item avatar\" v-for=\"player in players\" _v-4d4f86d2=\"\">\n                            <img :src=\"player.avatarImageUrl\" class=\"circle\" _v-4d4f86d2=\"\">\n                            <span class=\"title\" _v-4d4f86d2=\"\">{{player.userName}}<span class=\"badge\" _v-4d4f86d2=\"\">{{player.shakeCount}}</span></span>\n                            <div class=\"progress\" v-if=\"player.userType === 'BRIDE'\" _v-4d4f86d2=\"\">\n                                <div class=\"determinate\" :style=\"{width: player.shakeCount/200*100 + '%'}\" _v-4d4f86d2=\"\"></div>\n                            </div>\n                            <div class=\"progress red lighten-4\" v-if=\"player.userType === 'GROOM'\" _v-4d4f86d2=\"\">\n                                <div class=\"determinate red\" :style=\"{width: player.shakeCount/200*100 + '%'}\" _v-4d4f86d2=\"\"></div>\n                            </div>\n                            <p _v-4d4f86d2=\"\">{{player.userType}}</p>\n                        </li>\n                    </ul>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n";
+	module.exports = "\n<div _v-5b4dfb02=\"\">\n    <div class=\"navbar-fixed\" _v-5b4dfb02=\"\">\n        <nav _v-5b4dfb02=\"\">\n            <div class=\"nav-wrapper red lighten-2\" _v-5b4dfb02=\"\">\n                <a class=\"brand-logo center\" _v-5b4dfb02=\"\">Shaking</a>\n            </div>\n        </nav>\n    </div>\n\n    <div class=\"container\" _v-5b4dfb02=\"\">\n        <div class=\"row\" _v-5b4dfb02=\"\">\n            <h6 class=\"grey-text\" v-if=\"shakeCompleted\" _v-5b4dfb02=\"\">YOUR RESULT</h6>\n            <div class=\"card\" v-if=\"shakeCompleted\" _v-5b4dfb02=\"\">\n                <div class=\"card-content\" _v-5b4dfb02=\"\">\n                    <h4 class=\"card-title center-align\" _v-5b4dfb02=\"\">GAME END~</h4>\n                    <p _v-5b4dfb02=\"\">Congratulations! You just shaked <span class=\"teal-text\" style=\"font-size: 1.5em\" _v-5b4dfb02=\"\">{{shakeCount}}</span> times in last <span class=\"red-text\" style=\"font-size: 1.5em\" _v-5b4dfb02=\"\">{{time / 1000}}</span> seconds!</p>\n                </div>\n                <div class=\"card-content red lighten-3 white-text\" _v-5b4dfb02=\"\">\n                    a chart here\n                </div>\n                <div class=\"card-content center-align\" _v-5b4dfb02=\"\">\n                    <a class=\"waves-effect waves-light btn red lighten-2\" v-link=\"{name: 'ranking', params: {roomId: room.objectId}}\" _v-5b4dfb02=\"\">Check Ranking</a>\n                </div>\n            </div>\n\n            <h6 class=\"grey-text\" v-if=\"!shakeCompleted\" _v-5b4dfb02=\"\">SHAKE COUNT</h6>\n            <div class=\"card\" v-if=\"!shakeCompleted\" _v-5b4dfb02=\"\">\n                <div class=\"card-content\" _v-5b4dfb02=\"\">\n                    <h1 class=\"center-align teal-text\" _v-5b4dfb02=\"\">{{shakeCount}}<span class=\"shake-page-unit\" _v-5b4dfb02=\"\">times</span></h1>\n                </div>\n            </div>\n\n            <h6 class=\"grey-text\" v-if=\"!shakeCompleted\" _v-5b4dfb02=\"\">TIME</h6>\n            <div class=\"card\" v-if=\"!shakeCompleted\" _v-5b4dfb02=\"\">\n                <div class=\"card-content\" _v-5b4dfb02=\"\">\n                    <h4 class=\"center-align red-text\" _v-5b4dfb02=\"\">{{stopwatchString}}<i class=\"material-icons shake-page-unit fa fa-clock-o\" _v-5b4dfb02=\"\"></i></h4>\n                </div>\n            </div>\n\n            <h6 class=\"grey-text\" _v-5b4dfb02=\"\">OTHER PLAYER DATA</h6>\n            <div class=\"card\" _v-5b4dfb02=\"\">\n                <div class=\"card-content\" _v-5b4dfb02=\"\">\n                    <ul class=\"collection\" _v-5b4dfb02=\"\">\n                        <li class=\"collection-item avatar\" v-for=\"player in players\" _v-5b4dfb02=\"\">\n                            <img :src=\"player.avatarImageUrl\" class=\"circle\" _v-5b4dfb02=\"\">\n                            <span class=\"title\" _v-5b4dfb02=\"\">{{player.userName}}<span class=\"badge\" _v-5b4dfb02=\"\">{{player.shakeCount}}</span></span>\n                            <div class=\"progress\" v-if=\"player.userType === 'BRIDE'\" _v-5b4dfb02=\"\">\n                                <div class=\"determinate\" :style=\"{width: player.shakeCount/200*100 + '%'}\" _v-5b4dfb02=\"\"></div>\n                            </div>\n                            <div class=\"progress red lighten-4\" v-if=\"player.userType === 'GROOM'\" _v-5b4dfb02=\"\">\n                                <div class=\"determinate red\" :style=\"{width: player.shakeCount/200*100 + '%'}\" _v-5b4dfb02=\"\"></div>\n                            </div>\n                            <p _v-5b4dfb02=\"\">{{player.userType}} side</p>\n                        </li>\n                    </ul>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n";
 
 /***/ },
 /* 77 */
@@ -24265,7 +24243,7 @@
 	if (__vue_script__ &&
 	    __vue_script__.__esModule &&
 	    Object.keys(__vue_script__).length > 1) {
-	  console.warn("[vue-loader] src\\components\\player\\visit-page.vue: named exports in *.vue files are ignored.")}
+	  console.warn("[vue-loader] src\\components\\player\\ranking-page.vue: named exports in *.vue files are ignored.")}
 	__vue_template__ = __webpack_require__(81)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
@@ -24276,7 +24254,7 @@
 	  var hotAPI = require("vue-hot-reload-api")
 	  hotAPI.install(require("vue"), true)
 	  if (!hotAPI.compatible) return
-	  var id = "C:\\Users\\Administrator\\Documents\\GitHub\\wedding-shake-game\\src\\components\\player\\visit-page.vue"
+	  var id = "C:\\Users\\Administrator\\Documents\\GitHub\\wedding-shake-game\\src\\components\\player\\ranking-page.vue"
 	  if (!module.hot.data) {
 	    hotAPI.createRecord(id, module.exports)
 	  } else {
@@ -24300,8 +24278,8 @@
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../../node_modules/css-loader/index.js?sourceMap!./../../../node_modules/vue-loader/lib/style-rewriter.js!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./visit-page.vue", function() {
-				var newContent = require("!!./../../../node_modules/css-loader/index.js?sourceMap!./../../../node_modules/vue-loader/lib/style-rewriter.js!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./visit-page.vue");
+			module.hot.accept("!!./../../../node_modules/css-loader/index.js?sourceMap!./../../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-4d4f86d2&scoped=true!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./ranking-page.vue", function() {
+				var newContent = require("!!./../../../node_modules/css-loader/index.js?sourceMap!./../../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-4d4f86d2&scoped=true!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./ranking-page.vue");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -24319,13 +24297,175 @@
 	
 	
 	// module
-	exports.push([module.id, "\n\n", "", {"version":3,"sources":[],"names":[],"mappings":"","file":"visit-page.vue","sourceRoot":"webpack://"}]);
+	exports.push([module.id, "\n.win-stamp[_v-4d4f86d2] {\n    width: 40px;\n    position: absolute;\n    top: -5px;\n    right: -5px;\n    -webkit-transform: rotate(30deg);\n    border-radius: 50%;\n}\n", "", {"version":3,"sources":["/./src/components/player/ranking-page.vue?3b68bda8"],"names":[],"mappings":";AACA;IACA,YAAA;IACA,mBAAA;IACA,UAAA;IACA,YAAA;IACA,iCAAA;IACA,mBAAA;CACA","file":"ranking-page.vue","sourcesContent":["<style scoped>\r\n    .win-stamp {\r\n        width: 40px;\r\n        position: absolute;\r\n        top: -5px;\r\n        right: -5px;\r\n        -webkit-transform: rotate(30deg);\r\n        border-radius: 50%;\r\n    }\r\n</style>\r\n\r\n<template>\r\n    <div>\r\n        <div class=\"navbar-fixed\">\r\n            <nav>\r\n                <div class=\"nav-wrapper red lighten-2\">\r\n                    <a class=\"brand-logo center\">Ranking</a>\r\n                    <ul class=\"left\">\r\n                        <li><a v-link=\"{name:'home'}\"><i class=\"material-icons fa fa-angle-left\"></i></a></li>\r\n                    </ul>\r\n                </div>\r\n            </nav>\r\n        </div>\r\n\r\n        <div class=\"container\">\r\n            <div class=\"row\">\r\n                <h6 class=\"grey-text\">RESULT</h6>\r\n                <div class=\"card col s12\">\r\n                    <div class=\"card-content\">\r\n                        <table>\r\n                            <thead>\r\n                                <tr>\r\n                                    <th data-field=\"side\">Side</th>\r\n                                    <th data-field=\"players\">Players</th>\r\n                                    <th data-field=\"total\">Total</th>\r\n                                    <th data-field=\"result\">Result</th>\r\n                                </tr>\r\n                            </thead>\r\n                            <tbody>\r\n                                <tr>\r\n                                    <td>Bride</td>\r\n                                    <td>{{bridePlayers.length}}</td>\r\n                                    <td>{{brideTotal}}</td>\r\n                                    <td v-if=\"brideTotal > groomTotal\" style=\"position: relative\">WIN<img :src=\"winImageUrl\" class=\"win-stamp\"></td>\r\n                                    <td v-else style=\"position: relative\">FAILED</td>\r\n                                </tr>\r\n                                <tr>\r\n                                    <td>Groom</td>\r\n                                    <td>{{groomPlayers.length}}</td>\r\n                                    <td>{{groomTotal}}</td>\r\n                                    <td v-if=\"brideTotal < groomTotal\" style=\"position: relative\">WIN<img :src=\"winImageUrl\" class=\"win-stamp\"></td>\r\n                                    <td v-else style=\"position: relative\">FAILED</td>\r\n                                </tr>\r\n                            </tbody>\r\n                        </table>\r\n                    </div>\r\n                </div>\r\n                <h6 class=\"grey-text\">DETAILS</h6>\r\n                <div class=\"card col s12\">\r\n                    <div class=\"card-content\">\r\n                        <ul class=\"collection\">\r\n                            <li class=\"collection-item avatar\" v-for=\"player in players\">\r\n                                <img :src=\"player.avatarImageUrl\" class=\"circle\">\r\n                                <span class=\"title\">{{player.userName}}<span class=\"badge\">{{player.shakeCount}}</span></span>\r\n                                <div class=\"progress\" v-if=\"player.userType === 'BRIDE'\">\r\n                                    <div class=\"determinate\" :style=\"{width: player.shakeCount/200*100 + '%'}\"></div>\r\n                                </div>\r\n                                <div class=\"progress red lighten-4\" v-if=\"player.userType === 'GROOM'\">\r\n                                    <div class=\"determinate red\" :style=\"{width: player.shakeCount/200*100 + '%'}\"></div>\r\n                                </div>\r\n                                <p>{{player.userType}}</p>\r\n                            </li>\r\n                        </ul>\r\n                    </div>\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</template>\r\n\r\n<script>\r\n    var store = require('../../store');\r\n\r\n    module.exports = {\r\n        data: function() {\r\n            return {\r\n                winImageUrl: 'static/images/win_stamp.jpg'\r\n            }\r\n        },\r\n\r\n        computed: {\r\n            currentPlayer: function() {\r\n                return store.state.player.currentPlayer;\r\n            },\r\n            players: function() {\r\n                var ranking = store.state.player.currentRoom.ranking || [];\r\n                var players = [];\r\n\r\n                ranking.forEach(function(r) {\r\n                    var player = store.state.player.rankingPage.playerList.filter(function(p) {\r\n                        return p.objectId === r.playerId;\r\n                    })[0];\r\n                    // after generate ranking in server side, user.shakeCount will be reset as 0;\r\n                    if(player) {\r\n                        player.shakeCount = r.shakeCount;\r\n                        players.push(player);\r\n                    }\r\n                });\r\n\r\n                if(players.length === 0)\r\n                    return players;\r\n                else\r\n                    return players.sort(function(p1, p2) {\r\n                        // descend order\r\n                        return p1.shakeCount < p2.shakeCount;\r\n                    });\r\n            },\r\n            bridePlayers: function() {\r\n                var ranking = store.state.player.currentRoom.ranking || [];\r\n                var players = [];\r\n\r\n                ranking.forEach(function(r) {\r\n                    var p = store.state.player.rankingPage.playerList.filter(function(p) {\r\n                        return p.objectId === r.playerId && p.userType === 'BRIDE';\r\n                    })[0];\r\n\r\n                    p && players.push(p);\r\n                });\r\n                return players;\r\n            },\r\n            groomPlayers: function() {\r\n                var ranking = store.state.player.currentRoom.ranking || [];\r\n                var players = [];\r\n\r\n                ranking.forEach(function(r) {\r\n                    var p = store.state.player.rankingPage.playerList.filter(function(p) {\r\n                        return p.objectId === r.playerId && p.userType === 'GROOM';\r\n                    })[0];\r\n\r\n                    p && players.push(p);\r\n                });\r\n                return players;\r\n            },\r\n            brideTotal: function() {\r\n                var total = 0;\r\n                (store.state.player.currentRoom.ranking || []).forEach(function(r) {\r\n                    if(r.playerType === 'BRIDE')\r\n                        total += r.shakeCount;\r\n                });\r\n                return total;\r\n            },\r\n            groomTotal: function() {\r\n                var total = 0;\r\n                (store.state.player.currentRoom.ranking || []).forEach(function(r) {\r\n                    if(r.playerType === 'GROOM')\r\n                        total += r.shakeCount;\r\n                });\r\n                return total;\r\n            }\r\n        },\r\n\r\n        ready: function() {\r\n            var roomId = this.$route.params.roomId;\r\n            store.actions.getRoomDetails(roomId);\r\n            store.actions.getRoomRankingPlayers(roomId);\r\n        }\r\n    };\r\n</script>"],"sourceRoot":"webpack://"}]);
 	
 	// exports
 
 
 /***/ },
 /* 80 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var store = __webpack_require__(34);
+	
+	module.exports = {
+	    data: function data() {
+	        return {
+	            winImageUrl: 'static/images/win_stamp.jpg'
+	        };
+	    },
+	
+	    computed: {
+	        currentPlayer: function currentPlayer() {
+	            return store.state.player.currentPlayer;
+	        },
+	        players: function players() {
+	            var ranking = store.state.player.currentRoom.ranking || [];
+	            var players = [];
+	
+	            ranking.forEach(function (r) {
+	                var player = store.state.player.rankingPage.playerList.filter(function (p) {
+	                    return p.objectId === r.playerId;
+	                })[0];
+	
+	                if (player) {
+	                    player.shakeCount = r.shakeCount;
+	                    players.push(player);
+	                }
+	            });
+	
+	            if (players.length === 0) return players;else return players.sort(function (p1, p2) {
+	                return p1.shakeCount < p2.shakeCount;
+	            });
+	        },
+	        bridePlayers: function bridePlayers() {
+	            var ranking = store.state.player.currentRoom.ranking || [];
+	            var players = [];
+	
+	            ranking.forEach(function (r) {
+	                var p = store.state.player.rankingPage.playerList.filter(function (p) {
+	                    return p.objectId === r.playerId && p.userType === 'BRIDE';
+	                })[0];
+	
+	                p && players.push(p);
+	            });
+	            return players;
+	        },
+	        groomPlayers: function groomPlayers() {
+	            var ranking = store.state.player.currentRoom.ranking || [];
+	            var players = [];
+	
+	            ranking.forEach(function (r) {
+	                var p = store.state.player.rankingPage.playerList.filter(function (p) {
+	                    return p.objectId === r.playerId && p.userType === 'GROOM';
+	                })[0];
+	
+	                p && players.push(p);
+	            });
+	            return players;
+	        },
+	        brideTotal: function brideTotal() {
+	            var total = 0;
+	            (store.state.player.currentRoom.ranking || []).forEach(function (r) {
+	                if (r.playerType === 'BRIDE') total += r.shakeCount;
+	            });
+	            return total;
+	        },
+	        groomTotal: function groomTotal() {
+	            var total = 0;
+	            (store.state.player.currentRoom.ranking || []).forEach(function (r) {
+	                if (r.playerType === 'GROOM') total += r.shakeCount;
+	            });
+	            return total;
+	        }
+	    },
+	
+	    ready: function ready() {
+	        var roomId = this.$route.params.roomId;
+	        store.actions.getRoomDetails(roomId);
+	        store.actions.getRoomRankingPlayers(roomId);
+	    }
+	};
+
+/***/ },
+/* 81 */
+/***/ function(module, exports) {
+
+	module.exports = "\n<div _v-4d4f86d2=\"\">\n    <div class=\"navbar-fixed\" _v-4d4f86d2=\"\">\n        <nav _v-4d4f86d2=\"\">\n            <div class=\"nav-wrapper red lighten-2\" _v-4d4f86d2=\"\">\n                <a class=\"brand-logo center\" _v-4d4f86d2=\"\">Ranking</a>\n                <ul class=\"left\" _v-4d4f86d2=\"\">\n                    <li _v-4d4f86d2=\"\"><a v-link=\"{name:'home'}\" _v-4d4f86d2=\"\"><i class=\"material-icons fa fa-angle-left\" _v-4d4f86d2=\"\"></i></a></li>\n                </ul>\n            </div>\n        </nav>\n    </div>\n\n    <div class=\"container\" _v-4d4f86d2=\"\">\n        <div class=\"row\" _v-4d4f86d2=\"\">\n            <h6 class=\"grey-text\" _v-4d4f86d2=\"\">RESULT</h6>\n            <div class=\"card col s12\" _v-4d4f86d2=\"\">\n                <div class=\"card-content\" _v-4d4f86d2=\"\">\n                    <table _v-4d4f86d2=\"\">\n                        <thead _v-4d4f86d2=\"\">\n                            <tr _v-4d4f86d2=\"\">\n                                <th data-field=\"side\" _v-4d4f86d2=\"\">Side</th>\n                                <th data-field=\"players\" _v-4d4f86d2=\"\">Players</th>\n                                <th data-field=\"total\" _v-4d4f86d2=\"\">Total</th>\n                                <th data-field=\"result\" _v-4d4f86d2=\"\">Result</th>\n                            </tr>\n                        </thead>\n                        <tbody _v-4d4f86d2=\"\">\n                            <tr _v-4d4f86d2=\"\">\n                                <td _v-4d4f86d2=\"\">Bride</td>\n                                <td _v-4d4f86d2=\"\">{{bridePlayers.length}}</td>\n                                <td _v-4d4f86d2=\"\">{{brideTotal}}</td>\n                                <td v-if=\"brideTotal > groomTotal\" style=\"position: relative\" _v-4d4f86d2=\"\">WIN<img :src=\"winImageUrl\" class=\"win-stamp\" _v-4d4f86d2=\"\"></td>\n                                <td v-else=\"\" style=\"position: relative\" _v-4d4f86d2=\"\">FAILED</td>\n                            </tr>\n                            <tr _v-4d4f86d2=\"\">\n                                <td _v-4d4f86d2=\"\">Groom</td>\n                                <td _v-4d4f86d2=\"\">{{groomPlayers.length}}</td>\n                                <td _v-4d4f86d2=\"\">{{groomTotal}}</td>\n                                <td v-if=\"brideTotal < groomTotal\" style=\"position: relative\" _v-4d4f86d2=\"\">WIN<img :src=\"winImageUrl\" class=\"win-stamp\" _v-4d4f86d2=\"\"></td>\n                                <td v-else=\"\" style=\"position: relative\" _v-4d4f86d2=\"\">FAILED</td>\n                            </tr>\n                        </tbody>\n                    </table>\n                </div>\n            </div>\n            <h6 class=\"grey-text\" _v-4d4f86d2=\"\">DETAILS</h6>\n            <div class=\"card col s12\" _v-4d4f86d2=\"\">\n                <div class=\"card-content\" _v-4d4f86d2=\"\">\n                    <ul class=\"collection\" _v-4d4f86d2=\"\">\n                        <li class=\"collection-item avatar\" v-for=\"player in players\" _v-4d4f86d2=\"\">\n                            <img :src=\"player.avatarImageUrl\" class=\"circle\" _v-4d4f86d2=\"\">\n                            <span class=\"title\" _v-4d4f86d2=\"\">{{player.userName}}<span class=\"badge\" _v-4d4f86d2=\"\">{{player.shakeCount}}</span></span>\n                            <div class=\"progress\" v-if=\"player.userType === 'BRIDE'\" _v-4d4f86d2=\"\">\n                                <div class=\"determinate\" :style=\"{width: player.shakeCount/200*100 + '%'}\" _v-4d4f86d2=\"\"></div>\n                            </div>\n                            <div class=\"progress red lighten-4\" v-if=\"player.userType === 'GROOM'\" _v-4d4f86d2=\"\">\n                                <div class=\"determinate red\" :style=\"{width: player.shakeCount/200*100 + '%'}\" _v-4d4f86d2=\"\"></div>\n                            </div>\n                            <p _v-4d4f86d2=\"\">{{player.userType}}</p>\n                        </li>\n                    </ul>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n";
+
+/***/ },
+/* 82 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __vue_script__, __vue_template__
+	__webpack_require__(83)
+	__vue_script__ = __webpack_require__(85)
+	if (__vue_script__ &&
+	    __vue_script__.__esModule &&
+	    Object.keys(__vue_script__).length > 1) {
+	  console.warn("[vue-loader] src\\components\\player\\visit-page.vue: named exports in *.vue files are ignored.")}
+	__vue_template__ = __webpack_require__(86)
+	module.exports = __vue_script__ || {}
+	if (module.exports.__esModule) module.exports = module.exports.default
+	if (__vue_template__) {
+	(typeof module.exports === "function" ? (module.exports.options || (module.exports.options = {})) : module.exports).template = __vue_template__
+	}
+	if (false) {(function () {  module.hot.accept()
+	  var hotAPI = require("vue-hot-reload-api")
+	  hotAPI.install(require("vue"), true)
+	  if (!hotAPI.compatible) return
+	  var id = "C:\\Users\\Administrator\\Documents\\GitHub\\wedding-shake-game\\src\\components\\player\\visit-page.vue"
+	  if (!module.hot.data) {
+	    hotAPI.createRecord(id, module.exports)
+	  } else {
+	    hotAPI.update(id, module.exports, __vue_template__)
+	  }
+	})()}
+
+/***/ },
+/* 83 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+	
+	// load the styles
+	var content = __webpack_require__(84);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(32)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../../../node_modules/css-loader/index.js?sourceMap!./../../../node_modules/vue-loader/lib/style-rewriter.js!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./visit-page.vue", function() {
+				var newContent = require("!!./../../../node_modules/css-loader/index.js?sourceMap!./../../../node_modules/vue-loader/lib/style-rewriter.js!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./visit-page.vue");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 84 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(31)();
+	// imports
+	
+	
+	// module
+	exports.push([module.id, "\n\n", "", {"version":3,"sources":[],"names":[],"mappings":"","file":"visit-page.vue","sourceRoot":"webpack://"}]);
+	
+	// exports
+
+
+/***/ },
+/* 85 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -24382,23 +24522,23 @@
 	};
 
 /***/ },
-/* 81 */
+/* 86 */
 /***/ function(module, exports) {
 
 	module.exports = "\n<div>\n    <div class=\"navbar-fixed\">\n        <nav>\n            <div class=\"nav-wrapper red lighten-2\">\n                <a class=\"brand-logo center\">Visit Mode</a>\n                <ul class=\"left\">\n                    <li><a v-link=\"{name: 'home'}\"><i class=\"material-icons fa fa-angle-left\"></i></a></li>\n                </ul>\n            </div>\n        </nav>\n    </div>\n\n    <div class=\"container\">\n        <div class=\"row\">\n            <h6 class=\"grey-text\">STATUS</h6>\n            <div class=\"card\">\n                <div class=\"card-content\" v-if=\"status === 'END'\">\n                    <h4 class=\"card-title center-align\">Game Ended</h4>\n                    <div class=\"center-align\">\n                        <a class=\"waves-effect waves-light btn red lighten-2\" v-link=\"{name: 'ranking', params: {roomId: $route.params.roomId}}\">Check Ranking</a>\n                    </div>\n                </div>\n                <div class=\"card-content\" v-else>\n                    <h4 class=\"card-title center-align\">Game WIP</h4>\n                </div>\n            </div>\n\n            <h6 class=\"grey-text\">ROOM INFO</h6>\n            <div class=\"card col s12\">\n                <div class=\"card-content\">\n                    <div class=\"col s6 teal-text\">\n                        <h6 class=\"center-align text-lighten-3\">Bride({{bridePlayers.length}})</h6>\n                        <h1 class=\"center-align\">{{brideTotal}}</h1>\n                    </div>\n                    <div class=\"col s6 red-text\">\n                        <h6 class=\"center-align text-lighten-3\">Groom({{groomPlayers.length}})</h6>\n                        <h1 class=\"center-align\">{{groomTotal}}</h1>\n                    </div>\n                </div>\n            </div>\n\n            <h6 class=\"grey-text\">PLAYER DATA</h6>\n            <div class=\"card col s12\">\n                <div class=\"card-content\">\n                    <ul class=\"collection\">\n                        <li class=\"collection-item avatar\" v-for=\"player in players\">\n                            <img :src=\"player.avatarImageUrl\" class=\"circle\">\n                            <span class=\"title\">{{player.userName}}<span class=\"badge\">{{player.shakeCount}}</span></span>\n                            <div class=\"progress\" v-if=\"player.userType === 'BRIDE'\">\n                                <div class=\"determinate\" :style=\"{width: player.shakeCount/200*100 + '%'}\"></div>\n                            </div>\n                            <div class=\"progress red lighten-4\" v-if=\"player.userType === 'GROOM'\">\n                                <div class=\"determinate red\" :style=\"{width: player.shakeCount/200*100 + '%'}\"></div>\n                            </div>\n                            <p>{{player.userType}} side</p>\n                        </li>\n                    </ul>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n";
 
 /***/ },
-/* 82 */
+/* 87 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __vue_script__, __vue_template__
-	__webpack_require__(83)
-	__vue_script__ = __webpack_require__(85)
+	__webpack_require__(88)
+	__vue_script__ = __webpack_require__(90)
 	if (__vue_script__ &&
 	    __vue_script__.__esModule &&
 	    Object.keys(__vue_script__).length > 1) {
 	  console.warn("[vue-loader] src\\components\\admin\\admin-page.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(91)
+	__vue_template__ = __webpack_require__(96)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
 	if (__vue_template__) {
@@ -24417,13 +24557,13 @@
 	})()}
 
 /***/ },
-/* 83 */
+/* 88 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
 	// load the styles
-	var content = __webpack_require__(84);
+	var content = __webpack_require__(89);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(32)(content, {});
@@ -24443,7 +24583,7 @@
 	}
 
 /***/ },
-/* 84 */
+/* 89 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(31)();
@@ -24457,7 +24597,7 @@
 
 
 /***/ },
-/* 85 */
+/* 90 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -24466,7 +24606,7 @@
 	
 	module.exports = {
 	    components: {
-	        'room-edit-dialog': __webpack_require__(86)
+	        'room-edit-dialog': __webpack_require__(91)
 	    },
 	
 	    computed: {
@@ -24491,17 +24631,17 @@
 	};
 
 /***/ },
-/* 86 */
+/* 91 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __vue_script__, __vue_template__
-	__webpack_require__(87)
-	__vue_script__ = __webpack_require__(89)
+	__webpack_require__(92)
+	__vue_script__ = __webpack_require__(94)
 	if (__vue_script__ &&
 	    __vue_script__.__esModule &&
 	    Object.keys(__vue_script__).length > 1) {
 	  console.warn("[vue-loader] src\\components\\admin\\room-edit-dialog.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(90)
+	__vue_template__ = __webpack_require__(95)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
 	if (__vue_template__) {
@@ -24520,13 +24660,13 @@
 	})()}
 
 /***/ },
-/* 87 */
+/* 92 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
 	// load the styles
-	var content = __webpack_require__(88);
+	var content = __webpack_require__(93);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(32)(content, {});
@@ -24546,7 +24686,7 @@
 	}
 
 /***/ },
-/* 88 */
+/* 93 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(31)();
@@ -24560,7 +24700,7 @@
 
 
 /***/ },
-/* 89 */
+/* 94 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -24614,29 +24754,29 @@
 	};
 
 /***/ },
-/* 90 */
+/* 95 */
 /***/ function(module, exports) {
 
 	module.exports = "\n<div id=\"modal1\" class=\"modal modal-fixed-footer\">\n    <div class=\"modal-content\">\n        <h4>{{!roomId ? 'Create Room' : 'Update Room'}}</h4>\n        <div class=\"row\">\n            <form class=\"col s12\">\n                <div class=\"input-field col s12\">\n                    <input type=\"text\" class=\"validate\" id=\"roomEditDialogRoomName\" value=\"{{room.roomName}}\" v-el:room-name >\n                    <label for=\"roomEditDialogRoomName\">Room Name</label>\n                </div>\n                <div class=\"input-field col s12\">\n                    <input type=\"text\" id=\"roomEditDialogRoomDesc\" value=\"{{room.roomDescription}}\" v-el:room-description >\n                    <label for=\"roomEditDialogRoomDesc\">Room Description</label>\n                </div>\n                <div class=\"input-field col s12\">\n                    <input type=\"text\" id=\"roomEditDialogRoomSize\" value=\"{{room.roomSize}}\" v-el:room-size >\n                    <label for=\"roomEditDialogRoomSize\">Room Size</label>\n                </div>\n            </form>\n        </div>\n    </div>\n    <div class=\"modal-footer\">\n        <a @click=\"submitForm()\" class=\" modal-action modal-close waves-effect waves-green btn-flat\">Confirm</a>\n        <a class=\" modal-action modal-close waves-effect waves-green btn-flat\">Cancel</a>\n    </div>\n</div>\n";
 
 /***/ },
-/* 91 */
+/* 96 */
 /***/ function(module, exports) {
 
 	module.exports = "\n<div _v-0f3d2759=\"\">\n    <div class=\"hero\" _v-0f3d2759=\"\"></div>\n    <div class=\"container\" _v-0f3d2759=\"\">\n        <h5 _v-0f3d2759=\"\">ROOM LIST</h5>\n        <div class=\"row\" _v-0f3d2759=\"\">\n            <div class=\"col s4\" v-for=\"room in rooms\" _v-0f3d2759=\"\">\n                <div class=\"card cyan lighten-2 white-text waves-effect waves-block waves-light\" @click=\"goToRoom(room.objectId)\" _v-0f3d2759=\"\">\n                    <div class=\"card-image\" _v-0f3d2759=\"\">\n                        <img src=\"http://sd.people.com.cn/mediafile/201007/05/F2010070514353200467.jpg\" _v-0f3d2759=\"\">\n                        <span class=\"card-title black-text\" _v-0f3d2759=\"\">{{room.roomName}}</span>\n                    </div>\n                    <div class=\"card-content\" _v-0f3d2759=\"\">\n                        <p style=\"margin-bottom: 10px\" _v-0f3d2759=\"\">{{room.roomDescription}}</p>\n                        <p class=\"grey-text text-lighten-3\" _v-0f3d2759=\"\">SIZE<span class=\"right amber-text\" _v-0f3d2759=\"\">{{room.players.length}}/{{room.roomSize}}</span></p>\n                        <p class=\"grey-text text-lighten-3\" _v-0f3d2759=\"\">STATUS<span class=\"right amber-text\" _v-0f3d2759=\"\">{{room.status}}</span></p>\n                    </div>\n                </div>\n            </div>\n        </div>\n\n        <div class=\"fixed-action-btn\" style=\"bottom: 45px; right: 45px;\" _v-0f3d2759=\"\">\n            <a class=\"btn-floating btn-large waves-effect waves-light red\" @click=\"createRoom()\" _v-0f3d2759=\"\">\n                <i class=\"material-icons\" _v-0f3d2759=\"\">add</i>\n            </a>\n        </div>\n\n        <room-edit-dialog v-ref:room-edit-dialog=\"\" :room-id=\"selectRoomId\" _v-0f3d2759=\"\"></room-edit-dialog>\n    </div>\n</div>\n";
 
 /***/ },
-/* 92 */
+/* 97 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __vue_script__, __vue_template__
-	__webpack_require__(93)
-	__vue_script__ = __webpack_require__(95)
+	__webpack_require__(98)
+	__vue_script__ = __webpack_require__(100)
 	if (__vue_script__ &&
 	    __vue_script__.__esModule &&
 	    Object.keys(__vue_script__).length > 1) {
 	  console.warn("[vue-loader] src\\components\\admin\\room-page.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(96)
+	__vue_template__ = __webpack_require__(101)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
 	if (__vue_template__) {
@@ -24655,13 +24795,13 @@
 	})()}
 
 /***/ },
-/* 93 */
+/* 98 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
 	// load the styles
-	var content = __webpack_require__(94);
+	var content = __webpack_require__(99);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(32)(content, {});
@@ -24681,7 +24821,7 @@
 	}
 
 /***/ },
-/* 94 */
+/* 99 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(31)();
@@ -24695,7 +24835,7 @@
 
 
 /***/ },
-/* 95 */
+/* 100 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -24704,7 +24844,7 @@
 	
 	module.exports = {
 	    components: {
-	        'room-edit-dialog': __webpack_require__(86)
+	        'room-edit-dialog': __webpack_require__(91)
 	    },
 	
 	    computed: {
@@ -24760,7 +24900,7 @@
 	};
 
 /***/ },
-/* 96 */
+/* 101 */
 /***/ function(module, exports) {
 
 	module.exports = "\n<div class=\"container\" _v-69b23236=\"\">\n\n    <div class=\"row\" _v-69b23236=\"\">\n        <div class=\"card cyan lighten-2\" _v-69b23236=\"\">\n            <a class=\"waves-effect btn right white black-text room-edit-button\" @click=\"editRoom()\" _v-69b23236=\"\">edit</a>\n            <div class=\"card-content white-text\" _v-69b23236=\"\">\n                <span class=\"card-title\" _v-69b23236=\"\">{{room.roomName}} ({{room.status}})</span>\n                <p style=\"margin-bottom: 10px\" _v-69b23236=\"\">{{room.roomDescription}}</p>\n                <p _v-69b23236=\"\">size: {{room.roomSize}}</p>\n            </div>\n        </div>\n    </div>\n\n    <div class=\"row\" _v-69b23236=\"\">\n        <div class=\"col s6\" _v-69b23236=\"\">\n            <h5 _v-69b23236=\"\">BRIDE CUSTOMERS<span class=\"right\" _v-69b23236=\"\">{{bridePlayers.length}}/{{room.roomSize}}</span></h5>\n            <div class=\"card\" _v-69b23236=\"\">\n                <div class=\"card-content\" _v-69b23236=\"\">\n                    <ul class=\"collection with-header\" _v-69b23236=\"\">\n                        <li class=\"collection-header\" _v-69b23236=\"\">\n                            <h4 _v-69b23236=\"\">Total <span class=\"right\" _v-69b23236=\"\">{{brideShakeTotal}}</span></h4>\n                        </li>\n                        <li v-for=\"player in bridePlayers\" class=\"collection-item avatar\" _v-69b23236=\"\">\n                            <img :src=\"player.avatarImageUrl\" class=\"circle\" _v-69b23236=\"\">\n                            <span class=\"title\" _v-69b23236=\"\">{{player.userName}}</span>\n                            <p _v-69b23236=\"\">count: {{player.shakeCount}}</p>\n                            <div class=\"progress\" _v-69b23236=\"\">\n                                <div class=\"determinate\" :style=\"{width: player.shakeCount/200*100 + '%'}\" _v-69b23236=\"\"></div>\n                            </div>\n                        </li>\n                    </ul>\n                </div>\n            </div>\n        </div>\n        <div class=\"col s6\" _v-69b23236=\"\">\n            <h5 _v-69b23236=\"\">GROOM CUSTOMERS<span class=\"right\" _v-69b23236=\"\">{{groomPlayers.length}}/{{room.roomSize}}</span></h5>\n            <div class=\"card\" _v-69b23236=\"\">\n                <div class=\"card-content\" _v-69b23236=\"\">\n                    <ul class=\"collection with-header\" _v-69b23236=\"\">\n                        <li class=\"collection-header\" _v-69b23236=\"\"><h4 _v-69b23236=\"\">Total<span class=\"right\" _v-69b23236=\"\">{{groomShakeTotal}}</span></h4></li>\n                        <li v-for=\"player in groomPlayers\" class=\"collection-item avatar\" _v-69b23236=\"\">\n                            <img :src=\"player.avatarImageUrl\" class=\"circle\" _v-69b23236=\"\">\n                            <span class=\"title\" _v-69b23236=\"\">{{player.userName}}</span>\n                            <p _v-69b23236=\"\">count: {{player.shakeCount}}</p>\n                            <div class=\"progress pink lighten-4\" _v-69b23236=\"\">\n                                <div class=\"determinate pink\" :style=\"{width: player.shakeCount/200*100 + '%'}\" _v-69b23236=\"\"></div>\n                            </div>\n                        </li>\n                    </ul>\n                </div>\n            </div>\n        </div>\n    </div>\n\n    <div class=\"fixed-action-btn horizontal\" style=\"bottom: 45px; right: 45px;\" _v-69b23236=\"\">\n        <a class=\"btn-floating btn-large red\" _v-69b23236=\"\">\n            <i class=\"large material-icons\" _v-69b23236=\"\">games</i>\n        </a>\n        <ul _v-69b23236=\"\">\n            <li _v-69b23236=\"\">\n                <a @click=\"allowToJoin()\" class=\"btn-floating yellow darken-1 tooltipped\" data-position=\"top\" data-delay=\"50\" data-tooltip=\"allow join\" _v-69b23236=\"\">\n                    <i class=\"material-icons\" _v-69b23236=\"\">input</i>\n                </a>\n            </li>\n            <li _v-69b23236=\"\">\n                <a @click=\"start()\" class=\"btn-floating green darken-1 tooltipped\" data-position=\"top\" data-delay=\"50\" data-tooltip=\"start game\" _v-69b23236=\"\">\n                    <i class=\"material-icons\" _v-69b23236=\"\">play_circle_outline</i>\n                </a>\n            </li>\n        </ul>\n    </div>\n\n    <room-edit-dialog v-ref:room-edit-dialog=\"\" :room-id=\"$route.params.roomId\" _v-69b23236=\"\"></room-edit-dialog>\n</div>\n";

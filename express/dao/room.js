@@ -108,6 +108,14 @@ var roomDAO = {
             return playerDAO.getPlayerList(userIds);
         });
     },
+    getRoomRankingPlayerList: function(roomId) {
+        return roomDAO.getRoom(roomId).try(function(roomAVObj) {
+            var userIds = roomAVObj.get('ranking').map(function(r) {
+                return r.playerId;
+            });
+            return playerDAO.getPlayerList(userIds);
+        });
+    },
     allowPlayerJoin: function(roomId) {
         var room = {
             roomId: roomId,
@@ -154,11 +162,13 @@ var roomDAO = {
                 playerList = roomAVObj.get('players'),
 
                 // for players who are not left game when the game ended
-                playerIds = ranking.filter(function(r) {
+                /* playerIds = ranking.filter(function(r) {
                     return playerList.filter(function(p) { return p.playerId === r.playerId; }).length > 0;
                 }).map(function(r) {
                     return r.playerId;
-                });
+                }); */
+
+                playerIds = ranking.map(function(r) { return r.playerId; });
 
             return playerDAO.getPlayerList(playerIds).try(function(results) {
                 results.forEach(function(playerAVObj) {

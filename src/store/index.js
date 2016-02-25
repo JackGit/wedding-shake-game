@@ -78,6 +78,9 @@ module.exports = window.store = new Vuex.Store({
                 TOTAL_GAME_TIME: 20 * 1000,
                 timeBalance: 20 * 1000,
                 stopwatchString: '00:00.0'
+            },
+            rankingPage: {
+                playerList: []
             }
         },
 
@@ -98,32 +101,22 @@ module.exports = window.store = new Vuex.Store({
 
     actions: {
         /* player actions */
-        registerPlayer: function(store, user) {
-            console.log('store.actions.registerPlayer', user);
+        createUser: function(store, user) {
+            console.log('store.actions.createUser', user);
 
             return new Promise(function(resolve, reject) {
-                api.updateUser(user).then(function(data) {
+                api.createUser(user).then(function(data) {
+                    localStorage.userId = data.user.objectId;
                     localStorage.userJSON = JSON.stringify(data.user);
                     store.state.player.currentPlayer = data.user;
                     resolve(data.user);
                 }, function(error) {
-                    localStorage.userId = '';       // localStorage.userId is inited in qq_login_callback.html
+                    localStorage.userId = '';
                     localStorage.userJSON = '';
                     store.state.player.currentPlayer = {};
                     reject(error);
                 });
             });
-            /*return new Promise(function(resolve, reject) {
-                api.createUser(user).then(function(data) {
-                    localStorage.userJSON = JSON.stringify(data.user);
-                    store.state.player.currentPlayer = data.user;
-                    resolve(data.user);
-                }, function(error) {
-                    localStorage.userJSON = '';
-                    store.state.player.currentPlayer = {};
-                    reject(error);
-                });
-            });*/
         },
         signout: function(store) {
             localStorage.userId = '';
@@ -172,6 +165,15 @@ module.exports = window.store = new Vuex.Store({
             }, function(error) {
                 console.log('store.actions.getRoomPlayers error', error);
                 store.state.player.playerList = [];
+            });
+        },
+        getRoomRankingPlayers: function(store, roomId) {
+            console.log('store.actions.getRankingPlayers', roomId);
+            api.getRoomRankingPlayerList(roomId).then(function(data) {
+                store.state.player.rankingPage.playerList = data.players;
+            }, function(error) {
+                console.log('store.actions.getRankingPlayers error', error);
+                store.state.player.rankingPage.playerList = [];
             });
         },
         getRoomList: function(store) {

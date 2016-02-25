@@ -94,7 +94,7 @@
         methods: {
             quit: function() {
                 store.actions.signout();
-                this.$router.go({name: 'welcome'});
+                this.$router.go({name: 'login'});
             },
             edit: function() {
                 this.mode = 'edit';

@@ -41,13 +41,15 @@
                                     <td>Bride</td>
                                     <td>{{bridePlayers.length}}</td>
                                     <td>{{brideTotal}}</td>
-                                    <td style="position: relative">WIN<img src="http://img.aiyidu.com/forum/201309/08/192346u5dud4wi14uw1e4w.jpg" class="win-stamp"></td>
+                                    <td v-if="brideTotal > groomTotal" style="position: relative">WIN<img :src="winImageUrl" class="win-stamp"></td>
+                                    <td v-else style="position: relative">FAILED</td>
                                 </tr>
                                 <tr>
                                     <td>Groom</td>
                                     <td>{{groomPlayers.length}}</td>
                                     <td>{{groomTotal}}</td>
-                                    <td style="position: relative">FAILED</td>
+                                    <td v-if="brideTotal < groomTotal" style="position: relative">WIN<img :src="winImageUrl" class="win-stamp"></td>
+                                    <td v-else style="position: relative">FAILED</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -80,54 +82,68 @@
     var store = require('../../store');
 
     module.exports = {
+        data: function() {
+            return {
+                winImageUrl: 'static/images/win_stamp.jpg'
+            }
+        },
 
         computed: {
             currentPlayer: function() {
                 return store.state.player.currentPlayer;
             },
             players: function() {
-                var ranking = store.state.player.currentRoom.ranking;
+                var ranking = store.state.player.currentRoom.ranking || [];
                 var players = [];
 
                 ranking.forEach(function(r) {
-                    var player = store.state.player.playerList.filter(function(p) {
+                    var player = store.state.player.rankingPage.playerList.filter(function(p) {
                         return p.objectId === r.playerId;
                     })[0];
                     // after generate ranking in server side, user.shakeCount will be reset as 0;
-                    player.shakeCount = r.shakeCount;
-                    players.push(player);
+                    if(player) {
+                        player.shakeCount = r.shakeCount;
+                        players.push(player);
+                    }
                 });
 
-                return players.sort(function(p1, p2) {
-                    // descend order
-                    return p1.shakeCount < p2.shakeCount;
-                });
+                if(players.length === 0)
+                    return players;
+                else
+                    return players.sort(function(p1, p2) {
+                        // descend order
+                        return p1.shakeCount < p2.shakeCount;
+                    });
             },
             bridePlayers: function() {
-                var ranking = store.state.player.currentRoom.ranking;
+                var ranking = store.state.player.currentRoom.ranking || [];
                 var players = [];
 
                 ranking.forEach(function(r) {
-                    players.push(store.state.player.playerList.filter(function(p) {
+                    var p = store.state.player.rankingPage.playerList.filter(function(p) {
                         return p.objectId === r.playerId && p.userType === 'BRIDE';
-                    }));
+                    })[0];
+
+                    p && players.push(p);
                 });
                 return players;
             },
             groomPlayers: function() {
-                var ranking = store.state.player.currentRoom.ranking;
+                var ranking = store.state.player.currentRoom.ranking || [];
                 var players = [];
 
                 ranking.forEach(function(r) {
-                    players.push(store.state.player.playerList.filter(function(p) {
+                    var p = store.state.player.rankingPage.playerList.filter(function(p) {
                         return p.objectId === r.playerId && p.userType === 'GROOM';
-                    }));
+                    })[0];
+
+                    p && players.push(p);
                 });
                 return players;
             },
             brideTotal: function() {
                 var total = 0;
-                store.state.player.currentRoom.ranking.forEach(function(r) {
+                (store.state.player.currentRoom.ranking || []).forEach(function(r) {
                     if(r.playerType === 'BRIDE')
                         total += r.shakeCount;
                 });
@@ -135,7 +151,7 @@
             },
             groomTotal: function() {
                 var total = 0;
-                store.state.player.currentRoom.ranking.forEach(function(r) {
+                (store.state.player.currentRoom.ranking || []).forEach(function(r) {
                     if(r.playerType === 'GROOM')
                         total += r.shakeCount;
                 });
@@ -145,8 +161,8 @@
 
         ready: function() {
             var roomId = this.$route.params.roomId;
-            store.actions.getRoomPlayers(roomId);
             store.actions.getRoomDetails(roomId);
+            store.actions.getRoomRankingPlayers(roomId);
         }
     };
 </script>

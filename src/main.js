@@ -24,9 +24,13 @@ window.socket = socket;
 });*/
 
 router.map({
-    '/welcome': {
-        name: 'welcome',
-        component: require('./components/player/welcome-page.vue')
+    '/qqlogin': {
+        name: 'qqLogin',
+        component: require('./components/player/qq-login-page.vue')
+    },
+    '/login': {
+        name: 'login',
+        component: require('./components/player/login-page.vue')
     },
     '/home': {
         name: 'home',
@@ -70,7 +74,7 @@ router.map({
 });
 
 router.redirect({
-   '/': '/welcome'
+   '/': '/login'
 });
 
 

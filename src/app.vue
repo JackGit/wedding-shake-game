@@ -9,12 +9,12 @@
     }
 
     .fade-transition {
-        transition: all 0.3s ease;
+        transition: all 0.2s ease;
     }
 
     .fade-enter {
         opacity: 0;
-        margin-top: 5%;
+        /*margin-top: 5%;*/
     }
 
     .fade-leave {

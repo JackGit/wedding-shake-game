@@ -4,11 +4,11 @@ var PLAYER_PROPERTIES = {
     userName: '',
     userType: '',
     shakeCount: 0,               // this shakeCount will be used to record playing data. When game is stopped, this data will be synced to room.ranking
-    avatarImageUrl: '',
+    avatarImageUrl: 'static/images/default_user_avatar.png',
     qqOpenId: '',
     qqAccessToken: '',
     qqRefreshAccessToken: '',
-    expiresIn: 0
+    expiresIn: '0'
 };
 
 var playerDAO = {
@@ -19,6 +19,8 @@ var playerDAO = {
         for(p in PLAYER_PROPERTIES)
             if(player[p] !== undefined)
                 playerAVObj.set(p, player[p]);
+            else
+                playerAVObj.set(p, PLAYER_PROPERTIES[p]);
 
         return playerAVObj.save();
     },
