@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0 ">
+    <link type="text/css" rel="stylesheet" href="static/font-awesome/font-awesome.min.css">
+    <link type="text/css" rel="stylesheet" href="static/materialize/css/materialize.min.css" media="screen,projection">
+    <link type="text/css" rel="stylesheet" href="static/stylesheets/animate.css">
+    <title></title>
+    <style>
+        html, body {
+            height: 100%;
+            width: 100%;
+            background-color: rgba(8, 5, 0, 0.31);
+            overflow-x: hidden;
+        }
+        body {
+            background-image: url(http://hlynnphoto.com/assets/img/category-wedding.jpg);
+            background-repeat: no-repeat;
+            -webkit-background-size: cover;
+            background-size: cover;
+            background-position: center center;
+        }
+        header {
+            height: 40%;
+        }
+    </style>
+</head>
+<body>
+<header class="valign-wrapper row">
+    <div class="valign col s12">
+        <h5 class=" center-align" style="color: white">WELCOME TO OUR</h5>
+        <h2 class=" center-align" style="color: white">Wedding</h2>
+    </div>
+</header>
+<main>
+    <div class="container">
+        <div class="row">
+            <div class="row">
+                <div class="col s12">
+                    <ul class="tabs" id="tab" style="background-color: transparent">
+                        <li class="tab col s6"><a href="#normalLoginTab" class=" white-text">login</a></li>
+                        <li class="tab col s6"><a href="#qqLoginTab" class="active white-text">QQ</a></li>
+                    </ul>
+                </div>
+                <div id="normalLoginTab" class="col s12">
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input v-el:user-name placeholder="user name" id="loginPageUserName" type="text">
+                            <label for="loginPageUserName" class="active">User Name</label>
+                        </div>
+                        <div class="input-field col s12">
+                            <select v-el:user-type>
+                                <option value="" disabled selected>Choose your option</option>
+                                <option value="BRIDE">Bride Guest</option>
+                                <option value="GROOM">Groom Guest</option>
+                            </select>
+                            <label>Please select your guest type</label>
+                        </div>
+                    </div>
+                    <a class="col s12 waves-effect waves-light btn btn-large red white-text">Start</a>
+                </div>
+                <div id="qqLoginTab" class="col s12">
+                    <div class="row center-align">
+                        <div class="row"></div>
+                        <a href="qqLoginUrl">
+                            <img src="static/images/Connect_logo_4.png">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="static/javascripts/jquery-2.1.1.min.js"></script>
+<script src="static/materialize/js/materialize.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#tab').tabs();
+        $('select').material_select();
+    });
+</script>
+</body>
+</html>
