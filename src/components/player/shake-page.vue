@@ -2,6 +2,16 @@
     .shake-page-unit {
         font-size: 20px;
     }
+    .shake-page-image {
+        width: 100%;
+        height: 100%;
+        background-color: #E57373;
+        /*background-image: url(http://hlynnphoto.com/assets/img/category-portrait.jpg);*/
+        background-repeat: no-repeat;
+        -webkit-background-size: cover;
+        background-size: cover;
+        background-position: center center;
+    }
 </style>
 
 <template>
@@ -14,10 +24,39 @@
             </nav>
         </div>
 
-        <div class="container">
-            <div class="row">
-                <h6 class="grey-text" v-if="shakeCompleted">YOUR RESULT</h6>
-                <div class="card" v-if="shakeCompleted">
+        <div class="slider-container">
+            <div class="shake-page-image">
+                <div class="card col s12 no-shadow transparent white-text" style="margin-top:0">
+                    <div class="card-content">
+                        <h1 class="center-align white-text">{{shakeCount}}<span class="shake-page-unit">times</span></h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section" v-if="!shakeCompleted">
+            <div class="section-header">
+                <div class="container">
+                    <h6>TIME</h6>
+                </div>
+            </div>
+            <div class="section-content">
+                <div class="card no-shadow">
+                    <div class="card-content">
+                        <h4 class="center-align red-text">{{stopwatchString}}<i class="material-icons shake-page-unit fa fa-clock-o"></i></h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section" v-if="shakeCompleted">
+            <div class="section-header">
+                <div class="container">
+                    <h6>YOUR RESULT</h6>
+                </div>
+            </div>
+            <div class="section-content">
+                <div class="card no-shadow">
                     <div class="card-content">
                         <h4 class="card-title center-align">GAME END~</h4>
                         <p>Congratulations! You just shaked <span class="teal-text" style="font-size: 1.5em">{{shakeCount}}</span> times in last <span class="red-text" style="font-size: 1.5em">{{time / 1000}}</span> seconds!</p>
@@ -29,39 +68,29 @@
                         <a class="waves-effect waves-light btn red lighten-2" v-link="{name: 'ranking', params: {roomId: room.objectId}}">Check Ranking</a>
                     </div>
                 </div>
+            </div>
+        </div>
 
-                <h6 class="grey-text" v-if="!shakeCompleted">SHAKE COUNT</h6>
-                <div class="card" v-if="!shakeCompleted">
-                    <div class="card-content">
-                        <h1 class="center-align teal-text">{{shakeCount}}<span class="shake-page-unit">times</span></h1>
-                    </div>
+        <div class="section">
+            <div class="section-header">
+                <div class="container">
+                    <h6>OTHER</h6>
                 </div>
-
-                <h6 class="grey-text" v-if="!shakeCompleted">TIME</h6>
-                <div class="card" v-if="!shakeCompleted">
-                    <div class="card-content">
-                        <h4 class="center-align red-text">{{stopwatchString}}<i class="material-icons shake-page-unit fa fa-clock-o"></i></h4>
-                    </div>
-                </div>
-
-                <h6 class="grey-text">OTHER PLAYER DATA</h6>
-                <div class="card">
-                    <div class="card-content">
-                        <ul class="collection">
-                            <li class="collection-item avatar" v-for="player in players">
-                                <img :src="player.avatarImageUrl" class="circle">
-                                <span class="title">{{player.userName}}<span class="badge">{{player.shakeCount}}</span></span>
-                                <div class="progress" v-if="player.userType === 'BRIDE'">
-                                    <div class="determinate" :style="{width: player.shakeCount/200*100 + '%'}"></div>
-                                </div>
-                                <div class="progress red lighten-4" v-if="player.userType === 'GROOM'">
-                                    <div class="determinate red" :style="{width: player.shakeCount/200*100 + '%'}"></div>
-                                </div>
-                                <p>{{player.userType}} side</p>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
+            </div>
+            <div class="section-content">
+                <ul class="collection no-border">
+                    <li class="collection-item avatar" v-for="player in players">
+                        <img :src="player.avatarImageUrl" class="circle">
+                        <span class="title">{{player.userName}}<span class="badge">{{player.shakeCount}}</span></span>
+                        <div class="progress" v-if="player.userType === 'BRIDE'">
+                            <div class="determinate" :style="{width: player.shakeCount/200*100 + '%'}"></div>
+                        </div>
+                        <div class="progress red lighten-4" v-if="player.userType === 'GROOM'">
+                            <div class="determinate red" :style="{width: player.shakeCount/200*100 + '%'}"></div>
+                        </div>
+                        <p>{{player.userType}} side</p>
+                    </li>
+                </ul>
             </div>
         </div>
     </div>

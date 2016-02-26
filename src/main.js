@@ -24,10 +24,6 @@ window.socket = socket;
 });*/
 
 router.map({
-    '/qqlogin': {
-        name: 'qqLogin',
-        component: require('./components/player/qq-login-page.vue')
-    },
     '/login': {
         name: 'login',
         component: require('./components/player/login-page.vue')

@@ -1,5 +1,13 @@
 <style>
-
+    .visit-page-image {
+        width: 100%;
+        height: 100%;
+        background-image: url(http://hlynnphoto.com/assets/img/bg-header.jpg);
+        background-repeat: no-repeat;
+        -webkit-background-size: cover;
+        background-size: cover;
+        background-position: center center;
+    }
 </style>
 
 <template>
@@ -15,24 +23,28 @@
             </nav>
         </div>
 
-        <div class="container">
-            <div class="row">
-                <h6 class="grey-text">STATUS</h6>
-                <div class="card">
-                    <div class="card-content" v-if="status === 'END'">
-                        <h4 class="card-title center-align">Game Ended</h4>
-                        <div class="center-align">
-                            <a class="waves-effect waves-light btn red lighten-2" v-link="{name: 'ranking', params: {roomId: $route.params.roomId}}">Check Ranking</a>
-                        </div>
-                    </div>
-                    <div class="card-content" v-else>
-                        <h4 class="card-title center-align">Game WIP</h4>
+        <div class="slider-container">
+            <div class="visit-page-image">
+                <div class="card col s12 no-shadow transparent white-text" style="margin-top:0">
+                    <div class="card-content">
+                        <span class="card-title">{{currentRoom.roomName}}</span>
+                        <p>游戏正在进行中，您处于观察模式</p>
+                        <p>Bride: {{bridePlayers.length}}</p>
+                        <p>Groom: {{groomPlayers.length}}</p>
                     </div>
                 </div>
+            </div>
+        </div>
 
-                <h6 class="grey-text">ROOM INFO</h6>
-                <div class="card col s12">
-                    <div class="card-content">
+        <div class="section">
+            <div class="section-header">
+                <div class="container">
+                    <h6>GENERAL</h6>
+                </div>
+            </div>
+            <div class="section-content">
+                <div class="card col s12 no-shadow">
+                    <div class="card-content row">
                         <div class="col s6 teal-text">
                             <h6 class="center-align text-lighten-3">Bride({{bridePlayers.length}})</h6>
                             <h1 class="center-align">{{brideTotal}}</h1>
@@ -43,25 +55,29 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
 
-                <h6 class="grey-text">PLAYER DATA</h6>
-                <div class="card col s12">
-                    <div class="card-content">
-                        <ul class="collection">
-                            <li class="collection-item avatar" v-for="player in players">
-                                <img :src="player.avatarImageUrl" class="circle">
-                                <span class="title">{{player.userName}}<span class="badge">{{player.shakeCount}}</span></span>
-                                <div class="progress" v-if="player.userType === 'BRIDE'">
-                                    <div class="determinate" :style="{width: player.shakeCount/200*100 + '%'}"></div>
-                                </div>
-                                <div class="progress red lighten-4" v-if="player.userType === 'GROOM'">
-                                    <div class="determinate red" :style="{width: player.shakeCount/200*100 + '%'}"></div>
-                                </div>
-                                <p>{{player.userType}} side</p>
-                            </li>
-                        </ul>
-                    </div>
+        <div class="section">
+            <div class="section-header">
+                <div class="container">
+                    <h6>PLAYER DATA</h6>
                 </div>
+            </div>
+            <div class="section-content">
+                <ul class="collection no-border">
+                    <li class="collection-item avatar" v-for="player in players">
+                        <img :src="player.avatarImageUrl" class="circle">
+                        <span class="title">{{player.userName}}<span class="badge">{{player.shakeCount}}</span></span>
+                        <div class="progress" v-if="player.userType === 'BRIDE'">
+                            <div class="determinate" :style="{width: player.shakeCount/200*100 + '%'}"></div>
+                        </div>
+                        <div class="progress red lighten-4" v-if="player.userType === 'GROOM'">
+                            <div class="determinate red" :style="{width: player.shakeCount/200*100 + '%'}"></div>
+                        </div>
+                        <p>{{player.userType}} side</p>
+                    </li>
+                </ul>
             </div>
         </div>
     </div>
@@ -75,6 +91,9 @@
         computed: {
             currentPlayer: function() {
                 return store.state.player.currentPlayer;
+            },
+            currentRoom: function() {
+                return store.state.player.currentRoom;
             },
             players: function() {
                 return store.state.player.playerList.sort(function(p1, p2) {

@@ -7,6 +7,17 @@
         border-radius: 50%;
         width: 80px;
         height: 80px;
+        background-color: white;
+    }
+    .profile-page-image {
+        width: 100%;
+        height: 100%;
+        background-color: #E57373;
+        /*background-image: url(http://hlynnphoto.com/assets/img/category-portrait.jpg);*/
+        background-repeat: no-repeat;
+        -webkit-background-size: cover;
+        background-size: cover;
+        background-position: center center;
     }
 </style>
 
@@ -23,48 +34,57 @@
             </nav>
         </div>
 
-        <div class="container" v-if="mode === 'read'">
-            <div class="row">
-                <div class="col s12 avatar-container">
-                    <div class="col s12 center-align">
-                        <img :src="player.avatarImageUrl" class="avatar"/>
-                        <i class="material-icons right grey-text fa fa-pencil" style="position: absolute;" @click="edit()"></i>
+        <div class="slider-container">
+            <div class="profile-page-image">
+                <div class="row">
+                    <div class="col s12 avatar-container">
+                        <div class="col s12 center-align">
+                            <img :src="player.avatarImageUrl" class="avatar"/>
+                        </div>
+                        <h5 class="center-align white-text">{{player.userName}}</h5>
+                        <h6 class="center-align grey-text text-lighten-4">{{player.userType}} GUEST</h6>
                     </div>
-                    <h5 class="center-align">{{player.userName}}</h5>
-                    <h6 class="center-align">{{player.userType}} GUEST</h6>
                 </div>
-            </div>
-            <div class="row">
-                <a class="col s12 waves-effect waves-light btn btn-large red white-text" @click="quit()">Quit</a>
             </div>
         </div>
 
-        <div class="container" v-if="mode === 'edit'">
-            <div class="row">
-                <div class="col s12">
-                    <div class="row">
-                        <h6 class="grey-text" _v-ae9f8a82="">EDIT PROFILE</h6>
-                    </div>
-                    <div class="row">
-                        <div class="input-field col s12">
-                            <input id="profile-page-user-name-input" type="text" value="{{player.userName}}" v-el:user-name>
-                            <label for="profile-page-user-name-input" class="active">User Name</label>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="input-field col s12">
-                            <select v-el:user-type>
-                                <option value="" disabled>Choose your option</option>
-                                <option value="BRIDE" :selected="player.userType === 'BRIDE'">Bride Guest</option>
-                                <option value="GROOM" :selected="player.userType === 'GROOM'">Groom Guest</option>
-                            </select>
-                            <label>User Type</label>
+        <div class="section">
+            <div class="section-header">
+                <div class="container">
+                    <h6>EDIT PROFILE</h6>
+                </div>
+            </div>
+            <div class="section-content">
+                <div class="card no-shadow">
+                    <div class="card-content">
+                        <div class="row">
+                            <div class="col s12">
+                                <div class="row">
+                                    <div class="input-field col s12">
+                                        <input id="profile-page-user-name-input" type="text" value="{{player.userName}}" v-el:user-name>
+                                        <label for="profile-page-user-name-input" class="active">User Name</label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="input-field col s12">
+                                        <select v-el:user-type>
+                                            <option value="" disabled :selected="!player.userType">Choose your option</option>
+                                            <option value="BRIDE" :selected="player.userType === 'BRIDE'">Bride Guest</option>
+                                            <option value="GROOM" :selected="player.userType === 'GROOM'">Groom Guest</option>
+                                        </select>
+                                        <label>User Type</label>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
+
+        <div class="container">
             <div class="row">
-                <a class="col s12 waves-effect waves-light btn btn-large white red-text" @click="submitEdit()">OK</a>
+                <a class="col s12 waves-effect waves-light btn btn-large red white-text" @click="submitEdit()">OK</a>
             </div>
         </div>
     </div>
@@ -75,12 +95,6 @@
     var Vue = require('vue');
 
     module.exports = {
-        data: function() {
-            return {
-                mode: 'read'
-            }
-        },
-
         computed: {
             player: function() {
                 return store.state.player.currentPlayer;
@@ -88,43 +102,27 @@
         },
 
         ready: function() {
+            $('select').material_select();
             store.actions.getUserDetails(store.state.player.currentPlayer.objectId);
         },
 
         methods: {
-            quit: function() {
-                store.actions.signout();
-                this.$router.go({name: 'login'});
-            },
-            edit: function() {
-                this.mode = 'edit';
-                Vue.nextTick(function() {
-                    $('select').material_select();
-                });
-            },
             submitEdit: function() {
-                var that = this;
+                var router = this.$router;
                 var user = {
                     objectId: store.state.player.currentPlayer.objectId,
                     userName: this.$els.userName.value,
                     userType: this.$els.userType.value
                 };
                 store.actions.updateUserDetails(user).then(function() {
-                    that.mode = 'read';
                     Materialize.toast('update successfully', 1000);
+                    router.go({name: 'home'});
                 }, function() {
                     Materialize.toast('update failed', 1000);
                 });
             },
-            cancelEdit: function() {
-                this.mode = 'read';
-            },
             back: function() {
-                if(this.mode === 'read') {
-                    this.$router.go({name: 'home'});
-                } else {
-                    this.mode = 'read';
-                }
+                this.$router.go({name: 'home'});
             }
         }
     };

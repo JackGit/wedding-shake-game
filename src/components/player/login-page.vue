@@ -1,50 +1,53 @@
 <style>
-
+    .login-wrapper {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-image: url(http://hlynnphoto.com/assets/img/category-wedding.jpg);
+        background-repeat: no-repeat;
+        -webkit-background-size: cover;
+        background-size: cover;
+        background-position: center center;
+    }
+    .login-page-header {
+        height: 240px;
+    }
+    ::-webkit-input-placeholder {
+        color: black;
+    }
 </style>
 
 <template>
-    <div>
-        <div class="container">
-            <div class="row">
-                <div class="card">
-                    <div class="card-content">
-                        <span class="card-title">welcome, please login</span>
-                        <div class="row">
-                            <div class="col s12">
-                                <ul class="tabs" v-el:tabs>
-                                    <li class="tab col s6"><a href="#normalLoginTab" >login</a></li>
-                                    <li class="tab col s6"><a href="#qqLoginTab" class="active">QQ</a></li>
-                                </ul>
-                            </div>
-                            <div id="normalLoginTab" class="col s12">
-                                <div class="row">
-                                    <div class="input-field col s12">
-                                        <input v-el:user-name placeholder="user name" id="loginPageUserName" type="text">
-                                        <label for="loginPageUserName" class="active">User Name</label>
-                                    </div>
-                                    <div class="input-field col s12">
-                                        <select v-el:user-type>
-                                            <option value="" disabled selected>Choose your option</option>
-                                            <option value="BRIDE">Bride Guest</option>
-                                            <option value="GROOM">Groom Guest</option>
-                                        </select>
-                                        <label>Please select your guest type</label>
-                                    </div>
-                                </div>
-                                <div class="card-action row">
-                                    <a class="col s12 waves-effect waves-light btn btn-large red white-text" @click="start()">Start</a>
-                                </div>
-                            </div>
-                            <div id="qqLoginTab" class="col s12">
-                                <div class="row center-align">
-                                    <div class="row"></div>
-                                    <a :href="qqLoginUrl">
-                                        <img :src="qqLoginImage">
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
+    <div class="login-wrapper">
+        <div class="valign-wrapper row login-page-header">
+            <div class="valign col s12">
+                <h5 class=" center-align" style="color: white;font-family: monospace">WELCOME TO OUR</h5>
+                <h2 class=" center-align" style="color: white;font-family: serif">Wedding</h2>
+            </div>
+        </div>
+        <div>
+            <div class="container">
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input v-el:user-name placeholder="user name" id="loginPageUserName" type="text">
                     </div>
+                    <div class="input-field col s12">
+                        <select v-el:user-type>
+                            <option value="" disabled selected>Choose your guest type</option>
+                            <option value="BRIDE">Bride Guest</option>
+                            <option value="GROOM">Groom Guest</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <a class="col s12 waves-effect waves-light btn btn-large red white-text" @click="start()">Start</a>
+                </div>
+                <div class="row">
+                    <a :href="qqLoginUrl" class="col s12 right-align">
+                        <img :src="qqLoginImage">
+                    </a>
                 </div>
             </div>
         </div>
@@ -89,7 +92,7 @@
                 if(userId && userType)
                     transition.redirect({name: 'home'});
                 else if(userId)
-                    transition.redirect({name: 'qqLogin'});
+                    transition.redirect({name: 'profile'});
                 else
                     transition.next();
             }
