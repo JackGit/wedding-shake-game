@@ -11,7 +11,7 @@
     .ranking-page-image {
         width: 100%;
         height: 100%;
-        background-image: url(http://hlynnphoto.com/assets/img/category-wedding.jpg);
+        background-image: url(http://wedding.jackyang.me/images/wedding_pic_10.jpg);
         background-repeat: no-repeat;
         -webkit-background-size: cover;
         background-size: cover;
@@ -72,14 +72,14 @@
                                 <td>Bride</td>
                                 <td>{{bridePlayers.length}}</td>
                                 <td>{{brideTotal}}</td>
-                                <td v-if="brideTotal > groomTotal" style="position: relative">WIN<img :src="winImageUrl" class="win-stamp"></td>
+                                <td v-if="brideTotal > groomTotal" style="position: relative">WIN<img src="http://wedding.jackyang.me/images/win_stamp.jpg" class="win-stamp"></td>
                                 <td v-else style="position: relative">FAILED</td>
                             </tr>
                             <tr>
                                 <td>Groom</td>
                                 <td>{{groomPlayers.length}}</td>
                                 <td>{{groomTotal}}</td>
-                                <td v-if="brideTotal < groomTotal" style="position: relative">WIN<img :src="winImageUrl" class="win-stamp"></td>
+                                <td v-if="brideTotal < groomTotal" style="position: relative">WIN<img src="http://wedding.jackyang.me/images/win_stamp.jpg" class="win-stamp"></td>
                                 <td v-else style="position: relative">FAILED</td>
                             </tr>
                             </tbody>
@@ -118,12 +118,6 @@
     var store = require('../../store');
 
     module.exports = {
-        data: function() {
-            return {
-                winImageUrl: 'static/images/win_stamp.jpg'
-            }
-        },
-
         computed: {
             currentPlayer: function() {
                 return store.state.player.currentPlayer;

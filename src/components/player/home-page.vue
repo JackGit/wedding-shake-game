@@ -2,7 +2,7 @@
     .home-page-image {
         width: 100%;
         height: 100%;
-        background-image: url(http://hlynnphoto.com/assets/img/category-engagement.jpg);
+        background-image: url(http://wedding.jackyang.me/images/wedding_pic_03.jpg);
         background-repeat: no-repeat;
         -webkit-background-size: cover;
         background-size: cover;
@@ -126,8 +126,10 @@
                 this.$router.go({name: 'ranking', params: {roomId: roomId}});
             },
             quit: function() {
-                store.actions.signout();
-                this.$router.go({name: 'login'});
+                if(confirm('你确定要退出？')) {
+                    store.actions.signout();
+                    this.$router.go({name: 'login'});
+                }
             },
         },
 

@@ -13,7 +13,7 @@
         width: 100%;
         height: 100%;
         background-color: #E57373;
-        /*background-image: url(http://hlynnphoto.com/assets/img/category-portrait.jpg);*/
+        background-image: url(http://wedding.jackyang.me/images/wedding_pic_06.jpg);
         background-repeat: no-repeat;
         -webkit-background-size: cover;
         background-size: cover;

@@ -1,11 +1,12 @@
 <style>
-    .login-wrapper {
+    .background-container {
         position: fixed;
         top: 0;
         bottom: 0;
         left: 0;
         right: 0;
-        background-image: url(http://hlynnphoto.com/assets/img/category-wedding.jpg);
+        z-index: -1;
+        background-image: url(http://wedding.jackyang.me/images/wedding_pic_08.jpg);
         background-repeat: no-repeat;
         -webkit-background-size: cover;
         background-size: cover;
@@ -20,7 +21,9 @@
 </style>
 
 <template>
-    <div class="login-wrapper">
+    <div>
+        <div class="background-container"></div>
+
         <div class="valign-wrapper row login-page-header">
             <div class="valign col s12">
                 <h5 class=" center-align" style="color: white;font-family: monospace">WELCOME TO OUR</h5>
@@ -45,8 +48,8 @@
                     <a class="col s12 waves-effect waves-light btn btn-large red white-text" @click="start()">Start</a>
                 </div>
                 <div class="row">
-                    <a :href="qqLoginUrl" class="col s12 right-align">
-                        <img :src="qqLoginImage">
+                    <a href="https://graph.qq.com/oauth2.0/authorize?response_type=code&client_id=101295012&redirect_uri=http%3A%2F%2Fwedding.jackyang.me%2Fqq_login_callback.html&state=test&scope=all" class="col s12 right-align">
+                        <img src="http://wedding.jackyang.me/images/Connect_logo_4.png">
                     </a>
                 </div>
             </div>
@@ -58,12 +61,6 @@
     var store = require('../../store');
 
     module.exports = {
-        data: function() {
-            return {
-                qqLoginUrl: 'https://graph.qq.com/oauth2.0/authorize?response_type=code&client_id=101295012&redirect_uri=http%3A%2F%2Fwedding.jackyang.me%2Fqq_login_callback.html&state=test&scope=all',
-                qqLoginImage: 'static/images/Connect_logo_4.png'
-            }
-        },
 
         ready: function() {
             $('select').material_select();
