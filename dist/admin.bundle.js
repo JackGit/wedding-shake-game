@@ -77,7 +77,7 @@
 	    },
 	    '/room/create': {
 	        name: 'room-create',
-	        component: __webpack_require__(61)
+	        component: __webpack_require__(69)
 	    }
 	});
 	
@@ -14056,7 +14056,7 @@
 	if (__vue_script__ &&
 	    __vue_script__.__esModule &&
 	    Object.keys(__vue_script__).length > 1) {
-	  console.warn("[vue-loader] src\\app-admin.vue: named exports in *.vue files are ignored.")}
+	  console.warn("[vue-loader] src/app-admin.vue: named exports in *.vue files are ignored.")}
 	__vue_template__ = __webpack_require__(34)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
@@ -14067,7 +14067,7 @@
 	  var hotAPI = require("vue-hot-reload-api")
 	  hotAPI.install(require("vue"), true)
 	  if (!hotAPI.compatible) return
-	  var id = "C:\\Users\\Administrator\\Documents\\GitHub\\wedding-shake-game\\src\\app-admin.vue"
+	  var id = "/Users/Jack/WebstormProjects/wedding-shake-game/src/app-admin.vue"
 	  if (!module.hot.data) {
 	    hotAPI.createRecord(id, module.exports)
 	  } else {
@@ -14110,7 +14110,7 @@
 	
 	
 	// module
-	exports.push([module.id, "\n.mask {\n    position: fixed;\n    top: 0;\n    bottom: 0;\n    left: 0;\n    right: 0;\n    background-color: rgba(0,0,0,0.5);\n}\n\n.fade-transition {\n    -webkit-transition: all 0.2s ease;\n    transition: all 0.2s ease;\n}\n\n.fade-enter {\n    opacity: 0;\n    /*margin-top: 5%;*/\n}\n\n.fade-leave {\n    opacity: 0;\n}\n", "", {"version":3,"sources":["/./src/app-admin.vue?12c5f9b6"],"names":[],"mappings":";AACA;IACA,gBAAA;IACA,OAAA;IACA,UAAA;IACA,QAAA;IACA,SAAA;IACA,kCAAA;CACA;;AAEA;IACA,kCAAA;IAAA,0BAAA;CACA;;AAEA;IACA,WAAA;IACA,mBAAA;CACA;;AAEA;IACA,WAAA;CACA","file":"app-admin.vue","sourcesContent":["<style>\r\n    .mask {\r\n        position: fixed;\r\n        top: 0;\r\n        bottom: 0;\r\n        left: 0;\r\n        right: 0;\r\n        background-color: rgba(0,0,0,0.5);\r\n    }\r\n\r\n    .fade-transition {\r\n        transition: all 0.2s ease;\r\n    }\r\n\r\n    .fade-enter {\r\n        opacity: 0;\r\n        /*margin-top: 5%;*/\r\n    }\r\n\r\n    .fade-leave {\r\n        opacity: 0;\r\n    }\r\n</style>\r\n\r\n<template>\r\n    <div>\r\n        <router-view transition=\"fade\" transition-mode=\"out-in\"></router-view>\r\n    </div>\r\n</template>\r\n\r\n<script>\r\n    module.exports = {};\r\n</script>"],"sourceRoot":"webpack://"}]);
+	exports.push([module.id, "\n.mask {\n    position: fixed;\n    top: 0;\n    bottom: 0;\n    left: 0;\n    right: 0;\n    background-color: rgba(0,0,0,0.5);\n}\n\n.fade-transition {\n    -webkit-transition: all 0.2s ease;\n    transition: all 0.2s ease;\n}\n\n.fade-enter {\n    opacity: 0;\n    /*margin-top: 5%;*/\n}\n\n.fade-leave {\n    opacity: 0;\n}\n", "", {"version":3,"sources":["/./src/app-admin.vue?39be4529"],"names":[],"mappings":";AACA;IACA,gBAAA;IACA,OAAA;IACA,UAAA;IACA,QAAA;IACA,SAAA;IACA,kCAAA;CACA;;AAEA;IACA,kCAAA;IAAA,0BAAA;CACA;;AAEA;IACA,WAAA;IACA,mBAAA;CACA;;AAEA;IACA,WAAA;CACA","file":"app-admin.vue","sourcesContent":["<style>\n    .mask {\n        position: fixed;\n        top: 0;\n        bottom: 0;\n        left: 0;\n        right: 0;\n        background-color: rgba(0,0,0,0.5);\n    }\n\n    .fade-transition {\n        transition: all 0.2s ease;\n    }\n\n    .fade-enter {\n        opacity: 0;\n        /*margin-top: 5%;*/\n    }\n\n    .fade-leave {\n        opacity: 0;\n    }\n</style>\n\n<template>\n    <div>\n        <router-view transition=\"fade\" transition-mode=\"out-in\"></router-view>\n    </div>\n</template>\n\n<script>\n    module.exports = {};\n</script>"],"sourceRoot":"webpack://"}]);
 	
 	// exports
 
@@ -14554,6 +14554,7 @@
 	            console.log('store.actions.updateRoom', room);
 	            return new Promise(function(resolve, reject) {
 	                api.updateRoom(room).then(function(data) {
+	                    store.state.admin.currentRoom = data.room;
 	                    resolve(data.room);
 	                }, function(error) {
 	                    reject(error);
@@ -15188,7 +15189,7 @@
 	        return callservice('/game/room/rankingPlayerList', {roomId: roomId});
 	    },
 	    updateRoom: function(room) {
-	        return callservice('/game/room/update', room);
+	        return callservice('/game/room/update', {room: room});
 	    },
 	    listRoom: function() {
 	        return callservice('/game/room/list');
@@ -15246,7 +15247,7 @@
 	if (__vue_script__ &&
 	    __vue_script__.__esModule &&
 	    Object.keys(__vue_script__).length > 1) {
-	  console.warn("[vue-loader] src\\components\\admin\\login-page.vue: named exports in *.vue files are ignored.")}
+	  console.warn("[vue-loader] src/components/admin/login-page.vue: named exports in *.vue files are ignored.")}
 	__vue_template__ = __webpack_require__(45)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
@@ -15257,7 +15258,7 @@
 	  var hotAPI = require("vue-hot-reload-api")
 	  hotAPI.install(require("vue"), true)
 	  if (!hotAPI.compatible) return
-	  var id = "C:\\Users\\Administrator\\Documents\\GitHub\\wedding-shake-game\\src\\components\\admin\\login-page.vue"
+	  var id = "/Users/Jack/WebstormProjects/wedding-shake-game/src/components/admin/login-page.vue"
 	  if (!module.hot.data) {
 	    hotAPI.createRecord(id, module.exports)
 	  } else {
@@ -15347,7 +15348,7 @@
 	if (__vue_script__ &&
 	    __vue_script__.__esModule &&
 	    Object.keys(__vue_script__).length > 1) {
-	  console.warn("[vue-loader] src\\components\\admin\\home-page.vue: named exports in *.vue files are ignored.")}
+	  console.warn("[vue-loader] src/components/admin/home-page.vue: named exports in *.vue files are ignored.")}
 	__vue_template__ = __webpack_require__(50)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
@@ -15358,7 +15359,7 @@
 	  var hotAPI = require("vue-hot-reload-api")
 	  hotAPI.install(require("vue"), true)
 	  if (!hotAPI.compatible) return
-	  var id = "C:\\Users\\Administrator\\Documents\\GitHub\\wedding-shake-game\\src\\components\\admin\\home-page.vue"
+	  var id = "/Users/Jack/WebstormProjects/wedding-shake-game/src/components/admin/home-page.vue"
 	  if (!module.hot.data) {
 	    hotAPI.createRecord(id, module.exports)
 	  } else {
@@ -15446,7 +15447,7 @@
 /* 50 */
 /***/ function(module, exports) {
 
-	module.exports = "\n<div>\n    <div class=\"navbar-fixed\">\n        <nav>\n            <div class=\"nav-wrapper red lighten-2\">\n                <a class=\"brand-logo center\">{{adminUser.userName}}</a>\n                <ul class=\"right\">\n                    <li><a @click=\"quit()\"><i class=\"material-icons fa fa-sign-out\"></i></a></li>\n                </ul>\n            </div>\n        </nav>\n    </div>\n\n    <div class=\"section\">\n        <div class=\"section-header\">\n            <div class=\"container\">\n                <h6>ROOM LIST</h6>\n            </div>\n        </div>\n        <div class=\"section-content\">\n            <ul class=\"collection no-border transparent\">\n                <li class=\"collection-item avatar\" v-for=\"room in roomList\">\n                    <i v-if=\"$index == 0\" class=\"material-icons circle\" style=\"background: #90dde3\">{{$index + 1}}</i>\n                    <i v-if=\"$index == 1\" class=\"material-icons circle\" style=\"background: #f79a3d\">{{$index + 1}}</i>\n                    <i v-if=\"$index == 2\" class=\"material-icons circle\" style=\"background: #f56937\">{{$index + 1}}</i>\n                    <div class=\"row\">\n                        <span class=\"title red-text text-lighten-2\">{{room.roomName}}</span>\n                        <p v-if=\"room.status === 'INIT'\">Game is not started yet, please wait.</p>\n                        <p v-if=\"room.status === 'JOINING'\">People are joining, there are {{room.players.length}} players joined the game.</p>\n                        <p v-if=\"room.status === 'PLAYING'\">Game is playing right now. You can't join right now.</p>\n                        <p v-if=\"room.status === 'END'\">Game is ended.</p>\n                    </div>\n                    <div class=\"row\">\n                        <a @click=\"checkRoomDetails(room.objectId)\" class=\"waves-effect waves-light btn red lighten-2\">Details</a>\n                    </div>\n                </li>\n            </ul>\n        </div>\n    </div>\n</div>\n";
+	module.exports = "\n<div>\n    <div class=\"navbar-fixed\">\n        <nav>\n            <div class=\"nav-wrapper red lighten-2\">\n                <a class=\"brand-logo center\">{{adminUser.userName}}</a>\n                <ul class=\"right\">\n                    <li><a @click=\"quit()\"><i class=\"material-icons fa fa-sign-out\"></i></a></li>\n                </ul>\n            </div>\n        </nav>\n    </div>\n\n    <div class=\"section\">\n        <div class=\"section-header\">\n            <div class=\"container\">\n                <h6>ROOM LIST</h6>\n            </div>\n        </div>\n        <div class=\"section-content\">\n            <ul class=\"collection no-border transparent\">\n                <li class=\"collection-item avatar\" v-for=\"room in roomList\">\n                    <i class=\"material-icons circle\" :style=\"{background: room.roomColor}\">{{$index + 1}}</i>\n                    <div class=\"row\">\n                        <span class=\"title red-text text-lighten-2\">{{room.roomName}}</span>\n                        <p v-if=\"room.status === 'INIT'\">Game is not started yet, please wait.</p>\n                        <p v-if=\"room.status === 'JOINING'\">People are joining, there are {{room.players.length}} players joined the game.</p>\n                        <p v-if=\"room.status === 'PLAYING'\">Game is playing right now. You can't join right now.</p>\n                        <p v-if=\"room.status === 'END'\">Game is ended.</p>\n                    </div>\n                    <div class=\"row\">\n                        <a @click=\"checkRoomDetails(room.objectId)\" class=\"waves-effect waves-light btn red lighten-2\">Details</a>\n                    </div>\n                </li>\n            </ul>\n        </div>\n    </div>\n</div>\n";
 
 /***/ },
 /* 51 */
@@ -15458,7 +15459,7 @@
 	if (__vue_script__ &&
 	    __vue_script__.__esModule &&
 	    Object.keys(__vue_script__).length > 1) {
-	  console.warn("[vue-loader] src\\components\\admin\\room-page.vue: named exports in *.vue files are ignored.")}
+	  console.warn("[vue-loader] src/components/admin/room-page.vue: named exports in *.vue files are ignored.")}
 	__vue_template__ = __webpack_require__(55)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
@@ -15469,7 +15470,7 @@
 	  var hotAPI = require("vue-hot-reload-api")
 	  hotAPI.install(require("vue"), true)
 	  if (!hotAPI.compatible) return
-	  var id = "C:\\Users\\Administrator\\Documents\\GitHub\\wedding-shake-game\\src\\components\\admin\\room-page.vue"
+	  var id = "/Users/Jack/WebstormProjects/wedding-shake-game/src/components/admin/room-page.vue"
 	  if (!module.hot.data) {
 	    hotAPI.createRecord(id, module.exports)
 	  } else {
@@ -15546,7 +15547,7 @@
 /* 55 */
 /***/ function(module, exports) {
 
-	module.exports = "\n<div>\n    <div class=\"navbar-fixed\">\n        <nav>\n            <div class=\"nav-wrapper red lighten-2\">\n                <a class=\"brand-logo center\">Room Details</a>\n                <ul class=\"left\">\n                    <li><a v-link=\"{name:'home'}\"><i class=\"material-icons fa fa-angle-left\"></i></a></li>\n                </ul>\n                <ul class=\"right\">\n                    <li><a @click=\"{name:'room-edit',params:{roomId:$route.roomId}}\"><i class=\"material-icons fa fa-pencil\"></i></a></li>\n                </ul>\n            </div>\n        </nav>\n    </div>\n\n    <ul class=\"tabs\" v-el:tabs>\n        <li class=\"tab col s6\"><a href=\"#roomInfo\" class=\"active\">Room Info</a></li>\n        <li class=\"tab col s6\"><a href=\"#playerList\">Players</a></li>\n    </ul>\n\n    <div class=\"section\" id=\"roomInfo\">\n        <div class=\"section-header\">\n            <div class=\"container\">\n                <h6>ROOM STATUS</h6>\n            </div>\n        </div>\n        <div class=\"section-content\">\n            <div class=\"card no-shadow\">\n                <div class=\"card-content\" style=\"margin-bottom:0\">\n                    <h1 class=\"center-align\">{{room.status}}</h1>\n                </div>\n            </div>\n        </div>\n        <div class=\"section-header\">\n            <div class=\"container\">\n                <h6>BASE INFO</h6>\n            </div>\n        </div>\n        <div class=\"section-content\">\n            <div class=\"card no-shadow\">\n                <div class=\"card-content\" style=\"margin-bottom:0\">\n                    <div class=\"row\">\n                        <div class=\"col s12\">\n                            <h6>Name</h6>\n                            <span>{{room.roomName}}</span>\n                        </div>\n                    </div>\n                    <div class=\"row\">\n                        <div class=\"col s12\">\n                            <h6>Description</h6>\n                            <span>{{room.roomDescription}}</span>\n                        </div>\n                    </div>\n                    <div class=\"row\">\n                        <div class=\"col s12\">\n                            <h6>Size</h6>\n                            <span>{{room.roomSize}}</span>\n                        </div>\n                    </div>\n                    <div class=\"row\">\n                        <div class=\"col s12\">\n                            <h6>Color</h6>\n                            <span>...</span>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n\n    </div>\n\n    <div class=\"section\" id=\"playerList\">\n        <div class=\"section-header\">\n            <div class=\"container\">\n                <h6>PLAYERS</h6>\n            </div>\n        </div>\n        <div class=\"section-content\">\n            <ul class=\"collection no-border\">\n                <li class=\"collection-item avatar\" v-for=\"player in players\">\n                    <img :src=\"player.avatarImageUrl\" class=\"circle\">\n                    <span class=\"title\">{{player.userName}}</span>\n                    <p>{{player.userType}}</p>\n                </li>\n            </ul>\n        </div>\n    </div>\n\n    <div class=\"fixed-action-btn horizontal click-to-toggle\" style=\"bottom: 45px; right: 24px;\">\n        <a class=\"btn-floating btn-large red\">\n            <i class=\"large mdi-navigation-menu\"></i>\n        </a>\n        <ul>\n            <li><a class=\"btn-floating red darken-1\"><i class=\"material-icons fa fa-users\"></i></a></li>\n            <li><a class=\"btn-floating green darken-1\"><i class=\"material-icons fa fa-play\"></i></a></li>\n            <li><a class=\"btn-floating yellow darken-1\"><i class=\"material-icons fa fa-stop\"></i></a></li>\n            <li><a class=\"btn-floating grey darken-1\"><i class=\"material-icons fa fa-refresh\"></i></a></li>\n        </ul>\n    </div>\n\n</div>\n";
+	module.exports = "\n<div>\n    <div class=\"navbar-fixed\">\n        <nav>\n            <div class=\"nav-wrapper red lighten-2\">\n                <a class=\"brand-logo center\">Room Details</a>\n                <ul class=\"left\">\n                    <li><a v-link=\"{name:'home'}\"><i class=\"material-icons fa fa-angle-left\"></i></a></li>\n                </ul>\n                <ul class=\"right\">\n                    <li><a v-link=\"{name:'room-edit',params:{roomId:$route.params.roomId}}\"><i class=\"material-icons fa fa-pencil\"></i></a></li>\n                </ul>\n            </div>\n        </nav>\n    </div>\n\n    <ul class=\"tabs\" v-el:tabs>\n        <li class=\"tab col s6\"><a href=\"#roomInfo\" class=\"active\">Room Info</a></li>\n        <li class=\"tab col s6\"><a href=\"#playerList\">Players</a></li>\n    </ul>\n\n    <div class=\"section\" id=\"roomInfo\">\n        <div class=\"section-header\">\n            <div class=\"container\">\n                <h6>ROOM STATUS</h6>\n            </div>\n        </div>\n        <div class=\"section-content\">\n            <div class=\"card no-shadow\">\n                <div class=\"card-content\" style=\"margin-bottom:0\">\n                    <h1 class=\"center-align\">{{room.status}}</h1>\n                </div>\n            </div>\n        </div>\n        <div class=\"section-header\">\n            <div class=\"container\">\n                <h6>BASE INFO</h6>\n            </div>\n        </div>\n        <div class=\"section-content\">\n            <div class=\"card no-shadow\">\n                <div class=\"card-content\" style=\"margin-bottom:0\">\n                    <div class=\"row\">\n                        <div class=\"col s12\">\n                            <h6>Name</h6>\n                            <span>{{room.roomName}}</span>\n                        </div>\n                    </div>\n                    <div class=\"row\">\n                        <div class=\"col s12\">\n                            <h6>Description</h6>\n                            <span>{{room.roomDescription}}</span>\n                        </div>\n                    </div>\n                    <div class=\"row\">\n                        <div class=\"col s12\">\n                            <h6>Size</h6>\n                            <span>{{room.roomSize}}</span>\n                        </div>\n                    </div>\n                    <div class=\"row\">\n                        <div class=\"col s12\">\n                            <h6>Color</h6>\n                            <span>{{room.roomColor}}</span>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n\n    </div>\n\n    <div class=\"section\" id=\"playerList\">\n        <div class=\"section-header\">\n            <div class=\"container\">\n                <h6>PLAYERS</h6>\n            </div>\n        </div>\n        <div class=\"section-content\">\n            <ul class=\"collection no-border\">\n                <li class=\"collection-item avatar\" v-for=\"player in players\">\n                    <img :src=\"player.avatarImageUrl\" class=\"circle\">\n                    <span class=\"title\">{{player.userName}}</span>\n                    <p>{{player.userType}}</p>\n                </li>\n            </ul>\n        </div>\n    </div>\n\n    <div class=\"fixed-action-btn horizontal click-to-toggle\" style=\"bottom: 45px; right: 24px;\">\n        <a class=\"btn-floating btn-large red\">\n            <i class=\"large mdi-navigation-menu\"></i>\n        </a>\n        <ul>\n            <li><a class=\"btn-floating red darken-1\"><i class=\"material-icons fa fa-users\"></i></a></li>\n            <li><a class=\"btn-floating green darken-1\"><i class=\"material-icons fa fa-play\"></i></a></li>\n            <li><a class=\"btn-floating yellow darken-1\"><i class=\"material-icons fa fa-stop\"></i></a></li>\n            <li><a class=\"btn-floating grey darken-1\"><i class=\"material-icons fa fa-refresh\"></i></a></li>\n        </ul>\n    </div>\n\n</div>\n";
 
 /***/ },
 /* 56 */
@@ -15558,8 +15559,8 @@
 	if (__vue_script__ &&
 	    __vue_script__.__esModule &&
 	    Object.keys(__vue_script__).length > 1) {
-	  console.warn("[vue-loader] src\\components\\admin\\room-edit-page.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(60)
+	  console.warn("[vue-loader] src/components/admin/room-edit-page.vue: named exports in *.vue files are ignored.")}
+	__vue_template__ = __webpack_require__(68)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
 	if (__vue_template__) {
@@ -15569,7 +15570,7 @@
 	  var hotAPI = require("vue-hot-reload-api")
 	  hotAPI.install(require("vue"), true)
 	  if (!hotAPI.compatible) return
-	  var id = "C:\\Users\\Administrator\\Documents\\GitHub\\wedding-shake-game\\src\\components\\admin\\room-edit-page.vue"
+	  var id = "/Users/Jack/WebstormProjects/wedding-shake-game/src/components/admin/room-edit-page.vue"
 	  if (!module.hot.data) {
 	    hotAPI.createRecord(id, module.exports)
 	  } else {
@@ -15619,30 +15620,192 @@
 
 /***/ },
 /* 59 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 	
-	module.exports = {};
+	var _parseInt = __webpack_require__(60);
+	
+	var _parseInt2 = _interopRequireDefault(_parseInt);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	module.exports = {
+	
+	    computed: {
+	        room: function room() {
+	            return store.state.admin.currentRoom;
+	        }
+	    },
+	
+	    ready: function ready() {
+	        $('select').material_select();
+	        store.actions.getRoomDetails(this.$route.params.roomId);
+	    },
+	
+	    methods: {
+	        submitEdit: function submitEdit() {
+	            var router = this.$router;
+	            var roomId = this.$route.params.roomId;
+	            var room = {
+	                roomId: roomId,
+	                roomName: this.$els.roomName.value,
+	                roomDescription: this.$els.roomDescription.value,
+	                roomSize: (0, _parseInt2.default)(this.$els.roomSize.value),
+	                roomColor: this.$els.roomColor.value
+	            };
+	
+	            store.actions.updateRoom(room).then(function () {
+	                Materialize.toast('update successfully', 1000);
+	                router.go({ name: 'room', params: { roomId: roomId } });
+	            }, function () {
+	                Materialize.toast('update failed', 1000);
+	            });
+	        }
+	    }
+	};
 
 /***/ },
 /* 60 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	module.exports = "\n<div>\n    admin room edit page\n</div>\n";
+	module.exports = { "default": __webpack_require__(61), __esModule: true };
 
 /***/ },
 /* 61 */
 /***/ function(module, exports, __webpack_require__) {
 
+	__webpack_require__(62);
+	module.exports = parseInt;
+
+/***/ },
+/* 62 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// 20.1.2.13 Number.parseInt(string, radix)
+	var $export = __webpack_require__(63);
+	
+	$export($export.S, 'Number', {parseInt: parseInt});
+
+/***/ },
+/* 63 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var global    = __webpack_require__(64)
+	  , core      = __webpack_require__(65)
+	  , ctx       = __webpack_require__(66)
+	  , PROTOTYPE = 'prototype';
+	
+	var $export = function(type, name, source){
+	  var IS_FORCED = type & $export.F
+	    , IS_GLOBAL = type & $export.G
+	    , IS_STATIC = type & $export.S
+	    , IS_PROTO  = type & $export.P
+	    , IS_BIND   = type & $export.B
+	    , IS_WRAP   = type & $export.W
+	    , exports   = IS_GLOBAL ? core : core[name] || (core[name] = {})
+	    , target    = IS_GLOBAL ? global : IS_STATIC ? global[name] : (global[name] || {})[PROTOTYPE]
+	    , key, own, out;
+	  if(IS_GLOBAL)source = name;
+	  for(key in source){
+	    // contains in native
+	    own = !IS_FORCED && target && key in target;
+	    if(own && key in exports)continue;
+	    // export native or passed
+	    out = own ? target[key] : source[key];
+	    // prevent global pollution for namespaces
+	    exports[key] = IS_GLOBAL && typeof target[key] != 'function' ? source[key]
+	    // bind timers to global for call from export context
+	    : IS_BIND && own ? ctx(out, global)
+	    // wrap global constructors for prevent change them in library
+	    : IS_WRAP && target[key] == out ? (function(C){
+	      var F = function(param){
+	        return this instanceof C ? new C(param) : C(param);
+	      };
+	      F[PROTOTYPE] = C[PROTOTYPE];
+	      return F;
+	    // make static versions for prototype methods
+	    })(out) : IS_PROTO && typeof out == 'function' ? ctx(Function.call, out) : out;
+	    if(IS_PROTO)(exports[PROTOTYPE] || (exports[PROTOTYPE] = {}))[key] = out;
+	  }
+	};
+	// type bitmap
+	$export.F = 1;  // forced
+	$export.G = 2;  // global
+	$export.S = 4;  // static
+	$export.P = 8;  // proto
+	$export.B = 16; // bind
+	$export.W = 32; // wrap
+	module.exports = $export;
+
+/***/ },
+/* 64 */
+/***/ function(module, exports) {
+
+	// https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
+	var global = module.exports = typeof window != 'undefined' && window.Math == Math
+	  ? window : typeof self != 'undefined' && self.Math == Math ? self : Function('return this')();
+	if(typeof __g == 'number')__g = global; // eslint-disable-line no-undef
+
+/***/ },
+/* 65 */
+/***/ function(module, exports) {
+
+	var core = module.exports = {version: '1.2.6'};
+	if(typeof __e == 'number')__e = core; // eslint-disable-line no-undef
+
+/***/ },
+/* 66 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// optional / simple context binding
+	var aFunction = __webpack_require__(67);
+	module.exports = function(fn, that, length){
+	  aFunction(fn);
+	  if(that === undefined)return fn;
+	  switch(length){
+	    case 1: return function(a){
+	      return fn.call(that, a);
+	    };
+	    case 2: return function(a, b){
+	      return fn.call(that, a, b);
+	    };
+	    case 3: return function(a, b, c){
+	      return fn.call(that, a, b, c);
+	    };
+	  }
+	  return function(/* ...args */){
+	    return fn.apply(that, arguments);
+	  };
+	};
+
+/***/ },
+/* 67 */
+/***/ function(module, exports) {
+
+	module.exports = function(it){
+	  if(typeof it != 'function')throw TypeError(it + ' is not a function!');
+	  return it;
+	};
+
+/***/ },
+/* 68 */
+/***/ function(module, exports) {
+
+	module.exports = "\n<div>\n    <div class=\"navbar-fixed\">\n        <nav>\n            <div class=\"nav-wrapper red lighten-2\">\n                <a class=\"brand-logo center\">Room Edit</a>\n                <ul class=\"left\">\n                    <li><a v-link=\"{name:'room',params:{roomId:$route.params.roomId}}\"><i class=\"material-icons fa fa-angle-left\"></i></a></li>\n                </ul>\n            </div>\n        </nav>\n    </div>\n\n    <div class=\"section\">\n        <div class=\"section-header\">\n            <div class=\"container\">\n                <h6>EDIT ROOM</h6>\n            </div>\n        </div>\n        <div class=\"section-content\">\n            <div class=\"card no-shadow\">\n                <div class=\"card-content\">\n                    <div class=\"row\">\n                        <div class=\"col s12\">\n                            <div class=\"row\">\n                                <div class=\"input-field col s12\">\n                                    <input id=\"roomEditPageRoomName\" type=\"text\" value=\"{{room.roomName}}\" v-el:room-name>\n                                    <label for=\"roomEditPageRoomName\" class=\"active\">Room Name</label>\n                                </div>\n                            </div>\n                            <div class=\"row\">\n                                <div class=\"input-field col s12\">\n                                    <textarea id=\"roomEidtPageRoomDescription\" class=\"materialize-textarea\" v-el:room-description>{{room.roomDescription}}</textarea>\n                                    <label for=\"roomEidtPageRoomDescription\" class=\"active\">Room Description</label>\n                                </div>\n                            </div>\n                            <div class=\"row\">\n                                <div class=\"input-field col s12\">\n                                    <input id=\"roomEditPageRoomSize\" type=\"text\" value=\"{{room.roomSize}}\" v-el:room-size>\n                                    <label for=\"roomEditPageRoomSize\" class=\"active\">Room Size</label>\n                                </div>\n                            </div>\n                            <div class=\"row\">\n                                <div class=\"input-field col s12\">\n                                    <select v-el:room-color>\n                                        <option value=\"\" disabled selected>Choose your option</option>\n                                        <option value=\"#F56937\">Red</option>\n                                        <option value=\"#F79A3D\">Orange</option>\n                                        <option value=\"#48CCD0\">Teal</option>\n                                        <option value=\"#90DDE3\">Light Blue</option>\n                                    </select>\n                                    <label>Room Color</label>\n                                </div>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n\n    <div class=\"container\">\n        <div class=\"row\">\n            <a class=\"col s12 waves-effect waves-light btn btn-large red white-text\" @click=\"submitEdit()\">OK</a>\n        </div>\n    </div>\n</div>\n";
+
+/***/ },
+/* 69 */
+/***/ function(module, exports, __webpack_require__) {
+
 	var __vue_script__, __vue_template__
-	__webpack_require__(62)
-	__vue_script__ = __webpack_require__(64)
+	__webpack_require__(70)
+	__vue_script__ = __webpack_require__(72)
 	if (__vue_script__ &&
 	    __vue_script__.__esModule &&
 	    Object.keys(__vue_script__).length > 1) {
-	  console.warn("[vue-loader] src\\components\\admin\\room-create-page.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(65)
+	  console.warn("[vue-loader] src/components/admin/room-create-page.vue: named exports in *.vue files are ignored.")}
+	__vue_template__ = __webpack_require__(73)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
 	if (__vue_template__) {
@@ -15652,7 +15815,7 @@
 	  var hotAPI = require("vue-hot-reload-api")
 	  hotAPI.install(require("vue"), true)
 	  if (!hotAPI.compatible) return
-	  var id = "C:\\Users\\Administrator\\Documents\\GitHub\\wedding-shake-game\\src\\components\\admin\\room-create-page.vue"
+	  var id = "/Users/Jack/WebstormProjects/wedding-shake-game/src/components/admin/room-create-page.vue"
 	  if (!module.hot.data) {
 	    hotAPI.createRecord(id, module.exports)
 	  } else {
@@ -15661,13 +15824,13 @@
 	})()}
 
 /***/ },
-/* 62 */
+/* 70 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
 	// load the styles
-	var content = __webpack_require__(63);
+	var content = __webpack_require__(71);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(32)(content, {});
@@ -15687,7 +15850,7 @@
 	}
 
 /***/ },
-/* 63 */
+/* 71 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(31)();
@@ -15701,7 +15864,7 @@
 
 
 /***/ },
-/* 64 */
+/* 72 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -15709,7 +15872,7 @@
 	module.exports = {};
 
 /***/ },
-/* 65 */
+/* 73 */
 /***/ function(module, exports) {
 
 	module.exports = "\n<div>\n    admin room create page\n</div>\n";

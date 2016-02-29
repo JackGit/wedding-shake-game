@@ -141,6 +141,7 @@ module.exports = window.store = new Vuex.Store({
             console.log('store.actions.updateRoom', room);
             return new Promise(function(resolve, reject) {
                 api.updateRoom(room).then(function(data) {
+                    store.state.admin.currentRoom = data.room;
                     resolve(data.room);
                 }, function(error) {
                     reject(error);

@@ -12,7 +12,7 @@
                         <li><a v-link="{name:'home'}"><i class="material-icons fa fa-angle-left"></i></a></li>
                     </ul>
                     <ul class="right">
-                        <li><a @click="{name:'room-edit',params:{roomId:$route.roomId}}"><i class="material-icons fa fa-pencil"></i></a></li>
+                        <li><a v-link="{name:'room-edit',params:{roomId:$route.params.roomId}}"><i class="material-icons fa fa-pencil"></i></a></li>
                     </ul>
                 </div>
             </nav>
@@ -65,7 +65,7 @@
                         <div class="row">
                             <div class="col s12">
                                 <h6>Color</h6>
-                                <span>...</span>
+                                <span>{{room.roomColor}}</span>
                             </div>
                         </div>
                     </div>

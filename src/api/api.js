@@ -59,7 +59,7 @@ var API = {
         return callservice('/game/room/rankingPlayerList', {roomId: roomId});
     },
     updateRoom: function(room) {
-        return callservice('/game/room/update', room);
+        return callservice('/game/room/update', {room: room});
     },
     listRoom: function() {
         return callservice('/game/room/list');

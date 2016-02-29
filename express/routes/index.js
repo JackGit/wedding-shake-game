@@ -191,13 +191,7 @@ module.exports = function(app) {
 
 
     router.post('/game/room/update', function(req, res) {
-        var room = {
-            roomId: req.body.roomId,
-            roomName: req.body.roomName,
-            roomDescription: req.body.roomDescription,
-            roomSize: req.body.roomSize,
-            status: req.body.status
-        };
+        var room = req.body.room;
 
         RoomDAO.updateRoom(room).then(function(response) {
             res.send({

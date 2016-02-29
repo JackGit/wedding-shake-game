@@ -24,9 +24,7 @@
             <div class="section-content">
                 <ul class="collection no-border transparent">
                     <li class="collection-item avatar" v-for="room in roomList">
-                        <i v-if="$index == 0" class="material-icons circle" style="background: #90dde3">{{$index + 1}}</i>
-                        <i v-if="$index == 1" class="material-icons circle" style="background: #f79a3d">{{$index + 1}}</i>
-                        <i v-if="$index == 2" class="material-icons circle" style="background: #f56937">{{$index + 1}}</i>
+                        <i class="material-icons circle" :style="{background: room.roomColor}">{{$index + 1}}</i>
                         <div class="row">
                             <span class="title red-text text-lighten-2">{{room.roomName}}</span>
                             <p v-if="room.status === 'INIT'">Game is not started yet, please wait.</p>

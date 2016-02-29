@@ -5,6 +5,7 @@ var ROOM_PROPERTIES = {
     roomName: 'default room name',
     roomDescription: 'default room description',
     roomSize: 5,        // 5 for each side of players (GROOM and BRIDE)
+    roomColor: '',      // #ffffff
     status: 'INIT',
     players: [],     // array of {playerId: '', playerType: 'GROOM'}
     ranking: []         // array of {playerId: '', shakeCount: XX}
