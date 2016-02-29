@@ -91,6 +91,17 @@ var API = {
         return callservice('/game/controls/joining', {
             roomId: roomId
         });
+    },
+
+
+
+
+
+
+    adminLogin: function(user) {
+        return callservice('/game/admin/login', {
+            user: user
+        });
     }
 };
 

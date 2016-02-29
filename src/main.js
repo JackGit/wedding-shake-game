@@ -56,17 +56,18 @@ router.map({
     '/visit/:roomId': {
         name: 'visit',
         component: require('./components/player/visit-page.vue')
-    },
+    }
 
     // admin pages
+    /*
     '/admin': {
         name: 'admin',
-        component: require('./components/admin/admin-page.vue')
+        component: require('./components/admin/home-page.vue')
     },
     '/room/:roomId': {
         name: 'room',
         component: require('./components/admin/room-page.vue')
-    }
+    }*/
 });
 
 router.redirect({

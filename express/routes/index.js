@@ -1,5 +1,6 @@
 var PlayerDAO = require('../dao/player.js');
 var RoomDAO = require('../dao/room.js');
+var AdminDAO = require('../dao/admin.js');
 var OauthQQ = require('../oauth/connect.qq.js');
 
 module.exports = function(app) {
@@ -336,6 +337,24 @@ module.exports = function(app) {
             res.send({
                 statusCode: -1,
                 message: 'stop room error',
+                error: error
+            });
+        });
+    });
+
+
+
+    router.post('/game/admin/login', function(req, res) {
+        AdminDAO.getUser(req.body.user).then(function(response) {
+            res.send({
+                statusCode: 0,
+                message: '',
+                user: response
+            });
+        }, function(error) {
+            res.send({
+                statusCode: -1,
+                message: 'login as admin has error',
                 error: error
             });
         });

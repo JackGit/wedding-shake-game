@@ -1,11 +1,20 @@
 
 'use strict';
 var webpack = require('webpack');
+var path = require('path');
 
 module.exports = {
-    entry: './src/main.js',
+    /*entry: './src/main.js',
     output: {
         filename: './dist/bundle.js',
+    },*/
+    entry: {
+        player: './src/main.js',
+        admin: './src/main-admin.js'
+    },
+    output: {
+        path: path.join(__dirname, "dist"),
+        filename: "[name].bundle.js"
     },
     devtool: 'source-map',
     module: {

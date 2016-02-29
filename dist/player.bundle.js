@@ -51,9 +51,9 @@
 	Vue.use(VueResource);
 	Vue.use(VueRouter);
 	
-	var App = __webpack_require__(28);
+	var App = __webpack_require__(66);
 	var router = new VueRouter();
-	var store = __webpack_require__(34);
+	var store = __webpack_require__(70);
 	
 	var socket = io();
 	window.socket = socket;
@@ -72,47 +72,48 @@
 	router.map({
 	    '/login': {
 	        name: 'login',
-	        component: __webpack_require__(41)
+	        component: __webpack_require__(72)
 	    },
 	    '/home': {
 	        name: 'home',
-	        component: __webpack_require__(46)
+	        component: __webpack_require__(77)
 	    },
 	    '/profile': {
 	        name: 'profile',
-	        component: __webpack_require__(51)
+	        component: __webpack_require__(82)
 	    },
 	
 	    // pages after join room start
 	    // refresh these pages will route to home page
 	    '/ready': {
 	        name: 'ready',
-	        component: __webpack_require__(56)
+	        component: __webpack_require__(87)
 	    },
 	    '/shake': {
 	        name: 'shake',
-	        component: __webpack_require__(66)
+	        component: __webpack_require__(97)
 	    },
 	    // pages after join room end
 	
 	    '/ranking/:roomId': {
 	        name: 'ranking',
-	        component: __webpack_require__(72)
+	        component: __webpack_require__(103)
 	    },
 	    '/visit/:roomId': {
 	        name: 'visit',
-	        component: __webpack_require__(77)
-	    },
+	        component: __webpack_require__(108)
+	    }
 	
 	    // admin pages
+	    /*
 	    '/admin': {
 	        name: 'admin',
-	        component: __webpack_require__(82)
+	        component: require('./components/admin/home-page.vue')
 	    },
 	    '/room/:roomId': {
 	        name: 'room',
-	        component: __webpack_require__(92)
-	    }
+	        component: require('./components/admin/room-page.vue')
+	    }*/
 	});
 	
 	router.redirect({
@@ -14081,75 +14082,9 @@
 	}));
 
 /***/ },
-/* 28 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var __vue_script__, __vue_template__
-	__webpack_require__(29)
-	__vue_script__ = __webpack_require__(33)
-	if (__vue_script__ &&
-	    __vue_script__.__esModule &&
-	    Object.keys(__vue_script__).length > 1) {
-	  console.warn("[vue-loader] src\\app.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(40)
-	module.exports = __vue_script__ || {}
-	if (module.exports.__esModule) module.exports = module.exports.default
-	if (__vue_template__) {
-	(typeof module.exports === "function" ? (module.exports.options || (module.exports.options = {})) : module.exports).template = __vue_template__
-	}
-	if (false) {(function () {  module.hot.accept()
-	  var hotAPI = require("vue-hot-reload-api")
-	  hotAPI.install(require("vue"), true)
-	  if (!hotAPI.compatible) return
-	  var id = "C:\\Users\\Administrator\\Documents\\GitHub\\wedding-shake-game\\src\\app.vue"
-	  if (!module.hot.data) {
-	    hotAPI.createRecord(id, module.exports)
-	  } else {
-	    hotAPI.update(id, module.exports, __vue_template__)
-	  }
-	})()}
-
-/***/ },
-/* 29 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-	
-	// load the styles
-	var content = __webpack_require__(30);
-	if(typeof content === 'string') content = [[module.id, content, '']];
-	// add the styles to the DOM
-	var update = __webpack_require__(32)(content, {});
-	if(content.locals) module.exports = content.locals;
-	// Hot Module Replacement
-	if(false) {
-		// When the styles change, update the <style> tags
-		if(!content.locals) {
-			module.hot.accept("!!./../node_modules/css-loader/index.js?sourceMap!./../node_modules/vue-loader/lib/style-rewriter.js!./../node_modules/vue-loader/lib/selector.js?type=style&index=0!./app.vue", function() {
-				var newContent = require("!!./../node_modules/css-loader/index.js?sourceMap!./../node_modules/vue-loader/lib/style-rewriter.js!./../node_modules/vue-loader/lib/selector.js?type=style&index=0!./app.vue");
-				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-				update(newContent);
-			});
-		}
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
-
-/***/ },
-/* 30 */
-/***/ function(module, exports, __webpack_require__) {
-
-	exports = module.exports = __webpack_require__(31)();
-	// imports
-	
-	
-	// module
-	exports.push([module.id, "\n.mask {\n    position: fixed;\n    top: 0;\n    bottom: 0;\n    left: 0;\n    right: 0;\n    background-color: rgba(0,0,0,0.5);\n}\n\n.fade-transition {\n    -webkit-transition: all 0.2s ease;\n    transition: all 0.2s ease;\n}\n\n.fade-enter {\n    opacity: 0;\n    /*margin-top: 5%;*/\n}\n\n.fade-leave {\n    opacity: 0;\n}\n", "", {"version":3,"sources":["/./src/app.vue?4c31d4b9"],"names":[],"mappings":";AACA;IACA,gBAAA;IACA,OAAA;IACA,UAAA;IACA,QAAA;IACA,SAAA;IACA,kCAAA;CACA;;AAEA;IACA,kCAAA;IAAA,0BAAA;CACA;;AAEA;IACA,WAAA;IACA,mBAAA;CACA;;AAEA;IACA,WAAA;CACA","file":"app.vue","sourcesContent":["<style>\r\n    .mask {\r\n        position: fixed;\r\n        top: 0;\r\n        bottom: 0;\r\n        left: 0;\r\n        right: 0;\r\n        background-color: rgba(0,0,0,0.5);\r\n    }\r\n\r\n    .fade-transition {\r\n        transition: all 0.2s ease;\r\n    }\r\n\r\n    .fade-enter {\r\n        opacity: 0;\r\n        /*margin-top: 5%;*/\r\n    }\r\n\r\n    .fade-leave {\r\n        opacity: 0;\r\n    }\r\n</style>\r\n\r\n<template>\r\n    <div>\r\n        <router-view transition=\"fade\" transition-mode=\"out-in\"></router-view>\r\n        <div class=\"mask\" v-if=\"mask\"></div>\r\n    </div>\r\n</template>\r\n\r\n<script>\r\n    var store = require('./store');\r\n\r\n    module.exports = {\r\n        components: {\r\n\r\n        },\r\n\r\n        computed: {\r\n            mask: function() {\r\n                return store.state.mask;\r\n            }\r\n        }\r\n    }\r\n</script>"],"sourceRoot":"webpack://"}]);
-	
-	// exports
-
-
-/***/ },
+/* 28 */,
+/* 29 */,
+/* 30 */,
 /* 31 */
 /***/ function(module, exports) {
 
@@ -14428,12 +14363,705 @@
 
 
 /***/ },
-/* 33 */
+/* 33 */,
+/* 34 */,
+/* 35 */,
+/* 36 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var store = __webpack_require__(34);
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.createLogger = exports.Store = undefined;
+	
+	var _util = __webpack_require__(37);
+	
+	var _devtool = __webpack_require__(38);
+	
+	var _devtool2 = _interopRequireDefault(_devtool);
+	
+	var _logger = __webpack_require__(39);
+	
+	var _logger2 = _interopRequireDefault(_logger);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	var Vue = undefined;
+	
+	var Store = exports.Store = (function () {
+	
+	  /**
+	   * @param {Object} options
+	   *        - {Object} state
+	   *        - {Object} actions
+	   *        - {Object} mutations
+	   *        - {Array} middlewares
+	   *        - {Boolean} strict
+	   */
+	
+	  function Store() {
+	    var _this = this;
+	
+	    var _ref = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	
+	    var _ref$state = _ref.state;
+	    var state = _ref$state === undefined ? {} : _ref$state;
+	    var _ref$actions = _ref.actions;
+	    var actions = _ref$actions === undefined ? {} : _ref$actions;
+	    var _ref$mutations = _ref.mutations;
+	    var mutations = _ref$mutations === undefined ? {} : _ref$mutations;
+	    var _ref$middlewares = _ref.middlewares;
+	    var middlewares = _ref$middlewares === undefined ? [] : _ref$middlewares;
+	    var _ref$strict = _ref.strict;
+	    var strict = _ref$strict === undefined ? false : _ref$strict;
+	
+	    _classCallCheck(this, Store);
+	
+	    // bind dispatch to self
+	    var dispatch = this.dispatch;
+	    this.dispatch = function () {
+	      for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+	        args[_key] = arguments[_key];
+	      }
+	
+	      dispatch.apply(_this, args);
+	    };
+	    // use a Vue instance to store the state tree
+	    this._vm = new Vue({
+	      data: state
+	    });
+	    this._dispatching = false;
+	    this.actions = Object.create(null);
+	    this._setupActions(actions);
+	    this._setupMutations(mutations);
+	    this._setupMiddlewares(middlewares, state);
+	    // add extra warnings in strict mode
+	    if (strict) {
+	      this._setupMutationCheck();
+	    }
+	  }
+	
+	  /**
+	   * Getter for the entire state tree.
+	   * Read only.
+	   *
+	   * @return {Object}
+	   */
+	
+	  _createClass(Store, [{
+	    key: 'dispatch',
+	
+	    /**
+	     * Dispatch an action.
+	     *
+	     * @param {String} type
+	     */
+	
+	    value: function dispatch(type) {
+	      for (var _len2 = arguments.length, payload = Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
+	        payload[_key2 - 1] = arguments[_key2];
+	      }
+	
+	      var mutation = this._mutations[type];
+	      var prevSnapshot = this._prevSnapshot;
+	      var state = this.state;
+	      var snapshot = undefined,
+	          clonedPayload = undefined;
+	      if (mutation) {
+	        this._dispatching = true;
+	        // apply the mutation
+	        if (Array.isArray(mutation)) {
+	          mutation.forEach(function (m) {
+	            return m.apply(undefined, [state].concat(payload));
+	          });
+	        } else {
+	          mutation.apply(undefined, [state].concat(payload));
+	        }
+	        this._dispatching = false;
+	        // invoke middlewares
+	        if (this._needSnapshots) {
+	          snapshot = this._prevSnapshot = (0, _util.deepClone)(state);
+	          clonedPayload = (0, _util.deepClone)(payload);
+	        }
+	        this._middlewares.forEach(function (m) {
+	          if (m.onMutation) {
+	            if (m.snapshot) {
+	              m.onMutation({ type: type, payload: clonedPayload }, snapshot, prevSnapshot);
+	            } else {
+	              m.onMutation({ type: type, payload: payload }, state);
+	            }
+	          }
+	        });
+	      } else {
+	        console.warn('[vuex] Unknown mutation: ' + type);
+	      }
+	    }
+	
+	    /**
+	     * Hot update actions and mutations.
+	     *
+	     * @param {Object} options
+	     *        - {Object} [actions]
+	     *        - {Object} [mutations]
+	     */
+	
+	  }, {
+	    key: 'hotUpdate',
+	    value: function hotUpdate() {
+	      var _ref2 = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	
+	      var actions = _ref2.actions;
+	      var mutations = _ref2.mutations;
+	
+	      if (actions) {
+	        this._setupActions(actions, true);
+	      }
+	      if (mutations) {
+	        this._setupMutations(mutations);
+	      }
+	    }
+	
+	    /**
+	     * Setup mutation check: if the vuex instance's state is mutated
+	     * outside of a mutation handler, we throw en error. This effectively
+	     * enforces all mutations to the state to be trackable and hot-reloadble.
+	     * However, this comes at a run time cost since we are doing a deep
+	     * watch on the entire state tree, so it is only enalbed with the
+	     * strict option is set to true.
+	     */
+	
+	  }, {
+	    key: '_setupMutationCheck',
+	    value: function _setupMutationCheck() {
+	      var _this2 = this;
+	
+	      // a hack to get the watcher constructor from older versions of Vue
+	      // mainly because the public $watch method does not allow sync
+	      // watchers.
+	      var unwatch = this._vm.$watch('__vuex__', function (a) {
+	        return a;
+	      });
+	      var Watcher = this._vm._watchers[0].constructor;
+	      unwatch();
+	      new Watcher(this._vm, '$data', function () {
+	        if (!_this2._dispatching) {
+	          throw new Error('[vuex] Do not mutate vuex store state outside mutation handlers.');
+	        }
+	      }, { deep: true, sync: true });
+	    }
+	
+	    /**
+	     * Set up the callable action functions exposed to components.
+	     * This method can be called multiple times for hot updates.
+	     * We keep the real action functions in an internal object,
+	     * and expose the public object which are just wrapper
+	     * functions that point to the real ones. This is so that
+	     * the reals ones can be hot reloaded.
+	     *
+	     * @param {Object} actions
+	     * @param {Boolean} [hot]
+	     */
+	
+	  }, {
+	    key: '_setupActions',
+	    value: function _setupActions(actions, hot) {
+	      var _this3 = this;
+	
+	      this._actions = Object.create(null);
+	      actions = Array.isArray(actions) ? (0, _util.mergeObjects)(actions) : actions;
+	      Object.keys(actions).forEach(function (name) {
+	        _this3._actions[name] = (0, _util.createAction)(actions[name], _this3);
+	        if (!_this3.actions[name]) {
+	          _this3.actions[name] = function () {
+	            var _actions;
+	
+	            return (_actions = _this3._actions)[name].apply(_actions, arguments);
+	          };
+	        }
+	      });
+	      // delete public actions that are no longer present
+	      // after a hot reload
+	      if (hot) {
+	        Object.keys(this.actions).forEach(function (name) {
+	          if (!actions[name]) {
+	            delete _this3.actions[name];
+	          }
+	        });
+	      }
+	    }
+	
+	    /**
+	     * Setup the mutation handlers. Effectively a event listener.
+	     * This method can be called multiple times for hot updates.
+	     *
+	     * @param {Object} mutations
+	     */
+	
+	  }, {
+	    key: '_setupMutations',
+	    value: function _setupMutations(mutations) {
+	      this._mutations = Array.isArray(mutations) ? (0, _util.mergeObjects)(mutations, true) : mutations;
+	    }
+	
+	    /**
+	     * Setup the middlewares. The devtools middleware is always
+	     * included, since it does nothing if no devtool is detected.
+	     *
+	     * A middleware can demand the state it receives to be
+	     * "snapshots", i.e. deep clones of the actual state tree.
+	     *
+	     * @param {Array} middlewares
+	     * @param {Object} state
+	     */
+	
+	  }, {
+	    key: '_setupMiddlewares',
+	    value: function _setupMiddlewares(middlewares, state) {
+	      this._middlewares = [_devtool2.default].concat(middlewares);
+	      this._needSnapshots = middlewares.some(function (m) {
+	        return m.snapshot;
+	      });
+	      if (this._needSnapshots) {
+	        console.log('[vuex] One or more of your middlewares are taking state snapshots ' + 'for each mutation. Make sure to use them only during development.');
+	      }
+	      var initialSnapshot = this._prevSnapshot = this._needSnapshots ? (0, _util.deepClone)(state) : null;
+	      // call init hooks
+	      this._middlewares.forEach(function (m) {
+	        if (m.onInit) {
+	          m.onInit(m.snapshot ? initialSnapshot : state);
+	        }
+	      });
+	    }
+	  }, {
+	    key: 'state',
+	    get: function get() {
+	      return this._vm._data;
+	    },
+	    set: function set(v) {
+	      throw new Error('[vuex] Vuex root state is read only.');
+	    }
+	  }]);
+	
+	  return Store;
+	})();
+	
+	// export logger factory
+	
+	exports.createLogger = _logger2.default;
+	exports.default = {
+	  Store: Store,
+	  createLogger: _logger2.default,
+	  install: function install(_Vue) {
+	    Vue = _Vue;
+	  }
+	};
+
+/***/ },
+/* 37 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.createAction = createAction;
+	exports.mergeObjects = mergeObjects;
+	exports.deepClone = deepClone;
+	
+	function _typeof(obj) { return obj && typeof Symbol !== "undefined" && obj.constructor === Symbol ? "symbol" : typeof obj; }
+	
+	/**
+	 * Create a actual callable action function.
+	 *
+	 * @param {String|Function} action
+	 * @param {Vuex} store
+	 * @return {Function} [description]
+	 */
+	
+	function createAction(action, store) {
+	  if (typeof action === 'string') {
+	    // simple action string shorthand
+	    return function () {
+	      for (var _len = arguments.length, payload = Array(_len), _key = 0; _key < _len; _key++) {
+	        payload[_key] = arguments[_key];
+	      }
+	
+	      return store.dispatch.apply(store, [action].concat(payload));
+	    };
+	  } else if (typeof action === 'function') {
+	    // normal action
+	    return function () {
+	      for (var _len2 = arguments.length, payload = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+	        payload[_key2] = arguments[_key2];
+	      }
+	
+	      return action.apply(undefined, [store].concat(payload));
+	    };
+	  }
+	}
+	
+	/**
+	 * Merge an array of objects into one.
+	 *
+	 * @param {Array<Object>} arr
+	 * @param {Boolean} allowDuplicate
+	 * @return {Object}
+	 */
+	
+	function mergeObjects(arr, allowDuplicate) {
+	  return arr.reduce(function (prev, obj) {
+	    Object.keys(obj).forEach(function (key) {
+	      var existing = prev[key];
+	      if (existing) {
+	        // allow multiple mutation objects to contain duplicate
+	        // handlers for the same mutation type
+	        if (allowDuplicate) {
+	          if (Array.isArray(existing)) {
+	            existing.push(obj[key]);
+	          } else {
+	            prev[key] = [prev[key], obj[key]];
+	          }
+	        } else {
+	          console.warn('[vuex] Duplicate action: ' + key);
+	        }
+	      } else {
+	        prev[key] = obj[key];
+	      }
+	    });
+	    return prev;
+	  }, {});
+	}
+	
+	/**
+	 * Deep clone an object. Faster than JSON.parse(JSON.stringify()).
+	 *
+	 * @param {*} obj
+	 * @return {*}
+	 */
+	
+	function deepClone(obj) {
+	  if (Array.isArray(obj)) {
+	    return obj.map(deepClone);
+	  } else if (obj && (typeof obj === 'undefined' ? 'undefined' : _typeof(obj)) === 'object') {
+	    var cloned = {};
+	    var keys = Object.keys(obj);
+	    for (var i = 0, l = keys.length; i < l; i++) {
+	      var key = keys[i];
+	      cloned[key] = deepClone(obj[key]);
+	    }
+	    return cloned;
+	  } else {
+	    return obj;
+	  }
+	}
+
+/***/ },
+/* 38 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = {
+	  onInit: function onInit(state) {
+	    // TODO
+	  },
+	  onMutation: function onMutation(mutation, state) {
+	    // TODO
+	  }
+	};
+	module.exports = exports['default'];
+
+/***/ },
+/* 39 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = createLogger;
+	// Credits: borrowed code from fcomb/redux-logger
+	
+	function createLogger() {
+	  var _ref = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	
+	  var _ref$collapsed = _ref.collapsed;
+	  var collapsed = _ref$collapsed === undefined ? true : _ref$collapsed;
+	  var _ref$transformer = _ref.transformer;
+	  var transformer = _ref$transformer === undefined ? function (state) {
+	    return state;
+	  } : _ref$transformer;
+	  var _ref$mutationTransfor = _ref.mutationTransformer;
+	  var mutationTransformer = _ref$mutationTransfor === undefined ? function (mut) {
+	    return mut;
+	  } : _ref$mutationTransfor;
+	
+	  return {
+	    snapshot: true,
+	    onMutation: function onMutation(mutation, nextState, prevState) {
+	      if (typeof console === 'undefined') {
+	        return;
+	      }
+	      var time = new Date();
+	      var formattedTime = ' @ ' + pad(time.getHours(), 2) + ':' + pad(time.getMinutes(), 2) + ':' + pad(time.getSeconds(), 2) + '.' + pad(time.getMilliseconds(), 3);
+	      var formattedMutation = mutationTransformer(mutation);
+	      var message = 'mutation ' + mutation.type + formattedTime;
+	      var startMessage = collapsed ? console.groupCollapsed : console.group;
+	
+	      // render
+	      try {
+	        startMessage.call(console, message);
+	      } catch (e) {
+	        console.log(message);
+	      }
+	
+	      console.log('%c prev state', 'color: #9E9E9E; font-weight: bold', prevState);
+	      console.log('%c mutation', 'color: #03A9F4; font-weight: bold', formattedMutation);
+	      console.log('%c next state', 'color: #4CAF50; font-weight: bold', nextState);
+	
+	      try {
+	        console.groupEnd();
+	      } catch (e) {
+	        console.log('—— log end ——');
+	      }
+	    }
+	  };
+	}
+	
+	function repeat(str, times) {
+	  return new Array(times + 1).join(str);
+	}
+	
+	function pad(num, maxLength) {
+	  return repeat('0', maxLength - num.toString().length) + num;
+	}
+	module.exports = exports['default'];
+
+/***/ },
+/* 40 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Vue = __webpack_require__(1);
+	
+	function callservice(url, request) {
+	    return new Promise(function(resolve, reject) {
+	        console.log('callservice::url, request', url, request);
+	        Vue.http.post(url, request).then(function(response) {
+	            console.log('callservice::response', response);
+	            if(response.data.statusCode === 0) {
+	                resolve(response.data);
+	            } else {
+	                reject(response.data.error);
+	            }
+	        }, function(error) {
+	            alert('system callservice error');
+	            console.log('callservice::error', error);
+	            reject(error);
+	        });
+	    });
+	}
+	
+	var API = {
+	    createUser: function(request) {
+	        return callservice('/game/user/create', request);
+	    },
+	    updateUser: function(user) {
+	        return callservice('/game/user/update', {user: user});
+	    },
+	    listUser: function() {
+	        return callservice('/game/user/list', {});
+	    },
+	    getUser: function(request) {
+	        return callservice('/game/user/get', request);
+	    },
+	    getUsers: function(userIds) {
+	        return callservice('/game/user/list', {
+	            userIds: userIds
+	        });
+	    },
+	    createRoom: function(room) {
+	        var request = {
+	            roomName: room.roomName,
+	            roomDescription: room.roomDescription,
+	            roomSize: room.roomSize
+	        };
+	        return callservice('/game/room/create', request);
+	    },
+	    getRoom: function(roomId) {
+	        return callservice('/game/room/get', {
+	            roomId: roomId
+	        });
+	    },
+	    getRoomPlayers: function(roomId) {
+	        return callservice('/game/room/playerList', {roomId: roomId});
+	    },
+	    getRoomRanking: function(roomId) {
+	        return callservice('/game/room/ranking', {roomId: roomId});
+	    },
+	    getRoomRankingPlayerList: function(roomId) {
+	        return callservice('/game/room/rankingPlayerList', {roomId: roomId});
+	    },
+	    updateRoom: function(room) {
+	        return callservice('/game/room/update', room);
+	    },
+	    listRoom: function() {
+	        return callservice('/game/room/list');
+	    },
+	    joinRoom: function(roomId, userId, userType) {
+	        return callservice('/game/user/joinRoom', {
+	            userId: userId,
+	            userType: userType,
+	            roomId: roomId
+	        });
+	    },
+	    leaveRoom: function(roomId, userId) {
+	        return callservice('/game/user/leaveRoom', {
+	            roomId: roomId,
+	            userId: userId
+	        });
+	    },
+	    startGame: function(roomId) {
+	        return callservice('/game/controls/start', {
+	            roomId: roomId
+	        });
+	    },
+	    stopGame: function(roomId) {
+	        return callservice('/game/controls/stop', {
+	            roomId: roomId
+	        });
+	    },
+	    allowJoin: function(roomId) {
+	        return callservice('/game/controls/joining', {
+	            roomId: roomId
+	        });
+	    },
+	
+	
+	
+	
+	
+	
+	    adminLogin: function(user) {
+	        return callservice('/game/admin/login', {
+	            user: user
+	        });
+	    }
+	};
+	
+	module.exports = window.api = API;
+
+/***/ },
+/* 41 */,
+/* 42 */,
+/* 43 */,
+/* 44 */,
+/* 45 */,
+/* 46 */,
+/* 47 */,
+/* 48 */,
+/* 49 */,
+/* 50 */,
+/* 51 */,
+/* 52 */,
+/* 53 */,
+/* 54 */,
+/* 55 */,
+/* 56 */,
+/* 57 */,
+/* 58 */,
+/* 59 */,
+/* 60 */,
+/* 61 */,
+/* 62 */,
+/* 63 */,
+/* 64 */,
+/* 65 */,
+/* 66 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __vue_script__, __vue_template__
+	__webpack_require__(67)
+	__vue_script__ = __webpack_require__(69)
+	if (__vue_script__ &&
+	    __vue_script__.__esModule &&
+	    Object.keys(__vue_script__).length > 1) {
+	  console.warn("[vue-loader] src\\app.vue: named exports in *.vue files are ignored.")}
+	__vue_template__ = __webpack_require__(71)
+	module.exports = __vue_script__ || {}
+	if (module.exports.__esModule) module.exports = module.exports.default
+	if (__vue_template__) {
+	(typeof module.exports === "function" ? (module.exports.options || (module.exports.options = {})) : module.exports).template = __vue_template__
+	}
+	if (false) {(function () {  module.hot.accept()
+	  var hotAPI = require("vue-hot-reload-api")
+	  hotAPI.install(require("vue"), true)
+	  if (!hotAPI.compatible) return
+	  var id = "C:\\Users\\Administrator\\Documents\\GitHub\\wedding-shake-game\\src\\app.vue"
+	  if (!module.hot.data) {
+	    hotAPI.createRecord(id, module.exports)
+	  } else {
+	    hotAPI.update(id, module.exports, __vue_template__)
+	  }
+	})()}
+
+/***/ },
+/* 67 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+	
+	// load the styles
+	var content = __webpack_require__(68);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(32)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../node_modules/css-loader/index.js?sourceMap!./../node_modules/vue-loader/lib/style-rewriter.js!./../node_modules/vue-loader/lib/selector.js?type=style&index=0!./app.vue", function() {
+				var newContent = require("!!./../node_modules/css-loader/index.js?sourceMap!./../node_modules/vue-loader/lib/style-rewriter.js!./../node_modules/vue-loader/lib/selector.js?type=style&index=0!./app.vue");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 68 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(31)();
+	// imports
+	
+	
+	// module
+	exports.push([module.id, "\n.mask {\n    position: fixed;\n    top: 0;\n    bottom: 0;\n    left: 0;\n    right: 0;\n    background-color: rgba(0,0,0,0.5);\n}\n\n.fade-transition {\n    -webkit-transition: all 0.2s ease;\n    transition: all 0.2s ease;\n}\n\n.fade-enter {\n    opacity: 0;\n    /*margin-top: 5%;*/\n}\n\n.fade-leave {\n    opacity: 0;\n}\n", "", {"version":3,"sources":["/./src/app.vue?4c31d4b9"],"names":[],"mappings":";AACA;IACA,gBAAA;IACA,OAAA;IACA,UAAA;IACA,QAAA;IACA,SAAA;IACA,kCAAA;CACA;;AAEA;IACA,kCAAA;IAAA,0BAAA;CACA;;AAEA;IACA,WAAA;IACA,mBAAA;CACA;;AAEA;IACA,WAAA;CACA","file":"app.vue","sourcesContent":["<style>\r\n    .mask {\r\n        position: fixed;\r\n        top: 0;\r\n        bottom: 0;\r\n        left: 0;\r\n        right: 0;\r\n        background-color: rgba(0,0,0,0.5);\r\n    }\r\n\r\n    .fade-transition {\r\n        transition: all 0.2s ease;\r\n    }\r\n\r\n    .fade-enter {\r\n        opacity: 0;\r\n        /*margin-top: 5%;*/\r\n    }\r\n\r\n    .fade-leave {\r\n        opacity: 0;\r\n    }\r\n</style>\r\n\r\n<template>\r\n    <div>\r\n        <router-view transition=\"fade\" transition-mode=\"out-in\"></router-view>\r\n        <div class=\"mask\" v-if=\"mask\"></div>\r\n    </div>\r\n</template>\r\n\r\n<script>\r\n    var store = require('./store');\r\n\r\n    module.exports = {\r\n        components: {\r\n\r\n        },\r\n\r\n        computed: {\r\n            mask: function() {\r\n                return store.state.mask;\r\n            }\r\n        }\r\n    }\r\n</script>"],"sourceRoot":"webpack://"}]);
+	
+	// exports
+
+
+/***/ },
+/* 69 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var store = __webpack_require__(70);
 	
 	module.exports = {
 	    components: {},
@@ -14446,12 +15074,12 @@
 	};
 
 /***/ },
-/* 34 */
+/* 70 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Vue = __webpack_require__(1);
-	var Vuex = __webpack_require__(35).default;
-	var api = __webpack_require__(39);
+	var Vuex = __webpack_require__(36).default;
+	var api = __webpack_require__(40);
 	
 	Vue.use(Vuex);
 	Vue.config.debug = true;
@@ -14905,608 +15533,23 @@
 
 
 /***/ },
-/* 35 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.createLogger = exports.Store = undefined;
-	
-	var _util = __webpack_require__(36);
-	
-	var _devtool = __webpack_require__(37);
-	
-	var _devtool2 = _interopRequireDefault(_devtool);
-	
-	var _logger = __webpack_require__(38);
-	
-	var _logger2 = _interopRequireDefault(_logger);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	var Vue = undefined;
-	
-	var Store = exports.Store = (function () {
-	
-	  /**
-	   * @param {Object} options
-	   *        - {Object} state
-	   *        - {Object} actions
-	   *        - {Object} mutations
-	   *        - {Array} middlewares
-	   *        - {Boolean} strict
-	   */
-	
-	  function Store() {
-	    var _this = this;
-	
-	    var _ref = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	
-	    var _ref$state = _ref.state;
-	    var state = _ref$state === undefined ? {} : _ref$state;
-	    var _ref$actions = _ref.actions;
-	    var actions = _ref$actions === undefined ? {} : _ref$actions;
-	    var _ref$mutations = _ref.mutations;
-	    var mutations = _ref$mutations === undefined ? {} : _ref$mutations;
-	    var _ref$middlewares = _ref.middlewares;
-	    var middlewares = _ref$middlewares === undefined ? [] : _ref$middlewares;
-	    var _ref$strict = _ref.strict;
-	    var strict = _ref$strict === undefined ? false : _ref$strict;
-	
-	    _classCallCheck(this, Store);
-	
-	    // bind dispatch to self
-	    var dispatch = this.dispatch;
-	    this.dispatch = function () {
-	      for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-	        args[_key] = arguments[_key];
-	      }
-	
-	      dispatch.apply(_this, args);
-	    };
-	    // use a Vue instance to store the state tree
-	    this._vm = new Vue({
-	      data: state
-	    });
-	    this._dispatching = false;
-	    this.actions = Object.create(null);
-	    this._setupActions(actions);
-	    this._setupMutations(mutations);
-	    this._setupMiddlewares(middlewares, state);
-	    // add extra warnings in strict mode
-	    if (strict) {
-	      this._setupMutationCheck();
-	    }
-	  }
-	
-	  /**
-	   * Getter for the entire state tree.
-	   * Read only.
-	   *
-	   * @return {Object}
-	   */
-	
-	  _createClass(Store, [{
-	    key: 'dispatch',
-	
-	    /**
-	     * Dispatch an action.
-	     *
-	     * @param {String} type
-	     */
-	
-	    value: function dispatch(type) {
-	      for (var _len2 = arguments.length, payload = Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
-	        payload[_key2 - 1] = arguments[_key2];
-	      }
-	
-	      var mutation = this._mutations[type];
-	      var prevSnapshot = this._prevSnapshot;
-	      var state = this.state;
-	      var snapshot = undefined,
-	          clonedPayload = undefined;
-	      if (mutation) {
-	        this._dispatching = true;
-	        // apply the mutation
-	        if (Array.isArray(mutation)) {
-	          mutation.forEach(function (m) {
-	            return m.apply(undefined, [state].concat(payload));
-	          });
-	        } else {
-	          mutation.apply(undefined, [state].concat(payload));
-	        }
-	        this._dispatching = false;
-	        // invoke middlewares
-	        if (this._needSnapshots) {
-	          snapshot = this._prevSnapshot = (0, _util.deepClone)(state);
-	          clonedPayload = (0, _util.deepClone)(payload);
-	        }
-	        this._middlewares.forEach(function (m) {
-	          if (m.onMutation) {
-	            if (m.snapshot) {
-	              m.onMutation({ type: type, payload: clonedPayload }, snapshot, prevSnapshot);
-	            } else {
-	              m.onMutation({ type: type, payload: payload }, state);
-	            }
-	          }
-	        });
-	      } else {
-	        console.warn('[vuex] Unknown mutation: ' + type);
-	      }
-	    }
-	
-	    /**
-	     * Hot update actions and mutations.
-	     *
-	     * @param {Object} options
-	     *        - {Object} [actions]
-	     *        - {Object} [mutations]
-	     */
-	
-	  }, {
-	    key: 'hotUpdate',
-	    value: function hotUpdate() {
-	      var _ref2 = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	
-	      var actions = _ref2.actions;
-	      var mutations = _ref2.mutations;
-	
-	      if (actions) {
-	        this._setupActions(actions, true);
-	      }
-	      if (mutations) {
-	        this._setupMutations(mutations);
-	      }
-	    }
-	
-	    /**
-	     * Setup mutation check: if the vuex instance's state is mutated
-	     * outside of a mutation handler, we throw en error. This effectively
-	     * enforces all mutations to the state to be trackable and hot-reloadble.
-	     * However, this comes at a run time cost since we are doing a deep
-	     * watch on the entire state tree, so it is only enalbed with the
-	     * strict option is set to true.
-	     */
-	
-	  }, {
-	    key: '_setupMutationCheck',
-	    value: function _setupMutationCheck() {
-	      var _this2 = this;
-	
-	      // a hack to get the watcher constructor from older versions of Vue
-	      // mainly because the public $watch method does not allow sync
-	      // watchers.
-	      var unwatch = this._vm.$watch('__vuex__', function (a) {
-	        return a;
-	      });
-	      var Watcher = this._vm._watchers[0].constructor;
-	      unwatch();
-	      new Watcher(this._vm, '$data', function () {
-	        if (!_this2._dispatching) {
-	          throw new Error('[vuex] Do not mutate vuex store state outside mutation handlers.');
-	        }
-	      }, { deep: true, sync: true });
-	    }
-	
-	    /**
-	     * Set up the callable action functions exposed to components.
-	     * This method can be called multiple times for hot updates.
-	     * We keep the real action functions in an internal object,
-	     * and expose the public object which are just wrapper
-	     * functions that point to the real ones. This is so that
-	     * the reals ones can be hot reloaded.
-	     *
-	     * @param {Object} actions
-	     * @param {Boolean} [hot]
-	     */
-	
-	  }, {
-	    key: '_setupActions',
-	    value: function _setupActions(actions, hot) {
-	      var _this3 = this;
-	
-	      this._actions = Object.create(null);
-	      actions = Array.isArray(actions) ? (0, _util.mergeObjects)(actions) : actions;
-	      Object.keys(actions).forEach(function (name) {
-	        _this3._actions[name] = (0, _util.createAction)(actions[name], _this3);
-	        if (!_this3.actions[name]) {
-	          _this3.actions[name] = function () {
-	            var _actions;
-	
-	            return (_actions = _this3._actions)[name].apply(_actions, arguments);
-	          };
-	        }
-	      });
-	      // delete public actions that are no longer present
-	      // after a hot reload
-	      if (hot) {
-	        Object.keys(this.actions).forEach(function (name) {
-	          if (!actions[name]) {
-	            delete _this3.actions[name];
-	          }
-	        });
-	      }
-	    }
-	
-	    /**
-	     * Setup the mutation handlers. Effectively a event listener.
-	     * This method can be called multiple times for hot updates.
-	     *
-	     * @param {Object} mutations
-	     */
-	
-	  }, {
-	    key: '_setupMutations',
-	    value: function _setupMutations(mutations) {
-	      this._mutations = Array.isArray(mutations) ? (0, _util.mergeObjects)(mutations, true) : mutations;
-	    }
-	
-	    /**
-	     * Setup the middlewares. The devtools middleware is always
-	     * included, since it does nothing if no devtool is detected.
-	     *
-	     * A middleware can demand the state it receives to be
-	     * "snapshots", i.e. deep clones of the actual state tree.
-	     *
-	     * @param {Array} middlewares
-	     * @param {Object} state
-	     */
-	
-	  }, {
-	    key: '_setupMiddlewares',
-	    value: function _setupMiddlewares(middlewares, state) {
-	      this._middlewares = [_devtool2.default].concat(middlewares);
-	      this._needSnapshots = middlewares.some(function (m) {
-	        return m.snapshot;
-	      });
-	      if (this._needSnapshots) {
-	        console.log('[vuex] One or more of your middlewares are taking state snapshots ' + 'for each mutation. Make sure to use them only during development.');
-	      }
-	      var initialSnapshot = this._prevSnapshot = this._needSnapshots ? (0, _util.deepClone)(state) : null;
-	      // call init hooks
-	      this._middlewares.forEach(function (m) {
-	        if (m.onInit) {
-	          m.onInit(m.snapshot ? initialSnapshot : state);
-	        }
-	      });
-	    }
-	  }, {
-	    key: 'state',
-	    get: function get() {
-	      return this._vm._data;
-	    },
-	    set: function set(v) {
-	      throw new Error('[vuex] Vuex root state is read only.');
-	    }
-	  }]);
-	
-	  return Store;
-	})();
-	
-	// export logger factory
-	
-	exports.createLogger = _logger2.default;
-	exports.default = {
-	  Store: Store,
-	  createLogger: _logger2.default,
-	  install: function install(_Vue) {
-	    Vue = _Vue;
-	  }
-	};
-
-/***/ },
-/* 36 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.createAction = createAction;
-	exports.mergeObjects = mergeObjects;
-	exports.deepClone = deepClone;
-	
-	function _typeof(obj) { return obj && typeof Symbol !== "undefined" && obj.constructor === Symbol ? "symbol" : typeof obj; }
-	
-	/**
-	 * Create a actual callable action function.
-	 *
-	 * @param {String|Function} action
-	 * @param {Vuex} store
-	 * @return {Function} [description]
-	 */
-	
-	function createAction(action, store) {
-	  if (typeof action === 'string') {
-	    // simple action string shorthand
-	    return function () {
-	      for (var _len = arguments.length, payload = Array(_len), _key = 0; _key < _len; _key++) {
-	        payload[_key] = arguments[_key];
-	      }
-	
-	      return store.dispatch.apply(store, [action].concat(payload));
-	    };
-	  } else if (typeof action === 'function') {
-	    // normal action
-	    return function () {
-	      for (var _len2 = arguments.length, payload = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-	        payload[_key2] = arguments[_key2];
-	      }
-	
-	      return action.apply(undefined, [store].concat(payload));
-	    };
-	  }
-	}
-	
-	/**
-	 * Merge an array of objects into one.
-	 *
-	 * @param {Array<Object>} arr
-	 * @param {Boolean} allowDuplicate
-	 * @return {Object}
-	 */
-	
-	function mergeObjects(arr, allowDuplicate) {
-	  return arr.reduce(function (prev, obj) {
-	    Object.keys(obj).forEach(function (key) {
-	      var existing = prev[key];
-	      if (existing) {
-	        // allow multiple mutation objects to contain duplicate
-	        // handlers for the same mutation type
-	        if (allowDuplicate) {
-	          if (Array.isArray(existing)) {
-	            existing.push(obj[key]);
-	          } else {
-	            prev[key] = [prev[key], obj[key]];
-	          }
-	        } else {
-	          console.warn('[vuex] Duplicate action: ' + key);
-	        }
-	      } else {
-	        prev[key] = obj[key];
-	      }
-	    });
-	    return prev;
-	  }, {});
-	}
-	
-	/**
-	 * Deep clone an object. Faster than JSON.parse(JSON.stringify()).
-	 *
-	 * @param {*} obj
-	 * @return {*}
-	 */
-	
-	function deepClone(obj) {
-	  if (Array.isArray(obj)) {
-	    return obj.map(deepClone);
-	  } else if (obj && (typeof obj === 'undefined' ? 'undefined' : _typeof(obj)) === 'object') {
-	    var cloned = {};
-	    var keys = Object.keys(obj);
-	    for (var i = 0, l = keys.length; i < l; i++) {
-	      var key = keys[i];
-	      cloned[key] = deepClone(obj[key]);
-	    }
-	    return cloned;
-	  } else {
-	    return obj;
-	  }
-	}
-
-/***/ },
-/* 37 */
-/***/ function(module, exports) {
-
-	"use strict";
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.default = {
-	  onInit: function onInit(state) {
-	    // TODO
-	  },
-	  onMutation: function onMutation(mutation, state) {
-	    // TODO
-	  }
-	};
-	module.exports = exports['default'];
-
-/***/ },
-/* 38 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.default = createLogger;
-	// Credits: borrowed code from fcomb/redux-logger
-	
-	function createLogger() {
-	  var _ref = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	
-	  var _ref$collapsed = _ref.collapsed;
-	  var collapsed = _ref$collapsed === undefined ? true : _ref$collapsed;
-	  var _ref$transformer = _ref.transformer;
-	  var transformer = _ref$transformer === undefined ? function (state) {
-	    return state;
-	  } : _ref$transformer;
-	  var _ref$mutationTransfor = _ref.mutationTransformer;
-	  var mutationTransformer = _ref$mutationTransfor === undefined ? function (mut) {
-	    return mut;
-	  } : _ref$mutationTransfor;
-	
-	  return {
-	    snapshot: true,
-	    onMutation: function onMutation(mutation, nextState, prevState) {
-	      if (typeof console === 'undefined') {
-	        return;
-	      }
-	      var time = new Date();
-	      var formattedTime = ' @ ' + pad(time.getHours(), 2) + ':' + pad(time.getMinutes(), 2) + ':' + pad(time.getSeconds(), 2) + '.' + pad(time.getMilliseconds(), 3);
-	      var formattedMutation = mutationTransformer(mutation);
-	      var message = 'mutation ' + mutation.type + formattedTime;
-	      var startMessage = collapsed ? console.groupCollapsed : console.group;
-	
-	      // render
-	      try {
-	        startMessage.call(console, message);
-	      } catch (e) {
-	        console.log(message);
-	      }
-	
-	      console.log('%c prev state', 'color: #9E9E9E; font-weight: bold', prevState);
-	      console.log('%c mutation', 'color: #03A9F4; font-weight: bold', formattedMutation);
-	      console.log('%c next state', 'color: #4CAF50; font-weight: bold', nextState);
-	
-	      try {
-	        console.groupEnd();
-	      } catch (e) {
-	        console.log('—— log end ——');
-	      }
-	    }
-	  };
-	}
-	
-	function repeat(str, times) {
-	  return new Array(times + 1).join(str);
-	}
-	
-	function pad(num, maxLength) {
-	  return repeat('0', maxLength - num.toString().length) + num;
-	}
-	module.exports = exports['default'];
-
-/***/ },
-/* 39 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var Vue = __webpack_require__(1);
-	
-	function callservice(url, request) {
-	    return new Promise(function(resolve, reject) {
-	        console.log('callservice::url, request', url, request);
-	        Vue.http.post(url, request).then(function(response) {
-	            console.log('callservice::response', response);
-	            if(response.data.statusCode === 0) {
-	                resolve(response.data);
-	            } else {
-	                reject(response.data.error);
-	            }
-	        }, function(error) {
-	            alert('system callservice error');
-	            console.log('callservice::error', error);
-	            reject(error);
-	        });
-	    });
-	}
-	
-	var API = {
-	    createUser: function(request) {
-	        return callservice('/game/user/create', request);
-	    },
-	    updateUser: function(user) {
-	        return callservice('/game/user/update', {user: user});
-	    },
-	    listUser: function() {
-	        return callservice('/game/user/list', {});
-	    },
-	    getUser: function(request) {
-	        return callservice('/game/user/get', request);
-	    },
-	    getUsers: function(userIds) {
-	        return callservice('/game/user/list', {
-	            userIds: userIds
-	        });
-	    },
-	    createRoom: function(room) {
-	        var request = {
-	            roomName: room.roomName,
-	            roomDescription: room.roomDescription,
-	            roomSize: room.roomSize
-	        };
-	        return callservice('/game/room/create', request);
-	    },
-	    getRoom: function(roomId) {
-	        return callservice('/game/room/get', {
-	            roomId: roomId
-	        });
-	    },
-	    getRoomPlayers: function(roomId) {
-	        return callservice('/game/room/playerList', {roomId: roomId});
-	    },
-	    getRoomRanking: function(roomId) {
-	        return callservice('/game/room/ranking', {roomId: roomId});
-	    },
-	    getRoomRankingPlayerList: function(roomId) {
-	        return callservice('/game/room/rankingPlayerList', {roomId: roomId});
-	    },
-	    updateRoom: function(room) {
-	        return callservice('/game/room/update', room);
-	    },
-	    listRoom: function() {
-	        return callservice('/game/room/list');
-	    },
-	    joinRoom: function(roomId, userId, userType) {
-	        return callservice('/game/user/joinRoom', {
-	            userId: userId,
-	            userType: userType,
-	            roomId: roomId
-	        });
-	    },
-	    leaveRoom: function(roomId, userId) {
-	        return callservice('/game/user/leaveRoom', {
-	            roomId: roomId,
-	            userId: userId
-	        });
-	    },
-	    startGame: function(roomId) {
-	        return callservice('/game/controls/start', {
-	            roomId: roomId
-	        });
-	    },
-	    stopGame: function(roomId) {
-	        return callservice('/game/controls/stop', {
-	            roomId: roomId
-	        });
-	    },
-	    allowJoin: function(roomId) {
-	        return callservice('/game/controls/joining', {
-	            roomId: roomId
-	        });
-	    }
-	};
-	
-	module.exports = window.api = API;
-
-/***/ },
-/* 40 */
+/* 71 */
 /***/ function(module, exports) {
 
 	module.exports = "\n<div>\n    <router-view transition=\"fade\" transition-mode=\"out-in\"></router-view>\n    <div class=\"mask\" v-if=\"mask\"></div>\n</div>\n";
 
 /***/ },
-/* 41 */
+/* 72 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __vue_script__, __vue_template__
-	__webpack_require__(42)
-	__vue_script__ = __webpack_require__(44)
+	__webpack_require__(73)
+	__vue_script__ = __webpack_require__(75)
 	if (__vue_script__ &&
 	    __vue_script__.__esModule &&
 	    Object.keys(__vue_script__).length > 1) {
 	  console.warn("[vue-loader] src\\components\\player\\login-page.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(45)
+	__vue_template__ = __webpack_require__(76)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
 	if (__vue_template__) {
@@ -15525,13 +15568,13 @@
 	})()}
 
 /***/ },
-/* 42 */
+/* 73 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
 	// load the styles
-	var content = __webpack_require__(43);
+	var content = __webpack_require__(74);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(32)(content, {});
@@ -15551,7 +15594,7 @@
 	}
 
 /***/ },
-/* 43 */
+/* 74 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(31)();
@@ -15565,12 +15608,12 @@
 
 
 /***/ },
-/* 44 */
+/* 75 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var store = __webpack_require__(34);
+	var store = __webpack_require__(70);
 	
 	module.exports = {
 	
@@ -15604,23 +15647,23 @@
 	};
 
 /***/ },
-/* 45 */
+/* 76 */
 /***/ function(module, exports) {
 
 	module.exports = "\n<div>\n    <div class=\"background-container\"></div>\n\n    <div class=\"valign-wrapper row login-page-header\">\n        <div class=\"valign col s12\">\n            <h5 class=\" center-align\" style=\"color: white;font-family: monospace\">WELCOME TO OUR</h5>\n            <h2 class=\" center-align\" style=\"color: white;font-family: serif\">Wedding</h2>\n        </div>\n    </div>\n    <div>\n        <div class=\"container\">\n            <div class=\"row\">\n                <div class=\"input-field col s12\">\n                    <input v-el:user-name placeholder=\"user name\" id=\"loginPageUserName\" type=\"text\">\n                </div>\n                <div class=\"input-field col s12\">\n                    <select v-el:user-type>\n                        <option value=\"\" disabled selected>Choose your guest type</option>\n                        <option value=\"BRIDE\">Bride Guest</option>\n                        <option value=\"GROOM\">Groom Guest</option>\n                    </select>\n                </div>\n            </div>\n            <div class=\"row\">\n                <a class=\"col s12 waves-effect waves-light btn btn-large red white-text\" @click=\"start()\">Start</a>\n            </div>\n            <div class=\"row\">\n                <a href=\"https://graph.qq.com/oauth2.0/authorize?response_type=code&client_id=101295012&redirect_uri=http%3A%2F%2Fwedding.jackyang.me%2Fqq_login_callback.html&state=test&scope=all\" class=\"col s12 right-align\">\n                    <img src=\"http://wedding.jackyang.me/images/Connect_logo_4.png\">\n                </a>\n            </div>\n        </div>\n    </div>\n</div>\n";
 
 /***/ },
-/* 46 */
+/* 77 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __vue_script__, __vue_template__
-	__webpack_require__(47)
-	__vue_script__ = __webpack_require__(49)
+	__webpack_require__(78)
+	__vue_script__ = __webpack_require__(80)
 	if (__vue_script__ &&
 	    __vue_script__.__esModule &&
 	    Object.keys(__vue_script__).length > 1) {
 	  console.warn("[vue-loader] src\\components\\player\\home-page.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(50)
+	__vue_template__ = __webpack_require__(81)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
 	if (__vue_template__) {
@@ -15639,13 +15682,13 @@
 	})()}
 
 /***/ },
-/* 47 */
+/* 78 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
 	// load the styles
-	var content = __webpack_require__(48);
+	var content = __webpack_require__(79);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(32)(content, {});
@@ -15665,7 +15708,7 @@
 	}
 
 /***/ },
-/* 48 */
+/* 79 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(31)();
@@ -15679,12 +15722,12 @@
 
 
 /***/ },
-/* 49 */
+/* 80 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var store = __webpack_require__(34);
+	var store = __webpack_require__(70);
 	
 	module.exports = {
 	
@@ -15746,23 +15789,23 @@
 	};
 
 /***/ },
-/* 50 */
+/* 81 */
 /***/ function(module, exports) {
 
 	module.exports = "\n<div _v-6ab4b43e=\"\">\n    <div class=\"navbar-fixed\" _v-6ab4b43e=\"\">\n        <nav _v-6ab4b43e=\"\">\n            <div class=\"nav-wrapper red lighten-2\" _v-6ab4b43e=\"\">\n                <a class=\"brand-logo center\" _v-6ab4b43e=\"\">{{currentPlayer.userName}}</a>\n                <ul class=\"right\" _v-6ab4b43e=\"\">\n                    <li _v-6ab4b43e=\"\"><a @click=\"quit()\" _v-6ab4b43e=\"\"><i class=\"material-icons fa fa-sign-out\" _v-6ab4b43e=\"\"></i></a></li>\n                </ul>\n            </div>\n        </nav>\n    </div>\n\n    <div class=\"slider-container\" _v-6ab4b43e=\"\">\n        <div class=\"home-page-image\" _v-6ab4b43e=\"\"></div>\n    </div>\n\n    <div class=\"section\" _v-6ab4b43e=\"\">\n        <div class=\"section-header\" _v-6ab4b43e=\"\">\n            <div class=\"container\" _v-6ab4b43e=\"\">\n                <h6 _v-6ab4b43e=\"\">USER INFORMATION</h6>\n            </div>\n        </div>\n        <div class=\"section-content\" _v-6ab4b43e=\"\">\n            <div class=\"card no-shadow\" _v-6ab4b43e=\"\">\n                <div class=\"card-content row\" style=\"margin-bottom:0\" _v-6ab4b43e=\"\">\n                    <div class=\"col s3\" _v-6ab4b43e=\"\">\n                        <img :src=\"currentPlayer.avatarImageUrl\" alt=\"\" class=\"circle responsive-img\" _v-6ab4b43e=\"\">\n                    </div>\n                    <div class=\"col s7\" _v-6ab4b43e=\"\">\n                        <h6 _v-6ab4b43e=\"\">{{currentPlayer.userName}}</h6>\n                        <span style=\"color: #A9A7A7\" _v-6ab4b43e=\"\">{{currentPlayer.userType}} Guest</span>\n                    </div>\n                    <div class=\"col s2\" _v-6ab4b43e=\"\">\n                        <h5 _v-6ab4b43e=\"\"><a v-link=\"{name:'profile'}\" _v-6ab4b43e=\"\"><i class=\"material-icons fa fa-edit\" _v-6ab4b43e=\"\"></i></a></h5>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n\n    <div class=\"section\" _v-6ab4b43e=\"\">\n        <div class=\"section-header\" _v-6ab4b43e=\"\">\n            <div class=\"container\" _v-6ab4b43e=\"\">\n                <h6 _v-6ab4b43e=\"\">ROOM LIST</h6>\n            </div>\n        </div>\n        <div class=\"section-content\" _v-6ab4b43e=\"\">\n            <ul class=\"collection no-border transparent\" _v-6ab4b43e=\"\">\n                <li class=\"collection-item avatar\" v-for=\"room in roomList\" _v-6ab4b43e=\"\">\n                    <i v-if=\"$index == 0\" class=\"material-icons circle\" style=\"background: #90dde3\" _v-6ab4b43e=\"\">{{$index + 1}}</i>\n                    <i v-if=\"$index == 1\" class=\"material-icons circle\" style=\"background: #f79a3d\" _v-6ab4b43e=\"\">{{$index + 1}}</i>\n                    <i v-if=\"$index == 2\" class=\"material-icons circle\" style=\"background: #f56937\" _v-6ab4b43e=\"\">{{$index + 1}}</i>\n                    <div class=\"row\" _v-6ab4b43e=\"\">\n                        <span class=\"title red-text text-lighten-2\" _v-6ab4b43e=\"\">{{room.roomName}}</span>\n                        <p v-if=\"room.status === 'INIT'\" _v-6ab4b43e=\"\">Game is not started yet, please wait.</p>\n                        <p v-if=\"room.status === 'JOINING'\" _v-6ab4b43e=\"\">People are joining, there are {{room.players.length}} players joined the game.</p>\n                        <p v-if=\"room.status === 'PLAYING'\" _v-6ab4b43e=\"\">Game is playing right now. You can't join right now.</p>\n                        <p v-if=\"room.status === 'END'\" _v-6ab4b43e=\"\">Game is ended.</p>\n                    </div>\n                    <div class=\"row\" _v-6ab4b43e=\"\">\n                        <a v-if=\"room.status === 'JOINING'\" @click=\"join(room.objectId)\" class=\"waves-effect waves-light btn red lighten-2\" _v-6ab4b43e=\"\">Join Now</a>\n                        <a v-if=\"room.status === 'PLAYING'\" @click=\"visit(room.objectId)\" class=\"waves-effect waves-light btn white red-text\" _v-6ab4b43e=\"\">Pay Visit</a>\n                        <a v-if=\"room.status === 'END'\" @click=\"ranking(room.objectId)\" class=\"waves-effect waves-light btn white red-text\" _v-6ab4b43e=\"\">Check Rankings</a>\n                    </div>\n                </li>\n            </ul>\n        </div>\n    </div>\n</div>\n";
 
 /***/ },
-/* 51 */
+/* 82 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __vue_script__, __vue_template__
-	__webpack_require__(52)
-	__vue_script__ = __webpack_require__(54)
+	__webpack_require__(83)
+	__vue_script__ = __webpack_require__(85)
 	if (__vue_script__ &&
 	    __vue_script__.__esModule &&
 	    Object.keys(__vue_script__).length > 1) {
 	  console.warn("[vue-loader] src\\components\\player\\profile-page.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(55)
+	__vue_template__ = __webpack_require__(86)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
 	if (__vue_template__) {
@@ -15781,13 +15824,13 @@
 	})()}
 
 /***/ },
-/* 52 */
+/* 83 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
 	// load the styles
-	var content = __webpack_require__(53);
+	var content = __webpack_require__(84);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(32)(content, {});
@@ -15807,7 +15850,7 @@
 	}
 
 /***/ },
-/* 53 */
+/* 84 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(31)();
@@ -15821,12 +15864,12 @@
 
 
 /***/ },
-/* 54 */
+/* 85 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var store = __webpack_require__(34);
+	var store = __webpack_require__(70);
 	var Vue = __webpack_require__(1);
 	
 	module.exports = {
@@ -15863,23 +15906,23 @@
 	};
 
 /***/ },
-/* 55 */
+/* 86 */
 /***/ function(module, exports) {
 
 	module.exports = "\n<div _v-ae9f8a82=\"\">\n    <div class=\"navbar-fixed\" _v-ae9f8a82=\"\">\n        <nav _v-ae9f8a82=\"\">\n            <div class=\"nav-wrapper red lighten-2\" _v-ae9f8a82=\"\">\n                <a class=\"brand-logo\" _v-ae9f8a82=\"\">Profile</a>\n                <ul class=\"left\" _v-ae9f8a82=\"\">\n                    <li _v-ae9f8a82=\"\"><a @click=\"back()\" _v-ae9f8a82=\"\"><i class=\"material-icons fa fa-angle-left\" _v-ae9f8a82=\"\"></i></a></li>\n                </ul>\n            </div>\n        </nav>\n    </div>\n\n    <div class=\"slider-container\" _v-ae9f8a82=\"\">\n        <div class=\"profile-page-image\" _v-ae9f8a82=\"\">\n            <div class=\"row\" _v-ae9f8a82=\"\">\n                <div class=\"col s12 avatar-container\" _v-ae9f8a82=\"\">\n                    <div class=\"col s12 center-align\" _v-ae9f8a82=\"\">\n                        <img :src=\"player.avatarImageUrl\" class=\"avatar\" _v-ae9f8a82=\"\">\n                    </div>\n                    <h5 class=\"center-align white-text\" _v-ae9f8a82=\"\">{{player.userName}}</h5>\n                    <h6 class=\"center-align grey-text text-lighten-4\" _v-ae9f8a82=\"\">{{player.userType}} GUEST</h6>\n                </div>\n            </div>\n        </div>\n    </div>\n\n    <div class=\"section\" _v-ae9f8a82=\"\">\n        <div class=\"section-header\" _v-ae9f8a82=\"\">\n            <div class=\"container\" _v-ae9f8a82=\"\">\n                <h6 _v-ae9f8a82=\"\">EDIT PROFILE</h6>\n            </div>\n        </div>\n        <div class=\"section-content\" _v-ae9f8a82=\"\">\n            <div class=\"card no-shadow\" _v-ae9f8a82=\"\">\n                <div class=\"card-content\" _v-ae9f8a82=\"\">\n                    <div class=\"row\" _v-ae9f8a82=\"\">\n                        <div class=\"col s12\" _v-ae9f8a82=\"\">\n                            <div class=\"row\" _v-ae9f8a82=\"\">\n                                <div class=\"input-field col s12\" _v-ae9f8a82=\"\">\n                                    <input id=\"profile-page-user-name-input\" type=\"text\" value=\"{{player.userName}}\" v-el:user-name=\"\" _v-ae9f8a82=\"\">\n                                    <label for=\"profile-page-user-name-input\" class=\"active\" _v-ae9f8a82=\"\">User Name</label>\n                                </div>\n                            </div>\n                            <div class=\"row\" _v-ae9f8a82=\"\">\n                                <div class=\"input-field col s12\" _v-ae9f8a82=\"\">\n                                    <select v-el:user-type=\"\" _v-ae9f8a82=\"\">\n                                        <option value=\"\" disabled=\"\" :selected=\"!player.userType\" _v-ae9f8a82=\"\">Choose your option</option>\n                                        <option value=\"BRIDE\" :selected=\"player.userType === 'BRIDE'\" _v-ae9f8a82=\"\">Bride Guest</option>\n                                        <option value=\"GROOM\" :selected=\"player.userType === 'GROOM'\" _v-ae9f8a82=\"\">Groom Guest</option>\n                                    </select>\n                                    <label _v-ae9f8a82=\"\">User Type</label>\n                                </div>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n\n    <div class=\"container\" _v-ae9f8a82=\"\">\n        <div class=\"row\" _v-ae9f8a82=\"\">\n            <a class=\"col s12 waves-effect waves-light btn btn-large red white-text\" @click=\"submitEdit()\" _v-ae9f8a82=\"\">OK</a>\n        </div>\n    </div>\n</div>\n";
 
 /***/ },
-/* 56 */
+/* 87 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __vue_script__, __vue_template__
-	__webpack_require__(57)
-	__vue_script__ = __webpack_require__(59)
+	__webpack_require__(88)
+	__vue_script__ = __webpack_require__(90)
 	if (__vue_script__ &&
 	    __vue_script__.__esModule &&
 	    Object.keys(__vue_script__).length > 1) {
 	  console.warn("[vue-loader] src\\components\\player\\ready-page.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(65)
+	__vue_template__ = __webpack_require__(96)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
 	if (__vue_template__) {
@@ -15898,13 +15941,13 @@
 	})()}
 
 /***/ },
-/* 57 */
+/* 88 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
 	// load the styles
-	var content = __webpack_require__(58);
+	var content = __webpack_require__(89);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(32)(content, {});
@@ -15924,7 +15967,7 @@
 	}
 
 /***/ },
-/* 58 */
+/* 89 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(31)();
@@ -15938,13 +15981,13 @@
 
 
 /***/ },
-/* 59 */
+/* 90 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var store = __webpack_require__(34);
-	var Stopwatch = __webpack_require__(60);
+	var store = __webpack_require__(70);
+	var Stopwatch = __webpack_require__(91);
 	
 	module.exports = {
 	
@@ -16044,14 +16087,14 @@
 	};
 
 /***/ },
-/* 60 */
+/* 91 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// Export lib/mongule
-	module.exports = __webpack_require__(61);
+	module.exports = __webpack_require__(92);
 
 /***/ },
-/* 61 */
+/* 92 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// Developed for TKD-Score-Server by Mick Crozier 2015
@@ -16059,8 +16102,8 @@
 	
 	
 	
-	var EventEmitter = __webpack_require__(62).EventEmitter;
-	var _ = __webpack_require__(63);
+	var EventEmitter = __webpack_require__(93).EventEmitter;
+	var _ = __webpack_require__(94);
 	
 	
 	
@@ -16292,7 +16335,7 @@
 
 
 /***/ },
-/* 62 */
+/* 93 */
 /***/ function(module, exports) {
 
 	// Copyright Joyent, Inc. and other Node contributors.
@@ -16596,7 +16639,7 @@
 
 
 /***/ },
-/* 63 */
+/* 94 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(module, global) {/**
@@ -23758,10 +23801,10 @@
 	  }
 	}.call(this));
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(64)(module), (function() { return this; }())))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(95)(module), (function() { return this; }())))
 
 /***/ },
-/* 64 */
+/* 95 */
 /***/ function(module, exports) {
 
 	module.exports = function(module) {
@@ -23777,23 +23820,23 @@
 
 
 /***/ },
-/* 65 */
+/* 96 */
 /***/ function(module, exports) {
 
 	module.exports = "\n<div _v-9d39ddf6=\"\">\n    <div class=\"navbar-fixed\" _v-9d39ddf6=\"\">\n        <nav _v-9d39ddf6=\"\">\n            <div class=\"nav-wrapper red lighten-2\" _v-9d39ddf6=\"\">\n                <a class=\"brand-logo center\" _v-9d39ddf6=\"\">Ready Page</a>\n                <ul class=\"left\" _v-9d39ddf6=\"\">\n                    <li _v-9d39ddf6=\"\"><a @click=\"back()\" _v-9d39ddf6=\"\"><i class=\"material-icons fa fa-angle-left\" _v-9d39ddf6=\"\"></i></a></li>\n                </ul>\n            </div>\n        </nav>\n    </div>\n\n    <div class=\"slider-container\" _v-9d39ddf6=\"\">\n        <div class=\"ready-page-image\" _v-9d39ddf6=\"\">\n            <div class=\"card col s12 no-shadow transparent white-text\" style=\"margin-top:0\" _v-9d39ddf6=\"\">\n                <div class=\"card-content\" _v-9d39ddf6=\"\">\n                    <span class=\"card-title\" _v-9d39ddf6=\"\">room info</span>\n                    <p _v-9d39ddf6=\"\">All players shake mobile for 30 seconds, total of shake count of which side is bigger, is the winner.</p>\n                </div>\n            </div>\n        </div>\n    </div>\n\n    <ul class=\"tabs\" v-el:tabs=\"\" _v-9d39ddf6=\"\">\n        <li class=\"tab col s6\" _v-9d39ddf6=\"\"><a href=\"#brideTab\" :class=\"currentPlayer.userType === 'BRIDE' ? 'active' : ''\" _v-9d39ddf6=\"\">Bride ({{bridePlayers.length}}/{{room.roomSize}})</a></li>\n        <li class=\"tab col s6\" _v-9d39ddf6=\"\"><a href=\"#groomTab\" :class=\"currentPlayer.userType === 'GROOM' ? 'active' : ''\" _v-9d39ddf6=\"\">Groom ({{groomPlayers.length}}/{{room.roomSize}})</a></li>\n    </ul>\n\n    <div class=\"section\" _v-9d39ddf6=\"\">\n        <div class=\"section-header\" _v-9d39ddf6=\"\">\n            <div class=\"container\" _v-9d39ddf6=\"\">\n                <h6 _v-9d39ddf6=\"\">JOINED PLAYERS</h6>\n            </div>\n        </div>\n        <div class=\"section-content\" _v-9d39ddf6=\"\">\n            <ul class=\"collection no-border\" id=\"brideTab\" _v-9d39ddf6=\"\">\n                <li class=\"collection-item avatar\" v-for=\"player in bridePlayers\" _v-9d39ddf6=\"\">\n                    <img :src=\"player.avatarImageUrl\" class=\"circle\" _v-9d39ddf6=\"\">\n                    <span class=\"title\" _v-9d39ddf6=\"\">{{player.userName}}</span>\n                    <p _v-9d39ddf6=\"\">joined 5 mins ago</p>\n                </li>\n            </ul>\n            <ul class=\"collection no-border transparent\" id=\"groomTab\" _v-9d39ddf6=\"\">\n                <li class=\"collection-item avatar\" v-for=\"player in groomPlayers\" _v-9d39ddf6=\"\">\n                    <img :src=\"player.avatarImageUrl\" class=\"circle\" _v-9d39ddf6=\"\">\n                    <span class=\"title\" _v-9d39ddf6=\"\">{{player.userName}}</span>\n                    <p _v-9d39ddf6=\"\">joined 5 mins ago</p>\n                </li>\n            </ul>\n        </div>\n    </div>\n</div>\n";
 
 /***/ },
-/* 66 */
+/* 97 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __vue_script__, __vue_template__
-	__webpack_require__(67)
-	__vue_script__ = __webpack_require__(69)
+	__webpack_require__(98)
+	__vue_script__ = __webpack_require__(100)
 	if (__vue_script__ &&
 	    __vue_script__.__esModule &&
 	    Object.keys(__vue_script__).length > 1) {
 	  console.warn("[vue-loader] src\\components\\player\\shake-page.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(71)
+	__vue_template__ = __webpack_require__(102)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
 	if (__vue_template__) {
@@ -23812,13 +23855,13 @@
 	})()}
 
 /***/ },
-/* 67 */
+/* 98 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
 	// load the styles
-	var content = __webpack_require__(68);
+	var content = __webpack_require__(99);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(32)(content, {});
@@ -23838,7 +23881,7 @@
 	}
 
 /***/ },
-/* 68 */
+/* 99 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(31)();
@@ -23852,14 +23895,14 @@
 
 
 /***/ },
-/* 69 */
+/* 100 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var store = __webpack_require__(34);
-	var Stopwatch = __webpack_require__(60);
-	var ShakeJS = __webpack_require__(70);
+	var store = __webpack_require__(70);
+	var Stopwatch = __webpack_require__(91);
+	var ShakeJS = __webpack_require__(101);
 	var GAME_TIME = 20 * 1000;
 	var shake = null;
 	var timer = null;
@@ -23941,7 +23984,7 @@
 	};
 
 /***/ },
-/* 70 */
+/* 101 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/*
@@ -24076,23 +24119,23 @@
 
 
 /***/ },
-/* 71 */
+/* 102 */
 /***/ function(module, exports) {
 
 	module.exports = "\n<div _v-5b4dfb02=\"\">\n    <div class=\"navbar-fixed\" _v-5b4dfb02=\"\">\n        <nav _v-5b4dfb02=\"\">\n            <div class=\"nav-wrapper red lighten-2\" _v-5b4dfb02=\"\">\n                <a class=\"brand-logo center\" _v-5b4dfb02=\"\">Shaking</a>\n            </div>\n        </nav>\n    </div>\n\n    <div class=\"slider-container\" _v-5b4dfb02=\"\">\n        <div class=\"shake-page-image\" _v-5b4dfb02=\"\">\n            <div class=\"card col s12 no-shadow transparent white-text\" style=\"margin-top:0\" _v-5b4dfb02=\"\">\n                <div class=\"card-content\" _v-5b4dfb02=\"\">\n                    <h1 class=\"center-align white-text\" _v-5b4dfb02=\"\">{{shakeCount}}<span class=\"shake-page-unit\" _v-5b4dfb02=\"\">times</span></h1>\n                </div>\n            </div>\n        </div>\n    </div>\n\n    <div class=\"section\" v-if=\"!shakeCompleted\" _v-5b4dfb02=\"\">\n        <div class=\"section-header\" _v-5b4dfb02=\"\">\n            <div class=\"container\" _v-5b4dfb02=\"\">\n                <h6 _v-5b4dfb02=\"\">TIME</h6>\n            </div>\n        </div>\n        <div class=\"section-content\" _v-5b4dfb02=\"\">\n            <div class=\"card no-shadow\" _v-5b4dfb02=\"\">\n                <div class=\"card-content\" _v-5b4dfb02=\"\">\n                    <h4 class=\"center-align red-text\" _v-5b4dfb02=\"\">{{stopwatchString}}<i class=\"material-icons shake-page-unit fa fa-clock-o\" _v-5b4dfb02=\"\"></i></h4>\n                </div>\n            </div>\n        </div>\n    </div>\n\n    <div class=\"section\" v-if=\"shakeCompleted\" _v-5b4dfb02=\"\">\n        <div class=\"section-header\" _v-5b4dfb02=\"\">\n            <div class=\"container\" _v-5b4dfb02=\"\">\n                <h6 _v-5b4dfb02=\"\">YOUR RESULT</h6>\n            </div>\n        </div>\n        <div class=\"section-content\" _v-5b4dfb02=\"\">\n            <div class=\"card no-shadow\" _v-5b4dfb02=\"\">\n                <div class=\"card-content\" _v-5b4dfb02=\"\">\n                    <h4 class=\"card-title center-align\" _v-5b4dfb02=\"\">GAME END~</h4>\n                    <p _v-5b4dfb02=\"\">Congratulations! You just shaked <span class=\"teal-text\" style=\"font-size: 1.5em\" _v-5b4dfb02=\"\">{{shakeCount}}</span> times in last <span class=\"red-text\" style=\"font-size: 1.5em\" _v-5b4dfb02=\"\">{{time / 1000}}</span> seconds!</p>\n                </div>\n                <div class=\"card-content red lighten-3 white-text\" _v-5b4dfb02=\"\">\n                    a chart here\n                </div>\n                <div class=\"card-content center-align\" _v-5b4dfb02=\"\">\n                    <a class=\"waves-effect waves-light btn red lighten-2\" v-link=\"{name: 'ranking', params: {roomId: room.objectId}}\" _v-5b4dfb02=\"\">Check Ranking</a>\n                </div>\n            </div>\n        </div>\n    </div>\n\n    <div class=\"section\" _v-5b4dfb02=\"\">\n        <div class=\"section-header\" _v-5b4dfb02=\"\">\n            <div class=\"container\" _v-5b4dfb02=\"\">\n                <h6 _v-5b4dfb02=\"\">OTHER</h6>\n            </div>\n        </div>\n        <div class=\"section-content\" _v-5b4dfb02=\"\">\n            <ul class=\"collection no-border\" _v-5b4dfb02=\"\">\n                <li class=\"collection-item avatar\" v-for=\"player in players\" _v-5b4dfb02=\"\">\n                    <img :src=\"player.avatarImageUrl\" class=\"circle\" _v-5b4dfb02=\"\">\n                    <span class=\"title\" _v-5b4dfb02=\"\">{{player.userName}}<span class=\"badge\" _v-5b4dfb02=\"\">{{player.shakeCount}}</span></span>\n                    <div class=\"progress\" v-if=\"player.userType === 'BRIDE'\" _v-5b4dfb02=\"\">\n                        <div class=\"determinate\" :style=\"{width: player.shakeCount/200*100 + '%'}\" _v-5b4dfb02=\"\"></div>\n                    </div>\n                    <div class=\"progress red lighten-4\" v-if=\"player.userType === 'GROOM'\" _v-5b4dfb02=\"\">\n                        <div class=\"determinate red\" :style=\"{width: player.shakeCount/200*100 + '%'}\" _v-5b4dfb02=\"\"></div>\n                    </div>\n                    <p _v-5b4dfb02=\"\">{{player.userType}} side</p>\n                </li>\n            </ul>\n        </div>\n    </div>\n</div>\n";
 
 /***/ },
-/* 72 */
+/* 103 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __vue_script__, __vue_template__
-	__webpack_require__(73)
-	__vue_script__ = __webpack_require__(75)
+	__webpack_require__(104)
+	__vue_script__ = __webpack_require__(106)
 	if (__vue_script__ &&
 	    __vue_script__.__esModule &&
 	    Object.keys(__vue_script__).length > 1) {
 	  console.warn("[vue-loader] src\\components\\player\\ranking-page.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(76)
+	__vue_template__ = __webpack_require__(107)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
 	if (__vue_template__) {
@@ -24111,13 +24154,13 @@
 	})()}
 
 /***/ },
-/* 73 */
+/* 104 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
 	// load the styles
-	var content = __webpack_require__(74);
+	var content = __webpack_require__(105);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(32)(content, {});
@@ -24137,7 +24180,7 @@
 	}
 
 /***/ },
-/* 74 */
+/* 105 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(31)();
@@ -24151,12 +24194,12 @@
 
 
 /***/ },
-/* 75 */
+/* 106 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var store = __webpack_require__(34);
+	var store = __webpack_require__(70);
 	
 	module.exports = {
 	    computed: {
@@ -24237,23 +24280,23 @@
 	};
 
 /***/ },
-/* 76 */
+/* 107 */
 /***/ function(module, exports) {
 
 	module.exports = "\n<div _v-4d4f86d2=\"\">\n    <div class=\"navbar-fixed\" _v-4d4f86d2=\"\">\n        <nav _v-4d4f86d2=\"\">\n            <div class=\"nav-wrapper red lighten-2\" _v-4d4f86d2=\"\">\n                <a class=\"brand-logo center\" _v-4d4f86d2=\"\">Ranking</a>\n                <ul class=\"left\" _v-4d4f86d2=\"\">\n                    <li _v-4d4f86d2=\"\"><a v-link=\"{name:'home'}\" _v-4d4f86d2=\"\"><i class=\"material-icons fa fa-angle-left\" _v-4d4f86d2=\"\"></i></a></li>\n                </ul>\n            </div>\n        </nav>\n    </div>\n\n    <div class=\"slider-container\" _v-4d4f86d2=\"\">\n        <div class=\"ranking-page-image\" _v-4d4f86d2=\"\">\n            <div class=\"card col s12 no-shadow transparent white-text\" style=\"margin-top:0\" _v-4d4f86d2=\"\">\n                <div class=\"card-content\" _v-4d4f86d2=\"\">\n                    <span class=\"card-title\" _v-4d4f86d2=\"\">排行榜</span>\n                    <p _v-4d4f86d2=\"\">{{currentRoom.roomName}}</p>\n                </div>\n            </div>\n        </div>\n    </div>\n\n    <ul class=\"tabs\" v-el:tabs=\"\" _v-4d4f86d2=\"\">\n        <li class=\"tab col s6\" _v-4d4f86d2=\"\"><a href=\"#resultTab\" class=\"active\" _v-4d4f86d2=\"\">Result</a></li>\n        <li class=\"tab col s6\" _v-4d4f86d2=\"\"><a href=\"#detailsTab\" _v-4d4f86d2=\"\">Details</a></li>\n    </ul>\n\n    <div class=\"section\" id=\"resultTab\" _v-4d4f86d2=\"\">\n        <div class=\"section-header\" _v-4d4f86d2=\"\">\n            <div class=\"container\" _v-4d4f86d2=\"\">\n                <h6 _v-4d4f86d2=\"\">RESULT</h6>\n            </div>\n        </div>\n        <div class=\"section-content\" _v-4d4f86d2=\"\">\n            <div class=\"card col s12 no-shadow\" _v-4d4f86d2=\"\">\n                <div class=\"card-content\" _v-4d4f86d2=\"\">\n                    <table _v-4d4f86d2=\"\">\n                        <thead _v-4d4f86d2=\"\">\n                        <tr _v-4d4f86d2=\"\">\n                            <th data-field=\"side\" _v-4d4f86d2=\"\">Side</th>\n                            <th data-field=\"players\" _v-4d4f86d2=\"\">Players</th>\n                            <th data-field=\"total\" _v-4d4f86d2=\"\">Total</th>\n                            <th data-field=\"result\" _v-4d4f86d2=\"\">Result</th>\n                        </tr>\n                        </thead>\n                        <tbody _v-4d4f86d2=\"\">\n                        <tr _v-4d4f86d2=\"\">\n                            <td _v-4d4f86d2=\"\">Bride</td>\n                            <td _v-4d4f86d2=\"\">{{bridePlayers.length}}</td>\n                            <td _v-4d4f86d2=\"\">{{brideTotal}}</td>\n                            <td v-if=\"brideTotal > groomTotal\" style=\"position: relative\" _v-4d4f86d2=\"\">WIN<img src=\"http://wedding.jackyang.me/images/win_stamp.jpg\" class=\"win-stamp\" _v-4d4f86d2=\"\"></td>\n                            <td v-else=\"\" style=\"position: relative\" _v-4d4f86d2=\"\">FAILED</td>\n                        </tr>\n                        <tr _v-4d4f86d2=\"\">\n                            <td _v-4d4f86d2=\"\">Groom</td>\n                            <td _v-4d4f86d2=\"\">{{groomPlayers.length}}</td>\n                            <td _v-4d4f86d2=\"\">{{groomTotal}}</td>\n                            <td v-if=\"brideTotal < groomTotal\" style=\"position: relative\" _v-4d4f86d2=\"\">WIN<img src=\"http://wedding.jackyang.me/images/win_stamp.jpg\" class=\"win-stamp\" _v-4d4f86d2=\"\"></td>\n                            <td v-else=\"\" style=\"position: relative\" _v-4d4f86d2=\"\">FAILED</td>\n                        </tr>\n                        </tbody>\n                    </table>\n                </div>\n            </div>\n        </div>\n    </div>\n\n    <div class=\"section\" id=\"detailsTab\" _v-4d4f86d2=\"\">\n        <div class=\"section-header\" _v-4d4f86d2=\"\">\n            <div class=\"container\" _v-4d4f86d2=\"\">\n                <h6 _v-4d4f86d2=\"\">DETAILS</h6>\n            </div>\n        </div>\n        <div class=\"section-content\" _v-4d4f86d2=\"\">\n            <ul class=\"collection no-border\" _v-4d4f86d2=\"\">\n                <li class=\"collection-item avatar\" v-for=\"player in players\" _v-4d4f86d2=\"\">\n                    <img :src=\"player.avatarImageUrl\" class=\"circle\" _v-4d4f86d2=\"\">\n                    <span class=\"title\" _v-4d4f86d2=\"\">{{player.userName}}<span class=\"badge\" _v-4d4f86d2=\"\">{{player.shakeCount}}</span></span>\n                    <div class=\"progress\" v-if=\"player.userType === 'BRIDE'\" _v-4d4f86d2=\"\">\n                        <div class=\"determinate\" :style=\"{width: player.shakeCount/200*100 + '%'}\" _v-4d4f86d2=\"\"></div>\n                    </div>\n                    <div class=\"progress red lighten-4\" v-if=\"player.userType === 'GROOM'\" _v-4d4f86d2=\"\">\n                        <div class=\"determinate red\" :style=\"{width: player.shakeCount/200*100 + '%'}\" _v-4d4f86d2=\"\"></div>\n                    </div>\n                    <p _v-4d4f86d2=\"\">{{player.userType}}</p>\n                </li>\n            </ul>\n        </div>\n    </div>\n</div>\n";
 
 /***/ },
-/* 77 */
+/* 108 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __vue_script__, __vue_template__
-	__webpack_require__(78)
-	__vue_script__ = __webpack_require__(80)
+	__webpack_require__(109)
+	__vue_script__ = __webpack_require__(111)
 	if (__vue_script__ &&
 	    __vue_script__.__esModule &&
 	    Object.keys(__vue_script__).length > 1) {
 	  console.warn("[vue-loader] src\\components\\player\\visit-page.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(81)
+	__vue_template__ = __webpack_require__(112)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
 	if (__vue_template__) {
@@ -24272,13 +24315,13 @@
 	})()}
 
 /***/ },
-/* 78 */
+/* 109 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
 	// load the styles
-	var content = __webpack_require__(79);
+	var content = __webpack_require__(110);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(32)(content, {});
@@ -24298,7 +24341,7 @@
 	}
 
 /***/ },
-/* 79 */
+/* 110 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(31)();
@@ -24312,12 +24355,12 @@
 
 
 /***/ },
-/* 80 */
+/* 111 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var store = __webpack_require__(34);
+	var store = __webpack_require__(70);
 	
 	module.exports = {
 	
@@ -24372,389 +24415,11 @@
 	};
 
 /***/ },
-/* 81 */
+/* 112 */
 /***/ function(module, exports) {
 
 	module.exports = "\n<div>\n    <div class=\"navbar-fixed\">\n        <nav>\n            <div class=\"nav-wrapper red lighten-2\">\n                <a class=\"brand-logo center\">Visit Mode</a>\n                <ul class=\"left\">\n                    <li><a v-link=\"{name: 'home'}\"><i class=\"material-icons fa fa-angle-left\"></i></a></li>\n                </ul>\n            </div>\n        </nav>\n    </div>\n\n    <div class=\"slider-container\">\n        <div class=\"visit-page-image\">\n            <div class=\"card col s12 no-shadow transparent white-text\" style=\"margin-top:0\">\n                <div class=\"card-content\">\n                    <span class=\"card-title\">{{currentRoom.roomName}}</span>\n                    <p>游戏正在进行中，您处于观察模式</p>\n                    <p>Bride: {{bridePlayers.length}}</p>\n                    <p>Groom: {{groomPlayers.length}}</p>\n                </div>\n            </div>\n        </div>\n    </div>\n\n    <div class=\"section\">\n        <div class=\"section-header\">\n            <div class=\"container\">\n                <h6>GENERAL</h6>\n            </div>\n        </div>\n        <div class=\"section-content\">\n            <div class=\"card col s12 no-shadow\">\n                <div class=\"card-content row\">\n                    <div class=\"col s6 teal-text\">\n                        <h6 class=\"center-align text-lighten-3\">Bride({{bridePlayers.length}})</h6>\n                        <h1 class=\"center-align\">{{brideTotal}}</h1>\n                    </div>\n                    <div class=\"col s6 red-text\">\n                        <h6 class=\"center-align text-lighten-3\">Groom({{groomPlayers.length}})</h6>\n                        <h1 class=\"center-align\">{{groomTotal}}</h1>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n\n    <div class=\"section\">\n        <div class=\"section-header\">\n            <div class=\"container\">\n                <h6>PLAYER DATA</h6>\n            </div>\n        </div>\n        <div class=\"section-content\">\n            <ul class=\"collection no-border\">\n                <li class=\"collection-item avatar\" v-for=\"player in players\">\n                    <img :src=\"player.avatarImageUrl\" class=\"circle\">\n                    <span class=\"title\">{{player.userName}}<span class=\"badge\">{{player.shakeCount}}</span></span>\n                    <div class=\"progress\" v-if=\"player.userType === 'BRIDE'\">\n                        <div class=\"determinate\" :style=\"{width: player.shakeCount/200*100 + '%'}\"></div>\n                    </div>\n                    <div class=\"progress red lighten-4\" v-if=\"player.userType === 'GROOM'\">\n                        <div class=\"determinate red\" :style=\"{width: player.shakeCount/200*100 + '%'}\"></div>\n                    </div>\n                    <p>{{player.userType}} side</p>\n                </li>\n            </ul>\n        </div>\n    </div>\n</div>\n";
 
-/***/ },
-/* 82 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var __vue_script__, __vue_template__
-	__webpack_require__(83)
-	__vue_script__ = __webpack_require__(85)
-	if (__vue_script__ &&
-	    __vue_script__.__esModule &&
-	    Object.keys(__vue_script__).length > 1) {
-	  console.warn("[vue-loader] src\\components\\admin\\admin-page.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(91)
-	module.exports = __vue_script__ || {}
-	if (module.exports.__esModule) module.exports = module.exports.default
-	if (__vue_template__) {
-	(typeof module.exports === "function" ? (module.exports.options || (module.exports.options = {})) : module.exports).template = __vue_template__
-	}
-	if (false) {(function () {  module.hot.accept()
-	  var hotAPI = require("vue-hot-reload-api")
-	  hotAPI.install(require("vue"), true)
-	  if (!hotAPI.compatible) return
-	  var id = "C:\\Users\\Administrator\\Documents\\GitHub\\wedding-shake-game\\src\\components\\admin\\admin-page.vue"
-	  if (!module.hot.data) {
-	    hotAPI.createRecord(id, module.exports)
-	  } else {
-	    hotAPI.update(id, module.exports, __vue_template__)
-	  }
-	})()}
-
-/***/ },
-/* 83 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-	
-	// load the styles
-	var content = __webpack_require__(84);
-	if(typeof content === 'string') content = [[module.id, content, '']];
-	// add the styles to the DOM
-	var update = __webpack_require__(32)(content, {});
-	if(content.locals) module.exports = content.locals;
-	// Hot Module Replacement
-	if(false) {
-		// When the styles change, update the <style> tags
-		if(!content.locals) {
-			module.hot.accept("!!./../../../node_modules/css-loader/index.js?sourceMap!./../../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-0f3d2759&scoped=true!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./admin-page.vue", function() {
-				var newContent = require("!!./../../../node_modules/css-loader/index.js?sourceMap!./../../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-0f3d2759&scoped=true!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./admin-page.vue");
-				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-				update(newContent);
-			});
-		}
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
-
-/***/ },
-/* 84 */
-/***/ function(module, exports, __webpack_require__) {
-
-	exports = module.exports = __webpack_require__(31)();
-	// imports
-	
-	
-	// module
-	exports.push([module.id, "\n.hero[_v-0f3d2759] {\n    background-image: url(https://static.artofwhere.net/img/home-slider/girl-sewing.jpg);\n    background-size: cover;\n    background-position: center center;\n    height: 350px;\n    width: 100%;\n}\n", "", {"version":3,"sources":["/./src/components/admin/admin-page.vue?240f6db4"],"names":[],"mappings":";AACA;IACA,qFAAA;IACA,uBAAA;IACA,mCAAA;IACA,cAAA;IACA,YAAA;CACA","file":"admin-page.vue","sourcesContent":["<style scoped>\r\n    .hero {\r\n        background-image: url(https://static.artofwhere.net/img/home-slider/girl-sewing.jpg);\r\n        background-size: cover;\r\n        background-position: center center;\r\n        height: 350px;\r\n        width: 100%;\r\n    }\r\n</style>\r\n\r\n<template>\r\n    <div>\r\n        <div class=\"hero\"></div>\r\n        <div class=\"container\">\r\n            <h5>ROOM LIST</h5>\r\n            <div class=\"row\">\r\n                <div class=\"col s4\" v-for=\"room in rooms\">\r\n                    <div class=\"card cyan lighten-2 white-text waves-effect waves-block waves-light\" @click=\"goToRoom(room.objectId)\">\r\n                        <div class=\"card-image\">\r\n                            <img src=\"http://sd.people.com.cn/mediafile/201007/05/F2010070514353200467.jpg\"/>\r\n                            <span class=\"card-title black-text\">{{room.roomName}}</span>\r\n                        </div>\r\n                        <div class=\"card-content\">\r\n                            <p style=\"margin-bottom: 10px\">{{room.roomDescription}}</p>\r\n                            <p class=\"grey-text text-lighten-3\">SIZE<span class=\"right amber-text\">{{room.players.length}}/{{room.roomSize}}</span></p>\r\n                            <p class=\"grey-text text-lighten-3\">STATUS<span class=\"right amber-text\">{{room.status}}</span></p>\r\n                        </div>\r\n                    </div>\r\n                </div>\r\n            </div>\r\n\r\n            <div class=\"fixed-action-btn\" style=\"bottom: 45px; right: 45px;\">\r\n                <a class=\"btn-floating btn-large waves-effect waves-light red\" @click=\"createRoom()\">\r\n                    <i class=\"material-icons\">add</i>\r\n                </a>\r\n            </div>\r\n\r\n            <room-edit-dialog v-ref:room-edit-dialog :room-id=\"selectRoomId\"></room-edit-dialog>\r\n        </div>\r\n    </div>\r\n</template>\r\n\r\n<script>\r\n    var store = require('../../store');\r\n\r\n    module.exports = {\r\n        components: {\r\n            'room-edit-dialog': require('./room-edit-dialog.vue')\r\n        },\r\n\r\n        computed: {\r\n            rooms: function() {\r\n                return store.state.admin.homePage.roomList;\r\n            }\r\n        },\r\n\r\n        ready: function() {\r\n            store.actions.getAdminRoomList();\r\n        },\r\n\r\n        methods: {\r\n            createRoom: function() {\r\n                store.actions.getEditRoomDialogData('');\r\n                $(this.$refs.roomEditDialog.$el).openModal();\r\n            },\r\n            goToRoom: function(roomId) {\r\n                this.$router.go({name: 'room', params: {roomId: roomId}});\r\n            }\r\n        }\r\n    };\r\n</script>"],"sourceRoot":"webpack://"}]);
-	
-	// exports
-
-
-/***/ },
-/* 85 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var store = __webpack_require__(34);
-	
-	module.exports = {
-	    components: {
-	        'room-edit-dialog': __webpack_require__(86)
-	    },
-	
-	    computed: {
-	        rooms: function rooms() {
-	            return store.state.admin.homePage.roomList;
-	        }
-	    },
-	
-	    ready: function ready() {
-	        store.actions.getAdminRoomList();
-	    },
-	
-	    methods: {
-	        createRoom: function createRoom() {
-	            store.actions.getEditRoomDialogData('');
-	            $(this.$refs.roomEditDialog.$el).openModal();
-	        },
-	        goToRoom: function goToRoom(roomId) {
-	            this.$router.go({ name: 'room', params: { roomId: roomId } });
-	        }
-	    }
-	};
-
-/***/ },
-/* 86 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var __vue_script__, __vue_template__
-	__webpack_require__(87)
-	__vue_script__ = __webpack_require__(89)
-	if (__vue_script__ &&
-	    __vue_script__.__esModule &&
-	    Object.keys(__vue_script__).length > 1) {
-	  console.warn("[vue-loader] src\\components\\admin\\room-edit-dialog.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(90)
-	module.exports = __vue_script__ || {}
-	if (module.exports.__esModule) module.exports = module.exports.default
-	if (__vue_template__) {
-	(typeof module.exports === "function" ? (module.exports.options || (module.exports.options = {})) : module.exports).template = __vue_template__
-	}
-	if (false) {(function () {  module.hot.accept()
-	  var hotAPI = require("vue-hot-reload-api")
-	  hotAPI.install(require("vue"), true)
-	  if (!hotAPI.compatible) return
-	  var id = "C:\\Users\\Administrator\\Documents\\GitHub\\wedding-shake-game\\src\\components\\admin\\room-edit-dialog.vue"
-	  if (!module.hot.data) {
-	    hotAPI.createRecord(id, module.exports)
-	  } else {
-	    hotAPI.update(id, module.exports, __vue_template__)
-	  }
-	})()}
-
-/***/ },
-/* 87 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-	
-	// load the styles
-	var content = __webpack_require__(88);
-	if(typeof content === 'string') content = [[module.id, content, '']];
-	// add the styles to the DOM
-	var update = __webpack_require__(32)(content, {});
-	if(content.locals) module.exports = content.locals;
-	// Hot Module Replacement
-	if(false) {
-		// When the styles change, update the <style> tags
-		if(!content.locals) {
-			module.hot.accept("!!./../../../node_modules/css-loader/index.js?sourceMap!./../../../node_modules/vue-loader/lib/style-rewriter.js!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./room-edit-dialog.vue", function() {
-				var newContent = require("!!./../../../node_modules/css-loader/index.js?sourceMap!./../../../node_modules/vue-loader/lib/style-rewriter.js!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./room-edit-dialog.vue");
-				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-				update(newContent);
-			});
-		}
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
-
-/***/ },
-/* 88 */
-/***/ function(module, exports, __webpack_require__) {
-
-	exports = module.exports = __webpack_require__(31)();
-	// imports
-	
-	
-	// module
-	exports.push([module.id, "\n\n", "", {"version":3,"sources":[],"names":[],"mappings":"","file":"room-edit-dialog.vue","sourceRoot":"webpack://"}]);
-	
-	// exports
-
-
-/***/ },
-/* 89 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var store = __webpack_require__(34);
-	
-	module.exports = {
-	    props: {
-	        roomId: {
-	            type: String,
-	            default: ''
-	        }
-	    },
-	
-	    computed: {
-	        room: function room() {
-	            return store.state.admin.editRoomDialog.roomDetails;
-	        }
-	    },
-	
-	    ready: function ready() {},
-	
-	    methods: {
-	        createRoom: function createRoom() {
-	            store.actions.createRoom({
-	                roomName: this.$els.roomName.value,
-	                roomDescription: this.$els.roomDescription.value,
-	                roomSize: this.$els.roomSize.value
-	            }).then(function (room) {
-	                console.log('room created', room);
-	                store.actions.getAdminRoomList();
-	            }, function (error) {});
-	        },
-	
-	        updateRoom: function updateRoom() {
-	            store.actions.updateRoom({
-	                roomId: this.roomId,
-	                roomName: this.$els.roomName.value,
-	                roomDescription: this.$els.roomDescription.value,
-	                roomSize: this.$els.roomSize.value
-	            }).then(function (room) {
-	                console.log('room updated', room);
-	                store.actions.getAdminRoomList();
-	            }, function (error) {});
-	        },
-	
-	        submitForm: function submitForm() {
-	            if (this.roomId) this.updateRoom();else this.createRoom();
-	        }
-	    }
-	};
-
-/***/ },
-/* 90 */
-/***/ function(module, exports) {
-
-	module.exports = "\n<div id=\"modal1\" class=\"modal modal-fixed-footer\">\n    <div class=\"modal-content\">\n        <h4>{{!roomId ? 'Create Room' : 'Update Room'}}</h4>\n        <div class=\"row\">\n            <form class=\"col s12\">\n                <div class=\"input-field col s12\">\n                    <input type=\"text\" class=\"validate\" id=\"roomEditDialogRoomName\" value=\"{{room.roomName}}\" v-el:room-name >\n                    <label for=\"roomEditDialogRoomName\">Room Name</label>\n                </div>\n                <div class=\"input-field col s12\">\n                    <input type=\"text\" id=\"roomEditDialogRoomDesc\" value=\"{{room.roomDescription}}\" v-el:room-description >\n                    <label for=\"roomEditDialogRoomDesc\">Room Description</label>\n                </div>\n                <div class=\"input-field col s12\">\n                    <input type=\"text\" id=\"roomEditDialogRoomSize\" value=\"{{room.roomSize}}\" v-el:room-size >\n                    <label for=\"roomEditDialogRoomSize\">Room Size</label>\n                </div>\n            </form>\n        </div>\n    </div>\n    <div class=\"modal-footer\">\n        <a @click=\"submitForm()\" class=\" modal-action modal-close waves-effect waves-green btn-flat\">Confirm</a>\n        <a class=\" modal-action modal-close waves-effect waves-green btn-flat\">Cancel</a>\n    </div>\n</div>\n";
-
-/***/ },
-/* 91 */
-/***/ function(module, exports) {
-
-	module.exports = "\n<div _v-0f3d2759=\"\">\n    <div class=\"hero\" _v-0f3d2759=\"\"></div>\n    <div class=\"container\" _v-0f3d2759=\"\">\n        <h5 _v-0f3d2759=\"\">ROOM LIST</h5>\n        <div class=\"row\" _v-0f3d2759=\"\">\n            <div class=\"col s4\" v-for=\"room in rooms\" _v-0f3d2759=\"\">\n                <div class=\"card cyan lighten-2 white-text waves-effect waves-block waves-light\" @click=\"goToRoom(room.objectId)\" _v-0f3d2759=\"\">\n                    <div class=\"card-image\" _v-0f3d2759=\"\">\n                        <img src=\"http://sd.people.com.cn/mediafile/201007/05/F2010070514353200467.jpg\" _v-0f3d2759=\"\">\n                        <span class=\"card-title black-text\" _v-0f3d2759=\"\">{{room.roomName}}</span>\n                    </div>\n                    <div class=\"card-content\" _v-0f3d2759=\"\">\n                        <p style=\"margin-bottom: 10px\" _v-0f3d2759=\"\">{{room.roomDescription}}</p>\n                        <p class=\"grey-text text-lighten-3\" _v-0f3d2759=\"\">SIZE<span class=\"right amber-text\" _v-0f3d2759=\"\">{{room.players.length}}/{{room.roomSize}}</span></p>\n                        <p class=\"grey-text text-lighten-3\" _v-0f3d2759=\"\">STATUS<span class=\"right amber-text\" _v-0f3d2759=\"\">{{room.status}}</span></p>\n                    </div>\n                </div>\n            </div>\n        </div>\n\n        <div class=\"fixed-action-btn\" style=\"bottom: 45px; right: 45px;\" _v-0f3d2759=\"\">\n            <a class=\"btn-floating btn-large waves-effect waves-light red\" @click=\"createRoom()\" _v-0f3d2759=\"\">\n                <i class=\"material-icons\" _v-0f3d2759=\"\">add</i>\n            </a>\n        </div>\n\n        <room-edit-dialog v-ref:room-edit-dialog=\"\" :room-id=\"selectRoomId\" _v-0f3d2759=\"\"></room-edit-dialog>\n    </div>\n</div>\n";
-
-/***/ },
-/* 92 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var __vue_script__, __vue_template__
-	__webpack_require__(93)
-	__vue_script__ = __webpack_require__(95)
-	if (__vue_script__ &&
-	    __vue_script__.__esModule &&
-	    Object.keys(__vue_script__).length > 1) {
-	  console.warn("[vue-loader] src\\components\\admin\\room-page.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(96)
-	module.exports = __vue_script__ || {}
-	if (module.exports.__esModule) module.exports = module.exports.default
-	if (__vue_template__) {
-	(typeof module.exports === "function" ? (module.exports.options || (module.exports.options = {})) : module.exports).template = __vue_template__
-	}
-	if (false) {(function () {  module.hot.accept()
-	  var hotAPI = require("vue-hot-reload-api")
-	  hotAPI.install(require("vue"), true)
-	  if (!hotAPI.compatible) return
-	  var id = "C:\\Users\\Administrator\\Documents\\GitHub\\wedding-shake-game\\src\\components\\admin\\room-page.vue"
-	  if (!module.hot.data) {
-	    hotAPI.createRecord(id, module.exports)
-	  } else {
-	    hotAPI.update(id, module.exports, __vue_template__)
-	  }
-	})()}
-
-/***/ },
-/* 93 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-	
-	// load the styles
-	var content = __webpack_require__(94);
-	if(typeof content === 'string') content = [[module.id, content, '']];
-	// add the styles to the DOM
-	var update = __webpack_require__(32)(content, {});
-	if(content.locals) module.exports = content.locals;
-	// Hot Module Replacement
-	if(false) {
-		// When the styles change, update the <style> tags
-		if(!content.locals) {
-			module.hot.accept("!!./../../../node_modules/css-loader/index.js?sourceMap!./../../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-69b23236&scoped=true!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./room-page.vue", function() {
-				var newContent = require("!!./../../../node_modules/css-loader/index.js?sourceMap!./../../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-69b23236&scoped=true!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./room-page.vue");
-				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-				update(newContent);
-			});
-		}
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
-
-/***/ },
-/* 94 */
-/***/ function(module, exports, __webpack_require__) {
-
-	exports = module.exports = __webpack_require__(31)();
-	// imports
-	
-	
-	// module
-	exports.push([module.id, "\n.room-edit-button[_v-69b23236] {\n    margin: 20px;\n}\n", "", {"version":3,"sources":["/./src/components/admin/room-page.vue?011719b3"],"names":[],"mappings":";AACA;IACA,aAAA;CACA","file":"room-page.vue","sourcesContent":["<style scoped>\r\n    .room-edit-button {\r\n        margin: 20px;\r\n    }\r\n</style>\r\n\r\n<template>\r\n    <div class=\"container\">\r\n\r\n        <div class=\"row\">\r\n            <div class=\"card cyan lighten-2\">\r\n                <a class=\"waves-effect btn right white black-text room-edit-button\" @click=\"editRoom()\">edit</a>\r\n                <div class=\"card-content white-text\">\r\n                    <span class=\"card-title\">{{room.roomName}} ({{room.status}})</span>\r\n                    <p style=\"margin-bottom: 10px\">{{room.roomDescription}}</p>\r\n                    <p>size: {{room.roomSize}}</p>\r\n                </div>\r\n            </div>\r\n        </div>\r\n\r\n        <div class=\"row\">\r\n            <div class=\"col s6\">\r\n                <h5>BRIDE CUSTOMERS<span class=\"right\">{{bridePlayers.length}}/{{room.roomSize}}</span></h5>\r\n                <div class=\"card\">\r\n                    <div class=\"card-content\">\r\n                        <ul class=\"collection with-header\">\r\n                            <li class=\"collection-header\">\r\n                                <h4>Total <span class=\"right\">{{brideShakeTotal}}</span></h4>\r\n                            </li>\r\n                            <li v-for=\"player in bridePlayers\" class=\"collection-item avatar\">\r\n                                <img :src=\"player.avatarImageUrl\" class=\"circle\">\r\n                                <span class=\"title\">{{player.userName}}</span>\r\n                                <p>count: {{player.shakeCount}}</p>\r\n                                <div class=\"progress\">\r\n                                    <div class=\"determinate\" :style=\"{width: player.shakeCount/200*100 + '%'}\"></div>\r\n                                </div>\r\n                            </li>\r\n                        </ul>\r\n                    </div>\r\n                </div>\r\n            </div>\r\n            <div class=\"col s6\">\r\n                <h5>GROOM CUSTOMERS<span class=\"right\">{{groomPlayers.length}}/{{room.roomSize}}</span></h5>\r\n                <div class=\"card\">\r\n                    <div class=\"card-content\">\r\n                        <ul class=\"collection with-header\">\r\n                            <li class=\"collection-header\"><h4>Total<span class=\"right\">{{groomShakeTotal}}</span></h4></li>\r\n                            <li v-for=\"player in groomPlayers\" class=\"collection-item avatar\">\r\n                                <img :src=\"player.avatarImageUrl\" class=\"circle\">\r\n                                <span class=\"title\">{{player.userName}}</span>\r\n                                <p>count: {{player.shakeCount}}</p>\r\n                                <div class=\"progress pink lighten-4\">\r\n                                    <div class=\"determinate pink\" :style=\"{width: player.shakeCount/200*100 + '%'}\"></div>\r\n                                </div>\r\n                            </li>\r\n                        </ul>\r\n                    </div>\r\n                </div>\r\n            </div>\r\n        </div>\r\n\r\n        <div class=\"fixed-action-btn horizontal\" style=\"bottom: 45px; right: 45px;\">\r\n            <a class=\"btn-floating btn-large red\">\r\n                <i class=\"large material-icons\">games</i>\r\n            </a>\r\n            <ul>\r\n                <li>\r\n                    <a @click=\"allowToJoin()\" class=\"btn-floating yellow darken-1 tooltipped\" data-position=\"top\" data-delay=\"50\" data-tooltip=\"allow join\">\r\n                        <i class=\"material-icons\">input</i>\r\n                    </a>\r\n                </li>\r\n                <li>\r\n                    <a @click=\"start()\" class=\"btn-floating green darken-1 tooltipped\" data-position=\"top\" data-delay=\"50\" data-tooltip=\"start game\">\r\n                        <i class=\"material-icons\">play_circle_outline</i>\r\n                    </a>\r\n                </li>\r\n            </ul>\r\n        </div>\r\n\r\n        <room-edit-dialog v-ref:room-edit-dialog :room-id=\"$route.params.roomId\"></room-edit-dialog>\r\n    </div>\r\n</template>\r\n\r\n<script>\r\n    var store = require('../../store');\r\n\r\n    module.exports = {\r\n        components: {\r\n            'room-edit-dialog': require('./room-edit-dialog.vue')\r\n        },\r\n\r\n        computed: {\r\n            room: function() {\r\n                return store.state.admin.roomPage.roomDetails;\r\n            },\r\n            brideShakeTotal: function() {\r\n                var count = 0;\r\n                this.bridePlayers.forEach(function(player) {\r\n                    count += player.shakeCount;\r\n                });\r\n                return count;\r\n            },\r\n            bridePlayers: function() {\r\n                return store.state.admin.roomPage.players.filter(function(player) {\r\n                    return player.userType === 'BRIDE';\r\n                });\r\n            },\r\n            groomShakeTotal: function() {\r\n                var count = 0;\r\n                this.groomPlayers.forEach(function(player) {\r\n                    count += player.shakeCount;\r\n                });\r\n                return count;\r\n            },\r\n            groomPlayers: function() {\r\n                return store.state.admin.roomPage.players.filter(function(player) {\r\n                    return player.userType === 'GROOM';\r\n                });\r\n            }\r\n        },\r\n\r\n        ready: function() {\r\n            store.actions.getAdminRoomDetails(this.$route.params.roomId);\r\n            store.actions.getAdminRoomPlayers(this.$route.params.roomId);\r\n            store.actions.adminListenSocketMessage(true);\r\n        },\r\n\r\n        methods: {\r\n            allowToJoin: function() {\r\n                store.actions.allowToJoinRoom(this.$route.params.roomId);\r\n            },\r\n            start: function() {\r\n                store.actions.startRoom(this.$route.params.roomId);\r\n            },\r\n            stop: function() {\r\n                store.actions.stopRoom(this.$route.params.roomId);\r\n            },\r\n            editRoom: function() {\r\n                $(this.$refs.roomEditDialog.$el).openModal();\r\n            }\r\n        }\r\n    };\r\n</script>"],"sourceRoot":"webpack://"}]);
-	
-	// exports
-
-
-/***/ },
-/* 95 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var store = __webpack_require__(34);
-	
-	module.exports = {
-	    components: {
-	        'room-edit-dialog': __webpack_require__(86)
-	    },
-	
-	    computed: {
-	        room: function room() {
-	            return store.state.admin.roomPage.roomDetails;
-	        },
-	        brideShakeTotal: function brideShakeTotal() {
-	            var count = 0;
-	            this.bridePlayers.forEach(function (player) {
-	                count += player.shakeCount;
-	            });
-	            return count;
-	        },
-	        bridePlayers: function bridePlayers() {
-	            return store.state.admin.roomPage.players.filter(function (player) {
-	                return player.userType === 'BRIDE';
-	            });
-	        },
-	        groomShakeTotal: function groomShakeTotal() {
-	            var count = 0;
-	            this.groomPlayers.forEach(function (player) {
-	                count += player.shakeCount;
-	            });
-	            return count;
-	        },
-	        groomPlayers: function groomPlayers() {
-	            return store.state.admin.roomPage.players.filter(function (player) {
-	                return player.userType === 'GROOM';
-	            });
-	        }
-	    },
-	
-	    ready: function ready() {
-	        store.actions.getAdminRoomDetails(this.$route.params.roomId);
-	        store.actions.getAdminRoomPlayers(this.$route.params.roomId);
-	        store.actions.adminListenSocketMessage(true);
-	    },
-	
-	    methods: {
-	        allowToJoin: function allowToJoin() {
-	            store.actions.allowToJoinRoom(this.$route.params.roomId);
-	        },
-	        start: function start() {
-	            store.actions.startRoom(this.$route.params.roomId);
-	        },
-	        stop: function stop() {
-	            store.actions.stopRoom(this.$route.params.roomId);
-	        },
-	        editRoom: function editRoom() {
-	            $(this.$refs.roomEditDialog.$el).openModal();
-	        }
-	    }
-	};
-
-/***/ },
-/* 96 */
-/***/ function(module, exports) {
-
-	module.exports = "\n<div class=\"container\" _v-69b23236=\"\">\n\n    <div class=\"row\" _v-69b23236=\"\">\n        <div class=\"card cyan lighten-2\" _v-69b23236=\"\">\n            <a class=\"waves-effect btn right white black-text room-edit-button\" @click=\"editRoom()\" _v-69b23236=\"\">edit</a>\n            <div class=\"card-content white-text\" _v-69b23236=\"\">\n                <span class=\"card-title\" _v-69b23236=\"\">{{room.roomName}} ({{room.status}})</span>\n                <p style=\"margin-bottom: 10px\" _v-69b23236=\"\">{{room.roomDescription}}</p>\n                <p _v-69b23236=\"\">size: {{room.roomSize}}</p>\n            </div>\n        </div>\n    </div>\n\n    <div class=\"row\" _v-69b23236=\"\">\n        <div class=\"col s6\" _v-69b23236=\"\">\n            <h5 _v-69b23236=\"\">BRIDE CUSTOMERS<span class=\"right\" _v-69b23236=\"\">{{bridePlayers.length}}/{{room.roomSize}}</span></h5>\n            <div class=\"card\" _v-69b23236=\"\">\n                <div class=\"card-content\" _v-69b23236=\"\">\n                    <ul class=\"collection with-header\" _v-69b23236=\"\">\n                        <li class=\"collection-header\" _v-69b23236=\"\">\n                            <h4 _v-69b23236=\"\">Total <span class=\"right\" _v-69b23236=\"\">{{brideShakeTotal}}</span></h4>\n                        </li>\n                        <li v-for=\"player in bridePlayers\" class=\"collection-item avatar\" _v-69b23236=\"\">\n                            <img :src=\"player.avatarImageUrl\" class=\"circle\" _v-69b23236=\"\">\n                            <span class=\"title\" _v-69b23236=\"\">{{player.userName}}</span>\n                            <p _v-69b23236=\"\">count: {{player.shakeCount}}</p>\n                            <div class=\"progress\" _v-69b23236=\"\">\n                                <div class=\"determinate\" :style=\"{width: player.shakeCount/200*100 + '%'}\" _v-69b23236=\"\"></div>\n                            </div>\n                        </li>\n                    </ul>\n                </div>\n            </div>\n        </div>\n        <div class=\"col s6\" _v-69b23236=\"\">\n            <h5 _v-69b23236=\"\">GROOM CUSTOMERS<span class=\"right\" _v-69b23236=\"\">{{groomPlayers.length}}/{{room.roomSize}}</span></h5>\n            <div class=\"card\" _v-69b23236=\"\">\n                <div class=\"card-content\" _v-69b23236=\"\">\n                    <ul class=\"collection with-header\" _v-69b23236=\"\">\n                        <li class=\"collection-header\" _v-69b23236=\"\"><h4 _v-69b23236=\"\">Total<span class=\"right\" _v-69b23236=\"\">{{groomShakeTotal}}</span></h4></li>\n                        <li v-for=\"player in groomPlayers\" class=\"collection-item avatar\" _v-69b23236=\"\">\n                            <img :src=\"player.avatarImageUrl\" class=\"circle\" _v-69b23236=\"\">\n                            <span class=\"title\" _v-69b23236=\"\">{{player.userName}}</span>\n                            <p _v-69b23236=\"\">count: {{player.shakeCount}}</p>\n                            <div class=\"progress pink lighten-4\" _v-69b23236=\"\">\n                                <div class=\"determinate pink\" :style=\"{width: player.shakeCount/200*100 + '%'}\" _v-69b23236=\"\"></div>\n                            </div>\n                        </li>\n                    </ul>\n                </div>\n            </div>\n        </div>\n    </div>\n\n    <div class=\"fixed-action-btn horizontal\" style=\"bottom: 45px; right: 45px;\" _v-69b23236=\"\">\n        <a class=\"btn-floating btn-large red\" _v-69b23236=\"\">\n            <i class=\"large material-icons\" _v-69b23236=\"\">games</i>\n        </a>\n        <ul _v-69b23236=\"\">\n            <li _v-69b23236=\"\">\n                <a @click=\"allowToJoin()\" class=\"btn-floating yellow darken-1 tooltipped\" data-position=\"top\" data-delay=\"50\" data-tooltip=\"allow join\" _v-69b23236=\"\">\n                    <i class=\"material-icons\" _v-69b23236=\"\">input</i>\n                </a>\n            </li>\n            <li _v-69b23236=\"\">\n                <a @click=\"start()\" class=\"btn-floating green darken-1 tooltipped\" data-position=\"top\" data-delay=\"50\" data-tooltip=\"start game\" _v-69b23236=\"\">\n                    <i class=\"material-icons\" _v-69b23236=\"\">play_circle_outline</i>\n                </a>\n            </li>\n        </ul>\n    </div>\n\n    <room-edit-dialog v-ref:room-edit-dialog=\"\" :room-id=\"$route.params.roomId\" _v-69b23236=\"\"></room-edit-dialog>\n</div>\n";
-
 /***/ }
 /******/ ]);
-//# sourceMappingURL=bundle.js.map
+//# sourceMappingURL=player.bundle.js.map
