@@ -7,6 +7,10 @@ var adminDAO = {
         adminQueryObj.equalTo('userName', user.userName);
         adminQueryObj.equalTo('password', user.password);
         return adminQueryObj.first();
+    },
+    getUserById: function(userId) {
+        var adminQueryObj = new AV.Query('Admin');
+        return adminQueryObj.get(userId);
     }
 };
 

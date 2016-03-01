@@ -14435,6 +14435,7 @@
 	                api.adminLogin(user).then(function(data) {
 	                    if(data.user) {
 	                        store.state.admin.user = {objectId: data.user.objectId, userName: data.user.userName};
+	                        localStorage.adminUserId = data.user.objectId;
 	                        resolve(data.user);
 	                    } else {
 	                        reject('no user find');
@@ -14446,6 +14447,17 @@
 	        },
 	        signout: function(store) {
 	            store.state.admin.user = {};
+	            localStorage.adminUserId = '';
+	        },
+	        checkAdminUser: function(store, userId) {
+	            return new Promise(function(resolve, reject) {
+	                api.getAdminUser(userId).then(function(data) {
+	                    store.state.admin.user = {objectId: data.user.objectId, userName: data.user.userName};
+	                    resolve(data.user);
+	                }, function(error) {
+	                    reject(error);
+	                });
+	            });
 	        },
 	        getRoomList: function(store) {
 	            console.log('store.actions.getRoomList');
@@ -15134,6 +15146,9 @@
 	        return callservice('/game/admin/login', {
 	            user: user
 	        });
+	    },
+	    getAdminUser: function(userId) {
+	        return callservice('/game/admin/get', {userId: userId});
 	    }
 	};
 	
@@ -15342,6 +15357,18 @@
 	        createRoom: function createRoom() {
 	            this.$router.go({ name: 'room-create' });
 	        }
+	    },
+	
+	    route: {
+	        canActivate: function canActivate(transition) {
+	            if (!localStorage.adminUserId) transition.redirect({ name: 'login' });else {
+	                store.actions.checkAdminUser(localStorage.adminUserId).then(function () {
+	                    transition.next();
+	                }, function () {
+	                    transition.redirect({ name: 'login' });
+	                });
+	            }
+	        }
 	    }
 	};
 
@@ -15456,6 +15483,18 @@
 	        },
 	        getRoomPlayers: function getRoomPlayers() {
 	            store.actions.getRoomPlayers(this.$route.params.roomId);
+	        }
+	    },
+	
+	    route: {
+	        canActivate: function canActivate(transition) {
+	            if (!localStorage.adminUserId) transition.redirect({ name: 'login' });else {
+	                store.actions.checkAdminUser(localStorage.adminUserId).then(function () {
+	                    transition.next();
+	                }, function () {
+	                    transition.redirect({ name: 'login' });
+	                });
+	            }
 	        }
 	    }
 	};
@@ -15588,6 +15627,18 @@
 	                    router.go({ name: 'home' });
 	                }, function () {
 	                    Materialize.toast('room failed to delete', 1000);
+	                });
+	            }
+	        }
+	    },
+	
+	    route: {
+	        canActivate: function canActivate(transition) {
+	            if (!localStorage.adminUserId) transition.redirect({ name: 'login' });else {
+	                store.actions.checkAdminUser(localStorage.adminUserId).then(function () {
+	                    transition.next();
+	                }, function () {
+	                    transition.redirect({ name: 'login' });
 	                });
 	            }
 	        }
@@ -15837,6 +15888,18 @@
 	            }, function () {
 	                Materialize.toast('create failed', 1000);
 	            });
+	        }
+	    },
+	
+	    route: {
+	        canActivate: function canActivate(transition) {
+	            if (!localStorage.adminUserId) transition.redirect({ name: 'login' });else {
+	                store.actions.checkAdminUser(localStorage.adminUserId).then(function () {
+	                    transition.next();
+	                }, function () {
+	                    transition.redirect({ name: 'login' });
+	                });
+	            }
 	        }
 	    }
 	};

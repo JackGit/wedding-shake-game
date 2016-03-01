@@ -120,6 +120,20 @@
 
                 }
             }
+        },
+
+        route: {
+            canActivate: function(transition) {
+                if(!localStorage.adminUserId)
+                    transition.redirect({name: 'login'});
+                else {
+                    store.actions.checkAdminUser(localStorage.adminUserId).then(function() {
+                        transition.next();
+                    }, function() {
+                        transition.redirect({name: 'login'});
+                    });
+                }
+            }
         }
     };
 </script>

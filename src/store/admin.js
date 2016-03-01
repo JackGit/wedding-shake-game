@@ -22,6 +22,7 @@ module.exports = window.store = new Vuex.Store({
                 api.adminLogin(user).then(function(data) {
                     if(data.user) {
                         store.state.admin.user = {objectId: data.user.objectId, userName: data.user.userName};
+                        localStorage.adminUserId = data.user.objectId;
                         resolve(data.user);
                     } else {
                         reject('no user find');
@@ -33,6 +34,17 @@ module.exports = window.store = new Vuex.Store({
         },
         signout: function(store) {
             store.state.admin.user = {};
+            localStorage.adminUserId = '';
+        },
+        checkAdminUser: function(store, userId) {
+            return new Promise(function(resolve, reject) {
+                api.getAdminUser(userId).then(function(data) {
+                    store.state.admin.user = {objectId: data.user.objectId, userName: data.user.userName};
+                    resolve(data.user);
+                }, function(error) {
+                    reject(error);
+                });
+            });
         },
         getRoomList: function(store) {
             console.log('store.actions.getRoomList');

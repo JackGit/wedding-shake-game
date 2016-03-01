@@ -106,6 +106,9 @@ var API = {
         return callservice('/game/admin/login', {
             user: user
         });
+    },
+    getAdminUser: function(userId) {
+        return callservice('/game/admin/get', {userId: userId});
     }
 };
 

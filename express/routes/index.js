@@ -354,4 +354,20 @@ module.exports = function(app) {
             });
         });
     });
+
+    router.post('/game/admin/get', function(req, res) {
+       AdminDAO.getUserById(req.body.userId).then(function(response) {
+           res.send({
+               statusCode: 0,
+               message: '',
+               user: response
+           });
+       }, function(error) {
+           res.send({
+               statusCode: -1,
+               message: 'get admin user error',
+               error: error
+           });
+       });
+    });
 };
