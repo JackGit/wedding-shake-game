@@ -10,7 +10,8 @@ module.exports = {
     },*/
     entry: {
         player: './src/main.js',
-        admin: './src/main-admin.js'
+        admin: './src/main-admin.js',
+        monitor: './src/main-monitor.js'
     },
     output: {
         path: path.join(__dirname, "dist"),

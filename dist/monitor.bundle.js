@@ -51,73 +51,18 @@
 	Vue.use(VueResource);
 	Vue.use(VueRouter);
 	
-	var App = __webpack_require__(90);
+	var App = __webpack_require__(74);
 	var router = new VueRouter();
-	var store = __webpack_require__(94);
+	var store = __webpack_require__(79);
 	
 	var socket = io();
 	window.socket = socket;
 	
-	// add for socket support.
-	// io is a global variable while include socket.io.js
-	/* Vue.use({
-	    install: function(Vue) {
-	        if(io)
-	            Vue.prototype.$socket = socket;
-	        else
-	            console.error('init $socket failed');
-	    }
-	});*/
-	
 	router.map({
-	    '/login': {
-	        name: 'login',
-	        component: __webpack_require__(96)
-	    },
-	    '/home': {
+	    '/': {
 	        name: 'home',
-	        component: __webpack_require__(101)
-	    },
-	    '/profile': {
-	        name: 'profile',
-	        component: __webpack_require__(106)
-	    },
-	
-	    // pages after join room start
-	    // refresh these pages will route to home page
-	    '/ready': {
-	        name: 'ready',
-	        component: __webpack_require__(111)
-	    },
-	    '/shake': {
-	        name: 'shake',
-	        component: __webpack_require__(116)
-	    },
-	    // pages after join room end
-	
-	    '/ranking/:roomId': {
-	        name: 'ranking',
-	        component: __webpack_require__(122)
-	    },
-	    '/visit/:roomId': {
-	        name: 'visit',
-	        component: __webpack_require__(127)
+	        component: __webpack_require__(80)
 	    }
-	
-	    // admin pages
-	    /*
-	    '/admin': {
-	        name: 'admin',
-	        component: require('./components/admin/home-page.vue')
-	    },
-	    '/room/:roomId': {
-	        name: 'room',
-	        component: require('./components/admin/room-page.vue')
-	    }*/
-	});
-	
-	router.redirect({
-	   '/': '/login'
 	});
 	
 	
@@ -15002,16 +14947,383 @@
 /* 71 */,
 /* 72 */,
 /* 73 */,
-/* 74 */,
-/* 75 */,
-/* 76 */,
-/* 77 */,
-/* 78 */,
-/* 79 */,
-/* 80 */,
-/* 81 */,
-/* 82 */,
-/* 83 */,
+/* 74 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __vue_script__, __vue_template__
+	__webpack_require__(75)
+	__vue_script__ = __webpack_require__(77)
+	if (__vue_script__ &&
+	    __vue_script__.__esModule &&
+	    Object.keys(__vue_script__).length > 1) {
+	  console.warn("[vue-loader] src\\app-monitor.vue: named exports in *.vue files are ignored.")}
+	__vue_template__ = __webpack_require__(78)
+	module.exports = __vue_script__ || {}
+	if (module.exports.__esModule) module.exports = module.exports.default
+	if (__vue_template__) {
+	(typeof module.exports === "function" ? (module.exports.options || (module.exports.options = {})) : module.exports).template = __vue_template__
+	}
+	if (false) {(function () {  module.hot.accept()
+	  var hotAPI = require("vue-hot-reload-api")
+	  hotAPI.install(require("vue"), true)
+	  if (!hotAPI.compatible) return
+	  var id = "C:\\Users\\Administrator\\Documents\\GitHub\\wedding-shake-game\\src\\app-monitor.vue"
+	  if (!module.hot.data) {
+	    hotAPI.createRecord(id, module.exports)
+	  } else {
+	    hotAPI.update(id, module.exports, __vue_template__)
+	  }
+	})()}
+
+/***/ },
+/* 75 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+	
+	// load the styles
+	var content = __webpack_require__(76);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(32)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../node_modules/css-loader/index.js?sourceMap!./../node_modules/vue-loader/lib/style-rewriter.js!./../node_modules/vue-loader/lib/selector.js?type=style&index=0!./app-monitor.vue", function() {
+				var newContent = require("!!./../node_modules/css-loader/index.js?sourceMap!./../node_modules/vue-loader/lib/style-rewriter.js!./../node_modules/vue-loader/lib/selector.js?type=style&index=0!./app-monitor.vue");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 76 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(31)();
+	// imports
+	
+	
+	// module
+	exports.push([module.id, "\n.fade-transition {\n    -webkit-transition: all 0.2s ease;\n    transition: all 0.2s ease;\n}\n\n.fade-enter {\n    opacity: 0;\n}\n\n.fade-leave {\n    opacity: 0;\n}\n", "", {"version":3,"sources":["/./src/app-monitor.vue?ea2c5eba"],"names":[],"mappings":";AACA;IACA,kCAAA;IAAA,0BAAA;CACA;;AAEA;IACA,WAAA;CACA;;AAEA;IACA,WAAA;CACA","file":"app-monitor.vue","sourcesContent":["<style>\r\n    .fade-transition {\r\n        transition: all 0.2s ease;\r\n    }\r\n\r\n    .fade-enter {\r\n        opacity: 0;\r\n    }\r\n\r\n    .fade-leave {\r\n        opacity: 0;\r\n    }\r\n</style>\r\n\r\n<template>\r\n    <div>\r\n        <router-view transition=\"fade\" transition-mode=\"out-in\"></router-view>\r\n    </div>\r\n</template>\r\n\r\n<script>\r\n    module.exports = {};\r\n</script>"],"sourceRoot":"webpack://"}]);
+	
+	// exports
+
+
+/***/ },
+/* 77 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	module.exports = {};
+
+/***/ },
+/* 78 */
+/***/ function(module, exports) {
+
+	module.exports = "\n<div>\n    <router-view transition=\"fade\" transition-mode=\"out-in\"></router-view>\n</div>\n";
+
+/***/ },
+/* 79 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Vue = __webpack_require__(1);
+	var Vuex = __webpack_require__(36).default;
+	var api = __webpack_require__(40);
+	
+	Vue.use(Vuex);
+	Vue.config.debug = true;
+	
+	function listenSocketMessage(type, enable) {
+	    console.log('listenSocketMessage', type, enable);
+	    if(enable) {
+	        switch(type) {
+	            case 'join':
+	                socket.on('join', function(userId) {
+	                    store.actions.onJoin(userId);
+	                });
+	                break;
+	            case 'leave':
+	                socket.on('leave', function(userId) {
+	                    store.actions.onLeave(userId);
+	                });
+	                break;
+	            case 'shake':
+	                socket.on('shake', function(message) {
+	                    store.actions.onShake(message);
+	                });
+	                break;
+	            case 'status-change':
+	                socket.on('status-change', function(message) {
+	                    store.actions.onStatusChange(message);
+	                });
+	                break;
+	            default:
+	                break;
+	        }
+	    } else {
+	        socket.off(type);
+	    }
+	}
+	
+	module.exports = window.store = new Vuex.Store({
+	    state: {
+	        room: {},
+	        playerList: [],
+	        show: false
+	    },
+	
+	    actions: {
+	        getRoomDetails: function(store, roomId) {
+	            console.log('store.actions.getRoomDetails', roomId);
+	
+	            api.getRoom(roomId).then(function(data) {
+	                store.state.room = data.room;
+	            }, function(error) {
+	                console.log('store.actions.getRoomDetails error', error);
+	            });
+	        },
+	        getRoomPlayers: function(store, roomId) {
+	            console.log('store.actions.getRoomPlayers', roomId);
+	            api.getRoomPlayers(roomId).then(function(data) {
+	                store.state.playerList = data.players;
+	            }, function(error) {
+	                console.log('store.actions.getRoomPlayers error', error);
+	            });
+	        },
+	        show: function(store) {
+	            store.state.show = true;
+	        },
+	        hide: function(store) {
+	            store.state.show = false;
+	        },
+	        onJoin: function(store, message) {
+	            var userId = message.userId;
+	            console.log('store.actions.onJoin', message);
+	            api.getUser({userId: userId}).then(function(data) {
+	                var exist = store.state.playerList.filter(function(p) {
+	                        return p.objectId === userId;
+	                    }).length !== 0;
+	
+	                if(!exist)
+	                    store.state.playerList.push(data.user);
+	            }, function(error) {
+	                console.log('store.actions.onJoin get user error', error);
+	            });
+	        },
+	        onLeave: function(store, message) {
+	            var userId = message.userId;
+	            console.log('store.actions.onLeave', message);
+	            store.state.playerList = store.state.playerList.filter(function(player) {
+	                return player.objectId !== userId;
+	            });
+	        },
+	        onShake: function(store, message) {
+	            var userId = message.userId,
+	                count = message.shakeCount;
+	            console.log('store.actions.onShake', message);
+	            for(i = 0; i < store.state.playerList.length; i ++) {
+	                if(store.state.playerList[i].objectId === userId) {
+	                    store.state.playerList[i].shakeCount = count;
+	                    break;
+	                }
+	            }
+	        },
+	        onStatusChange: function(store, message) {
+	            var roomId = message.roomId,
+	                status = message.status;
+	
+	            console.log('store.actions.onStatusChange', message);
+	            if(status === 'JOINING') {
+	                store.actions.getRoomDetails(roomId);
+	                store.actions.getRoomPlayers(roomId);
+	
+	                store.actions.hide();
+	                setTimeout(function() {
+	                    store.actions.show();
+	                }, 1000);
+	            } else {
+	                store.state.room.status = status;
+	            }
+	        },
+	
+	        on: function(store, message) {
+	            listenSocketMessage(message, true);
+	        },
+	        off: function(store, message) {
+	            listenSocketMessage(message, false);
+	        }
+	
+	    },
+	
+	    mutations: {
+	
+	    }
+	});
+
+
+/***/ },
+/* 80 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __vue_script__, __vue_template__
+	__webpack_require__(81)
+	__vue_script__ = __webpack_require__(83)
+	if (__vue_script__ &&
+	    __vue_script__.__esModule &&
+	    Object.keys(__vue_script__).length > 1) {
+	  console.warn("[vue-loader] src\\components\\monitor\\home-page.vue: named exports in *.vue files are ignored.")}
+	__vue_template__ = __webpack_require__(89)
+	module.exports = __vue_script__ || {}
+	if (module.exports.__esModule) module.exports = module.exports.default
+	if (__vue_template__) {
+	(typeof module.exports === "function" ? (module.exports.options || (module.exports.options = {})) : module.exports).template = __vue_template__
+	}
+	if (false) {(function () {  module.hot.accept()
+	  var hotAPI = require("vue-hot-reload-api")
+	  hotAPI.install(require("vue"), true)
+	  if (!hotAPI.compatible) return
+	  var id = "C:\\Users\\Administrator\\Documents\\GitHub\\wedding-shake-game\\src\\components\\monitor\\home-page.vue"
+	  if (!module.hot.data) {
+	    hotAPI.createRecord(id, module.exports)
+	  } else {
+	    hotAPI.update(id, module.exports, __vue_template__)
+	  }
+	})()}
+
+/***/ },
+/* 81 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+	
+	// load the styles
+	var content = __webpack_require__(82);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(32)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../../../node_modules/css-loader/index.js?sourceMap!./../../../node_modules/vue-loader/lib/style-rewriter.js!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./home-page.vue", function() {
+				var newContent = require("!!./../../../node_modules/css-loader/index.js?sourceMap!./../../../node_modules/vue-loader/lib/style-rewriter.js!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./home-page.vue");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 82 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(31)();
+	// imports
+	
+	
+	// module
+	exports.push([module.id, "\n#monitorBackgroundImage {\n    position: fixed;\n    top: 0;\n    bottom: 0;\n    right: 0;\n    left: 0;\n    z-index: -1;\n}\n.blur {\n    -webkit-filter: blur(10px); /* Chrome, Opera */\n    -moz-filter: blur(10px);\n    -ms-filter: blur(10px);\n    filter: blur(10px);\n}\n.board {\n    min-height: 450px;\n}\n.border-header {\n    height: 160px;\n\n}\n.total-count {\n    position: absolute;\n    top: 160px;\n    font-size: 300px;\n    line-height: 300px;\n}\n.total-count.right {\n    right: 0;\n}\n.total-count.left {\n    left: 0;\n}\n.progress-bg {\n    background-color: rgba(0, 0, 0, 0.2) !important;\n}\n\n.leftIn-transition, .rightIn-transition {\n    -webkit-transition: all 0.4s ease;\n    transition: all 0.4s ease;\n}\n.leftIn-enter {\n    opacity: 0;\n    -webkit-transform: translateY(-20%);\n            transform: translateY(-20%);\n}\n.leftIn-leave {\n    opacity: 0;\n    -webkit-transform: translateY(20%);\n            transform: translateY(20%);\n}\n.rightIn-enter {\n    opacity: 0;\n    -webkit-transform: translateY(20%);\n            transform: translateY(20%);\n}\n.rightIn-leave {\n    opacity: 0;\n    -webkit-transform: translateY(-20%);\n            transform: translateY(-20%);\n}\n", "", {"version":3,"sources":["/./src/components/monitor/home-page.vue?3ecd8ebc"],"names":[],"mappings":";AACA;IACA,gBAAA;IACA,OAAA;IACA,UAAA;IACA,SAAA;IACA,QAAA;IACA,YAAA;CACA;AACA;IACA,2BAAA,CAAA,mBAAA;IACA,wBAAA;IACA,uBAAA;IACA,mBAAA;CACA;AACA;IACA,kBAAA;CACA;AACA;IACA,cAAA;;CAEA;AACA;IACA,mBAAA;IACA,WAAA;IACA,iBAAA;IACA,mBAAA;CACA;AACA;IACA,SAAA;CACA;AACA;IACA,QAAA;CACA;AACA;IACA,gDAAA;CACA;;AAEA;IACA,kCAAA;IAAA,0BAAA;CACA;AACA;IACA,WAAA;IACA,oCAAA;YAAA,4BAAA;CACA;AACA;IACA,WAAA;IACA,mCAAA;YAAA,2BAAA;CACA;AACA;IACA,WAAA;IACA,mCAAA;YAAA,2BAAA;CACA;AACA;IACA,WAAA;IACA,oCAAA;YAAA,4BAAA;CACA","file":"home-page.vue","sourcesContent":["<style>\r\n    #monitorBackgroundImage {\r\n        position: fixed;\r\n        top: 0;\r\n        bottom: 0;\r\n        right: 0;\r\n        left: 0;\r\n        z-index: -1;\r\n    }\r\n    .blur {\r\n        -webkit-filter: blur(10px); /* Chrome, Opera */\r\n        -moz-filter: blur(10px);\r\n        -ms-filter: blur(10px);\r\n        filter: blur(10px);\r\n    }\r\n    .board {\r\n        min-height: 450px;\r\n    }\r\n    .border-header {\r\n        height: 160px;\r\n\r\n    }\r\n    .total-count {\r\n        position: absolute;\r\n        top: 160px;\r\n        font-size: 300px;\r\n        line-height: 300px;\r\n    }\r\n    .total-count.right {\r\n        right: 0;\r\n    }\r\n    .total-count.left {\r\n        left: 0;\r\n    }\r\n    .progress-bg {\r\n        background-color: rgba(0, 0, 0, 0.2) !important;\r\n    }\r\n\r\n    .leftIn-transition, .rightIn-transition {\r\n        transition: all 0.4s ease;\r\n    }\r\n    .leftIn-enter {\r\n        opacity: 0;\r\n        transform: translateY(-20%);\r\n    }\r\n    .leftIn-leave {\r\n        opacity: 0;\r\n        transform: translateY(20%);\r\n    }\r\n    .rightIn-enter {\r\n        opacity: 0;\r\n        transform: translateY(20%);\r\n    }\r\n    .rightIn-leave {\r\n        opacity: 0;\r\n        transform: translateY(-20%);\r\n    }\r\n </style>\r\n\r\n<template>\r\n    <div>\r\n        <div id=\"monitorBackgroundImage\" :class=\"show ? 'blur' : ''\"></div>\r\n\r\n        <div v-if=\"show\" transition=\"fade\" class=\"z-depth-1 row\" style=\"padding:20px;background:white\">\r\n            <h4 class=\"center-align\">{{room.roomName}}</h4>\r\n        </div>\r\n\r\n        <div class=\"container\">\r\n            <div class=\"row\">\r\n                <div class=\"col s12\" v-if=\"false\" transition=\"fade\" >\r\n                    <h3 class=\"center-align red-text\"><span class=\"black-text\" style=\"font-size:18px\">倒计时: </span>00:19.80</h3>\r\n                </div>\r\n\r\n                <div class=\"col s6\" v-if=\"show\" transition=\"leftIn\" >\r\n                    <div class=\"card board\">\r\n                        <div class=\"total-count right red-text text-lighten-4\">{{groomTotal}}</div>\r\n                        <div class=\"card-content border-header\">\r\n                            <div class=\"row\">\r\n                                <div class=\"col s6 offset-s6\">\r\n                                    <h5 class=\"red-text text-lighten-2\">GROOM TEAM</h5>\r\n                                    <h6 class=\"grey-text text-lighten-1\">{{groomPlayers.length}} Players</h6>\r\n                                </div>\r\n                            </div>\r\n                        </div>\r\n                        <div class=\"card-content\">\r\n                            <ul class=\"collection\">\r\n                                <li class=\"collection-item avatar transparent\" v-for=\"player in groomPlayers\">\r\n                                    <img :src=\"player.avatarImageUrl\" alt=\"\" class=\"circle\">\r\n                                    <span class=\"title\">{{player.userName}}<span class=\"badge\">{{player.shakeCount}}</span></span>\r\n                                    <div class=\"progress progress-bg\">\r\n                                        <div class=\"determinate red\" :style=\"{width: player.shakeCount/200*100 + '%'}\"></div>\r\n                                    </div>\r\n                                </li>\r\n                            </ul>\r\n                        </div>\r\n                    </div>\r\n                </div>\r\n\r\n                <div class=\"col s6\" v-if=\"show\" transition=\"rightIn\" >\r\n                    <div class=\"card board\">\r\n                        <div class=\"total-count left teal-text text-lighten-4\">{{brideTotal}}</div>\r\n                        <div class=\"card-content border-header\">\r\n                            <div class=\"row\">\r\n                                <div class=\"col s6\">\r\n                                    <h5 class=\"teal-text text-lighten-2\">BRIDE TEAM</h5>\r\n                                    <h6 class=\"grey-text text-lighten-1\">{{bridePlayers.length}} Players</h6>\r\n                                </div>\r\n                            </div>\r\n                        </div>\r\n                        <div class=\"card-content\">\r\n                            <ul class=\"collection\">\r\n                                <li class=\"collection-item avatar transparent\" v-for=\"player in bridePlayers\">\r\n                                    <img :src=\"player.avatarImageUrl\" alt=\"\" class=\"circle\">\r\n                                    <span class=\"title\">{{player.userName}}<span class=\"badge\">{{player.shakeCount}}</span></span>\r\n                                    <div class=\"progress progress-bg\">\r\n                                        <div class=\"determinate\" :style=\"{width: player.shakeCount/200*100 + '%'}\"></div>\r\n                                    </div>\r\n                                </li>\r\n                            </ul>\r\n                        </div>\r\n                    </div>\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</template>\r\n\r\n<script>\r\n    var store = require('../../store/monitor.js');\r\n    var Stopwatch = require('timer-stopwatch');\r\n    var Loader = wy.base.Loader;\r\n    var Tilting = wy.base.Tilting;\r\n    var CenterIt = wy.base.CenterIt;\r\n\r\n    module.exports = {\r\n\r\n        ready: function() {\r\n            var loader = new Loader();\r\n\r\n            loader.add('background', 'static/images/monitor_background_01.jpg', function(r) {\r\n                var $container = $('#monitorBackgroundImage');\r\n                var img = r.data;\r\n                var center = new CenterIt($container.width(), $container.height(), img.naturalWidth, img.naturalHeight, {type: 'cover'});\r\n                var $img = $(img).css('position', 'absolute');\r\n\r\n                $img.width(center.newWidth());\r\n                $img.height(center.newHeight());\r\n                $img.css('top', center.offset().top + 'px');\r\n                $img.css('left', center.offset().left + 'px');\r\n\r\n                $container.append($img);\r\n                new Tilting($img, {limitY: 0});\r\n            });\r\n\r\n            loader.load();\r\n\r\n            store.actions.getRoomDetails();\r\n            store.actions.getRoomPlayers();\r\n            store.actions.on('join');\r\n            store.actions.on('leave');\r\n            store.actions.on('shake');\r\n            store.actions.on('status-change');\r\n        },\r\n\r\n        computed: {\r\n            room: function() {\r\n                return store.state.room;\r\n            },\r\n            players: function() {\r\n                return store.state.playerList;\r\n            },\r\n            groomPlayers: function() {\r\n                return store.state.playerList.filter(function(p) {\r\n                    return p.userType === 'GROOM';\r\n                });\r\n            },\r\n            bridePlayers: function() {\r\n                return store.state.playerList.filter(function(p) {\r\n                    return p.userType === 'BRIDE';\r\n                });\r\n            },\r\n            brideTotal: function() {\r\n                var total = 0;\r\n                (store.state.playerList || []).forEach(function(r) {\r\n                    if(r.userType === 'BRIDE')\r\n                        total += r.shakeCount;\r\n                });\r\n                return total;\r\n            },\r\n            groomTotal: function() {\r\n                var total = 0;\r\n                (store.state.playerList || []).forEach(function(r) {\r\n                    if(r.userType === 'GROOM')\r\n                        total += r.shakeCount;\r\n                });\r\n                return total;\r\n            },\r\n            show: function() {\r\n                return store.state.show;\r\n            }\r\n        },\r\n\r\n        beforeDestroy: function() {\r\n            store.actions.off('join');\r\n            store.actions.off('leave');\r\n            store.actions.off('shake');\r\n            store.actions.off('status-change');\r\n        }\r\n    };\r\n</script>"],"sourceRoot":"webpack://"}]);
+	
+	// exports
+
+
+/***/ },
+/* 83 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var store = __webpack_require__(79);
+	var Stopwatch = __webpack_require__(84);
+	var Loader = wy.base.Loader;
+	var Tilting = wy.base.Tilting;
+	var CenterIt = wy.base.CenterIt;
+	
+	module.exports = {
+	
+	    ready: function ready() {
+	        var loader = new Loader();
+	
+	        loader.add('background', 'static/images/monitor_background_01.jpg', function (r) {
+	            var $container = $('#monitorBackgroundImage');
+	            var img = r.data;
+	            var center = new CenterIt($container.width(), $container.height(), img.naturalWidth, img.naturalHeight, { type: 'cover' });
+	            var $img = $(img).css('position', 'absolute');
+	
+	            $img.width(center.newWidth());
+	            $img.height(center.newHeight());
+	            $img.css('top', center.offset().top + 'px');
+	            $img.css('left', center.offset().left + 'px');
+	
+	            $container.append($img);
+	            new Tilting($img, { limitY: 0 });
+	        });
+	
+	        loader.load();
+	
+	        store.actions.getRoomDetails();
+	        store.actions.getRoomPlayers();
+	        store.actions.on('join');
+	        store.actions.on('leave');
+	        store.actions.on('shake');
+	        store.actions.on('status-change');
+	    },
+	
+	    computed: {
+	        room: function room() {
+	            return store.state.room;
+	        },
+	        players: function players() {
+	            return store.state.playerList;
+	        },
+	        groomPlayers: function groomPlayers() {
+	            return store.state.playerList.filter(function (p) {
+	                return p.userType === 'GROOM';
+	            });
+	        },
+	        bridePlayers: function bridePlayers() {
+	            return store.state.playerList.filter(function (p) {
+	                return p.userType === 'BRIDE';
+	            });
+	        },
+	        brideTotal: function brideTotal() {
+	            var total = 0;
+	            (store.state.playerList || []).forEach(function (r) {
+	                if (r.userType === 'BRIDE') total += r.shakeCount;
+	            });
+	            return total;
+	        },
+	        groomTotal: function groomTotal() {
+	            var total = 0;
+	            (store.state.playerList || []).forEach(function (r) {
+	                if (r.userType === 'GROOM') total += r.shakeCount;
+	            });
+	            return total;
+	        },
+	        show: function show() {
+	            return store.state.show;
+	        }
+	    },
+	
+	    beforeDestroy: function beforeDestroy() {
+	        store.actions.off('join');
+	        store.actions.off('leave');
+	        store.actions.off('shake');
+	        store.actions.off('status-change');
+	    }
+	};
+
+/***/ },
 /* 84 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -22745,1611 +23057,11 @@
 
 
 /***/ },
-/* 89 */,
-/* 90 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var __vue_script__, __vue_template__
-	__webpack_require__(91)
-	__vue_script__ = __webpack_require__(93)
-	if (__vue_script__ &&
-	    __vue_script__.__esModule &&
-	    Object.keys(__vue_script__).length > 1) {
-	  console.warn("[vue-loader] src\\app.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(95)
-	module.exports = __vue_script__ || {}
-	if (module.exports.__esModule) module.exports = module.exports.default
-	if (__vue_template__) {
-	(typeof module.exports === "function" ? (module.exports.options || (module.exports.options = {})) : module.exports).template = __vue_template__
-	}
-	if (false) {(function () {  module.hot.accept()
-	  var hotAPI = require("vue-hot-reload-api")
-	  hotAPI.install(require("vue"), true)
-	  if (!hotAPI.compatible) return
-	  var id = "C:\\Users\\Administrator\\Documents\\GitHub\\wedding-shake-game\\src\\app.vue"
-	  if (!module.hot.data) {
-	    hotAPI.createRecord(id, module.exports)
-	  } else {
-	    hotAPI.update(id, module.exports, __vue_template__)
-	  }
-	})()}
-
-/***/ },
-/* 91 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-	
-	// load the styles
-	var content = __webpack_require__(92);
-	if(typeof content === 'string') content = [[module.id, content, '']];
-	// add the styles to the DOM
-	var update = __webpack_require__(32)(content, {});
-	if(content.locals) module.exports = content.locals;
-	// Hot Module Replacement
-	if(false) {
-		// When the styles change, update the <style> tags
-		if(!content.locals) {
-			module.hot.accept("!!./../node_modules/css-loader/index.js?sourceMap!./../node_modules/vue-loader/lib/style-rewriter.js!./../node_modules/vue-loader/lib/selector.js?type=style&index=0!./app.vue", function() {
-				var newContent = require("!!./../node_modules/css-loader/index.js?sourceMap!./../node_modules/vue-loader/lib/style-rewriter.js!./../node_modules/vue-loader/lib/selector.js?type=style&index=0!./app.vue");
-				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-				update(newContent);
-			});
-		}
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
-
-/***/ },
-/* 92 */
-/***/ function(module, exports, __webpack_require__) {
-
-	exports = module.exports = __webpack_require__(31)();
-	// imports
-	
-	
-	// module
-	exports.push([module.id, "\n.mask {\n    position: fixed;\n    top: 0;\n    bottom: 0;\n    left: 0;\n    right: 0;\n    background-color: rgba(0,0,0,0.5);\n}\n\n.fade-transition {\n    -webkit-transition: all 0.2s ease;\n    transition: all 0.2s ease;\n}\n\n.fade-enter {\n    opacity: 0;\n    /*margin-top: 5%;*/\n}\n\n.fade-leave {\n    opacity: 0;\n}\n", "", {"version":3,"sources":["/./src/app.vue?4c31d4b9"],"names":[],"mappings":";AACA;IACA,gBAAA;IACA,OAAA;IACA,UAAA;IACA,QAAA;IACA,SAAA;IACA,kCAAA;CACA;;AAEA;IACA,kCAAA;IAAA,0BAAA;CACA;;AAEA;IACA,WAAA;IACA,mBAAA;CACA;;AAEA;IACA,WAAA;CACA","file":"app.vue","sourcesContent":["<style>\r\n    .mask {\r\n        position: fixed;\r\n        top: 0;\r\n        bottom: 0;\r\n        left: 0;\r\n        right: 0;\r\n        background-color: rgba(0,0,0,0.5);\r\n    }\r\n\r\n    .fade-transition {\r\n        transition: all 0.2s ease;\r\n    }\r\n\r\n    .fade-enter {\r\n        opacity: 0;\r\n        /*margin-top: 5%;*/\r\n    }\r\n\r\n    .fade-leave {\r\n        opacity: 0;\r\n    }\r\n</style>\r\n\r\n<template>\r\n    <div>\r\n        <router-view transition=\"fade\" transition-mode=\"out-in\"></router-view>\r\n        <div class=\"mask\" v-if=\"mask\"></div>\r\n    </div>\r\n</template>\r\n\r\n<script>\r\n    var store = require('./store');\r\n\r\n    module.exports = {\r\n        components: {\r\n\r\n        },\r\n\r\n        computed: {\r\n            mask: function() {\r\n                return store.state.mask;\r\n            }\r\n        }\r\n    }\r\n</script>"],"sourceRoot":"webpack://"}]);
-	
-	// exports
-
-
-/***/ },
-/* 93 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var store = __webpack_require__(94);
-	
-	module.exports = {
-	    components: {},
-	
-	    computed: {
-	        mask: function mask() {
-	            return store.state.mask;
-	        }
-	    }
-	};
-
-/***/ },
-/* 94 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var Vue = __webpack_require__(1);
-	var Vuex = __webpack_require__(36).default;
-	var api = __webpack_require__(40);
-	
-	Vue.use(Vuex);
-	Vue.config.debug = true;
-	
-	// socket is global var defined in main.js
-	function adminListenPlayerSocketMessage(type, enable) {
-	    console.log('listenPlayerSocketMessage', type, enable);
-	    if(enable) {
-	        switch(type) {
-	            case 'join':
-	                socket.on('join', function(userId) {
-	                    store.actions.adminOnJoin(userId);
-	                });
-	                break;
-	            case 'leave':
-	                socket.on('leave', function(userId) {
-	                    store.actions.adminOnLeave(userId);
-	                });
-	                break;
-	            case 'shake':
-	                socket.on('shake', function(message) {
-	                    store.actions.adminOnShake(message);
-	                });
-	                break;
-	            default:
-	                break;
-	        }
-	    } else {
-	        socket.off(type);
-	    }
-	}
-	
-	function listenPlayerSocketMessage(type, enable) {
-	    console.log('listenPlayerSocketMessage', type, enable);
-	    if(enable) {
-	        switch(type) {
-	            case 'join':
-	                socket.on('join', function(userId) {
-	                    store.actions.onJoin(userId);
-	                });
-	                break;
-	            case 'leave':
-	                socket.on('leave', function(userId) {
-	                    store.actions.onLeave(userId);
-	                });
-	                break;
-	            case 'shake':
-	                socket.on('shake', function(message) {
-	                    store.actions.onShake(message);
-	                });
-	                break;
-	            case 'status-change':
-	                socket.on('status-change', function(message) {
-	                    store.actions.onStatusChange(message);
-	                });
-	                break;
-	            default:
-	                break;
-	        }
-	    } else {
-	        socket.off(type);
-	    }
-	}
-	
-	module.exports = window.store = new Vuex.Store({
-	    state: {
-	        /* player pages states */
-	        player: {
-	            currentPlayer: localStorage.userJSON ? JSON.parse(localStorage.userJSON) : {},
-	            currentRoom: {},
-	            playerList: [],         // player list in current room
-	            roomList: [],           // room list
-	            shakePage: {
-	                STOPWATCH_UNIT: 100,
-	                TOTAL_GAME_TIME: 20 * 1000,
-	                timeBalance: 20 * 1000,
-	                stopwatchString: '00:00.0'
-	            },
-	            rankingPage: {
-	                playerList: []
-	            }
-	        },
-	
-	        /* admin pages states */
-	        admin: {
-	            homePage: {
-	                roomList: []
-	            },
-	            roomPage: {
-	                roomDetails: {},
-	                players: []
-	            },
-	            editRoomDialog: {
-	                roomDetails: {}
-	            }
-	        }
-	    },
-	
-	    actions: {
-	        /* player actions */
-	        createUser: function(store, user) {
-	            console.log('store.actions.createUser', user);
-	
-	            return new Promise(function(resolve, reject) {
-	                api.createUser(user).then(function(data) {
-	                    localStorage.userId = data.user.objectId;
-	                    localStorage.userJSON = JSON.stringify(data.user);
-	                    store.state.player.currentPlayer = data.user;
-	                    resolve(data.user);
-	                }, function(error) {
-	                    localStorage.userId = '';
-	                    localStorage.userJSON = '';
-	                    store.state.player.currentPlayer = {};
-	                    reject(error);
-	                });
-	            });
-	        },
-	        signout: function(store) {
-	            localStorage.userId = '';
-	            localStorage.userJSON = '';
-	            store.state.player.currentPlayer = {};
-	        },
-	        updateUserDetails: function(store, user) {
-	            console.log('store.actions.updateUserDetails', user);
-	            return new Promise(function(resolve, reject) {
-	                api.updateUser(user).then(function(data) {
-	                    localStorage.userJSON = JSON.stringify(data.user);
-	                    store.state.player.currentPlayer = data.user;
-	                    resolve(data.user);
-	                }, function(error) {
-	                    reject(error);
-	                });
-	            });
-	        },
-	        getUserDetails: function(store, userId) {
-	            console.log('store.actions.getUserDetails', userId);
-	            return new Promise(function(resolve, reject) {
-	                api.getUser({userId: userId}).then(function(data) {
-	                    localStorage.userJSON = JSON.stringify(data.user);
-	                    store.state.player.currentPlayer = data.user;
-	                    resolve(data.user);
-	                }, function(error) {
-	                    localStorage.userJSON = '';
-	                    store.state.player.currentPlayer = {};
-	                    reject(error);
-	                });
-	            });
-	        },
-	        getRoomDetails: function(store, roomId) {
-	            console.log('store.actions.getRoomDetails', roomId);
-	
-	            api.getRoom(roomId).then(function(data) {
-	                store.state.player.currentRoom = data.room;
-	            }, function(error) {
-	                console.log('store.actions.getRoomDetails error', error);
-	            });
-	        },
-	        getRoomPlayers: function(store, roomId) {
-	            console.log('store.actions.getRoomPlayers', roomId);
-	            api.getRoomPlayers(roomId).then(function(data) {
-	                store.state.player.playerList = data.players;
-	            }, function(error) {
-	                console.log('store.actions.getRoomPlayers error', error);
-	                store.state.player.playerList = [];
-	            });
-	        },
-	        getRoomRankingPlayers: function(store, roomId) {
-	            console.log('store.actions.getRankingPlayers', roomId);
-	            api.getRoomRankingPlayerList(roomId).then(function(data) {
-	                store.state.player.rankingPage.playerList = data.players;
-	            }, function(error) {
-	                console.log('store.actions.getRankingPlayers error', error);
-	                store.state.player.rankingPage.playerList = [];
-	            });
-	        },
-	        getRoomList: function(store) {
-	            console.log('store.actions.getRoomList');
-	
-	            api.listRoom().then(function(data) {
-	                store.state.player.roomList = data.roomList;
-	            }, function(error) {
-	                console.log('store.actions.getRoomList error', error);
-	                store.state.player.roomList = [];
-	            });
-	        },
-	        joinRoom: function(store, request) {
-	            console.log('store.actions.joinRoom request', request);
-	            var user = request.user, roomId = request.roomId;
-	
-	            return new Promise(function(resolve, reject) {
-	                api.joinRoom(roomId, user.objectId, user.userType).then(function(data) {
-	                    store.state.player.currentRoom = data.room;
-	                    socket.emit('join', {userId: user.objectId, roomId: data.room.objectId});
-	                    resolve(data.room);
-	                }, function(error) {
-	                    store.state.player.currentRoom = {};
-	                    store.state.player.playerList = [];
-	                    reject(error);
-	                });
-	            });
-	        },
-	        leaveRoom: function(store, roomId, userId) {
-	            console.log('store.actions.leaveRoom', roomId, userId);
-	            return new Promise(function(resolve, reject) {
-	                api.leaveRoom(roomId, userId).then(function(data) {
-	                    store.state.player.currentRoom = {};
-	                    store.state.player.playerList = [];
-	                    socket.emit('leave', {userId: userId, roomId: roomId});
-	                    resolve(data.room);
-	                }, function(error) {
-	                    reject(error);
-	                });
-	            });
-	        },
-	        clearShakeCount: function(store) {
-	            api.updateUser({
-	                objectId: store.state.player.currentPlayer.objectId,
-	                shakeCount: 0
-	            });
-	            store.state.player.currentPlayer.shakeCount = 0;
-	        },
-	        shake: function(store) {
-	            var shakeCount = ++ store.state.player.currentPlayer.shakeCount;
-	
-	            store.state.player.playerList.forEach(function(p) {
-	                if(p.objectId === store.state.player.currentPlayer.objectId)
-	                    p.shakeCount = shakeCount;
-	            });
-	
-	            api.updateUser({
-	                objectId: store.state.player.currentPlayer.objectId,
-	                shakeCount: shakeCount
-	            });
-	
-	            socket.emit('shake', {
-	                userId: store.state.player.currentPlayer.objectId,
-	                shakeCount: shakeCount
-	            });
-	        },
-	        updateStopwatch: function(store, balance) {
-	            var s = '00' + Math.floor(balance / 1000);
-	            var sStr = s.substring(s.length - 2, s.length);
-	            var ss = balance % 1000 / store.state.player.shakePage.STOPWATCH_UNIT;
-	
-	            store.state.player.shakePage.timeBalance = balance;
-	            store.state.player.shakePage.stopwatchString = '00:' + sStr + '.' + ss;
-	        },
-	        listenPlayerJoinSocketMessage: function(store, enable) {
-	            listenPlayerSocketMessage('join', enable);
-	        },
-	        listenPlayerLeaveSocketMessage: function(store, enable) {
-	            listenPlayerSocketMessage('leave', enable);
-	        },
-	        listenPlayerShakeSocketMessage: function(store, enable) {
-	            listenPlayerSocketMessage('shake', enable);
-	        },
-	        listenPlayerStatusChangeSocketMessage: function(store, enable) {
-	            listenPlayerSocketMessage('status-change', enable);
-	        },
-	        onJoin: function(store, message) {
-	            var userId = message.userId, roomId = message.roomId;
-	
-	            console.log('store.actions.onJoin', userId);
-	            api.getUser({userId: userId}).then(function(data) {
-	                var exist = store.state.player.playerList.filter(function(p) {
-	                        return p.objectId === userId;
-	                    }).length !== 0;
-	
-	                if(!exist)
-	                    store.state.player.playerList.push(data.user);
-	            }, function(error) {
-	                console.log('store.actions.onJoin get user error', error);
-	            });
-	        },
-	        onLeave: function(store, message) {
-	            var userId = message.userId, roomId = message.roomId;
-	
-	            store.state.player.playerList = store.state.player.playerList.filter(function(player) {
-	                return player.objectId !== userId;
-	            });
-	        },
-	        onShake: function(store, data) {
-	            var userId = data.userId,
-	                count = data.shakeCount,
-	                i;
-	
-	            for(i = 0; i < store.state.player.playerList.length; i ++) {
-	                if(store.state.player.playerList[i].objectId === userId) {
-	                    store.state.player.playerList[i].shakeCount = count;
-	                    break;
-	                }
-	            }
-	        },
-	        onStatusChange: function(store, message) {
-	            var roomId = message.roomId,
-	                status = message.status;
-	
-	            if(roomId === store.state.player.currentRoom.objectId)
-	                store.state.player.currentRoom.status = status;
-	
-	            store.state.player.roomList.forEach(function(room) {
-	                if(room.objectId === roomId)
-	                    room.status = status;
-	            });
-	        },
-	
-	
-	
-	
-	        adminListenSocketMessage: function(store, enable) {
-	            adminListenPlayerSocketMessage('shake', enable);
-	            adminListenPlayerSocketMessage('join', enable);
-	            adminListenPlayerSocketMessage('leave', enable);
-	        },
-	        adminOnJoin: function(store, message) {
-	            var userId = message.userId, roomId = message.roomId;
-	
-	            console.log('store.actions.adminOnJoin', userId);
-	            api.getUser({userId: userId}).then(function(data) {
-	                var exist = store.state.admin.roomPage.players.filter(function(p) {
-	                        return p.objectId === userId;
-	                    }).length !== 0;
-	
-	                if(!exist)
-	                    store.state.admin.roomPage.players.push(data.user);
-	            }, function(error) {
-	                console.log('store.actions.adminOnJoin get user error', error);
-	            });
-	        },
-	        adminOnLeave: function(store, message) {
-	            var userId = message.userId, roomId = message.roomId;
-	
-	            store.state.admin.roomPage.players = store.state.admin.roomPage.players.filter(function(player) {
-	                return player.objectId !== userId;
-	            });
-	        },
-	        adminOnShake: function(store, data) {
-	            var userId = data.userId,
-	                count = data.shakeCount,
-	                i;
-	
-	            for(i = 0; i < store.state.admin.roomPage.players.length; i ++) {
-	                if(store.state.admin.roomPage.players[i].objectId === userId) {
-	                    store.state.admin.roomPage.players[i].shakeCount = count;
-	                    break;
-	                }
-	            }
-	        }
-	    },
-	
-	    mutations: {
-	
-	    }
-	});
-
-
-/***/ },
-/* 95 */
+/* 89 */
 /***/ function(module, exports) {
 
-	module.exports = "\n<div>\n    <router-view transition=\"fade\" transition-mode=\"out-in\"></router-view>\n    <div class=\"mask\" v-if=\"mask\"></div>\n</div>\n";
-
-/***/ },
-/* 96 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var __vue_script__, __vue_template__
-	__webpack_require__(97)
-	__vue_script__ = __webpack_require__(99)
-	if (__vue_script__ &&
-	    __vue_script__.__esModule &&
-	    Object.keys(__vue_script__).length > 1) {
-	  console.warn("[vue-loader] src\\components\\player\\login-page.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(100)
-	module.exports = __vue_script__ || {}
-	if (module.exports.__esModule) module.exports = module.exports.default
-	if (__vue_template__) {
-	(typeof module.exports === "function" ? (module.exports.options || (module.exports.options = {})) : module.exports).template = __vue_template__
-	}
-	if (false) {(function () {  module.hot.accept()
-	  var hotAPI = require("vue-hot-reload-api")
-	  hotAPI.install(require("vue"), true)
-	  if (!hotAPI.compatible) return
-	  var id = "C:\\Users\\Administrator\\Documents\\GitHub\\wedding-shake-game\\src\\components\\player\\login-page.vue"
-	  if (!module.hot.data) {
-	    hotAPI.createRecord(id, module.exports)
-	  } else {
-	    hotAPI.update(id, module.exports, __vue_template__)
-	  }
-	})()}
-
-/***/ },
-/* 97 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-	
-	// load the styles
-	var content = __webpack_require__(98);
-	if(typeof content === 'string') content = [[module.id, content, '']];
-	// add the styles to the DOM
-	var update = __webpack_require__(32)(content, {});
-	if(content.locals) module.exports = content.locals;
-	// Hot Module Replacement
-	if(false) {
-		// When the styles change, update the <style> tags
-		if(!content.locals) {
-			module.hot.accept("!!./../../../node_modules/css-loader/index.js?sourceMap!./../../../node_modules/vue-loader/lib/style-rewriter.js!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./login-page.vue", function() {
-				var newContent = require("!!./../../../node_modules/css-loader/index.js?sourceMap!./../../../node_modules/vue-loader/lib/style-rewriter.js!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./login-page.vue");
-				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-				update(newContent);
-			});
-		}
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
-
-/***/ },
-/* 98 */
-/***/ function(module, exports, __webpack_require__) {
-
-	exports = module.exports = __webpack_require__(31)();
-	// imports
-	
-	
-	// module
-	exports.push([module.id, "\n.background-container {\n    position: fixed;\n    top: 0;\n    bottom: 0;\n    left: 0;\n    right: 0;\n    z-index: -1;\n    background-image: url(http://wedding.jackyang.me/images/wedding_pic_08.jpg);\n    background-repeat: no-repeat;\n    background-size: cover;\n    background-position: center center;\n}\n.login-page-header {\n    height: 240px;\n}\n::-webkit-input-placeholder {\n    color: black;\n}\n", "", {"version":3,"sources":["/./src/components/player/login-page.vue?12f12042"],"names":[],"mappings":";AACA;IACA,gBAAA;IACA,OAAA;IACA,UAAA;IACA,QAAA;IACA,SAAA;IACA,YAAA;IACA,4EAAA;IACA,6BAAA;IAEA,uBAAA;IACA,mCAAA;CACA;AACA;IACA,cAAA;CACA;AACA;IACA,aAAA;CACA","file":"login-page.vue","sourcesContent":["<style>\r\n    .background-container {\r\n        position: fixed;\r\n        top: 0;\r\n        bottom: 0;\r\n        left: 0;\r\n        right: 0;\r\n        z-index: -1;\r\n        background-image: url(http://wedding.jackyang.me/images/wedding_pic_08.jpg);\r\n        background-repeat: no-repeat;\r\n        -webkit-background-size: cover;\r\n        background-size: cover;\r\n        background-position: center center;\r\n    }\r\n    .login-page-header {\r\n        height: 240px;\r\n    }\r\n    ::-webkit-input-placeholder {\r\n        color: black;\r\n    }\r\n</style>\r\n\r\n<template>\r\n    <div>\r\n        <div class=\"background-container\"></div>\r\n\r\n        <div class=\"valign-wrapper row login-page-header\">\r\n            <div class=\"valign col s12\">\r\n                <h5 class=\" center-align\" style=\"color: white;font-family: monospace\">WELCOME TO OUR</h5>\r\n                <h2 class=\" center-align\" style=\"color: white;font-family: serif\">Wedding</h2>\r\n            </div>\r\n        </div>\r\n        <div>\r\n            <div class=\"container\">\r\n                <div class=\"row\">\r\n                    <div class=\"input-field col s12\">\r\n                        <input v-el:user-name placeholder=\"user name\" id=\"loginPageUserName\" type=\"text\">\r\n                    </div>\r\n                    <div class=\"input-field col s12\">\r\n                        <select v-el:user-type>\r\n                            <option value=\"\" disabled selected>Choose your guest type</option>\r\n                            <option value=\"BRIDE\">Bride Guest</option>\r\n                            <option value=\"GROOM\">Groom Guest</option>\r\n                        </select>\r\n                    </div>\r\n                </div>\r\n                <div class=\"row\">\r\n                    <a class=\"col s12 waves-effect waves-light btn btn-large red white-text\" @click=\"start()\">Start</a>\r\n                </div>\r\n                <div class=\"row\">\r\n                    <a href=\"https://graph.qq.com/oauth2.0/authorize?response_type=code&client_id=101295012&redirect_uri=http%3A%2F%2Fwedding.jackyang.me%2Fqq_login_callback.html&state=test&scope=all\" class=\"col s12 right-align\">\r\n                        <img src=\"http://wedding.jackyang.me/images/Connect_logo_4.png\">\r\n                    </a>\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</template>\r\n\r\n<script>\r\n    var store = require('../../store');\r\n\r\n    module.exports = {\r\n\r\n        ready: function() {\r\n            $('select').material_select();\r\n            $(this.$els.tabs).tabs();\r\n        },\r\n\r\n        methods: {\r\n            start: function() {\r\n                var router = this.$router;\r\n                var user = {\r\n                    userName: this.$els.userName.value,\r\n                    userType: this.$els.userType.value\r\n                };\r\n\r\n                store.actions.createUser(user).then(function() {\r\n                    router.go({name: 'home'});\r\n                });\r\n            }\r\n        },\r\n\r\n        route: {\r\n            canActivate: function(transition) {\r\n                var userId = store.state.player.currentPlayer.objectId;\r\n                var userType = store.state.player.currentPlayer.userType;\r\n\r\n                if(userId && userType)\r\n                    transition.redirect({name: 'home'});\r\n                else if(userId)\r\n                    transition.redirect({name: 'profile'});\r\n                else\r\n                    transition.next();\r\n            }\r\n        }\r\n    };\r\n</script>"],"sourceRoot":"webpack://"}]);
-	
-	// exports
-
-
-/***/ },
-/* 99 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var store = __webpack_require__(94);
-	
-	module.exports = {
-	
-	    ready: function ready() {
-	        $('select').material_select();
-	        $(this.$els.tabs).tabs();
-	    },
-	
-	    methods: {
-	        start: function start() {
-	            var router = this.$router;
-	            var user = {
-	                userName: this.$els.userName.value,
-	                userType: this.$els.userType.value
-	            };
-	
-	            store.actions.createUser(user).then(function () {
-	                router.go({ name: 'home' });
-	            });
-	        }
-	    },
-	
-	    route: {
-	        canActivate: function canActivate(transition) {
-	            var userId = store.state.player.currentPlayer.objectId;
-	            var userType = store.state.player.currentPlayer.userType;
-	
-	            if (userId && userType) transition.redirect({ name: 'home' });else if (userId) transition.redirect({ name: 'profile' });else transition.next();
-	        }
-	    }
-	};
-
-/***/ },
-/* 100 */
-/***/ function(module, exports) {
-
-	module.exports = "\n<div>\n    <div class=\"background-container\"></div>\n\n    <div class=\"valign-wrapper row login-page-header\">\n        <div class=\"valign col s12\">\n            <h5 class=\" center-align\" style=\"color: white;font-family: monospace\">WELCOME TO OUR</h5>\n            <h2 class=\" center-align\" style=\"color: white;font-family: serif\">Wedding</h2>\n        </div>\n    </div>\n    <div>\n        <div class=\"container\">\n            <div class=\"row\">\n                <div class=\"input-field col s12\">\n                    <input v-el:user-name placeholder=\"user name\" id=\"loginPageUserName\" type=\"text\">\n                </div>\n                <div class=\"input-field col s12\">\n                    <select v-el:user-type>\n                        <option value=\"\" disabled selected>Choose your guest type</option>\n                        <option value=\"BRIDE\">Bride Guest</option>\n                        <option value=\"GROOM\">Groom Guest</option>\n                    </select>\n                </div>\n            </div>\n            <div class=\"row\">\n                <a class=\"col s12 waves-effect waves-light btn btn-large red white-text\" @click=\"start()\">Start</a>\n            </div>\n            <div class=\"row\">\n                <a href=\"https://graph.qq.com/oauth2.0/authorize?response_type=code&client_id=101295012&redirect_uri=http%3A%2F%2Fwedding.jackyang.me%2Fqq_login_callback.html&state=test&scope=all\" class=\"col s12 right-align\">\n                    <img src=\"http://wedding.jackyang.me/images/Connect_logo_4.png\">\n                </a>\n            </div>\n        </div>\n    </div>\n</div>\n";
-
-/***/ },
-/* 101 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var __vue_script__, __vue_template__
-	__webpack_require__(102)
-	__vue_script__ = __webpack_require__(104)
-	if (__vue_script__ &&
-	    __vue_script__.__esModule &&
-	    Object.keys(__vue_script__).length > 1) {
-	  console.warn("[vue-loader] src\\components\\player\\home-page.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(105)
-	module.exports = __vue_script__ || {}
-	if (module.exports.__esModule) module.exports = module.exports.default
-	if (__vue_template__) {
-	(typeof module.exports === "function" ? (module.exports.options || (module.exports.options = {})) : module.exports).template = __vue_template__
-	}
-	if (false) {(function () {  module.hot.accept()
-	  var hotAPI = require("vue-hot-reload-api")
-	  hotAPI.install(require("vue"), true)
-	  if (!hotAPI.compatible) return
-	  var id = "C:\\Users\\Administrator\\Documents\\GitHub\\wedding-shake-game\\src\\components\\player\\home-page.vue"
-	  if (!module.hot.data) {
-	    hotAPI.createRecord(id, module.exports)
-	  } else {
-	    hotAPI.update(id, module.exports, __vue_template__)
-	  }
-	})()}
-
-/***/ },
-/* 102 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-	
-	// load the styles
-	var content = __webpack_require__(103);
-	if(typeof content === 'string') content = [[module.id, content, '']];
-	// add the styles to the DOM
-	var update = __webpack_require__(32)(content, {});
-	if(content.locals) module.exports = content.locals;
-	// Hot Module Replacement
-	if(false) {
-		// When the styles change, update the <style> tags
-		if(!content.locals) {
-			module.hot.accept("!!./../../../node_modules/css-loader/index.js?sourceMap!./../../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-6ab4b43e&scoped=true!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./home-page.vue", function() {
-				var newContent = require("!!./../../../node_modules/css-loader/index.js?sourceMap!./../../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-6ab4b43e&scoped=true!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./home-page.vue");
-				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-				update(newContent);
-			});
-		}
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
-
-/***/ },
-/* 103 */
-/***/ function(module, exports, __webpack_require__) {
-
-	exports = module.exports = __webpack_require__(31)();
-	// imports
-	
-	
-	// module
-	exports.push([module.id, "\n.home-page-image[_v-6ab4b43e] {\n    width: 100%;\n    height: 100%;\n    background-image: url(http://wedding.jackyang.me/images/wedding_pic_03.jpg);\n    background-repeat: no-repeat;\n    background-size: cover;\n    background-position: center center;\n}\n\n", "", {"version":3,"sources":["/./src/components/player/home-page.vue?8d39fe12"],"names":[],"mappings":";AACA;IACA,YAAA;IACA,aAAA;IACA,4EAAA;IACA,6BAAA;IAEA,uBAAA;IACA,mCAAA;CACA","file":"home-page.vue","sourcesContent":["<style scoped>\r\n    .home-page-image {\r\n        width: 100%;\r\n        height: 100%;\r\n        background-image: url(http://wedding.jackyang.me/images/wedding_pic_03.jpg);\r\n        background-repeat: no-repeat;\r\n        -webkit-background-size: cover;\r\n        background-size: cover;\r\n        background-position: center center;\r\n    }\r\n\r\n</style>\r\n\r\n<template>\r\n    <div>\r\n        <div class=\"navbar-fixed\">\r\n            <nav>\r\n                <div class=\"nav-wrapper red lighten-2\">\r\n                    <a class=\"brand-logo center\">{{currentPlayer.userName}}</a>\r\n                    <ul class=\"right\">\r\n                        <li><a @click=\"quit()\"><i class=\"material-icons fa fa-sign-out\"></i></a></li>\r\n                    </ul>\r\n                </div>\r\n            </nav>\r\n        </div>\r\n\r\n        <div class=\"slider-container\">\r\n            <div class=\"home-page-image\"></div>\r\n        </div>\r\n\r\n        <div class=\"section\">\r\n            <div class=\"section-header\">\r\n                <div class=\"container\">\r\n                    <h6>USER INFORMATION</h6>\r\n                </div>\r\n            </div>\r\n            <div class=\"section-content\">\r\n                <div class=\"card no-shadow\">\r\n                    <div class=\"card-content row\" style=\"margin-bottom:0\">\r\n                        <div class=\"col s3\">\r\n                            <img :src=\"currentPlayer.avatarImageUrl\" alt=\"\" class=\"circle responsive-img\">\r\n                        </div>\r\n                        <div class=\"col s7\">\r\n                            <h6>{{currentPlayer.userName}}</h6>\r\n                            <span style=\"color: #A9A7A7\">{{currentPlayer.userType}} Guest</span>\r\n                        </div>\r\n                        <div class=\"col s2\">\r\n                            <h5><a v-link=\"{name:'profile'}\"><i class=\"material-icons fa fa-edit\"></i></a></h5>\r\n                        </div>\r\n                    </div>\r\n                </div>\r\n            </div>\r\n        </div>\r\n\r\n        <div class=\"section\">\r\n            <div class=\"section-header\">\r\n                <div class=\"container\">\r\n                    <h6>ROOM LIST</h6>\r\n                </div>\r\n            </div>\r\n            <div class=\"section-content\">\r\n                <ul class=\"collection no-border transparent\">\r\n                    <li class=\"collection-item avatar\" v-for=\"room in roomList\">\r\n                        <i v-if=\"$index == 0\" class=\"material-icons circle\" style=\"background: #90dde3\">{{$index + 1}}</i>\r\n                        <i v-if=\"$index == 1\" class=\"material-icons circle\" style=\"background: #f79a3d\">{{$index + 1}}</i>\r\n                        <i v-if=\"$index == 2\" class=\"material-icons circle\" style=\"background: #f56937\">{{$index + 1}}</i>\r\n                        <div class=\"row\">\r\n                            <span class=\"title red-text text-lighten-2\">{{room.roomName}}</span>\r\n                            <p v-if=\"room.status === 'INIT'\">Game is not started yet, please wait.</p>\r\n                            <p v-if=\"room.status === 'JOINING'\">People are joining, there are {{room.players.length}} players joined the game.</p>\r\n                            <p v-if=\"room.status === 'PLAYING'\">Game is playing right now. You can't join right now.</p>\r\n                            <p v-if=\"room.status === 'END'\">Game is ended.</p>\r\n                        </div>\r\n                        <div class=\"row\">\r\n                            <a v-if=\"room.status === 'JOINING'\" @click=\"join(room.objectId)\" class=\"waves-effect waves-light btn red lighten-2\">Join Now</a>\r\n                            <a v-if=\"room.status === 'PLAYING'\" @click=\"visit(room.objectId)\" class=\"waves-effect waves-light btn white red-text\">Pay Visit</a>\r\n                            <a v-if=\"room.status === 'END'\" @click=\"ranking(room.objectId)\" class=\"waves-effect waves-light btn white red-text\">Check Rankings</a>\r\n                        </div>\r\n                    </li>\r\n                </ul>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</template>\r\n\r\n<script>\r\n    var store = require('../../store');\r\n\r\n    module.exports = {\r\n\r\n        computed: {\r\n            currentPlayer: function() {\r\n                return store.state.player.currentPlayer;\r\n            },\r\n            roomList: function() {\r\n                return store.state.player.roomList;\r\n            }\r\n        },\r\n\r\n        ready: function() {\r\n            store.actions.getRoomList();\r\n            store.actions.clearShakeCount();\r\n            store.actions.listenPlayerStatusChangeSocketMessage(true);\r\n        },\r\n\r\n        methods: {\r\n            join: function(roomId) {\r\n                console.log('join', roomId);\r\n                var router = this.$router;\r\n\r\n                store.actions.joinRoom({\r\n                    user: store.state.player.currentPlayer,\r\n                    roomId: roomId\r\n                }).then(function() {\r\n                    router.go({name: 'ready'});\r\n                }, function() {\r\n\r\n                });\r\n            },\r\n            visit: function(roomId) {\r\n                console.log('visit');\r\n                this.$router.go({name: 'visit', params: {roomId: roomId}});\r\n            },\r\n            ranking: function(roomId) {\r\n                console.log('ranking');\r\n                this.$router.go({name: 'ranking', params: {roomId: roomId}});\r\n            },\r\n            quit: function() {\r\n                if(confirm('你确定要退出？')) {\r\n                    store.actions.signout();\r\n                    this.$router.go({name: 'login'});\r\n                }\r\n            },\r\n        },\r\n\r\n        route: {\r\n            canActivate: function(transition) {\r\n                var userId = store.state.player.currentPlayer.objectId;\r\n\r\n                store.actions.getUserDetails(userId).then(function() {\r\n                    transition.next();\r\n                }, function() {\r\n                    console.log('home-page validate user failed, redirect to welcome page, userId', userId);\r\n                    transition.redirect({name: 'login'});\r\n                });\r\n            }\r\n        }\r\n    }\r\n</script>"],"sourceRoot":"webpack://"}]);
-	
-	// exports
-
-
-/***/ },
-/* 104 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var store = __webpack_require__(94);
-	
-	module.exports = {
-	
-	    computed: {
-	        currentPlayer: function currentPlayer() {
-	            return store.state.player.currentPlayer;
-	        },
-	        roomList: function roomList() {
-	            return store.state.player.roomList;
-	        }
-	    },
-	
-	    ready: function ready() {
-	        store.actions.getRoomList();
-	        store.actions.clearShakeCount();
-	        store.actions.listenPlayerStatusChangeSocketMessage(true);
-	    },
-	
-	    methods: {
-	        join: function join(roomId) {
-	            console.log('join', roomId);
-	            var router = this.$router;
-	
-	            store.actions.joinRoom({
-	                user: store.state.player.currentPlayer,
-	                roomId: roomId
-	            }).then(function () {
-	                router.go({ name: 'ready' });
-	            }, function () {});
-	        },
-	        visit: function visit(roomId) {
-	            console.log('visit');
-	            this.$router.go({ name: 'visit', params: { roomId: roomId } });
-	        },
-	        ranking: function ranking(roomId) {
-	            console.log('ranking');
-	            this.$router.go({ name: 'ranking', params: { roomId: roomId } });
-	        },
-	        quit: function quit() {
-	            if (confirm('你确定要退出？')) {
-	                store.actions.signout();
-	                this.$router.go({ name: 'login' });
-	            }
-	        }
-	    },
-	
-	    route: {
-	        canActivate: function canActivate(transition) {
-	            var userId = store.state.player.currentPlayer.objectId;
-	
-	            store.actions.getUserDetails(userId).then(function () {
-	                transition.next();
-	            }, function () {
-	                console.log('home-page validate user failed, redirect to welcome page, userId', userId);
-	                transition.redirect({ name: 'login' });
-	            });
-	        }
-	    }
-	};
-
-/***/ },
-/* 105 */
-/***/ function(module, exports) {
-
-	module.exports = "\n<div _v-6ab4b43e=\"\">\n    <div class=\"navbar-fixed\" _v-6ab4b43e=\"\">\n        <nav _v-6ab4b43e=\"\">\n            <div class=\"nav-wrapper red lighten-2\" _v-6ab4b43e=\"\">\n                <a class=\"brand-logo center\" _v-6ab4b43e=\"\">{{currentPlayer.userName}}</a>\n                <ul class=\"right\" _v-6ab4b43e=\"\">\n                    <li _v-6ab4b43e=\"\"><a @click=\"quit()\" _v-6ab4b43e=\"\"><i class=\"material-icons fa fa-sign-out\" _v-6ab4b43e=\"\"></i></a></li>\n                </ul>\n            </div>\n        </nav>\n    </div>\n\n    <div class=\"slider-container\" _v-6ab4b43e=\"\">\n        <div class=\"home-page-image\" _v-6ab4b43e=\"\"></div>\n    </div>\n\n    <div class=\"section\" _v-6ab4b43e=\"\">\n        <div class=\"section-header\" _v-6ab4b43e=\"\">\n            <div class=\"container\" _v-6ab4b43e=\"\">\n                <h6 _v-6ab4b43e=\"\">USER INFORMATION</h6>\n            </div>\n        </div>\n        <div class=\"section-content\" _v-6ab4b43e=\"\">\n            <div class=\"card no-shadow\" _v-6ab4b43e=\"\">\n                <div class=\"card-content row\" style=\"margin-bottom:0\" _v-6ab4b43e=\"\">\n                    <div class=\"col s3\" _v-6ab4b43e=\"\">\n                        <img :src=\"currentPlayer.avatarImageUrl\" alt=\"\" class=\"circle responsive-img\" _v-6ab4b43e=\"\">\n                    </div>\n                    <div class=\"col s7\" _v-6ab4b43e=\"\">\n                        <h6 _v-6ab4b43e=\"\">{{currentPlayer.userName}}</h6>\n                        <span style=\"color: #A9A7A7\" _v-6ab4b43e=\"\">{{currentPlayer.userType}} Guest</span>\n                    </div>\n                    <div class=\"col s2\" _v-6ab4b43e=\"\">\n                        <h5 _v-6ab4b43e=\"\"><a v-link=\"{name:'profile'}\" _v-6ab4b43e=\"\"><i class=\"material-icons fa fa-edit\" _v-6ab4b43e=\"\"></i></a></h5>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n\n    <div class=\"section\" _v-6ab4b43e=\"\">\n        <div class=\"section-header\" _v-6ab4b43e=\"\">\n            <div class=\"container\" _v-6ab4b43e=\"\">\n                <h6 _v-6ab4b43e=\"\">ROOM LIST</h6>\n            </div>\n        </div>\n        <div class=\"section-content\" _v-6ab4b43e=\"\">\n            <ul class=\"collection no-border transparent\" _v-6ab4b43e=\"\">\n                <li class=\"collection-item avatar\" v-for=\"room in roomList\" _v-6ab4b43e=\"\">\n                    <i v-if=\"$index == 0\" class=\"material-icons circle\" style=\"background: #90dde3\" _v-6ab4b43e=\"\">{{$index + 1}}</i>\n                    <i v-if=\"$index == 1\" class=\"material-icons circle\" style=\"background: #f79a3d\" _v-6ab4b43e=\"\">{{$index + 1}}</i>\n                    <i v-if=\"$index == 2\" class=\"material-icons circle\" style=\"background: #f56937\" _v-6ab4b43e=\"\">{{$index + 1}}</i>\n                    <div class=\"row\" _v-6ab4b43e=\"\">\n                        <span class=\"title red-text text-lighten-2\" _v-6ab4b43e=\"\">{{room.roomName}}</span>\n                        <p v-if=\"room.status === 'INIT'\" _v-6ab4b43e=\"\">Game is not started yet, please wait.</p>\n                        <p v-if=\"room.status === 'JOINING'\" _v-6ab4b43e=\"\">People are joining, there are {{room.players.length}} players joined the game.</p>\n                        <p v-if=\"room.status === 'PLAYING'\" _v-6ab4b43e=\"\">Game is playing right now. You can't join right now.</p>\n                        <p v-if=\"room.status === 'END'\" _v-6ab4b43e=\"\">Game is ended.</p>\n                    </div>\n                    <div class=\"row\" _v-6ab4b43e=\"\">\n                        <a v-if=\"room.status === 'JOINING'\" @click=\"join(room.objectId)\" class=\"waves-effect waves-light btn red lighten-2\" _v-6ab4b43e=\"\">Join Now</a>\n                        <a v-if=\"room.status === 'PLAYING'\" @click=\"visit(room.objectId)\" class=\"waves-effect waves-light btn white red-text\" _v-6ab4b43e=\"\">Pay Visit</a>\n                        <a v-if=\"room.status === 'END'\" @click=\"ranking(room.objectId)\" class=\"waves-effect waves-light btn white red-text\" _v-6ab4b43e=\"\">Check Rankings</a>\n                    </div>\n                </li>\n            </ul>\n        </div>\n    </div>\n</div>\n";
-
-/***/ },
-/* 106 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var __vue_script__, __vue_template__
-	__webpack_require__(107)
-	__vue_script__ = __webpack_require__(109)
-	if (__vue_script__ &&
-	    __vue_script__.__esModule &&
-	    Object.keys(__vue_script__).length > 1) {
-	  console.warn("[vue-loader] src\\components\\player\\profile-page.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(110)
-	module.exports = __vue_script__ || {}
-	if (module.exports.__esModule) module.exports = module.exports.default
-	if (__vue_template__) {
-	(typeof module.exports === "function" ? (module.exports.options || (module.exports.options = {})) : module.exports).template = __vue_template__
-	}
-	if (false) {(function () {  module.hot.accept()
-	  var hotAPI = require("vue-hot-reload-api")
-	  hotAPI.install(require("vue"), true)
-	  if (!hotAPI.compatible) return
-	  var id = "C:\\Users\\Administrator\\Documents\\GitHub\\wedding-shake-game\\src\\components\\player\\profile-page.vue"
-	  if (!module.hot.data) {
-	    hotAPI.createRecord(id, module.exports)
-	  } else {
-	    hotAPI.update(id, module.exports, __vue_template__)
-	  }
-	})()}
-
-/***/ },
-/* 107 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-	
-	// load the styles
-	var content = __webpack_require__(108);
-	if(typeof content === 'string') content = [[module.id, content, '']];
-	// add the styles to the DOM
-	var update = __webpack_require__(32)(content, {});
-	if(content.locals) module.exports = content.locals;
-	// Hot Module Replacement
-	if(false) {
-		// When the styles change, update the <style> tags
-		if(!content.locals) {
-			module.hot.accept("!!./../../../node_modules/css-loader/index.js?sourceMap!./../../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-ae9f8a82&scoped=true!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./profile-page.vue", function() {
-				var newContent = require("!!./../../../node_modules/css-loader/index.js?sourceMap!./../../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-ae9f8a82&scoped=true!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./profile-page.vue");
-				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-				update(newContent);
-			});
-		}
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
-
-/***/ },
-/* 108 */
-/***/ function(module, exports, __webpack_require__) {
-
-	exports = module.exports = __webpack_require__(31)();
-	// imports
-	
-	
-	// module
-	exports.push([module.id, "\n.avatar-container[_v-ae9f8a82] {\n    padding: 50px 0 30px 0;\n}\n\n.avatar[_v-ae9f8a82] {\n    border-radius: 50%;\n    width: 80px;\n    height: 80px;\n    background-color: white;\n}\n.profile-page-image[_v-ae9f8a82] {\n    width: 100%;\n    height: 100%;\n    background-color: #E57373;\n    background-image: url(http://wedding.jackyang.me/images/wedding_pic_06.jpg);\n    background-repeat: no-repeat;\n    background-size: cover;\n    background-position: center center;\n}\n", "", {"version":3,"sources":["/./src/components/player/profile-page.vue?75b79024"],"names":[],"mappings":";AACA;IACA,uBAAA;CACA;;AAEA;IACA,mBAAA;IACA,YAAA;IACA,aAAA;IACA,wBAAA;CACA;AACA;IACA,YAAA;IACA,aAAA;IACA,0BAAA;IACA,4EAAA;IACA,6BAAA;IAEA,uBAAA;IACA,mCAAA;CACA","file":"profile-page.vue","sourcesContent":["<style scoped>\r\n    .avatar-container {\r\n        padding: 50px 0 30px 0;\r\n    }\r\n\r\n    .avatar {\r\n        border-radius: 50%;\r\n        width: 80px;\r\n        height: 80px;\r\n        background-color: white;\r\n    }\r\n    .profile-page-image {\r\n        width: 100%;\r\n        height: 100%;\r\n        background-color: #E57373;\r\n        background-image: url(http://wedding.jackyang.me/images/wedding_pic_06.jpg);\r\n        background-repeat: no-repeat;\r\n        -webkit-background-size: cover;\r\n        background-size: cover;\r\n        background-position: center center;\r\n    }\r\n</style>\r\n\r\n<template>\r\n    <div>\r\n        <div class=\"navbar-fixed\">\r\n            <nav>\r\n                <div class=\"nav-wrapper red lighten-2\">\r\n                    <a class=\"brand-logo\">Profile</a>\r\n                    <ul class=\"left\">\r\n                        <li><a @click=\"back()\"><i class=\"material-icons fa fa-angle-left\"></i></a></li>\r\n                    </ul>\r\n                </div>\r\n            </nav>\r\n        </div>\r\n\r\n        <div class=\"slider-container\">\r\n            <div class=\"profile-page-image\">\r\n                <div class=\"row\">\r\n                    <div class=\"col s12 avatar-container\">\r\n                        <div class=\"col s12 center-align\">\r\n                            <img :src=\"player.avatarImageUrl\" class=\"avatar\"/>\r\n                        </div>\r\n                        <h5 class=\"center-align white-text\">{{player.userName}}</h5>\r\n                        <h6 class=\"center-align grey-text text-lighten-4\">{{player.userType}} GUEST</h6>\r\n                    </div>\r\n                </div>\r\n            </div>\r\n        </div>\r\n\r\n        <div class=\"section\">\r\n            <div class=\"section-header\">\r\n                <div class=\"container\">\r\n                    <h6>EDIT PROFILE</h6>\r\n                </div>\r\n            </div>\r\n            <div class=\"section-content\">\r\n                <div class=\"card no-shadow\">\r\n                    <div class=\"card-content\">\r\n                        <div class=\"row\">\r\n                            <div class=\"col s12\">\r\n                                <div class=\"row\">\r\n                                    <div class=\"input-field col s12\">\r\n                                        <input id=\"profile-page-user-name-input\" type=\"text\" value=\"{{player.userName}}\" v-el:user-name>\r\n                                        <label for=\"profile-page-user-name-input\" class=\"active\">User Name</label>\r\n                                    </div>\r\n                                </div>\r\n                                <div class=\"row\">\r\n                                    <div class=\"input-field col s12\">\r\n                                        <select v-el:user-type>\r\n                                            <option value=\"\" disabled :selected=\"!player.userType\">Choose your option</option>\r\n                                            <option value=\"BRIDE\" :selected=\"player.userType === 'BRIDE'\">Bride Guest</option>\r\n                                            <option value=\"GROOM\" :selected=\"player.userType === 'GROOM'\">Groom Guest</option>\r\n                                        </select>\r\n                                        <label>User Type</label>\r\n                                    </div>\r\n                                </div>\r\n                            </div>\r\n                        </div>\r\n                    </div>\r\n                </div>\r\n            </div>\r\n        </div>\r\n\r\n        <div class=\"container\">\r\n            <div class=\"row\">\r\n                <a class=\"col s12 waves-effect waves-light btn btn-large red white-text\" @click=\"submitEdit()\">OK</a>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</template>\r\n\r\n<script>\r\n    var store = require('../../store');\r\n    var Vue = require('vue');\r\n\r\n    module.exports = {\r\n        computed: {\r\n            player: function() {\r\n                return store.state.player.currentPlayer;\r\n            }\r\n        },\r\n\r\n        ready: function() {\r\n            $('select').material_select();\r\n            store.actions.getUserDetails(store.state.player.currentPlayer.objectId);\r\n        },\r\n\r\n        methods: {\r\n            submitEdit: function() {\r\n                var router = this.$router;\r\n                var user = {\r\n                    objectId: store.state.player.currentPlayer.objectId,\r\n                    userName: this.$els.userName.value,\r\n                    userType: this.$els.userType.value\r\n                };\r\n                store.actions.updateUserDetails(user).then(function() {\r\n                    Materialize.toast('update successfully', 1000);\r\n                    router.go({name: 'home'});\r\n                }, function() {\r\n                    Materialize.toast('update failed', 1000);\r\n                });\r\n            },\r\n            back: function() {\r\n                this.$router.go({name: 'home'});\r\n            }\r\n        }\r\n    };\r\n</script>"],"sourceRoot":"webpack://"}]);
-	
-	// exports
-
-
-/***/ },
-/* 109 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var store = __webpack_require__(94);
-	var Vue = __webpack_require__(1);
-	
-	module.exports = {
-	    computed: {
-	        player: function player() {
-	            return store.state.player.currentPlayer;
-	        }
-	    },
-	
-	    ready: function ready() {
-	        $('select').material_select();
-	        store.actions.getUserDetails(store.state.player.currentPlayer.objectId);
-	    },
-	
-	    methods: {
-	        submitEdit: function submitEdit() {
-	            var router = this.$router;
-	            var user = {
-	                objectId: store.state.player.currentPlayer.objectId,
-	                userName: this.$els.userName.value,
-	                userType: this.$els.userType.value
-	            };
-	            store.actions.updateUserDetails(user).then(function () {
-	                Materialize.toast('update successfully', 1000);
-	                router.go({ name: 'home' });
-	            }, function () {
-	                Materialize.toast('update failed', 1000);
-	            });
-	        },
-	        back: function back() {
-	            this.$router.go({ name: 'home' });
-	        }
-	    }
-	};
-
-/***/ },
-/* 110 */
-/***/ function(module, exports) {
-
-	module.exports = "\n<div _v-ae9f8a82=\"\">\n    <div class=\"navbar-fixed\" _v-ae9f8a82=\"\">\n        <nav _v-ae9f8a82=\"\">\n            <div class=\"nav-wrapper red lighten-2\" _v-ae9f8a82=\"\">\n                <a class=\"brand-logo\" _v-ae9f8a82=\"\">Profile</a>\n                <ul class=\"left\" _v-ae9f8a82=\"\">\n                    <li _v-ae9f8a82=\"\"><a @click=\"back()\" _v-ae9f8a82=\"\"><i class=\"material-icons fa fa-angle-left\" _v-ae9f8a82=\"\"></i></a></li>\n                </ul>\n            </div>\n        </nav>\n    </div>\n\n    <div class=\"slider-container\" _v-ae9f8a82=\"\">\n        <div class=\"profile-page-image\" _v-ae9f8a82=\"\">\n            <div class=\"row\" _v-ae9f8a82=\"\">\n                <div class=\"col s12 avatar-container\" _v-ae9f8a82=\"\">\n                    <div class=\"col s12 center-align\" _v-ae9f8a82=\"\">\n                        <img :src=\"player.avatarImageUrl\" class=\"avatar\" _v-ae9f8a82=\"\">\n                    </div>\n                    <h5 class=\"center-align white-text\" _v-ae9f8a82=\"\">{{player.userName}}</h5>\n                    <h6 class=\"center-align grey-text text-lighten-4\" _v-ae9f8a82=\"\">{{player.userType}} GUEST</h6>\n                </div>\n            </div>\n        </div>\n    </div>\n\n    <div class=\"section\" _v-ae9f8a82=\"\">\n        <div class=\"section-header\" _v-ae9f8a82=\"\">\n            <div class=\"container\" _v-ae9f8a82=\"\">\n                <h6 _v-ae9f8a82=\"\">EDIT PROFILE</h6>\n            </div>\n        </div>\n        <div class=\"section-content\" _v-ae9f8a82=\"\">\n            <div class=\"card no-shadow\" _v-ae9f8a82=\"\">\n                <div class=\"card-content\" _v-ae9f8a82=\"\">\n                    <div class=\"row\" _v-ae9f8a82=\"\">\n                        <div class=\"col s12\" _v-ae9f8a82=\"\">\n                            <div class=\"row\" _v-ae9f8a82=\"\">\n                                <div class=\"input-field col s12\" _v-ae9f8a82=\"\">\n                                    <input id=\"profile-page-user-name-input\" type=\"text\" value=\"{{player.userName}}\" v-el:user-name=\"\" _v-ae9f8a82=\"\">\n                                    <label for=\"profile-page-user-name-input\" class=\"active\" _v-ae9f8a82=\"\">User Name</label>\n                                </div>\n                            </div>\n                            <div class=\"row\" _v-ae9f8a82=\"\">\n                                <div class=\"input-field col s12\" _v-ae9f8a82=\"\">\n                                    <select v-el:user-type=\"\" _v-ae9f8a82=\"\">\n                                        <option value=\"\" disabled=\"\" :selected=\"!player.userType\" _v-ae9f8a82=\"\">Choose your option</option>\n                                        <option value=\"BRIDE\" :selected=\"player.userType === 'BRIDE'\" _v-ae9f8a82=\"\">Bride Guest</option>\n                                        <option value=\"GROOM\" :selected=\"player.userType === 'GROOM'\" _v-ae9f8a82=\"\">Groom Guest</option>\n                                    </select>\n                                    <label _v-ae9f8a82=\"\">User Type</label>\n                                </div>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n\n    <div class=\"container\" _v-ae9f8a82=\"\">\n        <div class=\"row\" _v-ae9f8a82=\"\">\n            <a class=\"col s12 waves-effect waves-light btn btn-large red white-text\" @click=\"submitEdit()\" _v-ae9f8a82=\"\">OK</a>\n        </div>\n    </div>\n</div>\n";
-
-/***/ },
-/* 111 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var __vue_script__, __vue_template__
-	__webpack_require__(112)
-	__vue_script__ = __webpack_require__(114)
-	if (__vue_script__ &&
-	    __vue_script__.__esModule &&
-	    Object.keys(__vue_script__).length > 1) {
-	  console.warn("[vue-loader] src\\components\\player\\ready-page.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(115)
-	module.exports = __vue_script__ || {}
-	if (module.exports.__esModule) module.exports = module.exports.default
-	if (__vue_template__) {
-	(typeof module.exports === "function" ? (module.exports.options || (module.exports.options = {})) : module.exports).template = __vue_template__
-	}
-	if (false) {(function () {  module.hot.accept()
-	  var hotAPI = require("vue-hot-reload-api")
-	  hotAPI.install(require("vue"), true)
-	  if (!hotAPI.compatible) return
-	  var id = "C:\\Users\\Administrator\\Documents\\GitHub\\wedding-shake-game\\src\\components\\player\\ready-page.vue"
-	  if (!module.hot.data) {
-	    hotAPI.createRecord(id, module.exports)
-	  } else {
-	    hotAPI.update(id, module.exports, __vue_template__)
-	  }
-	})()}
-
-/***/ },
-/* 112 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-	
-	// load the styles
-	var content = __webpack_require__(113);
-	if(typeof content === 'string') content = [[module.id, content, '']];
-	// add the styles to the DOM
-	var update = __webpack_require__(32)(content, {});
-	if(content.locals) module.exports = content.locals;
-	// Hot Module Replacement
-	if(false) {
-		// When the styles change, update the <style> tags
-		if(!content.locals) {
-			module.hot.accept("!!./../../../node_modules/css-loader/index.js?sourceMap!./../../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-9d39ddf6&scoped=true!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./ready-page.vue", function() {
-				var newContent = require("!!./../../../node_modules/css-loader/index.js?sourceMap!./../../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-9d39ddf6&scoped=true!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./ready-page.vue");
-				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-				update(newContent);
-			});
-		}
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
-
-/***/ },
-/* 113 */
-/***/ function(module, exports, __webpack_require__) {
-
-	exports = module.exports = __webpack_require__(31)();
-	// imports
-	
-	
-	// module
-	exports.push([module.id, "\n.ready-page-image[_v-9d39ddf6] {\n    width: 100%;\n    height: 100%;\n    background-image: url(http://wedding.jackyang.me/images/wedding_pic_09.jpg);\n    background-repeat: no-repeat;\n    background-size: cover;\n    background-position: center center;\n}\n", "", {"version":3,"sources":["/./src/components/player/ready-page.vue?605a51c5"],"names":[],"mappings":";AACA;IACA,YAAA;IACA,aAAA;IACA,4EAAA;IACA,6BAAA;IAEA,uBAAA;IACA,mCAAA;CACA","file":"ready-page.vue","sourcesContent":["<style scoped>\r\n    .ready-page-image {\r\n        width: 100%;\r\n        height: 100%;\r\n        background-image: url(http://wedding.jackyang.me/images/wedding_pic_09.jpg);\r\n        background-repeat: no-repeat;\r\n        -webkit-background-size: cover;\r\n        background-size: cover;\r\n        background-position: center center;\r\n    }\r\n</style>\r\n\r\n<template>\r\n    <div>\r\n        <div class=\"navbar-fixed\">\r\n            <nav>\r\n                <div class=\"nav-wrapper red lighten-2\">\r\n                    <a class=\"brand-logo center\">Ready Page</a>\r\n                    <ul class=\"left\">\r\n                        <li><a @click=\"back()\"><i class=\"material-icons fa fa-angle-left\"></i></a></li>\r\n                    </ul>\r\n                </div>\r\n            </nav>\r\n        </div>\r\n\r\n        <div class=\"slider-container\">\r\n            <div class=\"ready-page-image\">\r\n                <div class=\"card col s12 no-shadow transparent white-text\" style=\"margin-top:0\">\r\n                    <div class=\"card-content\">\r\n                        <span class=\"card-title\">room info</span>\r\n                        <p>All players shake mobile for 30 seconds, total of shake count of which side is bigger, is the winner.</p>\r\n                    </div>\r\n                </div>\r\n            </div>\r\n        </div>\r\n\r\n        <ul class=\"tabs\" v-el:tabs>\r\n            <li class=\"tab col s6\"><a href=\"#brideTab\" :class=\"currentPlayer.userType === 'BRIDE' ? 'active' : ''\">Bride ({{bridePlayers.length}}/{{room.roomSize}})</a></li>\r\n            <li class=\"tab col s6\"><a href=\"#groomTab\" :class=\"currentPlayer.userType === 'GROOM' ? 'active' : ''\">Groom ({{groomPlayers.length}}/{{room.roomSize}})</a></li>\r\n        </ul>\r\n\r\n        <div class=\"section\">\r\n            <div class=\"section-header\">\r\n                <div class=\"container\">\r\n                    <h6>JOINED PLAYERS</h6>\r\n                </div>\r\n            </div>\r\n            <div class=\"section-content\">\r\n                <ul class=\"collection no-border\" id=\"brideTab\">\r\n                    <li class=\"collection-item avatar\" v-for=\"player in bridePlayers\">\r\n                        <img :src=\"player.avatarImageUrl\" class=\"circle\">\r\n                        <span class=\"title\">{{player.userName}}</span>\r\n                        <p>joined 5 mins ago</p>\r\n                    </li>\r\n                </ul>\r\n                <ul class=\"collection no-border transparent\" id=\"groomTab\">\r\n                    <li class=\"collection-item avatar\" v-for=\"player in groomPlayers\">\r\n                        <img :src=\"player.avatarImageUrl\" class=\"circle\">\r\n                        <span class=\"title\">{{player.userName}}</span>\r\n                        <p>joined 5 mins ago</p>\r\n                    </li>\r\n                </ul>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</template>\r\n\r\n<script>\r\n    var store = require('../../store');\r\n    var Stopwatch = require('timer-stopwatch');\r\n\r\n    module.exports = {\r\n\r\n        computed: {\r\n            room: function() {\r\n                return store.state.player.currentRoom;\r\n            },\r\n            currentPlayer: function() {\r\n                return store.state.player.currentPlayer;\r\n            },\r\n            bridePlayers: function() {\r\n                return store.state.player.playerList.filter(function(player) {\r\n                    return player.userType === 'BRIDE';\r\n                });\r\n            },\r\n            groomPlayers: function() {\r\n                return store.state.player.playerList.filter(function(player) {\r\n                    return player.userType === 'GROOM';\r\n                });\r\n            },\r\n            status: function() {\r\n                return store.state.player.currentRoom.status;\r\n            }\r\n        },\r\n\r\n        watch: {\r\n            'status': function(value, oldValue) {\r\n                console.log('game status change from ' + oldValue + ' to ' + value);\r\n                switch(value) {\r\n                    case 'PLAYING':\r\n                        store.actions.updateStopwatch(store.state.player.shakePage.TOTAL_GAME_TIME);\r\n                        this.start();\r\n                        break;\r\n                    case 'END':\r\n                        break;\r\n                    default:\r\n                        break;\r\n                }\r\n            }\r\n        },\r\n\r\n        ready: function() {\r\n            $(this.$els.tabs).tabs();\r\n\r\n            var roomId = store.state.player.currentRoom.objectId;\r\n\r\n            store.actions.getRoomDetails(roomId);\r\n            store.actions.getRoomPlayers(roomId);\r\n\r\n            store.actions.listenPlayerJoinSocketMessage(true);\r\n            store.actions.listenPlayerLeaveSocketMessage(true);\r\n            store.actions.listenPlayerStatusChangeSocketMessage(true);\r\n        },\r\n\r\n        methods: {\r\n            leaveRoom: function() {\r\n                var roomId = store.state.player.currentRoom.objectId;\r\n                var userId = store.state.player.currentPlayer.objectId;\r\n                var router = this.$router;\r\n\r\n                store.actions.leaveRoom(roomId, userId).then(function() {\r\n                    router.go({name: 'home'});\r\n                }, function() {\r\n\r\n                });\r\n            },\r\n            start: function() {\r\n                var router = this.$router;\r\n                var timer = new Stopwatch(3000, {refreshRateMS: 1000});\r\n                var count = 3;\r\n\r\n                Materialize.toast('Are you ready? We are about to start', 1500);\r\n\r\n                timer.onTime(function() {\r\n                    if(count > 0)\r\n                        Materialize.toast('Counting down ' + count, 700);\r\n                    if(count === 0)\r\n                        Materialize.toast('Here we go!', 700);\r\n                    count --;\r\n                });\r\n                timer.onDone(function() {\r\n                    router.go({name: 'shake'});\r\n                });\r\n\r\n                setTimeout(function() {\r\n                    timer.start();\r\n                }, 2000);\r\n            },\r\n            back: function() {\r\n                this.leaveRoom();\r\n            }\r\n        },\r\n\r\n        route: {\r\n            canActivate: function(transition) {\r\n                var roomId = store.state.player.currentRoom.objectId;\r\n\r\n                if(roomId)\r\n                    transition.next();\r\n                else\r\n                    transition.redirect({name: 'home'});\r\n            }\r\n        }\r\n    };\r\n</script>"],"sourceRoot":"webpack://"}]);
-	
-	// exports
-
-
-/***/ },
-/* 114 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var store = __webpack_require__(94);
-	var Stopwatch = __webpack_require__(84);
-	
-	module.exports = {
-	
-	    computed: {
-	        room: function room() {
-	            return store.state.player.currentRoom;
-	        },
-	        currentPlayer: function currentPlayer() {
-	            return store.state.player.currentPlayer;
-	        },
-	        bridePlayers: function bridePlayers() {
-	            return store.state.player.playerList.filter(function (player) {
-	                return player.userType === 'BRIDE';
-	            });
-	        },
-	        groomPlayers: function groomPlayers() {
-	            return store.state.player.playerList.filter(function (player) {
-	                return player.userType === 'GROOM';
-	            });
-	        },
-	        status: function status() {
-	            return store.state.player.currentRoom.status;
-	        }
-	    },
-	
-	    watch: {
-	        'status': function status(value, oldValue) {
-	            console.log('game status change from ' + oldValue + ' to ' + value);
-	            switch (value) {
-	                case 'PLAYING':
-	                    store.actions.updateStopwatch(store.state.player.shakePage.TOTAL_GAME_TIME);
-	                    this.start();
-	                    break;
-	                case 'END':
-	                    break;
-	                default:
-	                    break;
-	            }
-	        }
-	    },
-	
-	    ready: function ready() {
-	        $(this.$els.tabs).tabs();
-	
-	        var roomId = store.state.player.currentRoom.objectId;
-	
-	        store.actions.getRoomDetails(roomId);
-	        store.actions.getRoomPlayers(roomId);
-	
-	        store.actions.listenPlayerJoinSocketMessage(true);
-	        store.actions.listenPlayerLeaveSocketMessage(true);
-	        store.actions.listenPlayerStatusChangeSocketMessage(true);
-	    },
-	
-	    methods: {
-	        leaveRoom: function leaveRoom() {
-	            var roomId = store.state.player.currentRoom.objectId;
-	            var userId = store.state.player.currentPlayer.objectId;
-	            var router = this.$router;
-	
-	            store.actions.leaveRoom(roomId, userId).then(function () {
-	                router.go({ name: 'home' });
-	            }, function () {});
-	        },
-	        start: function start() {
-	            var router = this.$router;
-	            var timer = new Stopwatch(3000, { refreshRateMS: 1000 });
-	            var count = 3;
-	
-	            Materialize.toast('Are you ready? We are about to start', 1500);
-	
-	            timer.onTime(function () {
-	                if (count > 0) Materialize.toast('Counting down ' + count, 700);
-	                if (count === 0) Materialize.toast('Here we go!', 700);
-	                count--;
-	            });
-	            timer.onDone(function () {
-	                router.go({ name: 'shake' });
-	            });
-	
-	            setTimeout(function () {
-	                timer.start();
-	            }, 2000);
-	        },
-	        back: function back() {
-	            this.leaveRoom();
-	        }
-	    },
-	
-	    route: {
-	        canActivate: function canActivate(transition) {
-	            var roomId = store.state.player.currentRoom.objectId;
-	
-	            if (roomId) transition.next();else transition.redirect({ name: 'home' });
-	        }
-	    }
-	};
-
-/***/ },
-/* 115 */
-/***/ function(module, exports) {
-
-	module.exports = "\n<div _v-9d39ddf6=\"\">\n    <div class=\"navbar-fixed\" _v-9d39ddf6=\"\">\n        <nav _v-9d39ddf6=\"\">\n            <div class=\"nav-wrapper red lighten-2\" _v-9d39ddf6=\"\">\n                <a class=\"brand-logo center\" _v-9d39ddf6=\"\">Ready Page</a>\n                <ul class=\"left\" _v-9d39ddf6=\"\">\n                    <li _v-9d39ddf6=\"\"><a @click=\"back()\" _v-9d39ddf6=\"\"><i class=\"material-icons fa fa-angle-left\" _v-9d39ddf6=\"\"></i></a></li>\n                </ul>\n            </div>\n        </nav>\n    </div>\n\n    <div class=\"slider-container\" _v-9d39ddf6=\"\">\n        <div class=\"ready-page-image\" _v-9d39ddf6=\"\">\n            <div class=\"card col s12 no-shadow transparent white-text\" style=\"margin-top:0\" _v-9d39ddf6=\"\">\n                <div class=\"card-content\" _v-9d39ddf6=\"\">\n                    <span class=\"card-title\" _v-9d39ddf6=\"\">room info</span>\n                    <p _v-9d39ddf6=\"\">All players shake mobile for 30 seconds, total of shake count of which side is bigger, is the winner.</p>\n                </div>\n            </div>\n        </div>\n    </div>\n\n    <ul class=\"tabs\" v-el:tabs=\"\" _v-9d39ddf6=\"\">\n        <li class=\"tab col s6\" _v-9d39ddf6=\"\"><a href=\"#brideTab\" :class=\"currentPlayer.userType === 'BRIDE' ? 'active' : ''\" _v-9d39ddf6=\"\">Bride ({{bridePlayers.length}}/{{room.roomSize}})</a></li>\n        <li class=\"tab col s6\" _v-9d39ddf6=\"\"><a href=\"#groomTab\" :class=\"currentPlayer.userType === 'GROOM' ? 'active' : ''\" _v-9d39ddf6=\"\">Groom ({{groomPlayers.length}}/{{room.roomSize}})</a></li>\n    </ul>\n\n    <div class=\"section\" _v-9d39ddf6=\"\">\n        <div class=\"section-header\" _v-9d39ddf6=\"\">\n            <div class=\"container\" _v-9d39ddf6=\"\">\n                <h6 _v-9d39ddf6=\"\">JOINED PLAYERS</h6>\n            </div>\n        </div>\n        <div class=\"section-content\" _v-9d39ddf6=\"\">\n            <ul class=\"collection no-border\" id=\"brideTab\" _v-9d39ddf6=\"\">\n                <li class=\"collection-item avatar\" v-for=\"player in bridePlayers\" _v-9d39ddf6=\"\">\n                    <img :src=\"player.avatarImageUrl\" class=\"circle\" _v-9d39ddf6=\"\">\n                    <span class=\"title\" _v-9d39ddf6=\"\">{{player.userName}}</span>\n                    <p _v-9d39ddf6=\"\">joined 5 mins ago</p>\n                </li>\n            </ul>\n            <ul class=\"collection no-border transparent\" id=\"groomTab\" _v-9d39ddf6=\"\">\n                <li class=\"collection-item avatar\" v-for=\"player in groomPlayers\" _v-9d39ddf6=\"\">\n                    <img :src=\"player.avatarImageUrl\" class=\"circle\" _v-9d39ddf6=\"\">\n                    <span class=\"title\" _v-9d39ddf6=\"\">{{player.userName}}</span>\n                    <p _v-9d39ddf6=\"\">joined 5 mins ago</p>\n                </li>\n            </ul>\n        </div>\n    </div>\n</div>\n";
-
-/***/ },
-/* 116 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var __vue_script__, __vue_template__
-	__webpack_require__(117)
-	__vue_script__ = __webpack_require__(119)
-	if (__vue_script__ &&
-	    __vue_script__.__esModule &&
-	    Object.keys(__vue_script__).length > 1) {
-	  console.warn("[vue-loader] src\\components\\player\\shake-page.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(121)
-	module.exports = __vue_script__ || {}
-	if (module.exports.__esModule) module.exports = module.exports.default
-	if (__vue_template__) {
-	(typeof module.exports === "function" ? (module.exports.options || (module.exports.options = {})) : module.exports).template = __vue_template__
-	}
-	if (false) {(function () {  module.hot.accept()
-	  var hotAPI = require("vue-hot-reload-api")
-	  hotAPI.install(require("vue"), true)
-	  if (!hotAPI.compatible) return
-	  var id = "C:\\Users\\Administrator\\Documents\\GitHub\\wedding-shake-game\\src\\components\\player\\shake-page.vue"
-	  if (!module.hot.data) {
-	    hotAPI.createRecord(id, module.exports)
-	  } else {
-	    hotAPI.update(id, module.exports, __vue_template__)
-	  }
-	})()}
-
-/***/ },
-/* 117 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-	
-	// load the styles
-	var content = __webpack_require__(118);
-	if(typeof content === 'string') content = [[module.id, content, '']];
-	// add the styles to the DOM
-	var update = __webpack_require__(32)(content, {});
-	if(content.locals) module.exports = content.locals;
-	// Hot Module Replacement
-	if(false) {
-		// When the styles change, update the <style> tags
-		if(!content.locals) {
-			module.hot.accept("!!./../../../node_modules/css-loader/index.js?sourceMap!./../../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-5b4dfb02&scoped=true!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./shake-page.vue", function() {
-				var newContent = require("!!./../../../node_modules/css-loader/index.js?sourceMap!./../../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-5b4dfb02&scoped=true!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./shake-page.vue");
-				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-				update(newContent);
-			});
-		}
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
-
-/***/ },
-/* 118 */
-/***/ function(module, exports, __webpack_require__) {
-
-	exports = module.exports = __webpack_require__(31)();
-	// imports
-	
-	
-	// module
-	exports.push([module.id, "\n.shake-page-unit[_v-5b4dfb02] {\n    font-size: 20px;\n}\n.shake-page-image[_v-5b4dfb02] {\n    width: 100%;\n    height: 100%;\n    background-color: #E57373;\n    /*background-image: url(http://hlynnphoto.com/assets/img/category-portrait.jpg);*/\n    background-repeat: no-repeat;\n    background-size: cover;\n    background-position: center center;\n}\n", "", {"version":3,"sources":["/./src/components/player/shake-page.vue?3143dd06"],"names":[],"mappings":";AACA;IACA,gBAAA;CACA;AACA;IACA,YAAA;IACA,aAAA;IACA,0BAAA;IACA,kFAAA;IACA,6BAAA;IAEA,uBAAA;IACA,mCAAA;CACA","file":"shake-page.vue","sourcesContent":["<style scoped>\r\n    .shake-page-unit {\r\n        font-size: 20px;\r\n    }\r\n    .shake-page-image {\r\n        width: 100%;\r\n        height: 100%;\r\n        background-color: #E57373;\r\n        /*background-image: url(http://hlynnphoto.com/assets/img/category-portrait.jpg);*/\r\n        background-repeat: no-repeat;\r\n        -webkit-background-size: cover;\r\n        background-size: cover;\r\n        background-position: center center;\r\n    }\r\n</style>\r\n\r\n<template>\r\n    <div>\r\n        <div class=\"navbar-fixed\">\r\n            <nav>\r\n                <div class=\"nav-wrapper red lighten-2\">\r\n                    <a class=\"brand-logo center\">Shaking</a>\r\n                </div>\r\n            </nav>\r\n        </div>\r\n\r\n        <div class=\"slider-container\">\r\n            <div class=\"shake-page-image\">\r\n                <div class=\"card col s12 no-shadow transparent white-text\" style=\"margin-top:0\">\r\n                    <div class=\"card-content\">\r\n                        <h1 class=\"center-align white-text\">{{shakeCount}}<span class=\"shake-page-unit\">times</span></h1>\r\n                    </div>\r\n                </div>\r\n            </div>\r\n        </div>\r\n\r\n        <div class=\"section\" v-if=\"!shakeCompleted\">\r\n            <div class=\"section-header\">\r\n                <div class=\"container\">\r\n                    <h6>TIME</h6>\r\n                </div>\r\n            </div>\r\n            <div class=\"section-content\">\r\n                <div class=\"card no-shadow\">\r\n                    <div class=\"card-content\">\r\n                        <h4 class=\"center-align red-text\">{{stopwatchString}}<i class=\"material-icons shake-page-unit fa fa-clock-o\"></i></h4>\r\n                    </div>\r\n                </div>\r\n            </div>\r\n        </div>\r\n\r\n        <div class=\"section\" v-if=\"shakeCompleted\">\r\n            <div class=\"section-header\">\r\n                <div class=\"container\">\r\n                    <h6>YOUR RESULT</h6>\r\n                </div>\r\n            </div>\r\n            <div class=\"section-content\">\r\n                <div class=\"card no-shadow\">\r\n                    <div class=\"card-content\">\r\n                        <h4 class=\"card-title center-align\">GAME END~</h4>\r\n                        <p>Congratulations! You just shaked <span class=\"teal-text\" style=\"font-size: 1.5em\">{{shakeCount}}</span> times in last <span class=\"red-text\" style=\"font-size: 1.5em\">{{time / 1000}}</span> seconds!</p>\r\n                    </div>\r\n                    <div class=\"card-content red lighten-3 white-text\">\r\n                        a chart here\r\n                    </div>\r\n                    <div class=\"card-content center-align\">\r\n                        <a class=\"waves-effect waves-light btn red lighten-2\" v-link=\"{name: 'ranking', params: {roomId: room.objectId}}\">Check Ranking</a>\r\n                    </div>\r\n                </div>\r\n            </div>\r\n        </div>\r\n\r\n        <div class=\"section\">\r\n            <div class=\"section-header\">\r\n                <div class=\"container\">\r\n                    <h6>OTHER</h6>\r\n                </div>\r\n            </div>\r\n            <div class=\"section-content\">\r\n                <ul class=\"collection no-border\">\r\n                    <li class=\"collection-item avatar\" v-for=\"player in players\">\r\n                        <img :src=\"player.avatarImageUrl\" class=\"circle\">\r\n                        <span class=\"title\">{{player.userName}}<span class=\"badge\">{{player.shakeCount}}</span></span>\r\n                        <div class=\"progress\" v-if=\"player.userType === 'BRIDE'\">\r\n                            <div class=\"determinate\" :style=\"{width: player.shakeCount/200*100 + '%'}\"></div>\r\n                        </div>\r\n                        <div class=\"progress red lighten-4\" v-if=\"player.userType === 'GROOM'\">\r\n                            <div class=\"determinate red\" :style=\"{width: player.shakeCount/200*100 + '%'}\"></div>\r\n                        </div>\r\n                        <p>{{player.userType}} side</p>\r\n                    </li>\r\n                </ul>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</template>\r\n\r\n<script>\r\n    var store = require('../../store');\r\n    var Stopwatch = require('timer-stopwatch');\r\n    var ShakeJS = require('shake.js'); // threshold = 15, timeout = 100 => 80 times / 10s, for both iphone and android\r\n    var GAME_TIME = 20 * 1000;\r\n    var shake = null;\r\n    var timer = null;\r\n\r\n    module.exports = {\r\n\r\n        data: function() {\r\n            return {\r\n                time: GAME_TIME\r\n            };\r\n        },\r\n\r\n        computed: {\r\n            shakeCount: function() {\r\n                return store.state.player.currentPlayer.shakeCount;\r\n            },\r\n            room: function() {\r\n                return store.state.player.currentRoom;\r\n            },\r\n            players: function() {\r\n                return store.state.player.playerList.filter(function(p) {\r\n                    return p.objectId !== store.state.player.currentPlayer.objectId;\r\n                });\r\n            },\r\n            shakeCompleted: function() {\r\n                return store.state.player.shakePage.timeBalance <= 0;\r\n            },\r\n            stopwatchString: function() {\r\n                return store.state.player.shakePage.stopwatchString;\r\n            }\r\n        },\r\n\r\n        ready: function() {\r\n            var unit = store.state.player.shakePage.STOPWATCH_UNIT;\r\n            var total = store.state.player.shakePage.timeBalance;\r\n\r\n            /** init shake **/\r\n            shake = new ShakeJS({\r\n                threshold: 15,\r\n                timeout: 100\r\n            });\r\n            window.addEventListener('shake', store.actions.shake, false);\r\n\r\n            /** init timer **/\r\n            // total, by default would be 20 * 1000\r\n            // if the first time to get shake page, the total would be 20 * 1000\r\n            // if shake started, time will be counting down until total = 0\r\n            // if shake not done, and user moves to other page, and move back again, and total > 0, will count again\r\n            if(total > 0) {\r\n                timer = new Stopwatch(total, {refreshRateMS: unit});\r\n\r\n                timer.onTime(function() {\r\n                    if(total > 0)\r\n                        store.actions.updateStopwatch(total);\r\n\r\n                    total -= unit;\r\n                });\r\n\r\n                timer.onDone(function() {\r\n                    shake.stop();\r\n                    store.actions.updateStopwatch(0);\r\n                });\r\n\r\n                timer.start();\r\n                shake.start();\r\n            }\r\n\r\n            store.actions.listenPlayerShakeSocketMessage(true);\r\n        },\r\n\r\n        beforeDestroy: function() {\r\n            shake.stop();\r\n            shake = null;\r\n            window.removeEventListener('shake', store.actions.shake);\r\n        },\r\n\r\n        route: {\r\n            canActivate: function(transition) {\r\n                var room = store.state.player.currentRoom;\r\n\r\n                if(room.objectId) {\r\n                    if(room.status !== 'PLAYING')\r\n                        transition.redirect({name: 'ready'});\r\n                    else\r\n                        transition.next();\r\n\r\n                } else\r\n                    transition.redirect({name: 'home'});\r\n            }\r\n        }\r\n    };\r\n</script>"],"sourceRoot":"webpack://"}]);
-	
-	// exports
-
-
-/***/ },
-/* 119 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var store = __webpack_require__(94);
-	var Stopwatch = __webpack_require__(84);
-	var ShakeJS = __webpack_require__(120);
-	var GAME_TIME = 20 * 1000;
-	var shake = null;
-	var timer = null;
-	
-	module.exports = {
-	
-	    data: function data() {
-	        return {
-	            time: GAME_TIME
-	        };
-	    },
-	
-	    computed: {
-	        shakeCount: function shakeCount() {
-	            return store.state.player.currentPlayer.shakeCount;
-	        },
-	        room: function room() {
-	            return store.state.player.currentRoom;
-	        },
-	        players: function players() {
-	            return store.state.player.playerList.filter(function (p) {
-	                return p.objectId !== store.state.player.currentPlayer.objectId;
-	            });
-	        },
-	        shakeCompleted: function shakeCompleted() {
-	            return store.state.player.shakePage.timeBalance <= 0;
-	        },
-	        stopwatchString: function stopwatchString() {
-	            return store.state.player.shakePage.stopwatchString;
-	        }
-	    },
-	
-	    ready: function ready() {
-	        var unit = store.state.player.shakePage.STOPWATCH_UNIT;
-	        var total = store.state.player.shakePage.timeBalance;
-	
-	        shake = new ShakeJS({
-	            threshold: 15,
-	            timeout: 100
-	        });
-	        window.addEventListener('shake', store.actions.shake, false);
-	
-	        if (total > 0) {
-	            timer = new Stopwatch(total, { refreshRateMS: unit });
-	
-	            timer.onTime(function () {
-	                if (total > 0) store.actions.updateStopwatch(total);
-	
-	                total -= unit;
-	            });
-	
-	            timer.onDone(function () {
-	                shake.stop();
-	                store.actions.updateStopwatch(0);
-	            });
-	
-	            timer.start();
-	            shake.start();
-	        }
-	
-	        store.actions.listenPlayerShakeSocketMessage(true);
-	    },
-	
-	    beforeDestroy: function beforeDestroy() {
-	        shake.stop();
-	        shake = null;
-	        window.removeEventListener('shake', store.actions.shake);
-	    },
-	
-	    route: {
-	        canActivate: function canActivate(transition) {
-	            var room = store.state.player.currentRoom;
-	
-	            if (room.objectId) {
-	                if (room.status !== 'PLAYING') transition.redirect({ name: 'ready' });else transition.next();
-	            } else transition.redirect({ name: 'home' });
-	        }
-	    }
-	};
-
-/***/ },
-/* 120 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var __WEBPACK_AMD_DEFINE_RESULT__;/*
-	 * Author: Alex Gibson
-	 * https://github.com/alexgibson/shake.js
-	 * License: MIT license
-	 */
-	
-	(function(global, factory) {
-	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_RESULT__ = function() {
-	            return factory(global, global.document);
-	        }.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	    } else if (typeof module !== 'undefined' && module.exports) {
-	        module.exports = factory(global, global.document);
-	    } else {
-	        global.Shake = factory(global, global.document);
-	    }
-	} (typeof window !== 'undefined' ? window : this, function (window, document) {
-	
-	    'use strict';
-	
-	    function Shake(options) {
-	        //feature detect
-	        this.hasDeviceMotion = 'ondevicemotion' in window;
-	
-	        this.options = {
-	            threshold: 15, //default velocity threshold for shake to register
-	            timeout: 1000 //default interval between events
-	        };
-	
-	        if (typeof options === 'object') {
-	            for (var i in options) {
-	                if (options.hasOwnProperty(i)) {
-	                    this.options[i] = options[i];
-	                }
-	            }
-	        }
-	
-	        //use date to prevent multiple shakes firing
-	        this.lastTime = new Date();
-	
-	        //accelerometer values
-	        this.lastX = null;
-	        this.lastY = null;
-	        this.lastZ = null;
-	
-	        //create custom event
-	        if (typeof document.CustomEvent === 'function') {
-	            this.event = new document.CustomEvent('shake', {
-	                bubbles: true,
-	                cancelable: true
-	            });
-	        } else if (typeof document.createEvent === 'function') {
-	            this.event = document.createEvent('Event');
-	            this.event.initEvent('shake', true, true);
-	        } else {
-	            return false;
-	        }
-	    }
-	
-	    //reset timer values
-	    Shake.prototype.reset = function () {
-	        this.lastTime = new Date();
-	        this.lastX = null;
-	        this.lastY = null;
-	        this.lastZ = null;
-	    };
-	
-	    //start listening for devicemotion
-	    Shake.prototype.start = function () {
-	        this.reset();
-	        if (this.hasDeviceMotion) {
-	            window.addEventListener('devicemotion', this, false);
-	        }
-	    };
-	
-	    //stop listening for devicemotion
-	    Shake.prototype.stop = function () {
-	        if (this.hasDeviceMotion) {
-	            window.removeEventListener('devicemotion', this, false);
-	        }
-	        this.reset();
-	    };
-	
-	    //calculates if shake did occur
-	    Shake.prototype.devicemotion = function (e) {
-	        var current = e.accelerationIncludingGravity;
-	        var currentTime;
-	        var timeDifference;
-	        var deltaX = 0;
-	        var deltaY = 0;
-	        var deltaZ = 0;
-	
-	        if ((this.lastX === null) && (this.lastY === null) && (this.lastZ === null)) {
-	            this.lastX = current.x;
-	            this.lastY = current.y;
-	            this.lastZ = current.z;
-	            return;
-	        }
-	
-	        deltaX = Math.abs(this.lastX - current.x);
-	        deltaY = Math.abs(this.lastY - current.y);
-	        deltaZ = Math.abs(this.lastZ - current.z);
-	
-	        if (((deltaX > this.options.threshold) && (deltaY > this.options.threshold)) || ((deltaX > this.options.threshold) && (deltaZ > this.options.threshold)) || ((deltaY > this.options.threshold) && (deltaZ > this.options.threshold))) {
-	            //calculate time in milliseconds since last shake registered
-	            currentTime = new Date();
-	            timeDifference = currentTime.getTime() - this.lastTime.getTime();
-	
-	            if (timeDifference > this.options.timeout) {
-	                window.dispatchEvent(this.event);
-	                this.lastTime = new Date();
-	            }
-	        }
-	
-	        this.lastX = current.x;
-	        this.lastY = current.y;
-	        this.lastZ = current.z;
-	
-	    };
-	
-	    //event handler
-	    Shake.prototype.handleEvent = function (e) {
-	        if (typeof (this[e.type]) === 'function') {
-	            return this[e.type](e);
-	        }
-	    };
-	
-	    return Shake;
-	}));
-
-
-/***/ },
-/* 121 */
-/***/ function(module, exports) {
-
-	module.exports = "\n<div _v-5b4dfb02=\"\">\n    <div class=\"navbar-fixed\" _v-5b4dfb02=\"\">\n        <nav _v-5b4dfb02=\"\">\n            <div class=\"nav-wrapper red lighten-2\" _v-5b4dfb02=\"\">\n                <a class=\"brand-logo center\" _v-5b4dfb02=\"\">Shaking</a>\n            </div>\n        </nav>\n    </div>\n\n    <div class=\"slider-container\" _v-5b4dfb02=\"\">\n        <div class=\"shake-page-image\" _v-5b4dfb02=\"\">\n            <div class=\"card col s12 no-shadow transparent white-text\" style=\"margin-top:0\" _v-5b4dfb02=\"\">\n                <div class=\"card-content\" _v-5b4dfb02=\"\">\n                    <h1 class=\"center-align white-text\" _v-5b4dfb02=\"\">{{shakeCount}}<span class=\"shake-page-unit\" _v-5b4dfb02=\"\">times</span></h1>\n                </div>\n            </div>\n        </div>\n    </div>\n\n    <div class=\"section\" v-if=\"!shakeCompleted\" _v-5b4dfb02=\"\">\n        <div class=\"section-header\" _v-5b4dfb02=\"\">\n            <div class=\"container\" _v-5b4dfb02=\"\">\n                <h6 _v-5b4dfb02=\"\">TIME</h6>\n            </div>\n        </div>\n        <div class=\"section-content\" _v-5b4dfb02=\"\">\n            <div class=\"card no-shadow\" _v-5b4dfb02=\"\">\n                <div class=\"card-content\" _v-5b4dfb02=\"\">\n                    <h4 class=\"center-align red-text\" _v-5b4dfb02=\"\">{{stopwatchString}}<i class=\"material-icons shake-page-unit fa fa-clock-o\" _v-5b4dfb02=\"\"></i></h4>\n                </div>\n            </div>\n        </div>\n    </div>\n\n    <div class=\"section\" v-if=\"shakeCompleted\" _v-5b4dfb02=\"\">\n        <div class=\"section-header\" _v-5b4dfb02=\"\">\n            <div class=\"container\" _v-5b4dfb02=\"\">\n                <h6 _v-5b4dfb02=\"\">YOUR RESULT</h6>\n            </div>\n        </div>\n        <div class=\"section-content\" _v-5b4dfb02=\"\">\n            <div class=\"card no-shadow\" _v-5b4dfb02=\"\">\n                <div class=\"card-content\" _v-5b4dfb02=\"\">\n                    <h4 class=\"card-title center-align\" _v-5b4dfb02=\"\">GAME END~</h4>\n                    <p _v-5b4dfb02=\"\">Congratulations! You just shaked <span class=\"teal-text\" style=\"font-size: 1.5em\" _v-5b4dfb02=\"\">{{shakeCount}}</span> times in last <span class=\"red-text\" style=\"font-size: 1.5em\" _v-5b4dfb02=\"\">{{time / 1000}}</span> seconds!</p>\n                </div>\n                <div class=\"card-content red lighten-3 white-text\" _v-5b4dfb02=\"\">\n                    a chart here\n                </div>\n                <div class=\"card-content center-align\" _v-5b4dfb02=\"\">\n                    <a class=\"waves-effect waves-light btn red lighten-2\" v-link=\"{name: 'ranking', params: {roomId: room.objectId}}\" _v-5b4dfb02=\"\">Check Ranking</a>\n                </div>\n            </div>\n        </div>\n    </div>\n\n    <div class=\"section\" _v-5b4dfb02=\"\">\n        <div class=\"section-header\" _v-5b4dfb02=\"\">\n            <div class=\"container\" _v-5b4dfb02=\"\">\n                <h6 _v-5b4dfb02=\"\">OTHER</h6>\n            </div>\n        </div>\n        <div class=\"section-content\" _v-5b4dfb02=\"\">\n            <ul class=\"collection no-border\" _v-5b4dfb02=\"\">\n                <li class=\"collection-item avatar\" v-for=\"player in players\" _v-5b4dfb02=\"\">\n                    <img :src=\"player.avatarImageUrl\" class=\"circle\" _v-5b4dfb02=\"\">\n                    <span class=\"title\" _v-5b4dfb02=\"\">{{player.userName}}<span class=\"badge\" _v-5b4dfb02=\"\">{{player.shakeCount}}</span></span>\n                    <div class=\"progress\" v-if=\"player.userType === 'BRIDE'\" _v-5b4dfb02=\"\">\n                        <div class=\"determinate\" :style=\"{width: player.shakeCount/200*100 + '%'}\" _v-5b4dfb02=\"\"></div>\n                    </div>\n                    <div class=\"progress red lighten-4\" v-if=\"player.userType === 'GROOM'\" _v-5b4dfb02=\"\">\n                        <div class=\"determinate red\" :style=\"{width: player.shakeCount/200*100 + '%'}\" _v-5b4dfb02=\"\"></div>\n                    </div>\n                    <p _v-5b4dfb02=\"\">{{player.userType}} side</p>\n                </li>\n            </ul>\n        </div>\n    </div>\n</div>\n";
-
-/***/ },
-/* 122 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var __vue_script__, __vue_template__
-	__webpack_require__(123)
-	__vue_script__ = __webpack_require__(125)
-	if (__vue_script__ &&
-	    __vue_script__.__esModule &&
-	    Object.keys(__vue_script__).length > 1) {
-	  console.warn("[vue-loader] src\\components\\player\\ranking-page.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(126)
-	module.exports = __vue_script__ || {}
-	if (module.exports.__esModule) module.exports = module.exports.default
-	if (__vue_template__) {
-	(typeof module.exports === "function" ? (module.exports.options || (module.exports.options = {})) : module.exports).template = __vue_template__
-	}
-	if (false) {(function () {  module.hot.accept()
-	  var hotAPI = require("vue-hot-reload-api")
-	  hotAPI.install(require("vue"), true)
-	  if (!hotAPI.compatible) return
-	  var id = "C:\\Users\\Administrator\\Documents\\GitHub\\wedding-shake-game\\src\\components\\player\\ranking-page.vue"
-	  if (!module.hot.data) {
-	    hotAPI.createRecord(id, module.exports)
-	  } else {
-	    hotAPI.update(id, module.exports, __vue_template__)
-	  }
-	})()}
-
-/***/ },
-/* 123 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-	
-	// load the styles
-	var content = __webpack_require__(124);
-	if(typeof content === 'string') content = [[module.id, content, '']];
-	// add the styles to the DOM
-	var update = __webpack_require__(32)(content, {});
-	if(content.locals) module.exports = content.locals;
-	// Hot Module Replacement
-	if(false) {
-		// When the styles change, update the <style> tags
-		if(!content.locals) {
-			module.hot.accept("!!./../../../node_modules/css-loader/index.js?sourceMap!./../../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-4d4f86d2&scoped=true!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./ranking-page.vue", function() {
-				var newContent = require("!!./../../../node_modules/css-loader/index.js?sourceMap!./../../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-4d4f86d2&scoped=true!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./ranking-page.vue");
-				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-				update(newContent);
-			});
-		}
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
-
-/***/ },
-/* 124 */
-/***/ function(module, exports, __webpack_require__) {
-
-	exports = module.exports = __webpack_require__(31)();
-	// imports
-	
-	
-	// module
-	exports.push([module.id, "\n.win-stamp[_v-4d4f86d2] {\n    width: 40px;\n    position: absolute;\n    top: -5px;\n    right: -5px;\n    -webkit-transform: rotate(30deg);\n    border-radius: 50%;\n}\n\n.ranking-page-image[_v-4d4f86d2] {\n    width: 100%;\n    height: 100%;\n    background-image: url(http://wedding.jackyang.me/images/wedding_pic_10.jpg);\n    background-repeat: no-repeat;\n    background-size: cover;\n    background-position: center center;\n}\n\n", "", {"version":3,"sources":["/./src/components/player/ranking-page.vue?352471a9"],"names":[],"mappings":";AACA;IACA,YAAA;IACA,mBAAA;IACA,UAAA;IACA,YAAA;IACA,iCAAA;IACA,mBAAA;CACA;;AAEA;IACA,YAAA;IACA,aAAA;IACA,4EAAA;IACA,6BAAA;IAEA,uBAAA;IACA,mCAAA;CACA","file":"ranking-page.vue","sourcesContent":["<style scoped>\r\n    .win-stamp {\r\n        width: 40px;\r\n        position: absolute;\r\n        top: -5px;\r\n        right: -5px;\r\n        -webkit-transform: rotate(30deg);\r\n        border-radius: 50%;\r\n    }\r\n\r\n    .ranking-page-image {\r\n        width: 100%;\r\n        height: 100%;\r\n        background-image: url(http://wedding.jackyang.me/images/wedding_pic_10.jpg);\r\n        background-repeat: no-repeat;\r\n        -webkit-background-size: cover;\r\n        background-size: cover;\r\n        background-position: center center;\r\n    }\r\n\r\n</style>\r\n\r\n<template>\r\n    <div>\r\n        <div class=\"navbar-fixed\">\r\n            <nav>\r\n                <div class=\"nav-wrapper red lighten-2\">\r\n                    <a class=\"brand-logo center\">Ranking</a>\r\n                    <ul class=\"left\">\r\n                        <li><a v-link=\"{name:'home'}\"><i class=\"material-icons fa fa-angle-left\"></i></a></li>\r\n                    </ul>\r\n                </div>\r\n            </nav>\r\n        </div>\r\n\r\n        <div class=\"slider-container\">\r\n            <div class=\"ranking-page-image\">\r\n                <div class=\"card col s12 no-shadow transparent white-text\" style=\"margin-top:0\">\r\n                    <div class=\"card-content\">\r\n                        <span class=\"card-title\">排行榜</span>\r\n                        <p>{{currentRoom.roomName}}</p>\r\n                    </div>\r\n                </div>\r\n            </div>\r\n        </div>\r\n\r\n        <ul class=\"tabs\" v-el:tabs>\r\n            <li class=\"tab col s6\"><a href=\"#resultTab\" class=\"active\">Result</a></li>\r\n            <li class=\"tab col s6\"><a href=\"#detailsTab\">Details</a></li>\r\n        </ul>\r\n\r\n        <div class=\"section\" id=\"resultTab\">\r\n            <div class=\"section-header\">\r\n                <div class=\"container\">\r\n                    <h6>RESULT</h6>\r\n                </div>\r\n            </div>\r\n            <div class=\"section-content\">\r\n                <div class=\"card col s12 no-shadow\">\r\n                    <div class=\"card-content\">\r\n                        <table>\r\n                            <thead>\r\n                            <tr>\r\n                                <th data-field=\"side\">Side</th>\r\n                                <th data-field=\"players\">Players</th>\r\n                                <th data-field=\"total\">Total</th>\r\n                                <th data-field=\"result\">Result</th>\r\n                            </tr>\r\n                            </thead>\r\n                            <tbody>\r\n                            <tr>\r\n                                <td>Bride</td>\r\n                                <td>{{bridePlayers.length}}</td>\r\n                                <td>{{brideTotal}}</td>\r\n                                <td v-if=\"brideTotal > groomTotal\" style=\"position: relative\">WIN<img src=\"http://wedding.jackyang.me/images/win_stamp.jpg\" class=\"win-stamp\"></td>\r\n                                <td v-else style=\"position: relative\">FAILED</td>\r\n                            </tr>\r\n                            <tr>\r\n                                <td>Groom</td>\r\n                                <td>{{groomPlayers.length}}</td>\r\n                                <td>{{groomTotal}}</td>\r\n                                <td v-if=\"brideTotal < groomTotal\" style=\"position: relative\">WIN<img src=\"http://wedding.jackyang.me/images/win_stamp.jpg\" class=\"win-stamp\"></td>\r\n                                <td v-else style=\"position: relative\">FAILED</td>\r\n                            </tr>\r\n                            </tbody>\r\n                        </table>\r\n                    </div>\r\n                </div>\r\n            </div>\r\n        </div>\r\n\r\n        <div class=\"section\" id=\"detailsTab\">\r\n            <div class=\"section-header\">\r\n                <div class=\"container\">\r\n                    <h6>DETAILS</h6>\r\n                </div>\r\n            </div>\r\n            <div class=\"section-content\">\r\n                <ul class=\"collection no-border\">\r\n                    <li class=\"collection-item avatar\" v-for=\"player in players\">\r\n                        <img :src=\"player.avatarImageUrl\" class=\"circle\">\r\n                        <span class=\"title\">{{player.userName}}<span class=\"badge\">{{player.shakeCount}}</span></span>\r\n                        <div class=\"progress\" v-if=\"player.userType === 'BRIDE'\">\r\n                            <div class=\"determinate\" :style=\"{width: player.shakeCount/200*100 + '%'}\"></div>\r\n                        </div>\r\n                        <div class=\"progress red lighten-4\" v-if=\"player.userType === 'GROOM'\">\r\n                            <div class=\"determinate red\" :style=\"{width: player.shakeCount/200*100 + '%'}\"></div>\r\n                        </div>\r\n                        <p>{{player.userType}}</p>\r\n                    </li>\r\n                </ul>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</template>\r\n\r\n<script>\r\n    var store = require('../../store');\r\n\r\n    module.exports = {\r\n        computed: {\r\n            currentPlayer: function() {\r\n                return store.state.player.currentPlayer;\r\n            },\r\n            currentRoom: function() {\r\n                return store.state.player.currentRoom;\r\n            },\r\n            players: function() {\r\n                var ranking = store.state.player.currentRoom.ranking || [];\r\n                var players = [];\r\n\r\n                ranking.forEach(function(r) {\r\n                    var player = store.state.player.rankingPage.playerList.filter(function(p) {\r\n                        return p.objectId === r.playerId;\r\n                    })[0];\r\n                    // after generate ranking in server side, user.shakeCount will be reset as 0;\r\n                    if(player) {\r\n                        player.shakeCount = r.shakeCount;\r\n                        players.push(player);\r\n                    }\r\n                });\r\n\r\n                if(players.length === 0)\r\n                    return players;\r\n                else\r\n                    return players.sort(function(p1, p2) {\r\n                        // descend order\r\n                        return p1.shakeCount < p2.shakeCount;\r\n                    });\r\n            },\r\n            bridePlayers: function() {\r\n                var ranking = store.state.player.currentRoom.ranking || [];\r\n                var players = [];\r\n\r\n                ranking.forEach(function(r) {\r\n                    var p = store.state.player.rankingPage.playerList.filter(function(p) {\r\n                        return p.objectId === r.playerId && p.userType === 'BRIDE';\r\n                    })[0];\r\n\r\n                    p && players.push(p);\r\n                });\r\n                return players;\r\n            },\r\n            groomPlayers: function() {\r\n                var ranking = store.state.player.currentRoom.ranking || [];\r\n                var players = [];\r\n\r\n                ranking.forEach(function(r) {\r\n                    var p = store.state.player.rankingPage.playerList.filter(function(p) {\r\n                        return p.objectId === r.playerId && p.userType === 'GROOM';\r\n                    })[0];\r\n\r\n                    p && players.push(p);\r\n                });\r\n                return players;\r\n            },\r\n            brideTotal: function() {\r\n                var total = 0;\r\n                (store.state.player.currentRoom.ranking || []).forEach(function(r) {\r\n                    if(r.playerType === 'BRIDE')\r\n                        total += r.shakeCount;\r\n                });\r\n                return total;\r\n            },\r\n            groomTotal: function() {\r\n                var total = 0;\r\n                (store.state.player.currentRoom.ranking || []).forEach(function(r) {\r\n                    if(r.playerType === 'GROOM')\r\n                        total += r.shakeCount;\r\n                });\r\n                return total;\r\n            }\r\n        },\r\n\r\n        ready: function() {\r\n            $(this.$els.tabs).tabs();\r\n\r\n            var roomId = this.$route.params.roomId;\r\n            store.actions.getRoomDetails(roomId);\r\n            store.actions.getRoomRankingPlayers(roomId);\r\n        }\r\n    };\r\n</script>"],"sourceRoot":"webpack://"}]);
-	
-	// exports
-
-
-/***/ },
-/* 125 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var store = __webpack_require__(94);
-	
-	module.exports = {
-	    computed: {
-	        currentPlayer: function currentPlayer() {
-	            return store.state.player.currentPlayer;
-	        },
-	        currentRoom: function currentRoom() {
-	            return store.state.player.currentRoom;
-	        },
-	        players: function players() {
-	            var ranking = store.state.player.currentRoom.ranking || [];
-	            var players = [];
-	
-	            ranking.forEach(function (r) {
-	                var player = store.state.player.rankingPage.playerList.filter(function (p) {
-	                    return p.objectId === r.playerId;
-	                })[0];
-	
-	                if (player) {
-	                    player.shakeCount = r.shakeCount;
-	                    players.push(player);
-	                }
-	            });
-	
-	            if (players.length === 0) return players;else return players.sort(function (p1, p2) {
-	                return p1.shakeCount < p2.shakeCount;
-	            });
-	        },
-	        bridePlayers: function bridePlayers() {
-	            var ranking = store.state.player.currentRoom.ranking || [];
-	            var players = [];
-	
-	            ranking.forEach(function (r) {
-	                var p = store.state.player.rankingPage.playerList.filter(function (p) {
-	                    return p.objectId === r.playerId && p.userType === 'BRIDE';
-	                })[0];
-	
-	                p && players.push(p);
-	            });
-	            return players;
-	        },
-	        groomPlayers: function groomPlayers() {
-	            var ranking = store.state.player.currentRoom.ranking || [];
-	            var players = [];
-	
-	            ranking.forEach(function (r) {
-	                var p = store.state.player.rankingPage.playerList.filter(function (p) {
-	                    return p.objectId === r.playerId && p.userType === 'GROOM';
-	                })[0];
-	
-	                p && players.push(p);
-	            });
-	            return players;
-	        },
-	        brideTotal: function brideTotal() {
-	            var total = 0;
-	            (store.state.player.currentRoom.ranking || []).forEach(function (r) {
-	                if (r.playerType === 'BRIDE') total += r.shakeCount;
-	            });
-	            return total;
-	        },
-	        groomTotal: function groomTotal() {
-	            var total = 0;
-	            (store.state.player.currentRoom.ranking || []).forEach(function (r) {
-	                if (r.playerType === 'GROOM') total += r.shakeCount;
-	            });
-	            return total;
-	        }
-	    },
-	
-	    ready: function ready() {
-	        $(this.$els.tabs).tabs();
-	
-	        var roomId = this.$route.params.roomId;
-	        store.actions.getRoomDetails(roomId);
-	        store.actions.getRoomRankingPlayers(roomId);
-	    }
-	};
-
-/***/ },
-/* 126 */
-/***/ function(module, exports) {
-
-	module.exports = "\n<div _v-4d4f86d2=\"\">\n    <div class=\"navbar-fixed\" _v-4d4f86d2=\"\">\n        <nav _v-4d4f86d2=\"\">\n            <div class=\"nav-wrapper red lighten-2\" _v-4d4f86d2=\"\">\n                <a class=\"brand-logo center\" _v-4d4f86d2=\"\">Ranking</a>\n                <ul class=\"left\" _v-4d4f86d2=\"\">\n                    <li _v-4d4f86d2=\"\"><a v-link=\"{name:'home'}\" _v-4d4f86d2=\"\"><i class=\"material-icons fa fa-angle-left\" _v-4d4f86d2=\"\"></i></a></li>\n                </ul>\n            </div>\n        </nav>\n    </div>\n\n    <div class=\"slider-container\" _v-4d4f86d2=\"\">\n        <div class=\"ranking-page-image\" _v-4d4f86d2=\"\">\n            <div class=\"card col s12 no-shadow transparent white-text\" style=\"margin-top:0\" _v-4d4f86d2=\"\">\n                <div class=\"card-content\" _v-4d4f86d2=\"\">\n                    <span class=\"card-title\" _v-4d4f86d2=\"\">排行榜</span>\n                    <p _v-4d4f86d2=\"\">{{currentRoom.roomName}}</p>\n                </div>\n            </div>\n        </div>\n    </div>\n\n    <ul class=\"tabs\" v-el:tabs=\"\" _v-4d4f86d2=\"\">\n        <li class=\"tab col s6\" _v-4d4f86d2=\"\"><a href=\"#resultTab\" class=\"active\" _v-4d4f86d2=\"\">Result</a></li>\n        <li class=\"tab col s6\" _v-4d4f86d2=\"\"><a href=\"#detailsTab\" _v-4d4f86d2=\"\">Details</a></li>\n    </ul>\n\n    <div class=\"section\" id=\"resultTab\" _v-4d4f86d2=\"\">\n        <div class=\"section-header\" _v-4d4f86d2=\"\">\n            <div class=\"container\" _v-4d4f86d2=\"\">\n                <h6 _v-4d4f86d2=\"\">RESULT</h6>\n            </div>\n        </div>\n        <div class=\"section-content\" _v-4d4f86d2=\"\">\n            <div class=\"card col s12 no-shadow\" _v-4d4f86d2=\"\">\n                <div class=\"card-content\" _v-4d4f86d2=\"\">\n                    <table _v-4d4f86d2=\"\">\n                        <thead _v-4d4f86d2=\"\">\n                        <tr _v-4d4f86d2=\"\">\n                            <th data-field=\"side\" _v-4d4f86d2=\"\">Side</th>\n                            <th data-field=\"players\" _v-4d4f86d2=\"\">Players</th>\n                            <th data-field=\"total\" _v-4d4f86d2=\"\">Total</th>\n                            <th data-field=\"result\" _v-4d4f86d2=\"\">Result</th>\n                        </tr>\n                        </thead>\n                        <tbody _v-4d4f86d2=\"\">\n                        <tr _v-4d4f86d2=\"\">\n                            <td _v-4d4f86d2=\"\">Bride</td>\n                            <td _v-4d4f86d2=\"\">{{bridePlayers.length}}</td>\n                            <td _v-4d4f86d2=\"\">{{brideTotal}}</td>\n                            <td v-if=\"brideTotal > groomTotal\" style=\"position: relative\" _v-4d4f86d2=\"\">WIN<img src=\"http://wedding.jackyang.me/images/win_stamp.jpg\" class=\"win-stamp\" _v-4d4f86d2=\"\"></td>\n                            <td v-else=\"\" style=\"position: relative\" _v-4d4f86d2=\"\">FAILED</td>\n                        </tr>\n                        <tr _v-4d4f86d2=\"\">\n                            <td _v-4d4f86d2=\"\">Groom</td>\n                            <td _v-4d4f86d2=\"\">{{groomPlayers.length}}</td>\n                            <td _v-4d4f86d2=\"\">{{groomTotal}}</td>\n                            <td v-if=\"brideTotal < groomTotal\" style=\"position: relative\" _v-4d4f86d2=\"\">WIN<img src=\"http://wedding.jackyang.me/images/win_stamp.jpg\" class=\"win-stamp\" _v-4d4f86d2=\"\"></td>\n                            <td v-else=\"\" style=\"position: relative\" _v-4d4f86d2=\"\">FAILED</td>\n                        </tr>\n                        </tbody>\n                    </table>\n                </div>\n            </div>\n        </div>\n    </div>\n\n    <div class=\"section\" id=\"detailsTab\" _v-4d4f86d2=\"\">\n        <div class=\"section-header\" _v-4d4f86d2=\"\">\n            <div class=\"container\" _v-4d4f86d2=\"\">\n                <h6 _v-4d4f86d2=\"\">DETAILS</h6>\n            </div>\n        </div>\n        <div class=\"section-content\" _v-4d4f86d2=\"\">\n            <ul class=\"collection no-border\" _v-4d4f86d2=\"\">\n                <li class=\"collection-item avatar\" v-for=\"player in players\" _v-4d4f86d2=\"\">\n                    <img :src=\"player.avatarImageUrl\" class=\"circle\" _v-4d4f86d2=\"\">\n                    <span class=\"title\" _v-4d4f86d2=\"\">{{player.userName}}<span class=\"badge\" _v-4d4f86d2=\"\">{{player.shakeCount}}</span></span>\n                    <div class=\"progress\" v-if=\"player.userType === 'BRIDE'\" _v-4d4f86d2=\"\">\n                        <div class=\"determinate\" :style=\"{width: player.shakeCount/200*100 + '%'}\" _v-4d4f86d2=\"\"></div>\n                    </div>\n                    <div class=\"progress red lighten-4\" v-if=\"player.userType === 'GROOM'\" _v-4d4f86d2=\"\">\n                        <div class=\"determinate red\" :style=\"{width: player.shakeCount/200*100 + '%'}\" _v-4d4f86d2=\"\"></div>\n                    </div>\n                    <p _v-4d4f86d2=\"\">{{player.userType}}</p>\n                </li>\n            </ul>\n        </div>\n    </div>\n</div>\n";
-
-/***/ },
-/* 127 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var __vue_script__, __vue_template__
-	__webpack_require__(128)
-	__vue_script__ = __webpack_require__(130)
-	if (__vue_script__ &&
-	    __vue_script__.__esModule &&
-	    Object.keys(__vue_script__).length > 1) {
-	  console.warn("[vue-loader] src\\components\\player\\visit-page.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(131)
-	module.exports = __vue_script__ || {}
-	if (module.exports.__esModule) module.exports = module.exports.default
-	if (__vue_template__) {
-	(typeof module.exports === "function" ? (module.exports.options || (module.exports.options = {})) : module.exports).template = __vue_template__
-	}
-	if (false) {(function () {  module.hot.accept()
-	  var hotAPI = require("vue-hot-reload-api")
-	  hotAPI.install(require("vue"), true)
-	  if (!hotAPI.compatible) return
-	  var id = "C:\\Users\\Administrator\\Documents\\GitHub\\wedding-shake-game\\src\\components\\player\\visit-page.vue"
-	  if (!module.hot.data) {
-	    hotAPI.createRecord(id, module.exports)
-	  } else {
-	    hotAPI.update(id, module.exports, __vue_template__)
-	  }
-	})()}
-
-/***/ },
-/* 128 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-	
-	// load the styles
-	var content = __webpack_require__(129);
-	if(typeof content === 'string') content = [[module.id, content, '']];
-	// add the styles to the DOM
-	var update = __webpack_require__(32)(content, {});
-	if(content.locals) module.exports = content.locals;
-	// Hot Module Replacement
-	if(false) {
-		// When the styles change, update the <style> tags
-		if(!content.locals) {
-			module.hot.accept("!!./../../../node_modules/css-loader/index.js?sourceMap!./../../../node_modules/vue-loader/lib/style-rewriter.js!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./visit-page.vue", function() {
-				var newContent = require("!!./../../../node_modules/css-loader/index.js?sourceMap!./../../../node_modules/vue-loader/lib/style-rewriter.js!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./visit-page.vue");
-				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-				update(newContent);
-			});
-		}
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
-
-/***/ },
-/* 129 */
-/***/ function(module, exports, __webpack_require__) {
-
-	exports = module.exports = __webpack_require__(31)();
-	// imports
-	
-	
-	// module
-	exports.push([module.id, "\n.visit-page-image {\n    width: 100%;\n    height: 100%;\n    background-image: url(http://wedding.jackyang.me/images/wedding_pic_16.jpg);\n    background-repeat: no-repeat;\n    background-size: cover;\n    background-position: center center;\n}\n", "", {"version":3,"sources":["/./src/components/player/visit-page.vue?fe571fbc"],"names":[],"mappings":";AACA;IACA,YAAA;IACA,aAAA;IACA,4EAAA;IACA,6BAAA;IAEA,uBAAA;IACA,mCAAA;CACA","file":"visit-page.vue","sourcesContent":["<style>\r\n    .visit-page-image {\r\n        width: 100%;\r\n        height: 100%;\r\n        background-image: url(http://wedding.jackyang.me/images/wedding_pic_16.jpg);\r\n        background-repeat: no-repeat;\r\n        -webkit-background-size: cover;\r\n        background-size: cover;\r\n        background-position: center center;\r\n    }\r\n</style>\r\n\r\n<template>\r\n    <div>\r\n        <div class=\"navbar-fixed\">\r\n            <nav>\r\n                <div class=\"nav-wrapper red lighten-2\">\r\n                    <a class=\"brand-logo center\">Visit Mode</a>\r\n                    <ul class=\"left\">\r\n                        <li><a v-link=\"{name: 'home'}\"><i class=\"material-icons fa fa-angle-left\"></i></a></li>\r\n                    </ul>\r\n                </div>\r\n            </nav>\r\n        </div>\r\n\r\n        <div class=\"slider-container\">\r\n            <div class=\"visit-page-image\">\r\n                <div class=\"card col s12 no-shadow transparent white-text\" style=\"margin-top:0\">\r\n                    <div class=\"card-content\">\r\n                        <span class=\"card-title\">{{currentRoom.roomName}}</span>\r\n                        <p>游戏正在进行中，您处于观察模式</p>\r\n                        <p>Bride: {{bridePlayers.length}}</p>\r\n                        <p>Groom: {{groomPlayers.length}}</p>\r\n                    </div>\r\n                </div>\r\n            </div>\r\n        </div>\r\n\r\n        <div class=\"section\">\r\n            <div class=\"section-header\">\r\n                <div class=\"container\">\r\n                    <h6>GENERAL</h6>\r\n                </div>\r\n            </div>\r\n            <div class=\"section-content\">\r\n                <div class=\"card col s12 no-shadow\">\r\n                    <div class=\"card-content row\">\r\n                        <div class=\"col s6 teal-text\">\r\n                            <h6 class=\"center-align text-lighten-3\">Bride({{bridePlayers.length}})</h6>\r\n                            <h1 class=\"center-align\">{{brideTotal}}</h1>\r\n                        </div>\r\n                        <div class=\"col s6 red-text\">\r\n                            <h6 class=\"center-align text-lighten-3\">Groom({{groomPlayers.length}})</h6>\r\n                            <h1 class=\"center-align\">{{groomTotal}}</h1>\r\n                        </div>\r\n                    </div>\r\n                </div>\r\n            </div>\r\n        </div>\r\n\r\n        <div class=\"section\">\r\n            <div class=\"section-header\">\r\n                <div class=\"container\">\r\n                    <h6>PLAYER DATA</h6>\r\n                </div>\r\n            </div>\r\n            <div class=\"section-content\">\r\n                <ul class=\"collection no-border\">\r\n                    <li class=\"collection-item avatar\" v-for=\"player in players\">\r\n                        <img :src=\"player.avatarImageUrl\" class=\"circle\">\r\n                        <span class=\"title\">{{player.userName}}<span class=\"badge\">{{player.shakeCount}}</span></span>\r\n                        <div class=\"progress\" v-if=\"player.userType === 'BRIDE'\">\r\n                            <div class=\"determinate\" :style=\"{width: player.shakeCount/200*100 + '%'}\"></div>\r\n                        </div>\r\n                        <div class=\"progress red lighten-4\" v-if=\"player.userType === 'GROOM'\">\r\n                            <div class=\"determinate red\" :style=\"{width: player.shakeCount/200*100 + '%'}\"></div>\r\n                        </div>\r\n                        <p>{{player.userType}} side</p>\r\n                    </li>\r\n                </ul>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</template>\r\n\r\n<script>\r\n    var store = require('../../store');\r\n\r\n    module.exports = {\r\n\r\n        computed: {\r\n            currentPlayer: function() {\r\n                return store.state.player.currentPlayer;\r\n            },\r\n            currentRoom: function() {\r\n                return store.state.player.currentRoom;\r\n            },\r\n            players: function() {\r\n                return store.state.player.playerList.sort(function(p1, p2) {\r\n                    // descend order\r\n                    return p1.shakeCount < p2.shakeCount;\r\n                });\r\n            },\r\n            bridePlayers: function() {\r\n                return store.state.player.playerList.filter(function(player) {\r\n                    return player.userType === 'BRIDE';\r\n                });\r\n            },\r\n            groomPlayers: function() {\r\n                return store.state.player.playerList.filter(function(player) {\r\n                    return player.userType === 'GROOM';\r\n                });\r\n            },\r\n            brideTotal: function() {\r\n                var total = 0;\r\n                store.state.player.playerList.forEach(function(player) {\r\n                    if(player.userType === 'BRIDE')\r\n                        total += player.shakeCount;\r\n                });\r\n                return total;\r\n            },\r\n            groomTotal: function() {\r\n                var total = 0;\r\n                store.state.player.playerList.forEach(function(player) {\r\n                    if(player.userType === 'GROOM')\r\n                        total += player.shakeCount;\r\n                });\r\n                return total;\r\n            },\r\n            status: function() {\r\n                return store.state.player.currentRoom.status;\r\n            }\r\n        },\r\n\r\n        ready: function() {\r\n            var roomId = this.$route.params.roomId;\r\n            store.actions.getRoomDetails(roomId);\r\n            store.actions.getRoomPlayers(roomId);\r\n            store.actions.listenPlayerShakeSocketMessage(true);\r\n            store.actions.listenPlayerStatusChangeSocketMessage(true);\r\n        }\r\n    };\r\n</script>"],"sourceRoot":"webpack://"}]);
-	
-	// exports
-
-
-/***/ },
-/* 130 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var store = __webpack_require__(94);
-	
-	module.exports = {
-	
-	    computed: {
-	        currentPlayer: function currentPlayer() {
-	            return store.state.player.currentPlayer;
-	        },
-	        currentRoom: function currentRoom() {
-	            return store.state.player.currentRoom;
-	        },
-	        players: function players() {
-	            return store.state.player.playerList.sort(function (p1, p2) {
-	                return p1.shakeCount < p2.shakeCount;
-	            });
-	        },
-	        bridePlayers: function bridePlayers() {
-	            return store.state.player.playerList.filter(function (player) {
-	                return player.userType === 'BRIDE';
-	            });
-	        },
-	        groomPlayers: function groomPlayers() {
-	            return store.state.player.playerList.filter(function (player) {
-	                return player.userType === 'GROOM';
-	            });
-	        },
-	        brideTotal: function brideTotal() {
-	            var total = 0;
-	            store.state.player.playerList.forEach(function (player) {
-	                if (player.userType === 'BRIDE') total += player.shakeCount;
-	            });
-	            return total;
-	        },
-	        groomTotal: function groomTotal() {
-	            var total = 0;
-	            store.state.player.playerList.forEach(function (player) {
-	                if (player.userType === 'GROOM') total += player.shakeCount;
-	            });
-	            return total;
-	        },
-	        status: function status() {
-	            return store.state.player.currentRoom.status;
-	        }
-	    },
-	
-	    ready: function ready() {
-	        var roomId = this.$route.params.roomId;
-	        store.actions.getRoomDetails(roomId);
-	        store.actions.getRoomPlayers(roomId);
-	        store.actions.listenPlayerShakeSocketMessage(true);
-	        store.actions.listenPlayerStatusChangeSocketMessage(true);
-	    }
-	};
-
-/***/ },
-/* 131 */
-/***/ function(module, exports) {
-
-	module.exports = "\n<div>\n    <div class=\"navbar-fixed\">\n        <nav>\n            <div class=\"nav-wrapper red lighten-2\">\n                <a class=\"brand-logo center\">Visit Mode</a>\n                <ul class=\"left\">\n                    <li><a v-link=\"{name: 'home'}\"><i class=\"material-icons fa fa-angle-left\"></i></a></li>\n                </ul>\n            </div>\n        </nav>\n    </div>\n\n    <div class=\"slider-container\">\n        <div class=\"visit-page-image\">\n            <div class=\"card col s12 no-shadow transparent white-text\" style=\"margin-top:0\">\n                <div class=\"card-content\">\n                    <span class=\"card-title\">{{currentRoom.roomName}}</span>\n                    <p>游戏正在进行中，您处于观察模式</p>\n                    <p>Bride: {{bridePlayers.length}}</p>\n                    <p>Groom: {{groomPlayers.length}}</p>\n                </div>\n            </div>\n        </div>\n    </div>\n\n    <div class=\"section\">\n        <div class=\"section-header\">\n            <div class=\"container\">\n                <h6>GENERAL</h6>\n            </div>\n        </div>\n        <div class=\"section-content\">\n            <div class=\"card col s12 no-shadow\">\n                <div class=\"card-content row\">\n                    <div class=\"col s6 teal-text\">\n                        <h6 class=\"center-align text-lighten-3\">Bride({{bridePlayers.length}})</h6>\n                        <h1 class=\"center-align\">{{brideTotal}}</h1>\n                    </div>\n                    <div class=\"col s6 red-text\">\n                        <h6 class=\"center-align text-lighten-3\">Groom({{groomPlayers.length}})</h6>\n                        <h1 class=\"center-align\">{{groomTotal}}</h1>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n\n    <div class=\"section\">\n        <div class=\"section-header\">\n            <div class=\"container\">\n                <h6>PLAYER DATA</h6>\n            </div>\n        </div>\n        <div class=\"section-content\">\n            <ul class=\"collection no-border\">\n                <li class=\"collection-item avatar\" v-for=\"player in players\">\n                    <img :src=\"player.avatarImageUrl\" class=\"circle\">\n                    <span class=\"title\">{{player.userName}}<span class=\"badge\">{{player.shakeCount}}</span></span>\n                    <div class=\"progress\" v-if=\"player.userType === 'BRIDE'\">\n                        <div class=\"determinate\" :style=\"{width: player.shakeCount/200*100 + '%'}\"></div>\n                    </div>\n                    <div class=\"progress red lighten-4\" v-if=\"player.userType === 'GROOM'\">\n                        <div class=\"determinate red\" :style=\"{width: player.shakeCount/200*100 + '%'}\"></div>\n                    </div>\n                    <p>{{player.userType}} side</p>\n                </li>\n            </ul>\n        </div>\n    </div>\n</div>\n";
+	module.exports = "\n<div>\n    <div id=\"monitorBackgroundImage\" :class=\"show ? 'blur' : ''\"></div>\n\n    <div v-if=\"show\" transition=\"fade\" class=\"z-depth-1 row\" style=\"padding:20px;background:white\">\n        <h4 class=\"center-align\">{{room.roomName}}</h4>\n    </div>\n\n    <div class=\"container\">\n        <div class=\"row\">\n            <div class=\"col s12\" v-if=\"false\" transition=\"fade\" >\n                <h3 class=\"center-align red-text\"><span class=\"black-text\" style=\"font-size:18px\">倒计时: </span>00:19.80</h3>\n            </div>\n\n            <div class=\"col s6\" v-if=\"show\" transition=\"leftIn\" >\n                <div class=\"card board\">\n                    <div class=\"total-count right red-text text-lighten-4\">{{groomTotal}}</div>\n                    <div class=\"card-content border-header\">\n                        <div class=\"row\">\n                            <div class=\"col s6 offset-s6\">\n                                <h5 class=\"red-text text-lighten-2\">GROOM TEAM</h5>\n                                <h6 class=\"grey-text text-lighten-1\">{{groomPlayers.length}} Players</h6>\n                            </div>\n                        </div>\n                    </div>\n                    <div class=\"card-content\">\n                        <ul class=\"collection\">\n                            <li class=\"collection-item avatar transparent\" v-for=\"player in groomPlayers\">\n                                <img :src=\"player.avatarImageUrl\" alt=\"\" class=\"circle\">\n                                <span class=\"title\">{{player.userName}}<span class=\"badge\">{{player.shakeCount}}</span></span>\n                                <div class=\"progress progress-bg\">\n                                    <div class=\"determinate red\" :style=\"{width: player.shakeCount/200*100 + '%'}\"></div>\n                                </div>\n                            </li>\n                        </ul>\n                    </div>\n                </div>\n            </div>\n\n            <div class=\"col s6\" v-if=\"show\" transition=\"rightIn\" >\n                <div class=\"card board\">\n                    <div class=\"total-count left teal-text text-lighten-4\">{{brideTotal}}</div>\n                    <div class=\"card-content border-header\">\n                        <div class=\"row\">\n                            <div class=\"col s6\">\n                                <h5 class=\"teal-text text-lighten-2\">BRIDE TEAM</h5>\n                                <h6 class=\"grey-text text-lighten-1\">{{bridePlayers.length}} Players</h6>\n                            </div>\n                        </div>\n                    </div>\n                    <div class=\"card-content\">\n                        <ul class=\"collection\">\n                            <li class=\"collection-item avatar transparent\" v-for=\"player in bridePlayers\">\n                                <img :src=\"player.avatarImageUrl\" alt=\"\" class=\"circle\">\n                                <span class=\"title\">{{player.userName}}<span class=\"badge\">{{player.shakeCount}}</span></span>\n                                <div class=\"progress progress-bg\">\n                                    <div class=\"determinate\" :style=\"{width: player.shakeCount/200*100 + '%'}\"></div>\n                                </div>\n                            </li>\n                        </ul>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n";
 
 /***/ }
 /******/ ]);
-//# sourceMappingURL=player.bundle.js.map
+//# sourceMappingURL=monitor.bundle.js.map

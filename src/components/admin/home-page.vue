@@ -26,11 +26,8 @@
                     <li class="collection-item avatar" v-for="room in roomList">
                         <i class="material-icons circle" :style="{background: room.roomColor}">{{$index + 1}}</i>
                         <div class="row">
-                            <span class="title red-text text-lighten-2">{{room.roomName}}</span>
-                            <p v-if="room.status === 'INIT'">Game is not started yet, please wait.</p>
-                            <p v-if="room.status === 'JOINING'">People are joining, there are {{room.players.length}} players joined the game.</p>
-                            <p v-if="room.status === 'PLAYING'">Game is playing right now. You can't join right now.</p>
-                            <p v-if="room.status === 'END'">Game is ended.</p>
+                            <span class="title red-text text-lighten-2">{{room.roomName}} ({{room.status}})</span>
+                            <p>{{room.roomDescription}}</p>
                         </div>
                         <div class="row">
                             <a @click="checkRoomDetails(room.objectId)" class="waves-effect waves-light btn red lighten-2">Details</a>

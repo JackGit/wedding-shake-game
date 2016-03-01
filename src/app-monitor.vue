@@ -5,7 +5,6 @@
 
     .fade-enter {
         opacity: 0;
-        /*margin-top: 5%;*/
     }
 
     .fade-leave {

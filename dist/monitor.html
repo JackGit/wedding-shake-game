@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0 ">
+    <link type="text/css" rel="stylesheet" href="static/font-awesome/font-awesome.min.css">
+    <link type="text/css" rel="stylesheet" href="static/materialize/css/materialize.min.css"  media="screen,projection"/>
+
+    <title>Shake Game Monitor</title>
+    <style>
+        .no-shadow {
+            -webkit-box-shadow: none;
+            -moz-box-shadow: none;
+            box-shadow: none;
+        }
+        .no-border {
+            border: none;
+        }
+        .transparent {
+            background-color: transparent;
+        }
+        .section {
+            padding-bottom: 0px;
+        }
+        .section-header {
+            /*border-bottom: 1px solid lightgrey;*/
+        }
+        .section-header h6 {
+            color: rgba(0,0,0,0.5);
+        }
+    </style>
+</head>
+<body class="grey lighten-4">
+    <div id="app"></div>
+
+    <script src="static/javascripts/jquery-2.1.1.min.js"></script>
+    <script src="static/javascripts/wy.lib.js"></script>
+    <script src="static/materialize/js/materialize.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="monitor.bundle.js"></script>
+</body>
+</html>
