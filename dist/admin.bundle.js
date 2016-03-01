@@ -14056,7 +14056,7 @@
 	if (__vue_script__ &&
 	    __vue_script__.__esModule &&
 	    Object.keys(__vue_script__).length > 1) {
-	  console.warn("[vue-loader] src/app-admin.vue: named exports in *.vue files are ignored.")}
+	  console.warn("[vue-loader] src\\app-admin.vue: named exports in *.vue files are ignored.")}
 	__vue_template__ = __webpack_require__(34)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
@@ -14067,7 +14067,7 @@
 	  var hotAPI = require("vue-hot-reload-api")
 	  hotAPI.install(require("vue"), true)
 	  if (!hotAPI.compatible) return
-	  var id = "/Users/Jack/WebstormProjects/wedding-shake-game/src/app-admin.vue"
+	  var id = "C:\\Users\\Administrator\\Documents\\GitHub\\wedding-shake-game\\src\\app-admin.vue"
 	  if (!module.hot.data) {
 	    hotAPI.createRecord(id, module.exports)
 	  } else {
@@ -14110,7 +14110,7 @@
 	
 	
 	// module
-	exports.push([module.id, "\n.mask {\n    position: fixed;\n    top: 0;\n    bottom: 0;\n    left: 0;\n    right: 0;\n    background-color: rgba(0,0,0,0.5);\n}\n\n.fade-transition {\n    -webkit-transition: all 0.2s ease;\n    transition: all 0.2s ease;\n}\n\n.fade-enter {\n    opacity: 0;\n    /*margin-top: 5%;*/\n}\n\n.fade-leave {\n    opacity: 0;\n}\n", "", {"version":3,"sources":["/./src/app-admin.vue?39be4529"],"names":[],"mappings":";AACA;IACA,gBAAA;IACA,OAAA;IACA,UAAA;IACA,QAAA;IACA,SAAA;IACA,kCAAA;CACA;;AAEA;IACA,kCAAA;IAAA,0BAAA;CACA;;AAEA;IACA,WAAA;IACA,mBAAA;CACA;;AAEA;IACA,WAAA;CACA","file":"app-admin.vue","sourcesContent":["<style>\n    .mask {\n        position: fixed;\n        top: 0;\n        bottom: 0;\n        left: 0;\n        right: 0;\n        background-color: rgba(0,0,0,0.5);\n    }\n\n    .fade-transition {\n        transition: all 0.2s ease;\n    }\n\n    .fade-enter {\n        opacity: 0;\n        /*margin-top: 5%;*/\n    }\n\n    .fade-leave {\n        opacity: 0;\n    }\n</style>\n\n<template>\n    <div>\n        <router-view transition=\"fade\" transition-mode=\"out-in\"></router-view>\n    </div>\n</template>\n\n<script>\n    module.exports = {};\n</script>"],"sourceRoot":"webpack://"}]);
+	exports.push([module.id, "\n.mask {\n    position: fixed;\n    top: 0;\n    bottom: 0;\n    left: 0;\n    right: 0;\n    background-color: rgba(0,0,0,0.5);\n}\n\n.fade-transition {\n    -webkit-transition: all 0.2s ease;\n    transition: all 0.2s ease;\n}\n\n.fade-enter {\n    opacity: 0;\n    /*margin-top: 5%;*/\n}\n\n.fade-leave {\n    opacity: 0;\n}\n", "", {"version":3,"sources":["/./src/app-admin.vue?12c5f9b6"],"names":[],"mappings":";AACA;IACA,gBAAA;IACA,OAAA;IACA,UAAA;IACA,QAAA;IACA,SAAA;IACA,kCAAA;CACA;;AAEA;IACA,kCAAA;IAAA,0BAAA;CACA;;AAEA;IACA,WAAA;IACA,mBAAA;CACA;;AAEA;IACA,WAAA;CACA","file":"app-admin.vue","sourcesContent":["<style>\r\n    .mask {\r\n        position: fixed;\r\n        top: 0;\r\n        bottom: 0;\r\n        left: 0;\r\n        right: 0;\r\n        background-color: rgba(0,0,0,0.5);\r\n    }\r\n\r\n    .fade-transition {\r\n        transition: all 0.2s ease;\r\n    }\r\n\r\n    .fade-enter {\r\n        opacity: 0;\r\n        /*margin-top: 5%;*/\r\n    }\r\n\r\n    .fade-leave {\r\n        opacity: 0;\r\n    }\r\n</style>\r\n\r\n<template>\r\n    <div>\r\n        <router-view transition=\"fade\" transition-mode=\"out-in\"></router-view>\r\n    </div>\r\n</template>\r\n\r\n<script>\r\n    module.exports = {};\r\n</script>"],"sourceRoot":"webpack://"}]);
 	
 	// exports
 
@@ -14418,66 +14418,6 @@
 	Vue.use(Vuex);
 	Vue.config.debug = true;
 	
-	// socket is global var defined in main.js
-	function adminListenPlayerSocketMessage(type, enable) {
-	    console.log('listenPlayerSocketMessage', type, enable);
-	    if(enable) {
-	        switch(type) {
-	            case 'join':
-	                socket.on('join', function(userId) {
-	                    store.actions.adminOnJoin(userId);
-	                });
-	                break;
-	            case 'leave':
-	                socket.on('leave', function(userId) {
-	                    store.actions.adminOnLeave(userId);
-	                });
-	                break;
-	            case 'shake':
-	                socket.on('shake', function(message) {
-	                    store.actions.adminOnShake(message);
-	                });
-	                break;
-	            default:
-	                break;
-	        }
-	    } else {
-	        socket.off(type);
-	    }
-	}
-	
-	function listenPlayerSocketMessage(type, enable) {
-	    console.log('listenPlayerSocketMessage', type, enable);
-	    if(enable) {
-	        switch(type) {
-	            case 'join':
-	                socket.on('join', function(userId) {
-	                    store.actions.onJoin(userId);
-	                });
-	                break;
-	            case 'leave':
-	                socket.on('leave', function(userId) {
-	                    store.actions.onLeave(userId);
-	                });
-	                break;
-	            case 'shake':
-	                socket.on('shake', function(message) {
-	                    store.actions.onShake(message);
-	                });
-	                break;
-	            case 'status-change':
-	                socket.on('status-change', function(message) {
-	                    store.actions.onStatusChange(message);
-	                });
-	                break;
-	            default:
-	                break;
-	        }
-	    } else {
-	        socket.off(type);
-	    }
-	}
-	
 	module.exports = window.store = new Vuex.Store({
 	    state: {
 	        admin: {
@@ -14489,10 +14429,8 @@
 	    },
 	
 	    actions: {
-	
 	        login: function(store, user) {
 	            console.log('store.actions.login', user);
-	
 	            return new Promise(function(resolve, reject) {
 	                api.adminLogin(user).then(function(data) {
 	                    if(data.user) {
@@ -14506,15 +14444,11 @@
 	                });
 	            });
 	        },
-	
 	        signout: function(store) {
 	            store.state.admin.user = {};
 	        },
-	
-	        /* admin actions */
 	        getRoomList: function(store) {
 	            console.log('store.actions.getRoomList');
-	
 	            api.listRoom().then(function(data) {
 	                store.state.admin.roomList = data.roomList;
 	            }, function(error) {
@@ -14540,10 +14474,8 @@
 	        },
 	        createRoom: function(store, room) {
 	            console.log('store.actions.createRoom', room);
-	
 	            return new Promise(function(resolve, reject) {
 	                api.createRoom(room).then(function(data) {
-	                    store.state.admin.editRoomDialog.roomDetails = data.room;
 	                    resolve(data.room);
 	                }, function(error) {
 	                    reject(error);
@@ -14561,25 +14493,30 @@
 	                });
 	            });
 	        },
+	        deleteRoom: function(store, roomId) {
+	            console.log('store.actions.deleteRoom', roomId);
+	            return new Promise(function(resolve, reject) {
+	                api.deleteRoom(roomId).then(function() {
+	                    store.state.admin.currentRoom = {};
+	                    resolve();
+	                }, function(error) {
+	                    reject(error);
+	                });
+	            });
+	        },
 	        allowToJoinRoom: function(store, roomId) {
-	            if(store.state.admin.roomPage.roomDetails.status === 'JOINING')
-	                return;
-	
 	            api.allowJoin(roomId).then(function(data) {
 	                console.log('store.actions.allowToJoinRoom success');
-	                store.state.admin.roomPage.roomDetails = data.room;
+	                store.state.admin.currentRoom = data.room;
 	                socket.emit('status-change', {roomId: roomId, status: 'JOINING'});
 	            }, function(error) {
 	                console.log('store.actions.allowToJoinRoom error', error);
 	            });
 	        },
 	        startRoom: function(store, roomId) {
-	            if(store.state.admin.roomPage.roomDetails.status === 'PLAYING')
-	                return;
-	
 	            api.startGame(roomId).then(function(data) {
 	                console.log('store.actions.startRoom success');
-	                store.state.admin.roomPage.roomDetails = data.room;
+	                store.state.admin.currentRoom = data.room;
 	                socket.emit('status-change', {roomId: roomId, status: 'PLAYING'});
 	            }, function(error) {
 	                console.log('store.actions.startRoom error', error);
@@ -14588,50 +14525,11 @@
 	        stopRoom: function(store, roomId) {
 	            api.stopGame(roomId).then(function(data) {
 	                console.log('store.actions.stopRoom success');
-	                store.state.admin.roomPage.roomDetails = data.room;
+	                store.state.admin.currentRoom = data.room;
 	                socket.emit('status-change', {roomId: roomId, status: 'END'});
 	            }, function(error) {
 	                console.log('store.actions.stopRoom error', error);
 	            });
-	        },
-	        adminListenSocketMessage: function(store, enable) {
-	            adminListenPlayerSocketMessage('shake', enable);
-	            adminListenPlayerSocketMessage('join', enable);
-	            adminListenPlayerSocketMessage('leave', enable);
-	        },
-	        adminOnJoin: function(store, message) {
-	            var userId = message.userId, roomId = message.roomId;
-	
-	            console.log('store.actions.adminOnJoin', userId);
-	            api.getUser({userId: userId}).then(function(data) {
-	                var exist = store.state.admin.roomPage.players.filter(function(p) {
-	                        return p.objectId === userId;
-	                    }).length !== 0;
-	
-	                if(!exist)
-	                    store.state.admin.roomPage.players.push(data.user);
-	            }, function(error) {
-	                console.log('store.actions.adminOnJoin get user error', error);
-	            });
-	        },
-	        adminOnLeave: function(store, message) {
-	            var userId = message.userId, roomId = message.roomId;
-	
-	            store.state.admin.roomPage.players = store.state.admin.roomPage.players.filter(function(player) {
-	                return player.objectId !== userId;
-	            });
-	        },
-	        adminOnShake: function(store, data) {
-	            var userId = data.userId,
-	                count = data.shakeCount,
-	                i;
-	
-	            for(i = 0; i < store.state.admin.roomPage.players.length; i ++) {
-	                if(store.state.admin.roomPage.players[i].objectId === userId) {
-	                    store.state.admin.roomPage.players[i].shakeCount = count;
-	                    break;
-	                }
-	            }
 	        }
 	    },
 	
@@ -15170,7 +15068,8 @@
 	        var request = {
 	            roomName: room.roomName,
 	            roomDescription: room.roomDescription,
-	            roomSize: room.roomSize
+	            roomSize: room.roomSize,
+	            roomColor: room.roomColor
 	        };
 	        return callservice('/game/room/create', request);
 	    },
@@ -15190,6 +15089,9 @@
 	    },
 	    updateRoom: function(room) {
 	        return callservice('/game/room/update', {room: room});
+	    },
+	    deleteRoom: function(roomId) {
+	        return callservice('/game/room/delete', {roomId: roomId});
 	    },
 	    listRoom: function() {
 	        return callservice('/game/room/list');
@@ -15247,7 +15149,7 @@
 	if (__vue_script__ &&
 	    __vue_script__.__esModule &&
 	    Object.keys(__vue_script__).length > 1) {
-	  console.warn("[vue-loader] src/components/admin/login-page.vue: named exports in *.vue files are ignored.")}
+	  console.warn("[vue-loader] src\\components\\admin\\login-page.vue: named exports in *.vue files are ignored.")}
 	__vue_template__ = __webpack_require__(45)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
@@ -15258,7 +15160,7 @@
 	  var hotAPI = require("vue-hot-reload-api")
 	  hotAPI.install(require("vue"), true)
 	  if (!hotAPI.compatible) return
-	  var id = "/Users/Jack/WebstormProjects/wedding-shake-game/src/components/admin/login-page.vue"
+	  var id = "C:\\Users\\Administrator\\Documents\\GitHub\\wedding-shake-game\\src\\components\\admin\\login-page.vue"
 	  if (!module.hot.data) {
 	    hotAPI.createRecord(id, module.exports)
 	  } else {
@@ -15348,7 +15250,7 @@
 	if (__vue_script__ &&
 	    __vue_script__.__esModule &&
 	    Object.keys(__vue_script__).length > 1) {
-	  console.warn("[vue-loader] src/components/admin/home-page.vue: named exports in *.vue files are ignored.")}
+	  console.warn("[vue-loader] src\\components\\admin\\home-page.vue: named exports in *.vue files are ignored.")}
 	__vue_template__ = __webpack_require__(50)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
@@ -15359,7 +15261,7 @@
 	  var hotAPI = require("vue-hot-reload-api")
 	  hotAPI.install(require("vue"), true)
 	  if (!hotAPI.compatible) return
-	  var id = "/Users/Jack/WebstormProjects/wedding-shake-game/src/components/admin/home-page.vue"
+	  var id = "C:\\Users\\Administrator\\Documents\\GitHub\\wedding-shake-game\\src\\components\\admin\\home-page.vue"
 	  if (!module.hot.data) {
 	    hotAPI.createRecord(id, module.exports)
 	  } else {
@@ -15447,7 +15349,7 @@
 /* 50 */
 /***/ function(module, exports) {
 
-	module.exports = "\n<div>\n    <div class=\"navbar-fixed\">\n        <nav>\n            <div class=\"nav-wrapper red lighten-2\">\n                <a class=\"brand-logo center\">{{adminUser.userName}}</a>\n                <ul class=\"right\">\n                    <li><a @click=\"quit()\"><i class=\"material-icons fa fa-sign-out\"></i></a></li>\n                </ul>\n            </div>\n        </nav>\n    </div>\n\n    <div class=\"section\">\n        <div class=\"section-header\">\n            <div class=\"container\">\n                <h6>ROOM LIST</h6>\n            </div>\n        </div>\n        <div class=\"section-content\">\n            <ul class=\"collection no-border transparent\">\n                <li class=\"collection-item avatar\" v-for=\"room in roomList\">\n                    <i class=\"material-icons circle\" :style=\"{background: room.roomColor}\">{{$index + 1}}</i>\n                    <div class=\"row\">\n                        <span class=\"title red-text text-lighten-2\">{{room.roomName}}</span>\n                        <p v-if=\"room.status === 'INIT'\">Game is not started yet, please wait.</p>\n                        <p v-if=\"room.status === 'JOINING'\">People are joining, there are {{room.players.length}} players joined the game.</p>\n                        <p v-if=\"room.status === 'PLAYING'\">Game is playing right now. You can't join right now.</p>\n                        <p v-if=\"room.status === 'END'\">Game is ended.</p>\n                    </div>\n                    <div class=\"row\">\n                        <a @click=\"checkRoomDetails(room.objectId)\" class=\"waves-effect waves-light btn red lighten-2\">Details</a>\n                    </div>\n                </li>\n            </ul>\n        </div>\n    </div>\n</div>\n";
+	module.exports = "\n<div>\n    <div class=\"navbar-fixed\">\n        <nav>\n            <div class=\"nav-wrapper red lighten-2\">\n                <a class=\"brand-logo center\">{{adminUser.userName}}</a>\n                <ul class=\"right\">\n                    <li><a @click=\"quit()\"><i class=\"material-icons fa fa-sign-out\"></i></a></li>\n                </ul>\n            </div>\n        </nav>\n    </div>\n\n    <div class=\"section\">\n        <div class=\"section-header\">\n            <div class=\"container\">\n                <h6>ROOM LIST</h6>\n            </div>\n        </div>\n        <div class=\"section-content\">\n            <ul class=\"collection no-border transparent\">\n                <li class=\"collection-item avatar\" v-for=\"room in roomList\">\n                    <i class=\"material-icons circle\" :style=\"{background: room.roomColor}\">{{$index + 1}}</i>\n                    <div class=\"row\">\n                        <span class=\"title red-text text-lighten-2\">{{room.roomName}}</span>\n                        <p v-if=\"room.status === 'INIT'\">Game is not started yet, please wait.</p>\n                        <p v-if=\"room.status === 'JOINING'\">People are joining, there are {{room.players.length}} players joined the game.</p>\n                        <p v-if=\"room.status === 'PLAYING'\">Game is playing right now. You can't join right now.</p>\n                        <p v-if=\"room.status === 'END'\">Game is ended.</p>\n                    </div>\n                    <div class=\"row\">\n                        <a @click=\"checkRoomDetails(room.objectId)\" class=\"waves-effect waves-light btn red lighten-2\">Details</a>\n                    </div>\n                </li>\n            </ul>\n        </div>\n    </div>\n\n    <div class=\"fixed-action-btn\" style=\"bottom: 45px; right: 24px;\">\n        <a class=\"btn-floating btn-large red waves-effect waves-light\" v-link=\"{name:'room-create'}\">\n            <i class=\"material-icons fa fa-plus\"></i>\n        </a>\n    </div>\n</div>\n";
 
 /***/ },
 /* 51 */
@@ -15459,7 +15361,7 @@
 	if (__vue_script__ &&
 	    __vue_script__.__esModule &&
 	    Object.keys(__vue_script__).length > 1) {
-	  console.warn("[vue-loader] src/components/admin/room-page.vue: named exports in *.vue files are ignored.")}
+	  console.warn("[vue-loader] src\\components\\admin\\room-page.vue: named exports in *.vue files are ignored.")}
 	__vue_template__ = __webpack_require__(55)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
@@ -15470,7 +15372,7 @@
 	  var hotAPI = require("vue-hot-reload-api")
 	  hotAPI.install(require("vue"), true)
 	  if (!hotAPI.compatible) return
-	  var id = "/Users/Jack/WebstormProjects/wedding-shake-game/src/components/admin/room-page.vue"
+	  var id = "C:\\Users\\Administrator\\Documents\\GitHub\\wedding-shake-game\\src\\components\\admin\\room-page.vue"
 	  if (!module.hot.data) {
 	    hotAPI.createRecord(id, module.exports)
 	  } else {
@@ -15540,6 +15442,21 @@
 	        $(this.$els.tabs).tabs();
 	        store.actions.getRoomDetails(this.$route.params.roomId);
 	        store.actions.getRoomPlayers(this.$route.params.roomId);
+	    },
+	
+	    methods: {
+	        allowJoin: function allowJoin() {
+	            if (this.room.status === 'INIT' || this.room.status === 'END') store.actions.allowToJoinRoom(this.$route.params.roomId);else Materialize.toast('You cannot ALLOW TO JOIN at this state', 1000);
+	        },
+	        startGame: function startGame() {
+	            if (this.room.status === 'JOINING') store.actions.startRoom(this.$route.params.roomId);else Materialize.toast('You cannot START at this state', 1000);
+	        },
+	        endGame: function endGame() {
+	            if (this.room.status === 'PLAYING') store.actions.stopRoom(this.$route.params.roomId);else Materialize.toast('You cannot END at this state', 1000);
+	        },
+	        getRoomPlayers: function getRoomPlayers() {
+	            store.actions.getRoomPlayers(this.$route.params.roomId);
+	        }
 	    }
 	};
 
@@ -15547,7 +15464,7 @@
 /* 55 */
 /***/ function(module, exports) {
 
-	module.exports = "\n<div>\n    <div class=\"navbar-fixed\">\n        <nav>\n            <div class=\"nav-wrapper red lighten-2\">\n                <a class=\"brand-logo center\">Room Details</a>\n                <ul class=\"left\">\n                    <li><a v-link=\"{name:'home'}\"><i class=\"material-icons fa fa-angle-left\"></i></a></li>\n                </ul>\n                <ul class=\"right\">\n                    <li><a v-link=\"{name:'room-edit',params:{roomId:$route.params.roomId}}\"><i class=\"material-icons fa fa-pencil\"></i></a></li>\n                </ul>\n            </div>\n        </nav>\n    </div>\n\n    <ul class=\"tabs\" v-el:tabs>\n        <li class=\"tab col s6\"><a href=\"#roomInfo\" class=\"active\">Room Info</a></li>\n        <li class=\"tab col s6\"><a href=\"#playerList\">Players</a></li>\n    </ul>\n\n    <div class=\"section\" id=\"roomInfo\">\n        <div class=\"section-header\">\n            <div class=\"container\">\n                <h6>ROOM STATUS</h6>\n            </div>\n        </div>\n        <div class=\"section-content\">\n            <div class=\"card no-shadow\">\n                <div class=\"card-content\" style=\"margin-bottom:0\">\n                    <h1 class=\"center-align\">{{room.status}}</h1>\n                </div>\n            </div>\n        </div>\n        <div class=\"section-header\">\n            <div class=\"container\">\n                <h6>BASE INFO</h6>\n            </div>\n        </div>\n        <div class=\"section-content\">\n            <div class=\"card no-shadow\">\n                <div class=\"card-content\" style=\"margin-bottom:0\">\n                    <div class=\"row\">\n                        <div class=\"col s12\">\n                            <h6>Name</h6>\n                            <span>{{room.roomName}}</span>\n                        </div>\n                    </div>\n                    <div class=\"row\">\n                        <div class=\"col s12\">\n                            <h6>Description</h6>\n                            <span>{{room.roomDescription}}</span>\n                        </div>\n                    </div>\n                    <div class=\"row\">\n                        <div class=\"col s12\">\n                            <h6>Size</h6>\n                            <span>{{room.roomSize}}</span>\n                        </div>\n                    </div>\n                    <div class=\"row\">\n                        <div class=\"col s12\">\n                            <h6>Color</h6>\n                            <span>{{room.roomColor}}</span>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n\n    </div>\n\n    <div class=\"section\" id=\"playerList\">\n        <div class=\"section-header\">\n            <div class=\"container\">\n                <h6>PLAYERS</h6>\n            </div>\n        </div>\n        <div class=\"section-content\">\n            <ul class=\"collection no-border\">\n                <li class=\"collection-item avatar\" v-for=\"player in players\">\n                    <img :src=\"player.avatarImageUrl\" class=\"circle\">\n                    <span class=\"title\">{{player.userName}}</span>\n                    <p>{{player.userType}}</p>\n                </li>\n            </ul>\n        </div>\n    </div>\n\n    <div class=\"fixed-action-btn horizontal click-to-toggle\" style=\"bottom: 45px; right: 24px;\">\n        <a class=\"btn-floating btn-large red\">\n            <i class=\"large mdi-navigation-menu\"></i>\n        </a>\n        <ul>\n            <li><a class=\"btn-floating red darken-1\"><i class=\"material-icons fa fa-users\"></i></a></li>\n            <li><a class=\"btn-floating green darken-1\"><i class=\"material-icons fa fa-play\"></i></a></li>\n            <li><a class=\"btn-floating yellow darken-1\"><i class=\"material-icons fa fa-stop\"></i></a></li>\n            <li><a class=\"btn-floating grey darken-1\"><i class=\"material-icons fa fa-refresh\"></i></a></li>\n        </ul>\n    </div>\n\n</div>\n";
+	module.exports = "\n<div>\n    <div class=\"navbar-fixed\">\n        <nav>\n            <div class=\"nav-wrapper red lighten-2\">\n                <a class=\"brand-logo center\">Room Details</a>\n                <ul class=\"left\">\n                    <li><a v-link=\"{name:'home'}\"><i class=\"material-icons fa fa-angle-left\"></i></a></li>\n                </ul>\n                <ul class=\"right\">\n                    <li><a v-link=\"{name:'room-edit',params:{roomId:$route.params.roomId}}\"><i class=\"material-icons fa fa-pencil\"></i></a></li>\n                </ul>\n            </div>\n        </nav>\n    </div>\n\n    <ul class=\"tabs\" v-el:tabs>\n        <li class=\"tab col s6\"><a href=\"#roomInfo\" class=\"active\">Room Info</a></li>\n        <li class=\"tab col s6\"><a href=\"#playerList\" @click=\"getRoomPlayers\">Players</a></li>\n    </ul>\n\n    <div class=\"section\" id=\"roomInfo\">\n        <div class=\"section-header\">\n            <div class=\"container\">\n                <h6>ROOM STATUS</h6>\n            </div>\n        </div>\n        <div class=\"section-content\">\n            <div class=\"card no-shadow\">\n                <div class=\"card-content\" style=\"margin-bottom:0\">\n                    <h1 class=\"center-align\">{{room.status}}</h1>\n                </div>\n            </div>\n        </div>\n        <div class=\"section-header\">\n            <div class=\"container\">\n                <h6>BASE INFO</h6>\n            </div>\n        </div>\n        <div class=\"section-content\">\n            <div class=\"card no-shadow\">\n                <div class=\"card-content\" style=\"margin-bottom:0\">\n                    <div class=\"row\">\n                        <div class=\"col s12\">\n                            <h6>Name</h6>\n                            <span>{{room.roomName}}</span>\n                        </div>\n                    </div>\n                    <div class=\"row\">\n                        <div class=\"col s12\">\n                            <h6>Description</h6>\n                            <span>{{room.roomDescription}}</span>\n                        </div>\n                    </div>\n                    <div class=\"row\">\n                        <div class=\"col s12\">\n                            <h6>Size</h6>\n                            <span>{{room.roomSize}}</span>\n                        </div>\n                    </div>\n                    <div class=\"row\">\n                        <div class=\"col s12\">\n                            <h6>Color</h6>\n                            <span>{{room.roomColor}}</span>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n\n    </div>\n\n    <div class=\"section\" id=\"playerList\">\n        <div class=\"section-header\">\n            <div class=\"container\">\n                <h6>PLAYERS</h6>\n            </div>\n        </div>\n        <div class=\"section-content\">\n            <ul class=\"collection no-border\">\n                <li class=\"collection-item avatar\" v-for=\"player in players\">\n                    <img :src=\"player.avatarImageUrl\" class=\"circle\">\n                    <span class=\"title\">{{player.userName}}</span>\n                    <p>{{player.userType}}</p>\n                </li>\n            </ul>\n        </div>\n    </div>\n\n    <div class=\"fixed-action-btn horizontal click-to-toggle\" style=\"bottom: 45px; right: 24px;\">\n        <a class=\"btn-floating btn-large red waves-effect waves-light\">\n            <i class=\"large mdi-navigation-menu\"></i>\n        </a>\n        <ul>\n            <li><a class=\"btn-floating red darken-1\" @click=\"allowJoin\"><i class=\"material-icons fa fa-users\"></i></a></li>\n            <li><a class=\"btn-floating green darken-1\" @click=\"startGame\"><i class=\"material-icons fa fa-play\"></i></a></li>\n            <li><a class=\"btn-floating yellow darken-1\" @click=\"endGame\"><i class=\"material-icons fa fa-stop\"></i></a></li>\n        </ul>\n    </div>\n\n</div>\n";
 
 /***/ },
 /* 56 */
@@ -15559,7 +15476,7 @@
 	if (__vue_script__ &&
 	    __vue_script__.__esModule &&
 	    Object.keys(__vue_script__).length > 1) {
-	  console.warn("[vue-loader] src/components/admin/room-edit-page.vue: named exports in *.vue files are ignored.")}
+	  console.warn("[vue-loader] src\\components\\admin\\room-edit-page.vue: named exports in *.vue files are ignored.")}
 	__vue_template__ = __webpack_require__(68)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
@@ -15570,7 +15487,7 @@
 	  var hotAPI = require("vue-hot-reload-api")
 	  hotAPI.install(require("vue"), true)
 	  if (!hotAPI.compatible) return
-	  var id = "/Users/Jack/WebstormProjects/wedding-shake-game/src/components/admin/room-edit-page.vue"
+	  var id = "C:\\Users\\Administrator\\Documents\\GitHub\\wedding-shake-game\\src\\components\\admin\\room-edit-page.vue"
 	  if (!module.hot.data) {
 	    hotAPI.createRecord(id, module.exports)
 	  } else {
@@ -15661,6 +15578,18 @@
 	            }, function () {
 	                Materialize.toast('update failed', 1000);
 	            });
+	        },
+	        deleteRoom: function deleteRoom() {
+	            var router = this.$router;
+	
+	            if (confirm('你确定要删除房间？')) {
+	                store.actions.deleteRoom(this.$route.params.roomId).then(function () {
+	                    Materialize.toast('room deleted', 1000);
+	                    router.go({ name: 'home' });
+	                }, function () {
+	                    Materialize.toast('room failed to delete', 1000);
+	                });
+	            }
 	        }
 	    }
 	};
@@ -15792,7 +15721,7 @@
 /* 68 */
 /***/ function(module, exports) {
 
-	module.exports = "\n<div>\n    <div class=\"navbar-fixed\">\n        <nav>\n            <div class=\"nav-wrapper red lighten-2\">\n                <a class=\"brand-logo center\">Room Edit</a>\n                <ul class=\"left\">\n                    <li><a v-link=\"{name:'room',params:{roomId:$route.params.roomId}}\"><i class=\"material-icons fa fa-angle-left\"></i></a></li>\n                </ul>\n            </div>\n        </nav>\n    </div>\n\n    <div class=\"section\">\n        <div class=\"section-header\">\n            <div class=\"container\">\n                <h6>EDIT ROOM</h6>\n            </div>\n        </div>\n        <div class=\"section-content\">\n            <div class=\"card no-shadow\">\n                <div class=\"card-content\">\n                    <div class=\"row\">\n                        <div class=\"col s12\">\n                            <div class=\"row\">\n                                <div class=\"input-field col s12\">\n                                    <input id=\"roomEditPageRoomName\" type=\"text\" value=\"{{room.roomName}}\" v-el:room-name>\n                                    <label for=\"roomEditPageRoomName\" class=\"active\">Room Name</label>\n                                </div>\n                            </div>\n                            <div class=\"row\">\n                                <div class=\"input-field col s12\">\n                                    <textarea id=\"roomEidtPageRoomDescription\" class=\"materialize-textarea\" v-el:room-description>{{room.roomDescription}}</textarea>\n                                    <label for=\"roomEidtPageRoomDescription\" class=\"active\">Room Description</label>\n                                </div>\n                            </div>\n                            <div class=\"row\">\n                                <div class=\"input-field col s12\">\n                                    <input id=\"roomEditPageRoomSize\" type=\"text\" value=\"{{room.roomSize}}\" v-el:room-size>\n                                    <label for=\"roomEditPageRoomSize\" class=\"active\">Room Size</label>\n                                </div>\n                            </div>\n                            <div class=\"row\">\n                                <div class=\"input-field col s12\">\n                                    <select v-el:room-color>\n                                        <option value=\"\" disabled selected>Choose your option</option>\n                                        <option value=\"#F56937\">Red</option>\n                                        <option value=\"#F79A3D\">Orange</option>\n                                        <option value=\"#48CCD0\">Teal</option>\n                                        <option value=\"#90DDE3\">Light Blue</option>\n                                    </select>\n                                    <label>Room Color</label>\n                                </div>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n\n    <div class=\"container\">\n        <div class=\"row\">\n            <a class=\"col s12 waves-effect waves-light btn btn-large red white-text\" @click=\"submitEdit()\">OK</a>\n        </div>\n    </div>\n</div>\n";
+	module.exports = "\n<div>\n    <div class=\"navbar-fixed\">\n        <nav>\n            <div class=\"nav-wrapper red lighten-2\">\n                <a class=\"brand-logo center\">Room Edit</a>\n                <ul class=\"left\">\n                    <li><a v-link=\"{name:'room',params:{roomId:$route.params.roomId}}\"><i class=\"material-icons fa fa-angle-left\"></i></a></li>\n                </ul>\n                <ul class=\"right\">\n                    <li><a @click=\"deleteRoom\"><i class=\"material-icons fa fa-times\"></i></a></li>\n                </ul>\n            </div>\n        </nav>\n    </div>\n\n    <div class=\"section\">\n        <div class=\"section-header\">\n            <div class=\"container\">\n                <h6>EDIT ROOM</h6>\n            </div>\n        </div>\n        <div class=\"section-content\">\n            <div class=\"card no-shadow\">\n                <div class=\"card-content\">\n                    <div class=\"row\">\n                        <div class=\"col s12\">\n                            <div class=\"row\">\n                                <div class=\"input-field col s12\">\n                                    <input id=\"roomEditPageRoomName\" type=\"text\" value=\"{{room.roomName}}\" v-el:room-name>\n                                    <label for=\"roomEditPageRoomName\" class=\"active\">Room Name</label>\n                                </div>\n                            </div>\n                            <div class=\"row\">\n                                <div class=\"input-field col s12\">\n                                    <textarea id=\"roomEidtPageRoomDescription\" class=\"materialize-textarea\" v-el:room-description>{{room.roomDescription}}</textarea>\n                                    <label for=\"roomEidtPageRoomDescription\" class=\"active\">Room Description</label>\n                                </div>\n                            </div>\n                            <div class=\"row\">\n                                <div class=\"input-field col s12\">\n                                    <input id=\"roomEditPageRoomSize\" type=\"text\" value=\"{{room.roomSize}}\" v-el:room-size>\n                                    <label for=\"roomEditPageRoomSize\" class=\"active\">Room Size</label>\n                                </div>\n                            </div>\n                            <div class=\"row\">\n                                <div class=\"input-field col s12\">\n                                    <select v-el:room-color>\n                                        <option value=\"\" disabled selected>Choose your option</option>\n                                        <option value=\"#F56937\">Red</option>\n                                        <option value=\"#F79A3D\">Orange</option>\n                                        <option value=\"#48CCD0\">Teal</option>\n                                        <option value=\"#90DDE3\">Light Blue</option>\n                                    </select>\n                                    <label>Room Color</label>\n                                </div>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n\n    <div class=\"container\">\n        <div class=\"row\">\n            <a class=\"col s12 waves-effect waves-light btn btn-large red white-text\" @click=\"submitEdit()\">OK</a>\n        </div>\n    </div>\n</div>\n";
 
 /***/ },
 /* 69 */
@@ -15804,7 +15733,7 @@
 	if (__vue_script__ &&
 	    __vue_script__.__esModule &&
 	    Object.keys(__vue_script__).length > 1) {
-	  console.warn("[vue-loader] src/components/admin/room-create-page.vue: named exports in *.vue files are ignored.")}
+	  console.warn("[vue-loader] src\\components\\admin\\room-create-page.vue: named exports in *.vue files are ignored.")}
 	__vue_template__ = __webpack_require__(73)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
@@ -15815,7 +15744,7 @@
 	  var hotAPI = require("vue-hot-reload-api")
 	  hotAPI.install(require("vue"), true)
 	  if (!hotAPI.compatible) return
-	  var id = "/Users/Jack/WebstormProjects/wedding-shake-game/src/components/admin/room-create-page.vue"
+	  var id = "C:\\Users\\Administrator\\Documents\\GitHub\\wedding-shake-game\\src\\components\\admin\\room-create-page.vue"
 	  if (!module.hot.data) {
 	    hotAPI.createRecord(id, module.exports)
 	  } else {
@@ -15865,17 +15794,58 @@
 
 /***/ },
 /* 72 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 	
-	module.exports = {};
+	var _parseInt = __webpack_require__(60);
+	
+	var _parseInt2 = _interopRequireDefault(_parseInt);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	module.exports = {
+	
+	    data: function data() {
+	        return {
+	            room: {
+	                roomName: '',
+	                roomDescription: '',
+	                roomSize: 10,
+	                roomColor: ''
+	            }
+	        };
+	    },
+	
+	    ready: function ready() {
+	        $('select').material_select();
+	    },
+	
+	    methods: {
+	        submit: function submit() {
+	            var router = this.$router;
+	            var room = {
+	                roomName: this.$els.roomName.value,
+	                roomDescription: this.$els.roomDescription.value,
+	                roomSize: (0, _parseInt2.default)(this.$els.roomSize.value),
+	                roomColor: this.$els.roomColor.value
+	            };
+	
+	            store.actions.createRoom(room).then(function () {
+	                Materialize.toast('create successfully', 1000);
+	                router.go({ name: 'home' });
+	            }, function () {
+	                Materialize.toast('create failed', 1000);
+	            });
+	        }
+	    }
+	};
 
 /***/ },
 /* 73 */
 /***/ function(module, exports) {
 
-	module.exports = "\n<div>\n    admin room create page\n</div>\n";
+	module.exports = "\n<div>\n    <div class=\"navbar-fixed\">\n        <nav>\n            <div class=\"nav-wrapper red lighten-2\">\n                <a class=\"brand-logo center\">Room Create</a>\n                <ul class=\"left\">\n                    <li><a v-link=\"{name:'home'}\"><i class=\"material-icons fa fa-angle-left\"></i></a></li>\n                </ul>\n            </div>\n        </nav>\n    </div>\n\n    <div class=\"section\">\n        <div class=\"section-header\">\n            <div class=\"container\">\n                <h6>CREATE ROOM</h6>\n            </div>\n        </div>\n        <div class=\"section-content\">\n            <div class=\"card no-shadow\">\n                <div class=\"card-content\">\n                    <div class=\"row\">\n                        <div class=\"col s12\">\n                            <div class=\"row\">\n                                <div class=\"input-field col s12\">\n                                    <input id=\"roomCreatePageRoomName\" type=\"text\" value=\"{{room.roomName}}\" v-el:room-name>\n                                    <label for=\"roomCreatePageRoomName\" class=\"active\">Room Name</label>\n                                </div>\n                            </div>\n                            <div class=\"row\">\n                                <div class=\"input-field col s12\">\n                                    <textarea id=\"roomEidtPageRoomDescription\" class=\"materialize-textarea\" v-el:room-description>{{room.roomDescription}}</textarea>\n                                    <label for=\"roomEidtPageRoomDescription\" class=\"active\">Room Description</label>\n                                </div>\n                            </div>\n                            <div class=\"row\">\n                                <div class=\"input-field col s12\">\n                                    <input id=\"roomCreatePageRoomSize\" type=\"text\" value=\"{{room.roomSize}}\" v-el:room-size>\n                                    <label for=\"roomCreatePageRoomSize\" class=\"active\">Room Size</label>\n                                </div>\n                            </div>\n                            <div class=\"row\">\n                                <div class=\"input-field col s12\">\n                                    <select v-el:room-color>\n                                        <option value=\"\" disabled selected>Choose your option</option>\n                                        <option value=\"#F56937\">Red</option>\n                                        <option value=\"#F79A3D\">Orange</option>\n                                        <option value=\"#48CCD0\">Teal</option>\n                                        <option value=\"#90DDE3\">Light Blue</option>\n                                    </select>\n                                    <label>Room Color</label>\n                                </div>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n\n    <div class=\"container\">\n        <div class=\"row\">\n            <a class=\"col s12 waves-effect waves-light btn btn-large red white-text\" @click=\"submit()\">OK</a>\n        </div>\n    </div>\n</div>\n";
 
 /***/ }
 /******/ ]);

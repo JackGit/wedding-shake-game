@@ -40,7 +40,8 @@ var API = {
         var request = {
             roomName: room.roomName,
             roomDescription: room.roomDescription,
-            roomSize: room.roomSize
+            roomSize: room.roomSize,
+            roomColor: room.roomColor
         };
         return callservice('/game/room/create', request);
     },
@@ -60,6 +61,9 @@ var API = {
     },
     updateRoom: function(room) {
         return callservice('/game/room/update', {room: room});
+    },
+    deleteRoom: function(roomId) {
+        return callservice('/game/room/delete', {roomId: roomId});
     },
     listRoom: function() {
         return callservice('/game/room/list');

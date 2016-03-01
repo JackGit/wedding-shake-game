@@ -171,6 +171,7 @@ module.exports = function(app) {
             roomName: req.body.roomName,
             roomDescription : req.body.roomDescription,
             roomSize: Number.parseInt(req.body.roomSize, 10),
+            roomColor: req.body.roomColor,
             players: []
         };
 

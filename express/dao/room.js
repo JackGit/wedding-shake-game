@@ -40,7 +40,9 @@ var roomDAO = {
     },
     deleteRoom: function(roomId) {
         var roomQueryObj = new AV.Query('Room');
-        return roomQueryObj.get(roomId).destroyAll();
+        return roomQueryObj.get(roomId).then(function(roomAVObj) {
+            return roomAVObj.destroy();
+        });
     },
     updateRoom: function(room) {
         var p;
@@ -59,7 +61,7 @@ var roomDAO = {
     },
     listRoom: function() {
         var roomQueryObj = new AV.Query('Room');
-        roomQueryObj.addAscending('createAt');
+        roomQueryObj.addAscending('createdAt');
         return roomQueryObj.find();
     },
     joinRoom: function(roomId, playerId, playerType) {

@@ -39,6 +39,12 @@
                 </ul>
             </div>
         </div>
+
+        <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+            <a class="btn-floating btn-large red waves-effect waves-light" v-link="{name:'room-create'}">
+                <i class="material-icons fa fa-plus"></i>
+            </a>
+        </div>
     </div>
 </template>
 

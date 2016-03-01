@@ -20,7 +20,7 @@
 
         <ul class="tabs" v-el:tabs>
             <li class="tab col s6"><a href="#roomInfo" class="active">Room Info</a></li>
-            <li class="tab col s6"><a href="#playerList">Players</a></li>
+            <li class="tab col s6"><a href="#playerList" @click="getRoomPlayers">Players</a></li>
         </ul>
 
         <div class="section" id="roomInfo">
@@ -92,14 +92,13 @@
         </div>
 
         <div class="fixed-action-btn horizontal click-to-toggle" style="bottom: 45px; right: 24px;">
-            <a class="btn-floating btn-large red">
+            <a class="btn-floating btn-large red waves-effect waves-light">
                 <i class="large mdi-navigation-menu"></i>
             </a>
             <ul>
-                <li><a class="btn-floating red darken-1"><i class="material-icons fa fa-users"></i></a></li>
-                <li><a class="btn-floating green darken-1"><i class="material-icons fa fa-play"></i></a></li>
-                <li><a class="btn-floating yellow darken-1"><i class="material-icons fa fa-stop"></i></a></li>
-                <li><a class="btn-floating grey darken-1"><i class="material-icons fa fa-refresh"></i></a></li>
+                <li><a class="btn-floating red darken-1" @click="allowJoin"><i class="material-icons fa fa-users"></i></a></li>
+                <li><a class="btn-floating green darken-1" @click="startGame"><i class="material-icons fa fa-play"></i></a></li>
+                <li><a class="btn-floating yellow darken-1" @click="endGame"><i class="material-icons fa fa-stop"></i></a></li>
             </ul>
         </div>
 
@@ -123,6 +122,30 @@
             $(this.$els.tabs).tabs();
             store.actions.getRoomDetails(this.$route.params.roomId);
             store.actions.getRoomPlayers(this.$route.params.roomId);
+        },
+
+        methods: {
+            allowJoin: function() {
+                if(this.room.status === 'INIT' || this.room.status === 'END')
+                    store.actions.allowToJoinRoom(this.$route.params.roomId);
+                else
+                    Materialize.toast('You cannot ALLOW TO JOIN at this state', 1000);
+            },
+            startGame: function() {
+                if(this.room.status === 'JOINING')
+                    store.actions.startRoom(this.$route.params.roomId);
+                else
+                    Materialize.toast('You cannot START at this state', 1000);
+            },
+            endGame: function() {
+                if(this.room.status === 'PLAYING')
+                    store.actions.stopRoom(this.$route.params.roomId);
+                else
+                    Materialize.toast('You cannot END at this state', 1000);
+            },
+            getRoomPlayers: function() {
+                store.actions.getRoomPlayers(this.$route.params.roomId);
+            }
         }
     };
 </script>

@@ -11,6 +11,9 @@
                     <ul class="left">
                         <li><a v-link="{name:'room',params:{roomId:$route.params.roomId}}"><i class="material-icons fa fa-angle-left"></i></a></li>
                     </ul>
+                    <ul class="right">
+                        <li><a @click="deleteRoom"><i class="material-icons fa fa-times"></i></a></li>
+                    </ul>
                 </div>
             </nav>
         </div>
@@ -103,6 +106,19 @@
                 }, function() {
                     Materialize.toast('update failed', 1000);
                 });
+            },
+            deleteRoom: function() {
+                var router = this.$router;
+
+                if(confirm('你确定要删除房间？')) {
+                    store.actions.deleteRoom(this.$route.params.roomId).then(function() {
+                        Materialize.toast('room deleted', 1000);
+                        router.go({name: 'home'});
+                    }, function() {
+                        Materialize.toast('room failed to delete', 1000);
+                    });
+
+                }
             }
         }
     };
