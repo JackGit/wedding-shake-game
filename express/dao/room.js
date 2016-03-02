@@ -122,7 +122,9 @@ var roomDAO = {
     allowPlayerJoin: function(roomId) {
         var room = {
             roomId: roomId,
-            status: 'JOINING'
+            status: 'JOINING',
+            players: [],
+            ranking: []
         };
         return roomDAO.updateRoom(room);
     },

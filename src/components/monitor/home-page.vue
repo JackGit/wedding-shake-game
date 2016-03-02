@@ -15,15 +15,25 @@
     }
     .board {
         min-height: 450px;
+        overflow: hidden;
     }
     .border-header {
         height: 160px;
-
+        background-position: center center;
+        background-repeat: no-repeat;
+        -webkit-background-size: cover;
+        background-size: cover;
+    }
+    .border-header.groom {
+        background-image: url(http://wedding.jackyang.me/images/wedding_pic_17.jpg);
+    }
+    .border-header.bride {
+        background-image: url(http://wedding.jackyang.me/images/wedding_pic_18.jpg);
     }
     .total-count {
         position: absolute;
         top: 160px;
-        font-size: 300px;
+        font-size: 200px;
         line-height: 300px;
     }
     .total-count.right {
@@ -36,7 +46,7 @@
         background-color: rgba(0, 0, 0, 0.2) !important;
     }
 
-    .leftIn-transition, .rightIn-transition {
+    .leftIn-transition, .rightIn-transition, .item-transition {
         transition: all 0.4s ease;
     }
     .leftIn-enter {
@@ -55,6 +65,19 @@
         opacity: 0;
         transform: translateY(-20%);
     }
+    .item-move {
+        transition: transform .5s cubic-bezier(.55,0,.1,1);
+    }
+    .item-enter {
+        opacity: 0;
+        background-color: #4db6ac !important;
+        transform: translateY(-5%);
+    }
+    .item-leave {
+        opacity: 0;
+        position: absolute;
+        transform: translateY(5%);
+    }
  </style>
 
 <template>
@@ -62,7 +85,7 @@
         <div id="monitorBackgroundImage" :class="show ? 'blur' : ''"></div>
 
         <div v-if="show" transition="fade" class="z-depth-1 row" style="padding:20px;background:white">
-            <h4 class="center-align">{{room.roomName}}</h4>
+            <h4 class="center-align">{{room.roomName}}({{roomStatusDesc}})</h4>
         </div>
 
         <div class="container">
@@ -73,8 +96,8 @@
 
                 <div class="col s6" v-if="show" transition="leftIn" >
                     <div class="card board">
-                        <div class="total-count right red-text text-lighten-4">{{groomTotal}}</div>
-                        <div class="card-content border-header">
+                        <div class="total-count right red-text text-lighten-4" v-el:groom-total>{{groomTotal}}</div>
+                        <div class="card-content border-header groom">
                             <div class="row">
                                 <div class="col s6 offset-s6">
                                     <h5 class="red-text text-lighten-2">新娘队</h5>
@@ -84,7 +107,7 @@
                         </div>
                         <div class="card-content">
                             <ul class="collection">
-                                <li class="collection-item avatar transparent" v-for="player in groomPlayers">
+                                <li class="collection-item avatar transparent" v-for="player in groomPlayers" transition="item">
                                     <img :src="player.avatarImageUrl" alt="" class="circle">
                                     <span class="title">{{player.userName}}<span class="badge">{{player.shakeCount}}</span></span>
                                     <div class="progress progress-bg">
@@ -98,8 +121,8 @@
 
                 <div class="col s6" v-if="show" transition="rightIn" >
                     <div class="card board">
-                        <div class="total-count left teal-text text-lighten-4">{{brideTotal}}</div>
-                        <div class="card-content border-header">
+                        <div class="total-count left teal-text text-lighten-4" v-el:bride-total>{{brideTotal}}</div>
+                        <div class="card-content border-header bride">
                             <div class="row">
                                 <div class="col s6">
                                     <h5 class="teal-text text-lighten-2">新郎队</h5>
@@ -109,7 +132,7 @@
                         </div>
                         <div class="card-content">
                             <ul class="collection">
-                                <li class="collection-item avatar transparent" v-for="player in bridePlayers">
+                                <li class="collection-item avatar transparent" v-for="player in bridePlayers" transition="item">
                                     <img :src="player.avatarImageUrl" alt="" class="circle">
                                     <span class="title">{{player.userName}}<span class="badge">{{player.shakeCount}}</span></span>
                                     <div class="progress progress-bg">
@@ -166,17 +189,41 @@
             room: function() {
                 return store.state.room;
             },
+            roomStatusDesc: function() {
+                var str = '';
+                switch(store.state.room.status) {
+                    case 'INIT':
+                        str = '未开始';
+                        break;
+                    case 'JOINING':
+                        str = '开放加入中';
+                        break;
+                    case 'PLAYING':
+                        str = '游戏进行中';
+                        break;
+                    case 'END':
+                        str = '已结束';
+                        break;
+                    default:
+                        break;
+                }
+                return str;
+            },
             players: function() {
                 return store.state.playerList;
             },
             groomPlayers: function() {
                 return store.state.playerList.filter(function(p) {
                     return p.userType === 'GROOM';
+                }).sort(function(p1, p2) {
+                    return p1.shakeCount < p2.shakeCount;
                 });
             },
             bridePlayers: function() {
                 return store.state.playerList.filter(function(p) {
                     return p.userType === 'BRIDE';
+                }).sort(function(p1, p2) {
+                    return p1.shakeCount < p2.shakeCount;
                 });
             },
             brideTotal: function() {
@@ -197,6 +244,23 @@
             },
             show: function() {
                 return store.state.show;
+            }
+        },
+
+        watch: {
+            brideTotal: function() {
+                snabbt(this.$els.brideTotal, 'attention', {
+                    rotation: [0, 0, Math.PI/2],
+                    springConstant: 1.9,
+                    springDeceleration: 0.9,
+                });
+            },
+            groomTotal: function() {
+                snabbt(this.$els.groomTotal, 'attention', {
+                    rotation: [0, 0, Math.PI/2],
+                    springConstant: 1.9,
+                    springDeceleration: 0.9,
+                });
             }
         },
 

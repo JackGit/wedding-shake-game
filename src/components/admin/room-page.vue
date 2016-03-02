@@ -159,10 +159,7 @@
                     Materialize.toast('当前状态下不能“开始”', 1000);
             },
             endGame: function() {
-                if(this.room.status === 'PLAYING')
-                    store.actions.stopRoom(this.$route.params.roomId);
-                else
-                    Materialize.toast('当前状态下不能“结束游戏”', 1000);
+                store.actions.stopRoom(this.$route.params.roomId);
             },
             getRoomPlayers: function() {
                 store.actions.getRoomPlayers(this.$route.params.roomId);

@@ -4,6 +4,7 @@ var VueRouter = require('vue-router');
 
 Vue.use(VueResource);
 Vue.use(VueRouter);
+Vue.use(require('vue-animated-list'));
 
 var App = require('./app-monitor.vue');
 var router = new VueRouter();
