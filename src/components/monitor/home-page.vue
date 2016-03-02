@@ -159,8 +159,11 @@
 
         ready: function() {
             var loader = new Loader();
+            var imageUrl = window.location.origin.indexOf('jackyang.me') !== -1
+                    ? 'http://wedding.jackyang.me/images/monitor_background_01.jpg'
+                    : 'static/images/monitor_background_01.jpg';
 
-            loader.add('background', 'static/images/monitor_background_01.jpg', function(r) {
+            loader.add('background', imageUrl, function(r) {
                 var $container = $('#monitorBackgroundImage');
                 var img = r.data;
                 var center = new CenterIt($container.width(), $container.height(), img.naturalWidth, img.naturalHeight, {type: 'cover'});
