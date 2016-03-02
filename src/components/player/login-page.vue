@@ -6,11 +6,6 @@
         left: 0;
         right: 0;
         z-index: -1;
-        background-image: url(http://wedding.jackyang.me/images/wedding_pic_08.jpg);
-        background-repeat: no-repeat;
-        -webkit-background-size: cover;
-        background-size: cover;
-        background-position: center center;
     }
     .login-page-header {
         height: 240px;
@@ -22,7 +17,7 @@
 
 <template>
     <div>
-        <div class="background-container"></div>
+        <div class="background-container" v-el:background-container></div>
 
         <div class="valign-wrapper row login-page-header">
             <div class="valign col s12">
@@ -59,12 +54,41 @@
 
 <script>
     var store = require('../../store');
+    var Loader = wy.base.Loader;
+    var CenterIt = wy.base.CenterIt;
+    var Animation = wy.base.Animation;
 
     module.exports = {
 
         ready: function() {
             $('select').material_select();
             $(this.$els.tabs).tabs();
+
+            var loader = new Loader();
+            var container = this.$els.backgroundContainer;
+            var imageUrl = window.location.origin.indexOf('jackyang.me') !== -1
+                    ? 'http://wedding.jackyang.me/images/wedding_pic_08.jpg'
+                    : 'static/images/wedding_pic_08.jpg';
+
+            loader.add('background', imageUrl, function(r) {
+                var img = r.data;
+                var $container = $(container);
+                var centerIt = new CenterIt($container.width(), $container.height(), img.naturalWidth, img.naturalHeight, {type: 'cover'});
+                var $img = $(img)
+                        .css('position', 'absolute')
+                        .css('top', centerIt.offset().top + 'px')
+                        .css('left', centerIt.offset().left + 'px')
+                        .width(centerIt.newWidth())
+                        .height(centerIt.newHeight());
+
+                $container.append($img);
+                Animation.applyAnimation($img, {
+                    animationName: 'fadeIn',
+                    duration: 500
+                });
+            });
+
+            loader.load();
         },
 
         methods: {

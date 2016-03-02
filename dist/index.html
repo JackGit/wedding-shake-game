@@ -3,60 +3,88 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0 ">
-    <link type="text/css" rel="stylesheet" href="static/font-awesome/font-awesome.min.css">
+    <!--<link type="text/css" rel="stylesheet" href="static/font-awesome/font-awesome.min.css">
     <link type="text/css" rel="stylesheet" href="static/materialize/css/materialize.min.css"  media="screen,projection"/>
-
+    <link type="text/css" rel="stylesheet" href="static/stylesheets/player.css">-->
     <title>shake game</title>
     <style>
-        nav {
-            box-shadow: none;
+        #appMask {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
         }
-        nav .brand-logo {
-            font-size: 1.6rem;
-            font-weight: 100;
-        }
-
-
-        .slider-container {
-            position: relative;
-            width: 100%;
-            height: 200px;
-            overflow: hidden;
-            background-color: #E57373;
-        }
-        .no-shadow {
-            -webkit-box-shadow: none;
-            -moz-box-shadow: none;
-            box-shadow: none;
-        }
-        .no-border {
-            border: none;
-        }
-        .transparent {
-            background-color: transparent;
-        }
-
-
-        .section {
-            padding-bottom: 0px;
-        }
-        .section-header {
-            /*border-bottom: 1px solid lightgrey;*/
-        }
-        .section-header h6 {
-            color: rgba(0,0,0,0.5);
+        #appMaskSpinner {
+            position: absolute;
+            font-size: 2em;
+            color: #E57373;
+            top: 50%;
+            left: 50%;
+            margin-left: -0.5em;
+            margin-top: -0.5em;
         }
     </style>
 </head>
 <body class="grey lighten-4">
+
     <div id="app"></div>
+
+    <div id="appMask">
+        <span id="appMaskSpinner">loading</span>
+    </div>
 
     <script src="static/javascripts/jquery-2.1.1.min.js"></script>
     <script src="static/javascripts/wy.lib.js"></script>
     <script src="static/materialize/js/materialize.min.js"></script>
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="player.bundle.js"></script>
     <script>
+
+        $(document).ready(function() {
+            loadResources();
+        });
+
+        function loadResources() {
+            var loader = new wy.base.Loader();
+            var imageUrl = window.location.origin.indexOf('jackyang.me') !== -1
+                    ? 'http://wedding.jackyang.me/images/wedding_pic_08.jpg'
+                    : 'static/images/wedding_pic_08.jpg';
+
+            // materialize.min.js can't load by Loader, it will coz no waves-effect
+            loader.add('fontawesome.css', 'static/font-awesome/font-awesome.min.css');
+            loader.add('materialize.css', 'static/materialize/css/materialize.min.css');
+            loader.add('player.css', 'static/stylesheets/player.css');
+            loader.add('socket.io.js', '/socket.io/socket.io.js');
+            loader.add('player.bundle.js', 'player.bundle.js');
+            loader.add('image', imageUrl);
+
+            loader.on('complete', function(r) {
+
+                appendStyleTag(r.resources['fontawesome.css'].data);
+                appendStyleTag(r.resources['materialize.css'].data);
+                appendStyleTag(r.resources['player.css'].data);
+
+                eval(r.resources['socket.io.js'].data);
+                eval(r.resources['player.bundle.js'].data);
+
+                wy.base.Animation.applyAnimation($('#appMask'), {
+                    animationName: 'fadeOut',
+                    duration: 500,
+                    fillMode: 'forwards',
+                    onAnimationEnd: function() {
+                        $('#appMask').remove();
+                    }
+                });
+            });
+
+            loader.load();
+        }
+
+        function appendStyleTag(styleText) {
+            var style = document.createElement('style');
+            style.innerHTML = styleText;
+            document.head.appendChild(style);
+        }
+
         function applySliderImageTilting(sliderContainer, img) {
             var Tilting = wy.base.Tilting;
             var CenterIt = wy.base.CenterIt;

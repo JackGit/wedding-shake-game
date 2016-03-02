@@ -17,7 +17,7 @@ module.exports = {
         path: path.join(__dirname, "dist"),
         filename: "[name].bundle.js"
     },
-    devtool: 'source-map',
+    /*devtool: 'source-map',*/
     module: {
         loaders: [
             //{test: /\.css$/, loader: 'style!css!'},
@@ -25,11 +25,11 @@ module.exports = {
             {test: /\.vue$/, loader: 'vue'}
         ]
     },
-    /*plugins: [
+    plugins: [
         new webpack.optimize.UglifyJsPlugin({
             compress: {
                 warnings: false
             }
         })
-    ]*/
+    ]
 }
