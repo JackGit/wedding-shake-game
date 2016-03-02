@@ -1,13 +1,5 @@
 <style scoped>
-    .ready-page-image {
-        width: 100%;
-        height: 100%;
-        background-image: url(http://wedding.jackyang.me/images/wedding_pic_09.jpg);
-        background-repeat: no-repeat;
-        -webkit-background-size: cover;
-        background-size: cover;
-        background-position: center center;
-    }
+
 </style>
 
 <template>
@@ -15,7 +7,7 @@
         <div class="navbar-fixed">
             <nav>
                 <div class="nav-wrapper red lighten-2">
-                    <a class="brand-logo center">Ready Page</a>
+                    <a class="brand-logo center">准备</a>
                     <ul class="left">
                         <li><a @click="back()"><i class="material-icons fa fa-angle-left"></i></a></li>
                     </ul>
@@ -23,26 +15,24 @@
             </nav>
         </div>
 
-        <div class="slider-container">
-            <div class="ready-page-image">
-                <div class="card col s12 no-shadow transparent white-text" style="margin-top:0">
-                    <div class="card-content">
-                        <span class="card-title">room info</span>
-                        <p>All players shake mobile for 30 seconds, total of shake count of which side is bigger, is the winner.</p>
-                    </div>
+        <div class="slider-container" v-el:slider-container>
+            <div class="card col s12 no-shadow transparent white-text" style="margin-top:0;position:relative;z-index:2">
+                <div class="card-content">
+                    <span class="card-title">游戏规则</span>
+                    <p>主持人宣布开始游戏之后，所有参与的宾客摇动手机，最终哪一方的宾客摇动次数总数多，哪一方就获得胜利</p>
                 </div>
             </div>
         </div>
 
         <ul class="tabs" v-el:tabs>
-            <li class="tab col s6"><a href="#brideTab" :class="currentPlayer.userType === 'BRIDE' ? 'active' : ''">Bride ({{bridePlayers.length}}/{{room.roomSize}})</a></li>
-            <li class="tab col s6"><a href="#groomTab" :class="currentPlayer.userType === 'GROOM' ? 'active' : ''">Groom ({{groomPlayers.length}}/{{room.roomSize}})</a></li>
+            <li class="tab col s6"><a href="#brideTab" :class="currentPlayer.userType === 'BRIDE' ? 'active' : ''">男方 ({{bridePlayers.length}}/{{room.roomSize}})</a></li>
+            <li class="tab col s6"><a href="#groomTab" :class="currentPlayer.userType === 'GROOM' ? 'active' : ''">女方 ({{groomPlayers.length}}/{{room.roomSize}})</a></li>
         </ul>
 
         <div class="section">
             <div class="section-header">
                 <div class="container">
-                    <h6>JOINED PLAYERS</h6>
+                    <h6>已加入的宾客列表</h6>
                 </div>
             </div>
             <div class="section-content">
@@ -50,14 +40,12 @@
                     <li class="collection-item avatar" v-for="player in bridePlayers">
                         <img :src="player.avatarImageUrl" class="circle">
                         <span class="title">{{player.userName}}</span>
-                        <p>joined 5 mins ago</p>
                     </li>
                 </ul>
                 <ul class="collection no-border transparent" id="groomTab">
                     <li class="collection-item avatar" v-for="player in groomPlayers">
                         <img :src="player.avatarImageUrl" class="circle">
                         <span class="title">{{player.userName}}</span>
-                        <p>joined 5 mins ago</p>
                     </li>
                 </ul>
             </div>
@@ -68,6 +56,7 @@
 <script>
     var store = require('../../store');
     var Stopwatch = require('timer-stopwatch');
+    var Loader = wy.base.Loader;
 
     module.exports = {
 
@@ -95,7 +84,6 @@
 
         watch: {
             'status': function(value, oldValue) {
-                console.log('game status change from ' + oldValue + ' to ' + value);
                 switch(value) {
                     case 'PLAYING':
                         store.actions.updateStopwatch(store.state.player.shakePage.TOTAL_GAME_TIME);
@@ -110,6 +98,17 @@
         },
 
         ready: function() {
+            var loader = new Loader();
+            var sliderContainer = this.$els.sliderContainer;
+            var imageUrl = window.location.origin.indexOf('jackyang.me') !== -1
+                    ? 'http://wedding.jackyang.me/images/wedding_pic_09.jpg'
+                    : 'static/images/wedding_pic_09.jpg';
+
+            loader.add('background', imageUrl, function(r) {
+                applySliderImageTilting(sliderContainer, r.data);
+            });
+
+            loader.load();
             $(this.$els.tabs).tabs();
 
             var roomId = store.state.player.currentRoom.objectId;
@@ -139,13 +138,13 @@
                 var timer = new Stopwatch(3000, {refreshRateMS: 1000});
                 var count = 3;
 
-                Materialize.toast('Are you ready? We are about to start', 1500);
+                Materialize.toast('您准备好了吗？游戏马上开始！', 1500);
 
                 timer.onTime(function() {
                     if(count > 0)
-                        Materialize.toast('Counting down ' + count, 700);
+                        Materialize.toast('倒计时：' + count, 700);
                     if(count === 0)
-                        Materialize.toast('Here we go!', 700);
+                        Materialize.toast('Go!', 700);
                     count --;
                 });
                 timer.onDone(function() {

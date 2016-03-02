@@ -1,13 +1,5 @@
 <style>
-    .visit-page-image {
-        width: 100%;
-        height: 100%;
-        background-image: url(http://wedding.jackyang.me/images/wedding_pic_16.jpg);
-        background-repeat: no-repeat;
-        -webkit-background-size: cover;
-        background-size: cover;
-        background-position: center center;
-    }
+
 </style>
 
 <template>
@@ -15,7 +7,7 @@
         <div class="navbar-fixed">
             <nav>
                 <div class="nav-wrapper red lighten-2">
-                    <a class="brand-logo center">Visit Mode</a>
+                    <a class="brand-logo center">旁观模式</a>
                     <ul class="left">
                         <li><a v-link="{name: 'home'}"><i class="material-icons fa fa-angle-left"></i></a></li>
                     </ul>
@@ -23,15 +15,12 @@
             </nav>
         </div>
 
-        <div class="slider-container">
-            <div class="visit-page-image">
-                <div class="card col s12 no-shadow transparent white-text" style="margin-top:0">
-                    <div class="card-content">
-                        <span class="card-title">{{currentRoom.roomName}}</span>
-                        <p>游戏正在进行中，您处于观察模式</p>
-                        <p>Bride: {{bridePlayers.length}}</p>
-                        <p>Groom: {{groomPlayers.length}}</p>
-                    </div>
+        <div class="slider-container" v-el:slider-container>
+            <div class="card col s12 no-shadow transparent white-text" style="margin-top:0;position:relative;z-index:2">
+                <div class="card-content"><span class="card-title">{{currentRoom.roomName}}</span>
+                    <p>游戏正在进行中，您处于旁观模式</p>
+                    <p>男方共参与人数：{{bridePlayers.length}}</p>
+                    <p>女方共参与人数：{{groomPlayers.length}}</p>
                 </div>
             </div>
         </div>
@@ -39,18 +28,18 @@
         <div class="section">
             <div class="section-header">
                 <div class="container">
-                    <h6>GENERAL</h6>
+                    <h6>基本信息</h6>
                 </div>
             </div>
             <div class="section-content">
                 <div class="card col s12 no-shadow">
                     <div class="card-content row">
                         <div class="col s6 teal-text">
-                            <h6 class="center-align text-lighten-3">Bride({{bridePlayers.length}})</h6>
+                            <h6 class="center-align text-lighten-3">男方({{bridePlayers.length}}人)</h6>
                             <h1 class="center-align">{{brideTotal}}</h1>
                         </div>
                         <div class="col s6 red-text">
-                            <h6 class="center-align text-lighten-3">Groom({{groomPlayers.length}})</h6>
+                            <h6 class="center-align text-lighten-3">女方({{groomPlayers.length}}人)</h6>
                             <h1 class="center-align">{{groomTotal}}</h1>
                         </div>
                     </div>
@@ -61,7 +50,7 @@
         <div class="section">
             <div class="section-header">
                 <div class="container">
-                    <h6>PLAYER DATA</h6>
+                    <h6>参与宾客数据</h6>
                 </div>
             </div>
             <div class="section-content">
@@ -75,7 +64,8 @@
                         <div class="progress red lighten-4" v-if="player.userType === 'GROOM'">
                             <div class="determinate red" :style="{width: player.shakeCount/200*100 + '%'}"></div>
                         </div>
-                        <p>{{player.userType}} side</p>
+                        <p v-if="player.userType === 'BRIDE">男方</p>
+                        <p v-if="player.userType === 'GROOM">女方</p>
                     </li>
                 </ul>
             </div>
@@ -85,6 +75,7 @@
 
 <script>
     var store = require('../../store');
+    var Loader = wy.base.Loader;
 
     module.exports = {
 
@@ -133,6 +124,18 @@
         },
 
         ready: function() {
+            var loader = new Loader();
+            var sliderContainer = this.$els.sliderContainer;
+            var imageUrl = window.location.origin.indexOf('jackyang.me') !== -1
+                    ? 'http://wedding.jackyang.me/images/wedding_pic_16.jpg'
+                    : 'static/images/wedding_pic_16.jpg';
+
+            loader.add('background', imageUrl, function(r) {
+                applySliderImageTilting(sliderContainer, r.data);
+            });
+
+            loader.load();
+
             var roomId = this.$route.params.roomId;
             store.actions.getRoomDetails(roomId);
             store.actions.getRoomPlayers(roomId);

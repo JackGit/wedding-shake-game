@@ -19,7 +19,7 @@
         <div class="navbar-fixed">
             <nav>
                 <div class="nav-wrapper red lighten-2">
-                    <a class="brand-logo center">Shaking</a>
+                    <a class="brand-logo center">摇起来吧</a>
                 </div>
             </nav>
         </div>
@@ -28,7 +28,7 @@
             <div class="shake-page-image">
                 <div class="card col s12 no-shadow transparent white-text" style="margin-top:0">
                     <div class="card-content">
-                        <h1 class="center-align white-text">{{shakeCount}}<span class="shake-page-unit">times</span></h1>
+                        <h1 class="center-align white-text">{{shakeCount}}<span class="shake-page-unit">次</span></h1>
                     </div>
                 </div>
             </div>
@@ -37,7 +37,7 @@
         <div class="section" v-if="!shakeCompleted">
             <div class="section-header">
                 <div class="container">
-                    <h6>TIME</h6>
+                    <h6>倒计时</h6>
                 </div>
             </div>
             <div class="section-content">
@@ -52,20 +52,20 @@
         <div class="section" v-if="shakeCompleted">
             <div class="section-header">
                 <div class="container">
-                    <h6>YOUR RESULT</h6>
+                    <h6>您的结果</h6>
                 </div>
             </div>
             <div class="section-content">
                 <div class="card no-shadow">
                     <div class="card-content">
-                        <h4 class="card-title center-align">GAME END~</h4>
-                        <p>Congratulations! You just shaked <span class="teal-text" style="font-size: 1.5em">{{shakeCount}}</span> times in last <span class="red-text" style="font-size: 1.5em">{{time / 1000}}</span> seconds!</p>
+                        <h4 class="card-title center-align">游戏结束~</h4>
+                        <p>恭喜您！在刚才的<span class="red-text" style="font-size: 1.5em">{{time / 1000}}</span>秒里您一共摇动了<span class="teal-text" style="font-size: 1.5em">{{shakeCount}}</span>次！</p>
                     </div>
                     <div class="card-content red lighten-3 white-text">
                         a chart here
                     </div>
                     <div class="card-content center-align">
-                        <a class="waves-effect waves-light btn red lighten-2" v-link="{name: 'ranking', params: {roomId: room.objectId}}">Check Ranking</a>
+                        <a class="waves-effect waves-light btn red lighten-2" v-link="{name: 'ranking', params: {roomId: room.objectId}}">查看排行</a>
                     </div>
                 </div>
             </div>
@@ -74,7 +74,7 @@
         <div class="section">
             <div class="section-header">
                 <div class="container">
-                    <h6>OTHER</h6>
+                    <h6>其他人的数据</h6>
                 </div>
             </div>
             <div class="section-content">
@@ -88,7 +88,8 @@
                         <div class="progress red lighten-4" v-if="player.userType === 'GROOM'">
                             <div class="determinate red" :style="{width: player.shakeCount/200*100 + '%'}"></div>
                         </div>
-                        <p>{{player.userType}} side</p>
+                        <p v-if="player.userType === 'BRIDE'">男方</p>
+                        <p v-if="player.userType === 'GROOM'">女方</p>
                     </li>
                 </ul>
             </div>

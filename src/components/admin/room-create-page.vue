@@ -7,7 +7,7 @@
         <div class="navbar-fixed">
             <nav>
                 <div class="nav-wrapper red lighten-2">
-                    <a class="brand-logo center">Room Create</a>
+                    <a class="brand-logo center">创建房间</a>
                     <ul class="left">
                         <li><a v-link="{name:'home'}"><i class="material-icons fa fa-angle-left"></i></a></li>
                     </ul>
@@ -18,7 +18,7 @@
         <div class="section">
             <div class="section-header">
                 <div class="container">
-                    <h6>CREATE ROOM</h6>
+                    <h6>创建房间</h6>
                 </div>
             </div>
             <div class="section-content">
@@ -29,31 +29,31 @@
                                 <div class="row">
                                     <div class="input-field col s12">
                                         <input id="roomCreatePageRoomName" type="text" value="{{room.roomName}}" v-el:room-name>
-                                        <label for="roomCreatePageRoomName" class="active">Room Name</label>
+                                        <label for="roomCreatePageRoomName" class="active">房间名</label>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="input-field col s12">
                                         <textarea id="roomEidtPageRoomDescription" class="materialize-textarea" v-el:room-description>{{room.roomDescription}}</textarea>
-                                        <label for="roomEidtPageRoomDescription" class="active">Room Description</label>
+                                        <label for="roomEidtPageRoomDescription" class="active">房间描述</label>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="input-field col s12">
                                         <input id="roomCreatePageRoomSize" type="text" value="{{room.roomSize}}" v-el:room-size>
-                                        <label for="roomCreatePageRoomSize" class="active">Room Size</label>
+                                        <label for="roomCreatePageRoomSize" class="active">房间大小</label>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="input-field col s12">
                                         <select v-el:room-color>
-                                            <option value="" disabled selected>Choose your option</option>
+                                            <option value="" disabled selected>请选择颜色</option>
                                             <option value="#F56937">Red</option>
                                             <option value="#F79A3D">Orange</option>
                                             <option value="#48CCD0">Teal</option>
                                             <option value="#90DDE3">Light Blue</option>
                                         </select>
-                                        <label>Room Color</label>
+                                        <label>房间颜色</label>
                                     </div>
                                 </div>
                             </div>
@@ -65,7 +65,7 @@
 
         <div class="container">
             <div class="row">
-                <a class="col s12 waves-effect waves-light btn btn-large red white-text" @click="submit()">OK</a>
+                <a class="col s12 waves-effect waves-light btn btn-large red white-text" @click="submit()">创建</a>
             </div>
         </div>
     </div>
@@ -100,10 +100,10 @@
                 };
 
                 store.actions.createRoom(room).then(function() {
-                    Materialize.toast('create successfully', 1000);
+                    Materialize.toast('创建成功', 1000);
                     router.go({name: 'home'});
                 }, function() {
-                    Materialize.toast('create failed', 1000);
+                    Materialize.toast('创建失败', 1000);
                 });
             }
         },

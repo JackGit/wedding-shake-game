@@ -18,7 +18,7 @@
         <div class="section">
             <div class="section-header">
                 <div class="container">
-                    <h6>ROOM LIST</h6>
+                    <h6>房间列表</h6>
                 </div>
             </div>
             <div class="section-content">
@@ -30,7 +30,7 @@
                             <p>{{room.roomDescription}}</p>
                         </div>
                         <div class="row">
-                            <a @click="checkRoomDetails(room.objectId)" class="waves-effect waves-light btn red lighten-2">Details</a>
+                            <a @click="checkRoomDetails(room.objectId)" class="waves-effect waves-light btn red lighten-2">查看详细</a>
                         </div>
                     </li>
                 </ul>

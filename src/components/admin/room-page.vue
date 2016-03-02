@@ -7,7 +7,7 @@
         <div class="navbar-fixed">
             <nav>
                 <div class="nav-wrapper red lighten-2">
-                    <a class="brand-logo center">Room Details</a>
+                    <a class="brand-logo center">房间详细</a>
                     <ul class="left">
                         <li><a v-link="{name:'home'}"><i class="material-icons fa fa-angle-left"></i></a></li>
                     </ul>
@@ -19,26 +19,26 @@
         </div>
 
         <ul class="tabs" v-el:tabs>
-            <li class="tab col s6"><a href="#roomInfo" class="active">Room Info</a></li>
-            <li class="tab col s6"><a href="#playerList" @click="getRoomPlayers">Players</a></li>
+            <li class="tab col s6"><a href="#roomInfo" class="active">房间信息</a></li>
+            <li class="tab col s6"><a href="#playerList" @click="getRoomPlayers">参与玩家信息</a></li>
         </ul>
 
         <div class="section" id="roomInfo">
             <div class="section-header">
                 <div class="container">
-                    <h6>ROOM STATUS</h6>
+                    <h6>房间状态</h6>
                 </div>
             </div>
             <div class="section-content">
                 <div class="card no-shadow">
                     <div class="card-content" style="margin-bottom:0">
-                        <h1 class="center-align">{{room.status}}</h1>
+                        <h1 class="center-align">{{roomStatusDesc}}</h1>
                     </div>
                 </div>
             </div>
             <div class="section-header">
                 <div class="container">
-                    <h6>BASE INFO</h6>
+                    <h6>基本信息</h6>
                 </div>
             </div>
             <div class="section-content">
@@ -46,25 +46,25 @@
                     <div class="card-content" style="margin-bottom:0">
                         <div class="row">
                             <div class="col s12">
-                                <h6>Name</h6>
+                                <h6>房间名</h6>
                                 <span>{{room.roomName}}</span>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col s12">
-                                <h6>Description</h6>
+                                <h6>房间描述</h6>
                                 <span>{{room.roomDescription}}</span>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col s12">
-                                <h6>Size</h6>
+                                <h6>房间大小</h6>
                                 <span>{{room.roomSize}}</span>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col s12">
-                                <h6>Color</h6>
+                                <h6>房间颜色</h6>
                                 <span>{{room.roomColor}}</span>
                             </div>
                         </div>
@@ -77,7 +77,7 @@
         <div class="section" id="playerList">
             <div class="section-header">
                 <div class="container">
-                    <h6>PLAYERS</h6>
+                    <h6>参与玩家</h6>
                 </div>
             </div>
             <div class="section-content">
@@ -85,7 +85,8 @@
                     <li class="collection-item avatar" v-for="player in players">
                         <img :src="player.avatarImageUrl" class="circle">
                         <span class="title">{{player.userName}}</span>
-                        <p>{{player.userType}}</p>
+                        <p v-if="player.userType === 'BRIDE'">男方宾客</p>
+                        <p v-if="player.userType === 'GROOM'">女方宾客</p>
                     </li>
                 </ul>
             </div>
@@ -115,6 +116,26 @@
             },
             players: function() {
                 return store.state.admin.playerList;
+            },
+            roomStatusDesc: function() {
+                var str = '';
+                switch(store.state.admin.currentRoom.status) {
+                    case 'INIT':
+                        str = '未开始';
+                        break;
+                    case 'JOINING':
+                        str = '开放加入中';
+                        break;
+                    case 'PLAYING':
+                        str = '游戏进行中';
+                        break;
+                    case 'END':
+                        str = '已结束';
+                        break;
+                    default:
+                        break;
+                }
+                return str;
             }
         },
 
@@ -129,19 +150,19 @@
                 if(this.room.status === 'INIT' || this.room.status === 'END')
                     store.actions.allowToJoinRoom(this.$route.params.roomId);
                 else
-                    Materialize.toast('You cannot ALLOW TO JOIN at this state', 1000);
+                    Materialize.toast('当前状态下不能“开发加入”', 1000);
             },
             startGame: function() {
                 if(this.room.status === 'JOINING')
                     store.actions.startRoom(this.$route.params.roomId);
                 else
-                    Materialize.toast('You cannot START at this state', 1000);
+                    Materialize.toast('当前状态下不能“开始”', 1000);
             },
             endGame: function() {
                 if(this.room.status === 'PLAYING')
                     store.actions.stopRoom(this.$route.params.roomId);
                 else
-                    Materialize.toast('You cannot END at this state', 1000);
+                    Materialize.toast('当前状态下不能“结束游戏”', 1000);
             },
             getRoomPlayers: function() {
                 store.actions.getRoomPlayers(this.$route.params.roomId);

@@ -77,8 +77,8 @@
                         <div class="card-content border-header">
                             <div class="row">
                                 <div class="col s6 offset-s6">
-                                    <h5 class="red-text text-lighten-2">GROOM TEAM</h5>
-                                    <h6 class="grey-text text-lighten-1">{{groomPlayers.length}} Players</h6>
+                                    <h5 class="red-text text-lighten-2">新娘队</h5>
+                                    <h6 class="grey-text text-lighten-1">{{groomPlayers.length}}宾客参与</h6>
                                 </div>
                             </div>
                         </div>
@@ -102,8 +102,8 @@
                         <div class="card-content border-header">
                             <div class="row">
                                 <div class="col s6">
-                                    <h5 class="teal-text text-lighten-2">BRIDE TEAM</h5>
-                                    <h6 class="grey-text text-lighten-1">{{bridePlayers.length}} Players</h6>
+                                    <h5 class="teal-text text-lighten-2">新郎队</h5>
+                                    <h6 class="grey-text text-lighten-1">{{bridePlayers.length}}宾客参与</h6>
                                 </div>
                             </div>
                         </div>

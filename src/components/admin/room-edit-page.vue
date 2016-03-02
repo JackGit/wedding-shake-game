@@ -7,7 +7,7 @@
         <div class="navbar-fixed">
             <nav>
                 <div class="nav-wrapper red lighten-2">
-                    <a class="brand-logo center">Room Edit</a>
+                    <a class="brand-logo center">修改房间信息</a>
                     <ul class="left">
                         <li><a v-link="{name:'room',params:{roomId:$route.params.roomId}}"><i class="material-icons fa fa-angle-left"></i></a></li>
                     </ul>
@@ -21,7 +21,7 @@
         <div class="section">
             <div class="section-header">
                 <div class="container">
-                    <h6>EDIT ROOM</h6>
+                    <h6>修改房间</h6>
                 </div>
             </div>
             <div class="section-content">
@@ -32,31 +32,31 @@
                                 <div class="row">
                                     <div class="input-field col s12">
                                         <input id="roomEditPageRoomName" type="text" value="{{room.roomName}}" v-el:room-name>
-                                        <label for="roomEditPageRoomName" class="active">Room Name</label>
+                                        <label for="roomEditPageRoomName" class="active">房间名</label>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="input-field col s12">
                                         <textarea id="roomEidtPageRoomDescription" class="materialize-textarea" v-el:room-description>{{room.roomDescription}}</textarea>
-                                        <label for="roomEidtPageRoomDescription" class="active">Room Description</label>
+                                        <label for="roomEidtPageRoomDescription" class="active">房间描述</label>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="input-field col s12">
                                         <input id="roomEditPageRoomSize" type="text" value="{{room.roomSize}}" v-el:room-size>
-                                        <label for="roomEditPageRoomSize" class="active">Room Size</label>
+                                        <label for="roomEditPageRoomSize" class="active">房间大小</label>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="input-field col s12">
                                         <select v-el:room-color>
-                                            <option value="" disabled selected>Choose your option</option>
+                                            <option value="" disabled selected>请选择颜色</option>
                                             <option value="#F56937">Red</option>
                                             <option value="#F79A3D">Orange</option>
                                             <option value="#48CCD0">Teal</option>
                                             <option value="#90DDE3">Light Blue</option>
                                         </select>
-                                        <label>Room Color</label>
+                                        <label>房间颜色</label>
                                     </div>
                                 </div>
                             </div>
@@ -68,7 +68,7 @@
 
         <div class="container">
             <div class="row">
-                <a class="col s12 waves-effect waves-light btn btn-large red white-text" @click="submitEdit()">OK</a>
+                <a class="col s12 waves-effect waves-light btn btn-large red white-text" @click="submitEdit()">提交修改</a>
             </div>
         </div>
     </div>
@@ -101,10 +101,10 @@
                 };
 
                 store.actions.updateRoom(room).then(function() {
-                    Materialize.toast('update successfully', 1000);
+                    Materialize.toast('修改成功', 1000);
                     router.go({name: 'room', params: {roomId: roomId}});
                 }, function() {
-                    Materialize.toast('update failed', 1000);
+                    Materialize.toast('修改失败', 1000);
                 });
             },
             deleteRoom: function() {
@@ -112,10 +112,10 @@
 
                 if(confirm('你确定要删除房间？')) {
                     store.actions.deleteRoom(this.$route.params.roomId).then(function() {
-                        Materialize.toast('room deleted', 1000);
+                        Materialize.toast('删除成功', 1000);
                         router.go({name: 'home'});
                     }, function() {
-                        Materialize.toast('room failed to delete', 1000);
+                        Materialize.toast('删除失败', 1000);
                     });
 
                 }

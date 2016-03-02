@@ -1,13 +1,4 @@
 <style scoped>
-    .home-page-image {
-        width: 100%;
-        height: 100%;
-        background-image: url(http://wedding.jackyang.me/images/wedding_pic_03.jpg);
-        background-repeat: no-repeat;
-        -webkit-background-size: cover;
-        background-size: cover;
-        background-position: center center;
-    }
 
 </style>
 
@@ -24,14 +15,13 @@
             </nav>
         </div>
 
-        <div class="slider-container">
-            <div class="home-page-image"></div>
+        <div class="slider-container" v-el:slider-container>
         </div>
 
         <div class="section">
             <div class="section-header">
                 <div class="container">
-                    <h6>USER INFORMATION</h6>
+                    <h6>宾客信息</h6>
                 </div>
             </div>
             <div class="section-content">
@@ -42,7 +32,8 @@
                         </div>
                         <div class="col s7">
                             <h6>{{currentPlayer.userName}}</h6>
-                            <span style="color: #A9A7A7">{{currentPlayer.userType}} Guest</span>
+                            <span style="color: #A9A7A7" v-if="currentPlayer.userType === 'BRIDE'">男方宾客</span>
+                            <span style="color: #A9A7A7" v-if="currentPlayer.userType === 'GROOM'">女方宾客</span>
                         </div>
                         <div class="col s2">
                             <h5><a v-link="{name:'profile'}"><i class="material-icons fa fa-edit"></i></a></h5>
@@ -55,26 +46,24 @@
         <div class="section">
             <div class="section-header">
                 <div class="container">
-                    <h6>ROOM LIST</h6>
+                    <h6>回合列表</h6>
                 </div>
             </div>
             <div class="section-content">
                 <ul class="collection no-border transparent">
                     <li class="collection-item avatar" v-for="room in roomList">
-                        <i v-if="$index == 0" class="material-icons circle" style="background: #90dde3">{{$index + 1}}</i>
-                        <i v-if="$index == 1" class="material-icons circle" style="background: #f79a3d">{{$index + 1}}</i>
-                        <i v-if="$index == 2" class="material-icons circle" style="background: #f56937">{{$index + 1}}</i>
+                        <i class="material-icons circle" :style="{background: room.roomColor}">{{$index + 1}}</i>
                         <div class="row">
                             <span class="title red-text text-lighten-2">{{room.roomName}}</span>
-                            <p v-if="room.status === 'INIT'">Game is not started yet, please wait.</p>
-                            <p v-if="room.status === 'JOINING'">People are joining, there are {{room.players.length}} players joined the game.</p>
-                            <p v-if="room.status === 'PLAYING'">Game is playing right now. You can't join right now.</p>
-                            <p v-if="room.status === 'END'">Game is ended.</p>
+                            <p v-if="room.status === 'INIT'">未开始，请等待主持人开始该回合</p>
+                            <p v-if="room.status === 'JOINING'">准备中，宾客们正在加入</p>
+                            <p v-if="room.status === 'PLAYING'">游戏进行中</p>
+                            <p v-if="room.status === 'END'">已结束</p>
                         </div>
                         <div class="row">
-                            <a v-if="room.status === 'JOINING'" @click="join(room.objectId)" class="waves-effect waves-light btn red lighten-2">Join Now</a>
-                            <a v-if="room.status === 'PLAYING'" @click="visit(room.objectId)" class="waves-effect waves-light btn white red-text">Pay Visit</a>
-                            <a v-if="room.status === 'END'" @click="ranking(room.objectId)" class="waves-effect waves-light btn white red-text">Check Rankings</a>
+                            <a v-if="room.status === 'JOINING'" @click="join(room.objectId)" class="waves-effect waves-light btn red lighten-2">我要加入</a>
+                            <a v-if="room.status === 'PLAYING'" @click="visit(room.objectId)" class="waves-effect waves-light btn white red-text">进入旁观</a>
+                            <a v-if="room.status === 'END'" @click="ranking(room.objectId)" class="waves-effect waves-light btn white red-text">查看排行</a>
                         </div>
                     </li>
                 </ul>
@@ -85,6 +74,7 @@
 
 <script>
     var store = require('../../store');
+    var Loader = wy.base.Loader;
 
     module.exports = {
 
@@ -98,6 +88,18 @@
         },
 
         ready: function() {
+            var loader = new Loader();
+            var sliderContainer = this.$els.sliderContainer;
+            var imageUrl = window.location.origin.indexOf('jackyang.me') !== -1
+                    ? 'http://wedding.jackyang.me/images/wedding_pic_03.jpg'
+                    : 'static/images/wedding_pic_03.jpg';
+
+            loader.add('background', imageUrl, function(r) {
+                applySliderImageTilting(sliderContainer, r.data);
+            });
+
+            loader.load();
+
             store.actions.getRoomList();
             store.actions.clearShakeCount();
             store.actions.listenPlayerStatusChangeSocketMessage(true);
@@ -105,7 +107,6 @@
 
         methods: {
             join: function(roomId) {
-                console.log('join', roomId);
                 var router = this.$router;
 
                 store.actions.joinRoom({
@@ -118,11 +119,9 @@
                 });
             },
             visit: function(roomId) {
-                console.log('visit');
                 this.$router.go({name: 'visit', params: {roomId: roomId}});
             },
             ranking: function(roomId) {
-                console.log('ranking');
                 this.$router.go({name: 'ranking', params: {roomId: roomId}});
             },
             quit: function() {
@@ -130,7 +129,7 @@
                     store.actions.signout();
                     this.$router.go({name: 'login'});
                 }
-            },
+            }
         },
 
         route: {
@@ -140,7 +139,6 @@
                 store.actions.getUserDetails(userId).then(function() {
                     transition.next();
                 }, function() {
-                    console.log('home-page validate user failed, redirect to welcome page, userId', userId);
                     transition.redirect({name: 'login'});
                 });
             }

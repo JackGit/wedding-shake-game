@@ -34,7 +34,6 @@
                 }).then(function() {
                     router.go({name: 'home'});
                 }).catch(function(error) {
-                    console.log('error', error);
                     alert('login error: ' +  error.message);
                 });
             }

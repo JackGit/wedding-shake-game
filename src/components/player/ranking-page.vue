@@ -8,16 +8,6 @@
         border-radius: 50%;
     }
 
-    .ranking-page-image {
-        width: 100%;
-        height: 100%;
-        background-image: url(http://wedding.jackyang.me/images/wedding_pic_10.jpg);
-        background-repeat: no-repeat;
-        -webkit-background-size: cover;
-        background-size: cover;
-        background-position: center center;
-    }
-
 </style>
 
 <template>
@@ -25,7 +15,7 @@
         <div class="navbar-fixed">
             <nav>
                 <div class="nav-wrapper red lighten-2">
-                    <a class="brand-logo center">Ranking</a>
+                    <a class="brand-logo center">排行</a>
                     <ul class="left">
                         <li><a v-link="{name:'home'}"><i class="material-icons fa fa-angle-left"></i></a></li>
                     </ul>
@@ -33,26 +23,24 @@
             </nav>
         </div>
 
-        <div class="slider-container">
-            <div class="ranking-page-image">
-                <div class="card col s12 no-shadow transparent white-text" style="margin-top:0">
-                    <div class="card-content">
-                        <span class="card-title">排行榜</span>
-                        <p>{{currentRoom.roomName}}</p>
-                    </div>
+        <div class="slider-container" v-el:slider-container>
+            <div class="card col s12 no-shadow transparent white-text" style="margin-top:0;position:relative;z-index:2">
+                <div class="card-content">
+                    <span class="card-title">排行榜</span>
+                    <p>{{currentRoom.roomName}}</p>
                 </div>
             </div>
         </div>
 
         <ul class="tabs" v-el:tabs>
-            <li class="tab col s6"><a href="#resultTab" class="active">Result</a></li>
-            <li class="tab col s6"><a href="#detailsTab">Details</a></li>
+            <li class="tab col s6"><a href="#resultTab" class="active">结果</a></li>
+            <li class="tab col s6"><a href="#detailsTab">详细</a></li>
         </ul>
 
         <div class="section" id="resultTab">
             <div class="section-header">
                 <div class="container">
-                    <h6>RESULT</h6>
+                    <h6>结果</h6>
                 </div>
             </div>
             <div class="section-content">
@@ -61,26 +49,26 @@
                         <table>
                             <thead>
                             <tr>
-                                <th data-field="side">Side</th>
-                                <th data-field="players">Players</th>
-                                <th data-field="total">Total</th>
-                                <th data-field="result">Result</th>
+                                <th data-field="side">男/女方</th>
+                                <th data-field="players">宾客</th>
+                                <th data-field="total">总计</th>
+                                <th data-field="result">结果</th>
                             </tr>
                             </thead>
                             <tbody>
                             <tr>
-                                <td>Bride</td>
+                                <td>男方</td>
                                 <td>{{bridePlayers.length}}</td>
                                 <td>{{brideTotal}}</td>
-                                <td v-if="brideTotal > groomTotal" style="position: relative">WIN<img src="http://wedding.jackyang.me/images/win_stamp.jpg" class="win-stamp"></td>
-                                <td v-else style="position: relative">FAILED</td>
+                                <td v-if="brideTotal > groomTotal" style="position: relative">胜利<img src="http://wedding.jackyang.me/images/win_stamp.jpg" class="win-stamp"></td>
+                                <td v-else style="position: relative">失败</td>
                             </tr>
                             <tr>
-                                <td>Groom</td>
+                                <td>女方</td>
                                 <td>{{groomPlayers.length}}</td>
                                 <td>{{groomTotal}}</td>
-                                <td v-if="brideTotal < groomTotal" style="position: relative">WIN<img src="http://wedding.jackyang.me/images/win_stamp.jpg" class="win-stamp"></td>
-                                <td v-else style="position: relative">FAILED</td>
+                                <td v-if="brideTotal < groomTotal" style="position: relative">胜利<img src="http://wedding.jackyang.me/images/win_stamp.jpg" class="win-stamp"></td>
+                                <td v-else style="position: relative">失败</td>
                             </tr>
                             </tbody>
                         </table>
@@ -92,7 +80,7 @@
         <div class="section" id="detailsTab">
             <div class="section-header">
                 <div class="container">
-                    <h6>DETAILS</h6>
+                    <h6>参与宾客列表</h6>
                 </div>
             </div>
             <div class="section-content">
@@ -106,7 +94,8 @@
                         <div class="progress red lighten-4" v-if="player.userType === 'GROOM'">
                             <div class="determinate red" :style="{width: player.shakeCount/200*100 + '%'}"></div>
                         </div>
-                        <p>{{player.userType}}</p>
+                        <p v-if="player.playerType === 'BRIDE'">男方</p>
+                        <p v-if="player.playerType === 'GROOM'">女方</p>
                     </li>
                 </ul>
             </div>
@@ -116,6 +105,7 @@
 
 <script>
     var store = require('../../store');
+    var Loader = wy.base.Loader;
 
     module.exports = {
         computed: {
@@ -193,6 +183,17 @@
         },
 
         ready: function() {
+            var loader = new Loader();
+            var sliderContainer = this.$els.sliderContainer;
+            var imageUrl = window.location.origin.indexOf('jackyang.me') !== -1
+                    ? 'http://wedding.jackyang.me/images/wedding_pic_10.jpg'
+                    : 'static/images/wedding_pic_10.jpg';
+
+            loader.add('background', imageUrl, function(r) {
+                applySliderImageTilting(sliderContainer, r.data);
+            });
+
+            loader.load();
             $(this.$els.tabs).tabs();
 
             var roomId = this.$route.params.roomId;
