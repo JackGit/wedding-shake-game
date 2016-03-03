@@ -175,6 +175,7 @@
             shake.stop();
             shake = null;
             window.removeEventListener('shake', store.actions.shake);
+            store.actions.listenPlayerShakeSocketMessage(false);
         },
 
         route: {

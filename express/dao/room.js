@@ -86,6 +86,9 @@ var roomDAO = {
                     joinedAt: new Date()
                 });
 
+            // clear the shake count when player join the room
+            playerDAO.updatePlayer({objectId: playerId, shakeCount: 0});
+
             roomAVObj.set('players', playerList);
 
             return roomAVObj.save();
@@ -164,15 +167,6 @@ var roomDAO = {
         // sync shakeCount from player records
         return roomDAO.getRoom(roomId).try(function(roomAVObj) {
             var ranking = roomAVObj.get('ranking'),
-                playerList = roomAVObj.get('players'),
-
-                // for players who are not left game when the game ended
-                /* playerIds = ranking.filter(function(r) {
-                    return playerList.filter(function(p) { return p.playerId === r.playerId; }).length > 0;
-                }).map(function(r) {
-                    return r.playerId;
-                }); */
-
                 playerIds = ranking.map(function(r) { return r.playerId; });
 
             return playerDAO.getPlayerList(playerIds).try(function(results) {

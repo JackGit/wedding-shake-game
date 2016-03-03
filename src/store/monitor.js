@@ -105,16 +105,32 @@ module.exports = window.store = new Vuex.Store({
                 status = message.status;
 
             console.log('store.actions.onStatusChange', message);
-            if(status === 'JOINING') {
-                store.actions.getRoomDetails(roomId);
-                store.actions.getRoomPlayers(roomId);
+            store.state.room.status = status;
 
-                store.actions.hide();
-                setTimeout(function() {
-                    store.actions.show();
-                }, 1000);
-            } else {
-                store.state.room.status = status;
+            switch(status) {
+                case 'JOINING':
+                    store.actions.on('join');
+                    store.actions.on('leave');
+
+                    store.actions.getRoomDetails(roomId);
+                    store.actions.getRoomPlayers(roomId);
+                    store.actions.hide();
+                    setTimeout(function() {
+                        store.actions.show();
+                    }, 1000);
+                    break;
+                case 'PLAYING':
+                    store.actions.on('shake');
+                    store.actions.off('join');
+                    store.actions.off('leave');
+                    break;
+                case 'END':
+                    store.actions.off('join');
+                    store.actions.off('leave');
+                    store.actions.off('shake');
+                    break;
+                default:
+                    break;
             }
         },
 

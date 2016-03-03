@@ -121,6 +121,12 @@
             store.actions.listenPlayerStatusChangeSocketMessage(true);
         },
 
+        beforeDestroy: function() {
+            store.actions.listenPlayerJoinSocketMessage(false);
+            store.actions.listenPlayerLeaveSocketMessage(false);
+            store.actions.listenPlayerStatusChangeSocketMessage(false);
+        },
+
         methods: {
             leaveRoom: function() {
                 var roomId = store.state.player.currentRoom.objectId;

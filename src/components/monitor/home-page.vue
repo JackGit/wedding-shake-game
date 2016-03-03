@@ -182,9 +182,7 @@
 
             store.actions.getRoomDetails();
             store.actions.getRoomPlayers();
-            store.actions.on('join');
-            store.actions.on('leave');
-            store.actions.on('shake');
+
             store.actions.on('status-change');
         },
 
@@ -235,6 +233,13 @@
                     if(r.userType === 'BRIDE')
                         total += r.shakeCount;
                 });
+
+                snabbt(this.$els.brideTotal, 'attention', {
+                    rotation: [0, 0, Math.PI/2],
+                    springConstant: 1.9,
+                    springDeceleration: 0.9
+                });
+
                 return total;
             },
             groomTotal: function() {
@@ -243,6 +248,13 @@
                     if(r.userType === 'GROOM')
                         total += r.shakeCount;
                 });
+
+                snabbt(this.$els.groomTotal, 'attention', {
+                    rotation: [0, 0, Math.PI/2],
+                    springConstant: 1.9,
+                    springDeceleration: 0.9
+                });
+
                 return total;
             },
             show: function() {
@@ -250,22 +262,22 @@
             }
         },
 
-        watch: {
+        /*watch: {
             brideTotal: function() {
                 snabbt(this.$els.brideTotal, 'attention', {
                     rotation: [0, 0, Math.PI/2],
                     springConstant: 1.9,
-                    springDeceleration: 0.9,
+                    springDeceleration: 0.9
                 });
             },
             groomTotal: function() {
                 snabbt(this.$els.groomTotal, 'attention', {
                     rotation: [0, 0, Math.PI/2],
                     springConstant: 1.9,
-                    springDeceleration: 0.9,
+                    springDeceleration: 0.9
                 });
             }
-        },
+        },*/
 
         beforeDestroy: function() {
             store.actions.off('join');

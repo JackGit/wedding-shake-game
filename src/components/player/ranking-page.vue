@@ -37,7 +37,25 @@
             <li class="tab col s6"><a href="#detailsTab">详细</a></li>
         </ul>
 
-        <div class="section" id="resultTab">
+        <div class="section" v-if="currentRoom.status === 'PLAYING'">
+            <div class="section-header">
+                <div class="container">
+                    <h6>信息</h6>
+                </div>
+            </div>
+            <div class="section-content">
+                <div class="card col s12 no-shadow">
+                    <div class="card-content">
+                        <p>排行还未生成，请等待主持人结束游戏后生成排行榜</p>
+                    </div>
+                    <div class="card-content center-align">
+                        <a class="waves-effect waves-light btn red lighten-2" @click="reload">刷新</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section" id="resultTab" v-if="currentRoom.status === 'END'">
             <div class="section-header">
                 <div class="container">
                     <h6>结果</h6>
@@ -77,7 +95,7 @@
             </div>
         </div>
 
-        <div class="section" id="detailsTab">
+        <div class="section" id="detailsTab" v-if="currentRoom.status === 'END'">
             <div class="section-header">
                 <div class="container">
                     <h6>参与宾客列表</h6>
@@ -182,6 +200,16 @@
             }
         },
 
+        watch: {
+            currentRoom: function(value) {
+                if(value.status === 'END') {
+                    var roomId = this.$route.params.roomId;
+                    store.actions.getRoomDetails(roomId);
+                    store.actions.getRoomRankingPlayers(roomId);
+                }
+            }
+        },
+
         ready: function() {
             var loader = new Loader();
             var sliderContainer = this.$els.sliderContainer;
@@ -199,6 +227,18 @@
             var roomId = this.$route.params.roomId;
             store.actions.getRoomDetails(roomId);
             store.actions.getRoomRankingPlayers(roomId);
+
+            store.actions.listenPlayerStatusChangeSocketMessage(true);
+        },
+
+        beforeDestroy: function() {
+            store.actions.listenPlayerStatusChangeSocketMessage(false);
+        },
+
+        methods: {
+            reload: function() {
+                window.location.reload();
+            }
         }
     };
 </script>
