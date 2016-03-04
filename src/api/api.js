@@ -2,9 +2,7 @@ var Vue = require('vue');
 
 function callservice(url, request) {
     return new Promise(function(resolve, reject) {
-        console.log('callservice::url, request', url, request);
         Vue.http.post(url, request).then(function(response) {
-            console.log('callservice::response', response);
             if(response.data.statusCode === 0) {
                 resolve(response.data);
             } else {
@@ -12,7 +10,6 @@ function callservice(url, request) {
             }
         }, function(error) {
             alert('system callservice error');
-            console.log('callservice::error', error);
             reject(error);
         });
     });

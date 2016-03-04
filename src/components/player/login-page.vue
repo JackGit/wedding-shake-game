@@ -44,7 +44,7 @@
                 </div>
                 <div class="row">
                     <a href="https://graph.qq.com/oauth2.0/authorize?response_type=code&client_id=101295012&redirect_uri=http%3A%2F%2Fwedding.jackyang.me%2Fqq_login_callback.html&state=test&scope=all" class="col s12 right-align">
-                        <img src="http://wedding.jackyang.me/images/Connect_logo_4.png">
+                        <img :src="qqLogoImgUrl">
                     </a>
                 </div>
             </div>
@@ -60,17 +60,23 @@
 
     module.exports = {
 
+        data: function() {
+            return {
+                qqLogoImgUrl: 'static/images/Connect_logo_4.png'
+            };
+        },
+
         ready: function() {
             $('select').material_select();
             $(this.$els.tabs).tabs();
 
             var loader = new Loader();
             var container = this.$els.backgroundContainer;
-            var imageUrl = window.location.origin.indexOf('jackyang.me') !== -1
+            /*var imageUrl = window.location.origin.indexOf('jackyang.me') !== -1
                     ? 'http://wedding.jackyang.me/images/wedding_pic_08.jpg'
-                    : 'static/images/wedding_pic_08.jpg';
+                    : 'static/images/wedding_pic_08.jpg';*/
 
-            loader.add('background', imageUrl, function(r) {
+            loader.add('background', 'static/images/wedding_pic_08.jpg', function(r) {
                 var img = r.data;
                 var $container = $(container);
                 var centerIt = new CenterIt($container.width(), $container.height(), img.naturalWidth, img.naturalHeight, {type: 'cover'});

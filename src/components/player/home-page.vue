@@ -90,11 +90,11 @@
         ready: function() {
             var loader = new Loader();
             var sliderContainer = this.$els.sliderContainer;
-            var imageUrl = window.location.origin.indexOf('jackyang.me') !== -1
+            /*var imageUrl = window.location.origin.indexOf('jackyang.me') !== -1
                     ? 'http://wedding.jackyang.me/images/wedding_pic_03.jpg'
-                    : 'static/images/wedding_pic_03.jpg';
+                    : 'static/images/wedding_pic_03.jpg';*/
 
-            loader.add('background', imageUrl, function(r) {
+            loader.add('background', 'static/images/wedding_pic_03.jpg', function(r) {
                 applySliderImageTilting(sliderContainer, r.data);
             });
 

@@ -25,10 +25,10 @@
         background-size: cover;
     }
     .border-header.groom {
-        background-image: url(http://wedding.jackyang.me/images/wedding_pic_17.jpg);
+        background-image: url(http://wedding.jackyang.me/static/images/wedding_pic_17.jpg);
     }
     .border-header.bride {
-        background-image: url(http://wedding.jackyang.me/images/wedding_pic_18.jpg);
+        background-image: url(http://wedding.jackyang.me/static/images/wedding_pic_18.jpg);
     }
     .total-count {
         position: absolute;
@@ -159,11 +159,11 @@
 
         ready: function() {
             var loader = new Loader();
-            var imageUrl = window.location.origin.indexOf('jackyang.me') !== -1
+            /*var imageUrl = window.location.origin.indexOf('jackyang.me') !== -1
                     ? 'http://wedding.jackyang.me/images/monitor_background_01.jpg'
-                    : 'static/images/monitor_background_01.jpg';
+                    : 'static/images/monitor_background_01.jpg';*/
 
-            loader.add('background', imageUrl, function(r) {
+            loader.add('background', 'static/images/monitor_background_01.jpg', function(r) {
                 var $container = $('#monitorBackgroundImage');
                 var img = r.data;
                 var center = new CenterIt($container.width(), $container.height(), img.naturalWidth, img.naturalHeight, {type: 'cover'});
@@ -182,7 +182,6 @@
 
             store.actions.getRoomDetails();
             store.actions.getRoomPlayers();
-
             store.actions.on('status-change');
         },
 
@@ -261,23 +260,6 @@
                 return store.state.show;
             }
         },
-
-        /*watch: {
-            brideTotal: function() {
-                snabbt(this.$els.brideTotal, 'attention', {
-                    rotation: [0, 0, Math.PI/2],
-                    springConstant: 1.9,
-                    springDeceleration: 0.9
-                });
-            },
-            groomTotal: function() {
-                snabbt(this.$els.groomTotal, 'attention', {
-                    rotation: [0, 0, Math.PI/2],
-                    springConstant: 1.9,
-                    springDeceleration: 0.9
-                });
-            }
-        },*/
 
         beforeDestroy: function() {
             store.actions.off('join');

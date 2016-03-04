@@ -14,7 +14,7 @@ module.exports = {
         monitor: './src/main-monitor.js'
     },
     output: {
-        path: path.join(__dirname, "dist"),
+        path: path.join(__dirname, "dist/static/javascripts"),
         filename: "[name].bundle.js"
     },
     /*devtool: 'source-map',*/

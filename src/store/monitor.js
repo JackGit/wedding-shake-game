@@ -6,7 +6,6 @@ Vue.use(Vuex);
 Vue.config.debug = true;
 
 function listenSocketMessage(type, enable) {
-    console.log('listenSocketMessage', type, enable);
     if(enable) {
         switch(type) {
             case 'join':
@@ -46,8 +45,6 @@ module.exports = window.store = new Vuex.Store({
 
     actions: {
         getRoomDetails: function(store, roomId) {
-            console.log('store.actions.getRoomDetails', roomId);
-
             api.getRoom(roomId).then(function(data) {
                 store.state.room = data.room;
             }, function(error) {
@@ -55,7 +52,6 @@ module.exports = window.store = new Vuex.Store({
             });
         },
         getRoomPlayers: function(store, roomId) {
-            console.log('store.actions.getRoomPlayers', roomId);
             api.getRoomPlayers(roomId).then(function(data) {
                 store.state.playerList = data.players;
             }, function(error) {
@@ -70,7 +66,6 @@ module.exports = window.store = new Vuex.Store({
         },
         onJoin: function(store, message) {
             var userId = message.userId;
-            console.log('store.actions.onJoin', message);
             api.getUser({userId: userId}).then(function(data) {
                 var exist = store.state.playerList.filter(function(p) {
                         return p.objectId === userId;
@@ -84,7 +79,6 @@ module.exports = window.store = new Vuex.Store({
         },
         onLeave: function(store, message) {
             var userId = message.userId;
-            console.log('store.actions.onLeave', message);
             store.state.playerList = store.state.playerList.filter(function(player) {
                 return player.objectId !== userId;
             });
@@ -92,8 +86,7 @@ module.exports = window.store = new Vuex.Store({
         onShake: function(store, message) {
             var userId = message.userId,
                 count = message.shakeCount;
-            console.log('store.actions.onShake', message);
-            for(i = 0; i < store.state.playerList.length; i ++) {
+            for(var i = 0; i < store.state.playerList.length; i ++) {
                 if(store.state.playerList[i].objectId === userId) {
                     store.state.playerList[i].shakeCount = count;
                     break;
@@ -104,9 +97,7 @@ module.exports = window.store = new Vuex.Store({
             var roomId = message.roomId,
                 status = message.status;
 
-            console.log('store.actions.onStatusChange', message);
             store.state.room.status = status;
-
             switch(status) {
                 case 'JOINING':
                     store.actions.on('join');

@@ -5,36 +5,7 @@ var api = require('../api/api.js');
 Vue.use(Vuex);
 Vue.config.debug = true;
 
-// socket is global var defined in main.js
-function adminListenPlayerSocketMessage(type, enable) {
-    console.log('listenPlayerSocketMessage', type, enable);
-    if(enable) {
-        switch(type) {
-            case 'join':
-                socket.on('join', function(userId) {
-                    store.actions.adminOnJoin(userId);
-                });
-                break;
-            case 'leave':
-                socket.on('leave', function(userId) {
-                    store.actions.adminOnLeave(userId);
-                });
-                break;
-            case 'shake':
-                socket.on('shake', function(message) {
-                    store.actions.adminOnShake(message);
-                });
-                break;
-            default:
-                break;
-        }
-    } else {
-        socket.off(type);
-    }
-}
-
 function listenPlayerSocketMessage(type, enable) {
-    console.log('listenPlayerSocketMessage', type, enable);
     if(enable) {
         switch(type) {
             case 'join':
@@ -82,27 +53,12 @@ module.exports = window.store = new Vuex.Store({
             rankingPage: {
                 playerList: []
             }
-        },
-
-        /* admin pages states */
-        admin: {
-            homePage: {
-                roomList: []
-            },
-            roomPage: {
-                roomDetails: {},
-                players: []
-            },
-            editRoomDialog: {
-                roomDetails: {}
-            }
         }
     },
 
     actions: {
         /* player actions */
         createUser: function(store, user) {
-            console.log('store.actions.createUser', user);
 
             return new Promise(function(resolve, reject) {
                 api.createUser(user).then(function(data) {
@@ -124,7 +80,6 @@ module.exports = window.store = new Vuex.Store({
             store.state.player.currentPlayer = {};
         },
         updateUserDetails: function(store, user) {
-            console.log('store.actions.updateUserDetails', user);
             return new Promise(function(resolve, reject) {
                 api.updateUser(user).then(function(data) {
                     localStorage.userJSON = JSON.stringify(data.user);
@@ -136,7 +91,6 @@ module.exports = window.store = new Vuex.Store({
             });
         },
         getUserDetails: function(store, userId) {
-            console.log('store.actions.getUserDetails', userId);
             return new Promise(function(resolve, reject) {
                 api.getUser({userId: userId}).then(function(data) {
                     localStorage.userJSON = JSON.stringify(data.user);
@@ -150,8 +104,6 @@ module.exports = window.store = new Vuex.Store({
             });
         },
         getRoomDetails: function(store, roomId) {
-            console.log('store.actions.getRoomDetails', roomId);
-
             api.getRoom(roomId).then(function(data) {
                 store.state.player.currentRoom = data.room;
             }, function(error) {
@@ -159,7 +111,6 @@ module.exports = window.store = new Vuex.Store({
             });
         },
         getRoomPlayers: function(store, roomId) {
-            console.log('store.actions.getRoomPlayers', roomId);
             api.getRoomPlayers(roomId).then(function(data) {
                 store.state.player.playerList = data.players;
             }, function(error) {
@@ -168,7 +119,6 @@ module.exports = window.store = new Vuex.Store({
             });
         },
         getRoomRankingPlayers: function(store, roomId) {
-            console.log('store.actions.getRankingPlayers', roomId);
             api.getRoomRankingPlayerList(roomId).then(function(data) {
                 store.state.player.rankingPage.playerList = data.players;
             }, function(error) {
@@ -177,8 +127,6 @@ module.exports = window.store = new Vuex.Store({
             });
         },
         getRoomList: function(store) {
-            console.log('store.actions.getRoomList');
-
             api.listRoom().then(function(data) {
                 store.state.player.roomList = data.roomList;
             }, function(error) {
@@ -187,7 +135,6 @@ module.exports = window.store = new Vuex.Store({
             });
         },
         joinRoom: function(store, request) {
-            console.log('store.actions.joinRoom request', request);
             var user = request.user, roomId = request.roomId;
 
             return new Promise(function(resolve, reject) {
@@ -203,7 +150,6 @@ module.exports = window.store = new Vuex.Store({
             });
         },
         leaveRoom: function(store, roomId, userId) {
-            console.log('store.actions.leaveRoom', roomId, userId);
             return new Promise(function(resolve, reject) {
                 api.leaveRoom(roomId, userId).then(function(data) {
                     store.state.player.currentRoom = {};
@@ -263,7 +209,6 @@ module.exports = window.store = new Vuex.Store({
         onJoin: function(store, message) {
             var userId = message.userId, roomId = message.roomId;
 
-            console.log('store.actions.onJoin', userId);
             api.getUser({userId: userId}).then(function(data) {
                 var exist = store.state.player.playerList.filter(function(p) {
                         return p.objectId === userId;
@@ -298,56 +243,19 @@ module.exports = window.store = new Vuex.Store({
             var roomId = message.roomId,
                 status = message.status;
 
-            if(roomId === store.state.player.currentRoom.objectId)
+            if(roomId === store.state.player.currentRoom.objectId) {
                 store.state.player.currentRoom.status = status;
+
+                if(status === 'END') {
+                    store.actions.getRoomDetails(roomId);
+                    store.actions.getRoomRankingPlayers(roomId);
+                }
+            }
 
             store.state.player.roomList.forEach(function(room) {
                 if(room.objectId === roomId)
                     room.status = status;
             });
-        },
-
-
-
-
-        adminListenSocketMessage: function(store, enable) {
-            adminListenPlayerSocketMessage('shake', enable);
-            adminListenPlayerSocketMessage('join', enable);
-            adminListenPlayerSocketMessage('leave', enable);
-        },
-        adminOnJoin: function(store, message) {
-            var userId = message.userId, roomId = message.roomId;
-
-            console.log('store.actions.adminOnJoin', userId);
-            api.getUser({userId: userId}).then(function(data) {
-                var exist = store.state.admin.roomPage.players.filter(function(p) {
-                        return p.objectId === userId;
-                    }).length !== 0;
-
-                if(!exist)
-                    store.state.admin.roomPage.players.push(data.user);
-            }, function(error) {
-                console.log('store.actions.adminOnJoin get user error', error);
-            });
-        },
-        adminOnLeave: function(store, message) {
-            var userId = message.userId, roomId = message.roomId;
-
-            store.state.admin.roomPage.players = store.state.admin.roomPage.players.filter(function(player) {
-                return player.objectId !== userId;
-            });
-        },
-        adminOnShake: function(store, data) {
-            var userId = data.userId,
-                count = data.shakeCount,
-                i;
-
-            for(i = 0; i < store.state.admin.roomPage.players.length; i ++) {
-                if(store.state.admin.roomPage.players[i].objectId === userId) {
-                    store.state.admin.roomPage.players[i].shakeCount = count;
-                    break;
-                }
-            }
         }
     },
 

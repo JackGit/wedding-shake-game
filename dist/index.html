@@ -95,17 +95,17 @@
 
         function loadResources() {
             var loader = new wy.base.Loader();
-            var imageUrl = window.location.origin.indexOf('jackyang.me') !== -1
+            /*var imageUrl = window.location.origin.indexOf('jackyang.me') !== -1
                     ? 'http://wedding.jackyang.me/images/wedding_pic_08.jpg'
-                    : 'static/images/wedding_pic_08.jpg';
+                    : 'static/images/wedding_pic_08.jpg';*/
 
             // materialize.min.js can't load by Loader, it will coz no waves-effect
             loader.add('fontawesome.css', 'static/font-awesome/font-awesome.min.css');
             loader.add('materialize.css', 'static/materialize/css/materialize.min.css');
             loader.add('player.css', 'static/stylesheets/player.css');
             loader.add('socket.io.js', '/socket.io/socket.io.js');
-            loader.add('player.bundle.js', 'player.bundle.js');
-            loader.add('image', imageUrl);
+            loader.add('player.bundle.js', 'static/javascripts/player.bundle.js');
+            loader.add('image', 'static/images/wedding_pic_08.jpg');
 
             loader.on('complete', function(r) {
 
