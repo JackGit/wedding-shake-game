@@ -176,6 +176,8 @@
 
                 $container.append($img);
                 new Tilting($img, {limitY: 0});
+
+                hideMask(); // global method
             });
 
             loader.load();
