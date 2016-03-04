@@ -56,7 +56,7 @@
                         <div class="row">
                             <span class="title red-text text-lighten-2">{{room.roomName}}</span>
                             <p v-if="room.status === 'INIT'">未开始，请等待主持人开始该回合</p>
-                            <p v-if="room.status === 'JOINING'">准备中，宾客们正在加入</p>
+                            <p v-if="room.status === 'JOINING'">准备中，宾客们正在加入。男方加入{{room.bridePlayersCount}}人；女方加入{{room.groomPlayersCount}}人</p>
                             <p v-if="room.status === 'PLAYING'">游戏进行中</p>
                             <p v-if="room.status === 'END'">已结束</p>
                         </div>
@@ -83,7 +83,21 @@
                 return store.state.player.currentPlayer;
             },
             roomList: function() {
-                return store.state.player.roomList;
+                return store.state.player.roomList.map(function(room) {
+                    var bCount = 0, gCount = 0;
+
+                    room.players.forEach(function(p) {
+                        if(p.playerType === 'BRIDE')
+                            bCount ++;
+                        if(p.playerType === 'GROOM')
+                            gCount ++;
+                    });
+
+                    room.bridePlayersCount = bCount;
+                    room.groomPlayersCount = gCount;
+
+                    return room;
+                });
             }
         },
 
@@ -114,8 +128,18 @@
                     roomId: roomId
                 }).then(function() {
                     router.go({name: 'ready'});
-                }, function() {
+                }, function(error) {
+                    var errorMessage = '';
 
+                    if(error.indexOf('full') !== -1) {
+                        errorMessage = (store.state.player.currentPlayer.userType === 'BRIDE' ? '男方' : '女方') + '人数已满';
+                    } else if(error.indexOf('wrong') !== 1) {
+                        errorMessage = '房间已不是“开放加入”状态';
+                    } else
+                        errorMessage = error;
+
+                    alert('无法加入房间：' + errorMessage);
+                    store.actions.getRoomList();    // refresh room list to show the latest players in each room
                 });
             },
             visit: function(roomId) {
