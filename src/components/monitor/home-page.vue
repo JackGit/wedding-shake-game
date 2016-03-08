@@ -235,11 +235,11 @@
                         total += r.shakeCount;
                 });
 
-                snabbt(this.$els.brideTotal, 'attention', {
+                /*snabbt(this.$els.brideTotal, 'attention', {
                     rotation: [0, 0, Math.PI/2],
                     springConstant: 1.9,
                     springDeceleration: 0.9
-                });
+                });*/
 
                 return total;
             },
@@ -250,11 +250,11 @@
                         total += r.shakeCount;
                 });
 
-                snabbt(this.$els.groomTotal, 'attention', {
+                /*snabbt(this.$els.groomTotal, 'attention', {
                     rotation: [0, 0, Math.PI/2],
                     springConstant: 1.9,
                     springDeceleration: 0.9
-                });
+                });*/
 
                 return total;
             },
