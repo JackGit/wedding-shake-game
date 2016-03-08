@@ -218,14 +218,14 @@
                 return store.state.playerList.filter(function(p) {
                     return p.userType === 'GROOM';
                 }).sort(function(p1, p2) {
-                    return p1.shakeCount < p2.shakeCount;
+                    return p2.shakeCount - p1.shakeCount;
                 });
             },
             bridePlayers: function() {
                 return store.state.playerList.filter(function(p) {
                     return p.userType === 'BRIDE';
                 }).sort(function(p1, p2) {
-                    return p1.shakeCount < p2.shakeCount;
+                    return p2.shakeCount - p1.shakeCount;
                 });
             },
             brideTotal: function() {

@@ -69,7 +69,7 @@
                                 <thead>
                                 <tr>
                                     <th data-field="side">男/女方</th>
-                                    <th data-field="players">宾客</th>
+                                    <th data-field="players">人数</th>
                                     <th data-field="total">总计</th>
                                     <th data-field="result">结果</th>
                                 </tr>
@@ -163,7 +163,7 @@
                 else
                     return players.sort(function(p1, p2) {
                         // descend order
-                        return p1.shakeCount < p2.shakeCount;
+                        return p2.shakeCount - p1.shakeCount;
                     });
             },
             bridePlayers: function() {
