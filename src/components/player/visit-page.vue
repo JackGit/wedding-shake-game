@@ -64,8 +64,8 @@
                         <div class="progress red lighten-4" v-if="player.userType === 'GROOM'">
                             <div class="determinate red" :style="{width: player.shakeCount/200*100 + '%'}"></div>
                         </div>
-                        <p v-if="player.userType === 'BRIDE">男方</p>
-                        <p v-if="player.userType === 'GROOM">女方</p>
+                        <p v-if="player.userType === 'BRIDE'">男方</p>
+                        <p v-if="player.userType === 'GROOM'">女方</p>
                     </li>
                 </ul>
             </div>

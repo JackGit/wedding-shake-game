@@ -57,9 +57,9 @@
                             <span class="title red-text text-lighten-2">{{room.roomName}}</span>
                             <p v-if="room.status === 'INIT'">未开始，请等待主持人开始该回合</p>
                             <p v-if="room.status === 'JOINING'">准备中，宾客们正在加入
-                                <br>男方加入
+                                <!--<br>男方加入
                                 <span class="teal-text text-lighten-2" style="text-decoration:underline">{{room.bridePlayersCount}}</span>人；女方加入
-                                <span class="red-text text-lighten-2"  style="text-decoration:underline">{{room.groomPlayersCount}}</span>人
+                                <span class="red-text text-lighten-2"  style="text-decoration:underline">{{room.groomPlayersCount}}</span>人-->
                             </p>
                             <p v-if="room.status === 'PLAYING'">游戏进行中</p>
                             <p v-if="room.status === 'END'">已结束</p>

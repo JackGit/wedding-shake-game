@@ -139,7 +139,7 @@ module.exports = function(app) {
             res.send({
                 statusCode: 0,
                 message: '',
-                room: response
+                user: response
             });
         }, function(error) {
             res.send({
@@ -155,7 +155,7 @@ module.exports = function(app) {
             res.send({
                 statusCode: 0,
                 message: '',
-                room: response
+                user: response
             });
         }, function(error) {
             res.send({

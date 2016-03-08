@@ -7,7 +7,7 @@ var ROOM_PROPERTIES = {
     roomSize: 5,        // 5 for each side of players (GROOM and BRIDE)
     roomColor: '',      // #ffffff
     status: 'INIT',
-    players: [],     // array of {playerId: '', playerType: 'GROOM'}
+    //players: [],     // array of {playerId: '', playerType: 'GROOM'}
     ranking: []         // array of {playerId: '', shakeCount: XX}
 };
 
@@ -66,53 +66,32 @@ var roomDAO = {
     },
     joinRoom: function(roomId, playerId, playerType) {
         return roomDAO.getRoom(roomId).try(function(roomAVObj) {
-            var playerList = roomAVObj.get('players'),
-                status = roomAVObj.get('status'),
-                roomSize = roomAVObj.get('roomSize');
+            var status = roomAVObj.get('status');
 
             // check for status
             if(status !== 'JOINING')
                 return AV.Promise.error('wrong room status, cannot join');
 
             // check for size
-            if(playerList.filter(function(p) { return p.playerType === playerType; }).length === roomSize)
-                return AV.Promise.error(playerType + ' players is full, cannot join');
 
-            // check for duplicate join
-            if(playerList.filter(function(p) { return p.playerId === playerId; }).length === 0)
-                playerList.push({
-                    playerId: playerId,
-                    playerType: playerType,
-                    joinedAt: new Date()
-                });
-
-            // clear the shake count when player join the room
-            playerDAO.updatePlayer({objectId: playerId, shakeCount: 0});
-
-            roomAVObj.set('players', playerList);
-
-            return roomAVObj.save();
+            return playerDAO.updatePlayer({
+                objectId: playerId,
+                shakeCount: 0,
+                status: 'JOINED',
+                roomId: roomId,
+                joinedAt: new Date()
+            });
         });
     },
     leaveRoom: function(roomId, playerId) {
-        return roomDAO.getRoom(roomId).try(function(roomAVObj) {
-            var playerList = roomAVObj.get('players');
-
-            playerList = playerList.filter(function(p) {
-                return p.playerId !== playerId;
-            });
-
-            roomAVObj.set('players', playerList);
-            return roomAVObj.save();
+        return playerDAO.updatePlayer({
+            objectId: playerId,
+            status: 'LEFT',
+            leftAt: new Date
         });
     },
     getRoomPlayerList: function(roomId) {
-        return roomDAO.getRoom(roomId).try(function(roomAVObj) {
-            var userIds = roomAVObj.get('players').map(function(p) {
-                return p.playerId;
-            });
-            return playerDAO.getPlayerList(userIds);
-        });
+        return playerDAO.getJoinedRoomPlayerList(roomId);
     },
     getRoomRankingPlayerList: function(roomId) {
         return roomDAO.getRoom(roomId).try(function(roomAVObj) {
@@ -126,7 +105,7 @@ var roomDAO = {
         var room = {
             roomId: roomId,
             status: 'JOINING',
-            players: [],
+            //players: [],
             ranking: []
         };
         return roomDAO.updateRoom(room);
@@ -140,21 +119,21 @@ var roomDAO = {
 
         console.log('startGame');
         return roomDAO.getRoom(roomId).try(function(roomAVObj) {
-            var playerList = roomAVObj.get('players'),
-                ranking = [];
 
-            console.log('startGame players', playerList);
-            // init ranking object
-            playerList.forEach(function(player) {
-                ranking.push({
-                    playerId: player.playerId,
-                    playerType: player.playerType,
-                    shakeCount: 0
+            return playerDAO.getJoinedRoomPlayerList(roomId).try(function(playerList) {
+                var ranking = [];
+                // init ranking object
+                playerList.forEach(function(player) {
+                    ranking.push({
+                        playerId: player.id,
+                        playerType: player.get('userType'),
+                        shakeCount: 0
+                    });
                 });
-            });
 
-            room.ranking = ranking;
-            return roomDAO.updateRoom(room);
+                room.ranking = ranking;
+                return roomDAO.updateRoom(room);
+            });
         });
     },
     stopGame: function(roomId) {
@@ -180,6 +159,9 @@ var roomDAO = {
                     playerAVObj.set('shakeCount', 0);
                     playerAVObj.save();
                 });
+
+                playerDAO.clearJoinStatus(roomId);
+
                 return roomDAO.updateRoom(room);
             });
         });

@@ -3,7 +3,11 @@ var Player = AV.Object.extend('Player');
 var PLAYER_PROPERTIES = {
     userName: '',
     userType: '',
-    shakeCount: 0,               // this shakeCount will be used to record playing data. When game is stopped, this data will be synced to room.ranking
+    shakeCount: 0,                  // this shakeCount will be used to record playing data. When game is stopped, this data will be synced to room.ranking
+    status: '',                     // JOINED, LEFT, ''
+    roomId: '',
+    joinedAt: null,
+    leftAt: null,
     avatarImageUrl: 'static/images/default_user_avatar.png',
     qqOpenId: '',
     qqAccessToken: '',
@@ -19,7 +23,7 @@ var playerDAO = {
         for(p in PLAYER_PROPERTIES)
             if(player[p] !== undefined)
                 playerAVObj.set(p, player[p]);
-            else
+            else if(PLAYER_PROPERTIES[p] !== null)
                 playerAVObj.set(p, PLAYER_PROPERTIES[p]);
 
         return playerAVObj.save();
@@ -56,6 +60,23 @@ var playerDAO = {
         var playerQueryObj = new AV.Query('Player');
         playerQueryObj.containedIn('objectId', userIds);
         return playerQueryObj.find();
+    },
+    getJoinedRoomPlayerList: function(roomId) {
+        var playerQueryObj = new AV.Query('Player');
+        playerQueryObj.equalTo('roomId', roomId);
+        playerQueryObj.equalTo('status', 'JOINED');
+        return playerQueryObj.find();
+    },
+    clearJoinStatus: function(roomId) {
+        var playerQueryObj = new AV.Query('Player');
+        playerQueryObj.equalTo('roomId', roomId);
+        playerQueryObj.equalTo('status', 'JOINED');
+        return playerQueryObj.find().try(function(results) {
+            results.forEach(function(playerAVObj) {
+                playerAVObj.set('status', 'LEFT');
+                playerAVObj.save();
+            });
+        });
     }
 };
 

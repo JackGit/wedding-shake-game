@@ -5,6 +5,8 @@ var api = require('../api/api.js');
 Vue.use(Vuex);
 Vue.config.debug = true;
 
+var so;
+
 function listenPlayerSocketMessage(type, enable) {
     if(enable) {
         switch(type) {
@@ -139,9 +141,9 @@ module.exports = window.store = new Vuex.Store({
 
             return new Promise(function(resolve, reject) {
                 api.joinRoom(roomId, user.objectId, user.userType).then(function(data) {
-                    store.state.player.currentRoom = data.room;
-                    socket.emit('join', {userId: user.objectId, roomId: data.room.objectId});
-                    resolve(data.room);
+                    store.state.player.currentRoom.objectId = roomId;
+                    socket.emit('join', {userId: user.objectId, roomId: roomId});
+                    resolve(data);
                 }, function(error) {
                     store.state.player.currentRoom = {};
                     store.state.player.playerList = [];
@@ -155,7 +157,7 @@ module.exports = window.store = new Vuex.Store({
                     store.state.player.currentRoom = {};
                     store.state.player.playerList = [];
                     socket.emit('leave', {userId: userId, roomId: roomId});
-                    resolve(data.room);
+                    resolve(data);
                 }, function(error) {
                     reject(error);
                 });
@@ -176,15 +178,32 @@ module.exports = window.store = new Vuex.Store({
                     p.shakeCount = shakeCount;
             });
 
-            api.updateUser({
-                objectId: store.state.player.currentPlayer.objectId,
-                shakeCount: shakeCount
-            });
+            if(!so) {
+                // to ensure the latest shake count will be posted to server every 1s
+                so = new wy.base.SteadyOutput({
+                    interval: 1000,
+                    max: 1,
+                    overflow: 'shift'
+                });
 
-            socket.emit('shake', {
-                userId: store.state.player.currentPlayer.objectId,
-                shakeCount: shakeCount
-            });
+                so.register(function(shakeCount) {
+                    console.log('post shakeCount', shakeCount);
+
+                    api.updateUser({
+                        objectId: store.state.player.currentPlayer.objectId,
+                        shakeCount: shakeCount
+                    });
+
+                    socket.emit('shake', {
+                        userId: store.state.player.currentPlayer.objectId,
+                        shakeCount: shakeCount
+                    });
+                });
+
+                so.start();
+            }
+
+            so.push(shakeCount);
         },
         updateStopwatch: function(store, balance) {
             var s = '00' + Math.floor(balance / 1000);

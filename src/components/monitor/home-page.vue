@@ -107,7 +107,7 @@
                         </div>
                         <div class="card-content">
                             <ul class="collection">
-                                <li class="collection-item avatar transparent" v-for="player in groomPlayers" transition="item">
+                                <li class="collection-item avatar transparent" v-for="player in groomPlayers"> <!-- transition="item" -->
                                     <img :src="player.avatarImageUrl" alt="" class="circle">
                                     <span class="title">{{player.userName}}<span class="badge">{{player.shakeCount}}</span></span>
                                     <div class="progress progress-bg">
@@ -132,7 +132,7 @@
                         </div>
                         <div class="card-content">
                             <ul class="collection">
-                                <li class="collection-item avatar transparent" v-for="player in bridePlayers" transition="item">
+                                <li class="collection-item avatar transparent" v-for="player in bridePlayers"> <!-- transition="item" -->
                                     <img :src="player.avatarImageUrl" alt="" class="circle">
                                     <span class="title">{{player.userName}}<span class="badge">{{player.shakeCount}}</span></span>
                                     <div class="progress progress-bg">
