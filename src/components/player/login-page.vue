@@ -25,9 +25,9 @@
                 <h2 class=" center-align" style="color: white;font-family: serif">Wedding</h2>
             </div>
         </div>
-        <div>
+        <div style="position:absolute;width:100%;bottom:10%">
             <div class="container">
-                <div class="row">
+                <!--<div class="row">
                     <div class="input-field col s12">
                         <input v-el:user-name placeholder="请输入您的名称或者昵称" id="loginPageUserName" type="text">
                     </div>
@@ -41,9 +41,9 @@
                 </div>
                 <div class="row">
                     <a class="col s12 waves-effect waves-light btn btn-large red white-text" @click="start()">进入互动</a>
-                </div>
+                </div> -->
                 <div class="row">
-                    <a href="https://graph.qq.com/oauth2.0/authorize?response_type=code&client_id=101295012&redirect_uri=http%3A%2F%2Fwedding.jackyang.me%2Fqq_login_callback.html&state=test&scope=all" class="col s12 right-align">
+                    <a href="https://graph.qq.com/oauth2.0/authorize?response_type=code&client_id=101295012&redirect_uri=http%3A%2F%2Fwedding.jackyang.me%2Fqq_login_callback.html&state=test&scope=all" class="col s12 center-align">
                         <img :src="qqLogoImgUrl">
                     </a>
                 </div>
@@ -62,7 +62,7 @@
 
         data: function() {
             return {
-                qqLogoImgUrl: 'static/images/Connect_logo_4.png'
+                qqLogoImgUrl: 'static/images/Connect_logo_5.png'
             };
         },
 
