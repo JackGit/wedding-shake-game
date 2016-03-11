@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0 ">
-    <link type="text/css" rel="stylesheet" href="static/font-awesome/font-awesome.min.css">
-    <link type="text/css" rel="stylesheet" href="static/materialize/css/materialize.min.css"  media="screen,projection">
+    <!--<link type="text/css" rel="stylesheet" href="static/font-awesome/font-awesome.min.css">
+    <link type="text/css" rel="stylesheet" href="static/materialize/css/materialize.min.css"  media="screen,projection">-->
     <link type="text/css" rel="stylesheet" href="static/stylesheets/animate.css">
     <title>Invitation</title>
     <style>
@@ -13,7 +13,7 @@
         }
 
         header {
-            background-image: url(http://wedding.jackyang.me/static/images/wedding_pic_16.jpg);
+            background-image: url(static/images/wedding_pic_16.jpg);
             background-position: center center;
             -webkit-background-size: cover;
             background-size: cover;
@@ -117,20 +117,20 @@
     </style>
 </head>
 <body>
-    <!--
+
     <div id="appMask">
         <svg class="appMaskSpinner" viewBox="0 0 50 50">
             <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
         </svg>
     </div>
-    -->
+
     <header>
-        <div id="greetingBlock" class="block animated">
+        <div id="greetingBlock" class="block animated" id="greeting">
             <div class="container">
-                <p class="center-align welcome-to">WELCOME TO THE</p>
-                <p class="center-align wedding-of"><span>W</span>EDDING OF</p>
-                <p class="center-align cp-names" style="color:#ffffff;text-shadow:1px 1px 2px rgba(152,152,152,0.68)">JACK(杨刚) <i class="fa fa-heart red-text"></i> ANGEL(钱丽)</p>
-                <p class="center-align">INITE YOU TO SHARE IN THEIR JOY</p>
+                <p class="center-align welcome-to" id="welcomeText">WELCOME TO THE</p>
+                <p class="center-align wedding-of" id="weddingText"><span>W</span>EDDING OF</p>
+                <p class="center-align cp-names" id="nameText" style="color:#ffffff;text-shadow:1px 1px 2px rgba(152,152,152,0.68)">JACK(杨刚) <i id="heart" class="fa fa-heart red-text"></i> ANGEL(钱丽)</p>
+                <p class="center-align" id="inviteText">INITE YOU TO SHARE IN THEIR JOY</p>
             </div>
         </div>
     </header>
@@ -138,10 +138,10 @@
         <div id="groomBlock" class="block">
             <div class="container row">
                 <div class="col s3">
-                    <img class="circle responsive-img" src="static/images/groom_avatar.jpg">
+                    <img class="circle responsive-img" id="groomAvatar" src="static/images/groom_avatar.jpg">
                 </div>
                 <div class="col s9">
-                    <span class="teal-text flow-text">
+                    <span class="teal-text flow-text" style="font-family: serif">
                         <span class="first-letter">W</span>elcome to our wedding~!! 我是新郎Jack，帅气IT男，武汉人，理工大毕业。认识我的人都知道，我爱装酷，爱编程，爱摄影，爱老婆~ 现在我就要结婚啦，期待你们的到来。
                     </span>
                 </div>
@@ -150,12 +150,12 @@
         <div id="brideBlock" class="block">
             <div class="container row">
                 <div class="col s9">
-                    <span class="red-text text-lighten-2 flow-text">
+                    <span class="red-text text-lighten-2 flow-text" style="font-family: serif">
                         <span class="first-letter">H</span>i~ 我就是上面那位的新娘了，也是他大学同学。爱家庭，爱事业，爱猫猫狗狗，爱旅游，也爱纠结...这就是我了，欢迎大家光临我们俩的婚礼。
                     </span>
                 </div>
                 <div class="col s3">
-                    <img class="circle responsive-img" src="static/images/bride_avatar.jpg">
+                    <img class="circle responsive-img" id="brideAvatar" src="static/images/bride_avatar.jpg">
                 </div>
             </div>
         </div>
@@ -205,15 +205,110 @@
     </footer>
 
     <script src="static/javascripts/jquery-2.1.1.min.js"></script>
-    <script src="static/javascripts/scrollspy.js"></script>
-    <script src="static/javascripts/snabbt.min.js"></script>
+    <script src="static/javascripts/wy.lib.js"></script>
+    <!--<script src="static/javascripts/scrollspy.js"></script>-->
+    <!--<script src="static/javascripts/snabbt.min.js"></script>-->
     <script>
+
+        var music = null;
+        var playing = false;
+
         $(document).ready(function() {
-            //$('#appMask').hide();
+            loadResources();
+
+            var loader = new wy.base.Loader();
+            loader.add('music', 'static/audios/rising_road.mp3', {loadType: wy.base.Loader.LOAD_TYPE.AUDIO}, function(r) {
+                music = r.data;
+                music.loop = true;
+                music.addEventListener('playing',function() {
+                    playing = true;
+                });
+
+                document.body.appendChild(music);
+
+                setTimeout(function() {
+                    music.play();
+                }, 100);
+            });
+            loader.load();
+
+            $(document).on('touchstart', function() {
+                if(!playing) {
+                    music && music.play();
+                }
+            })
+        });
+
+        function loadResources() {
+            var loader = new wy.base.Loader();
+
+            loader.add('fontawesome.css', 'static/font-awesome/font-awesome.min.css');
+            loader.add('materialize.css', 'static/materialize/css/materialize.min.no.font.css');
+            loader.add('font_1', 'static/fonts/fontawesome-webfont.woff2?v=4.5.0');
+            loader.add('snabbt.min.js', 'static/javascripts/snabbt.min.js');
+            loader.add('scrollspy.js', 'static/javascripts/scrollspy.js');
+            loader.add('image', 'static/images/wedding_pic_16.jpg');
+            loader.add('groom_avatar', 'static/images/groom_avatar.jpg');
+            loader.add('bride_avatar', 'static/images/bride_avatar.jpg');
+
+            loader.on('complete', function(r) {
+                appendStyleTag(r.resources['fontawesome.css'].data);
+                appendStyleTag(r.resources['materialize.css'].data);
+
+                eval(r.resources['snabbt.min.js'].data);
+                eval(r.resources['scrollspy.js'].data);
+
+                wy.base.Animation.applyAnimation($('#appMask'), {
+                    animationName: 'fadeOut',
+                    duration: 500,
+                    fillMode: 'forwards',
+                    onAnimationEnd: function() {
+                        $('#appMask').remove();
+                        startScrollSpy();
+                        shakeHeart();
+                        applyTilting();
+                    }
+                });
+            });
+
+            loader.load();
+        }
+
+        function applyTilting() {
+            new wy.base.Tilting($('#groomAvatar'));
+            new wy.base.Tilting($('#brideAvatar'));
+            new wy.base.Tilting($('#welcomeText'), {depth: 1});
+            new wy.base.Tilting($('#weddingText'), {depth: 0.5});
+            new wy.base.Tilting($('#nameText'), {depth: 0.4});
+            new wy.base.Tilting($('#inviteText'), {depth: 1});
+
+        }
+
+        function appendStyleTag(styleText) {
+            var style = document.createElement('style');
+            style.innerHTML = styleText;
+            document.head.appendChild(style);
+        }
+
+        function shakeHeart() {
+            setInterval(function() {
+                $('#heart').snabbt('attention', {
+                    rotation: [0, 0, Math.PI/2],
+                    scale: [2, 2, 2],
+                    springConstant: 1.9,
+                    springDeceleration: 0.9
+                });
+            }, 2000);
+        }
+
+        function startScrollSpy() {
+            $('#greeting').one('scrollSpy:enter', function() {
+                $(this).addClass('animated').addClass('fadeIn');
+            });
 
             $('#groomBlock').one('scrollSpy:enter', function() {
                 $(this).addClass('animated').addClass('slideInLeft');
-            })
+            });
 
             $('#brideBlock').one('scrollSpy:enter', function() {
                 $(this).addClass('animated').addClass('slideInRight');
@@ -230,8 +325,7 @@
             setTimeout(function() {
                 $('.block').scrollSpy();
             }, 500);
-
-        });
+        }
     </script>
 </body>
 </html>
