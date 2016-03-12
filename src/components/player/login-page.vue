@@ -27,21 +27,23 @@
         </div>
         <div style="position:absolute;width:100%;bottom:10%">
             <div class="container">
-                <!--<div class="row">
+
+                <div class="row">
                     <div class="input-field col s12">
                         <input v-el:user-name placeholder="请输入您的名称或者昵称" id="loginPageUserName" type="text">
                     </div>
                     <div class="input-field col s12">
                         <select v-el:user-type>
                             <option value="" disabled selected class="grey-text">请选择您的宾客类别</option>
-                            <option value="BRIDE">男方宾客</option>
-                            <option value="GROOM">女方宾客</option>
+                            <option value="GROOM">男方宾客</option>
+                            <option value="BRIDE">女方宾客</option>
                         </select>
                     </div>
                 </div>
                 <div class="row">
                     <a class="col s12 waves-effect waves-light btn btn-large red white-text" @click="start()">进入互动</a>
-                </div>-->
+                </div>
+
                 <div class="row">
                     <a href="https://graph.qq.com/oauth2.0/authorize?response_type=code&client_id=101295012&redirect_uri=http%3A%2F%2Fwedding.jackyang.me%2Fqq_login_callback.html&state=test&scope=all" class="col s12 center-align">
                         <img :src="qqLogoImgUrl">

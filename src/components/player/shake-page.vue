@@ -82,14 +82,14 @@
                     <li class="collection-item avatar" v-for="player in players">
                         <img :src="player.avatarImageUrl" class="circle">
                         <span class="title">{{player.userName}}<span class="badge">{{player.shakeCount}}</span></span>
-                        <div class="progress" v-if="player.userType === 'BRIDE'">
+                        <div class="progress" v-if="player.userType === 'GROOM'">
                             <div class="determinate" :style="{width: player.shakeCount/200*100 + '%'}"></div>
                         </div>
-                        <div class="progress red lighten-4" v-if="player.userType === 'GROOM'">
+                        <div class="progress red lighten-4" v-if="player.userType === 'BRIDE'">
                             <div class="determinate red" :style="{width: player.shakeCount/200*100 + '%'}"></div>
                         </div>
-                        <p v-if="player.userType === 'BRIDE'">男方</p>
-                        <p v-if="player.userType === 'GROOM'">女方</p>
+                        <p v-if="player.userType === 'GROOM'">男方</p>
+                        <p v-if="player.userType === 'BRIDE'">女方</p>
                     </li>
                 </ul>
             </div>

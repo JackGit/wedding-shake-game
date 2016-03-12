@@ -25,10 +25,10 @@
         background-size: cover;
     }
     .border-header.groom {
-        background-image: url(http://wedding.jackyang.me/static/images/wedding_pic_17.jpg);
+        background-image: url(http://wedding.jackyang.me/static/images/wedding_pic_18.jpg);
     }
     .border-header.bride {
-        background-image: url(http://wedding.jackyang.me/static/images/wedding_pic_18.jpg);
+        background-image: url(http://wedding.jackyang.me/static/images/wedding_pic_17.jpg);
     }
     .total-count {
         position: absolute;
@@ -96,18 +96,18 @@
 
                 <div class="col s6" v-if="show" transition="leftIn" >
                     <div class="card board">
-                        <div class="total-count right red-text text-lighten-4" v-el:groom-total>{{groomTotal}}</div>
-                        <div class="card-content border-header groom">
+                        <div class="total-count right red-text text-lighten-4" v-el:bride-total>{{brideTotal}}</div>
+                        <div class="card-content border-header bride">
                             <div class="row">
                                 <div class="col s6 offset-s6">
                                     <h5 class="red-text text-lighten-2">新娘队</h5>
-                                    <h6 class="grey-text text-lighten-1">{{groomPlayers.length}}宾客参与</h6>
+                                    <h6 class="grey-text text-lighten-1">{{bridePlayers.length}}宾客参与</h6>
                                 </div>
                             </div>
                         </div>
                         <div class="card-content">
                             <ul class="collection">
-                                <li class="collection-item avatar transparent" v-for="player in groomPlayers"> <!-- transition="item" -->
+                                <li class="collection-item avatar transparent" v-for="player in bridePlayers"> <!-- transition="item" -->
                                     <img :src="player.avatarImageUrl" alt="" class="circle">
                                     <span class="title">{{player.userName}}<span class="badge">{{player.shakeCount}}</span></span>
                                     <div class="progress progress-bg">
@@ -121,18 +121,18 @@
 
                 <div class="col s6" v-if="show" transition="rightIn" >
                     <div class="card board">
-                        <div class="total-count left teal-text text-lighten-4" v-el:bride-total>{{brideTotal}}</div>
-                        <div class="card-content border-header bride">
+                        <div class="total-count left teal-text text-lighten-4" v-el:groom-total>{{groomTotal}}</div>
+                        <div class="card-content border-header groom">
                             <div class="row">
                                 <div class="col s6">
                                     <h5 class="teal-text text-lighten-2">新郎队</h5>
-                                    <h6 class="grey-text text-lighten-1">{{bridePlayers.length}}宾客参与</h6>
+                                    <h6 class="grey-text text-lighten-1">{{groomPlayers.length}}宾客参与</h6>
                                 </div>
                             </div>
                         </div>
                         <div class="card-content">
                             <ul class="collection">
-                                <li class="collection-item avatar transparent" v-for="player in bridePlayers"> <!-- transition="item" -->
+                                <li class="collection-item avatar transparent" v-for="player in groomPlayers"> <!-- transition="item" -->
                                     <img :src="player.avatarImageUrl" alt="" class="circle">
                                     <span class="title">{{player.userName}}<span class="badge">{{player.shakeCount}}</span></span>
                                     <div class="progress progress-bg">

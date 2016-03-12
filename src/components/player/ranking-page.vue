@@ -77,19 +77,19 @@
                                 <tbody>
                                 <tr>
                                     <td>男方</td>
-                                    <td>{{bridePlayers.length}}</td>
-                                    <td>{{brideTotal}}</td>
-                                    <td v-if="brideTotal > groomTotal" style="position: relative">胜利<img :src="winStampImgUrl" class="win-stamp"></td>
-                                    <td v-if="brideTotal == groomTotal" style="position: relative">平局</td>
-                                    <td v-if="brideTotal < groomTotal" style="position: relative">失败</td>
-                                </tr>
-                                <tr>
-                                    <td>女方</td>
                                     <td>{{groomPlayers.length}}</td>
                                     <td>{{groomTotal}}</td>
                                     <td v-if="brideTotal < groomTotal" style="position: relative">胜利<img :src="winStampImgUrl" class="win-stamp"></td>
                                     <td v-if="brideTotal == groomTotal" style="position: relative">平局</td>
                                     <td v-if="brideTotal > groomTotal" style="position: relative">失败</td>
+                                </tr>
+                                <tr>
+                                    <td>女方</td>
+                                    <td>{{bridePlayers.length}}</td>
+                                    <td>{{brideTotal}}</td>
+                                    <td v-if="brideTotal > groomTotal" style="position: relative">胜利<img :src="winStampImgUrl" class="win-stamp"></td>
+                                    <td v-if="brideTotal == groomTotal" style="position: relative">平局</td>
+                                    <td v-if="brideTotal < groomTotal" style="position: relative">失败</td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -109,14 +109,14 @@
                         <li class="collection-item avatar" v-for="player in players">
                             <img :src="player.avatarImageUrl" class="circle">
                             <span class="title">{{player.userName}}<span class="badge">{{player.shakeCount}}</span></span>
-                            <div class="progress" v-if="player.userType === 'BRIDE'">
+                            <div class="progress" v-if="player.userType === 'GROOM'">
                                 <div class="determinate" :style="{width: player.shakeCount/200*100 + '%'}"></div>
                             </div>
-                            <div class="progress red lighten-4" v-if="player.userType === 'GROOM'">
+                            <div class="progress red lighten-4" v-if="player.userType === 'BRIDE'">
                                 <div class="determinate red" :style="{width: player.shakeCount/200*100 + '%'}"></div>
                             </div>
-                            <p v-if="player.playerType === 'BRIDE'">男方</p>
-                            <p v-if="player.playerType === 'GROOM'">女方</p>
+                            <p v-if="player.playerType === 'GROOM'">男方</p>
+                            <p v-if="player.playerType === 'BRIDE'">女方</p>
                         </li>
                     </ul>
                 </div>

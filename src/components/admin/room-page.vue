@@ -85,8 +85,8 @@
                     <li class="collection-item avatar" v-for="player in players">
                         <img :src="player.avatarImageUrl" class="circle">
                         <span class="title">{{player.userName}}</span>
-                        <p v-if="player.userType === 'BRIDE'">男方宾客</p>
-                        <p v-if="player.userType === 'GROOM'">女方宾客</p>
+                        <p v-if="player.userType === 'GROOM'">男方宾客</p>
+                        <p v-if="player.userType === 'BRIDE'">女方宾客</p>
                     </li>
                 </ul>
             </div>

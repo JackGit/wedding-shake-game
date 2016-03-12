@@ -25,8 +25,8 @@
         </div>
 
         <ul class="tabs" v-el:tabs>
-            <li class="tab col s6"><a href="#brideTab" :class="currentPlayer.userType === 'BRIDE' ? 'active' : ''">男方 ({{bridePlayers.length}}/{{room.roomSize}})</a></li>
-            <li class="tab col s6"><a href="#groomTab" :class="currentPlayer.userType === 'GROOM' ? 'active' : ''">女方 ({{groomPlayers.length}}/{{room.roomSize}})</a></li>
+            <li class="tab col s6"><a href="#groomTab" :class="currentPlayer.userType === 'GROOM' ? 'active' : ''">男方 ({{groomPlayers.length}}/{{room.roomSize}})</a></li>
+            <li class="tab col s6"><a href="#brideTab" :class="currentPlayer.userType === 'BRIDE' ? 'active' : ''">女方 ({{bridePlayers.length}}/{{room.roomSize}})</a></li>
         </ul>
 
         <div class="section">

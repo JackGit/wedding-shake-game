@@ -31,8 +31,8 @@
                         <img :src="player.avatarImageUrl" class="avatar"/>
                     </div>
                     <h5 class="center-align white-text">{{player.userName}}</h5>
-                    <h6 class="center-align grey-text text-lighten-4" v-if="player.userType === 'BRIDE'">男方宾客</h6>
-                    <h6 class="center-align grey-text text-lighten-4" v-if="player.userType === 'GROOM'">女方宾客</h6>
+                    <h6 class="center-align grey-text text-lighten-4" v-if="player.userType === 'GROOM'">男方宾客</h6>
+                    <h6 class="center-align grey-text text-lighten-4" v-if="player.userType === 'BRIDE'">女方宾客</h6>
                 </div>
             </div>
         </div>
@@ -58,8 +58,8 @@
                                     <div class="input-field col s12">
                                         <select v-el:user-type>
                                             <option value="" disabled :selected="!player.userType">请选择您的宾客类别</option>
-                                            <option value="BRIDE" :selected="player.userType === 'BRIDE'">男方宾客</option>
-                                            <option value="GROOM" :selected="player.userType === 'GROOM'">女方宾客</option>
+                                            <option value="GROOM" :selected="player.userType === 'GROOM'">男方宾客</option>
+                                            <option value="BRIDE" :selected="player.userType === 'BRIDE'">女方宾客</option>
                                         </select>
                                         <label>宾客类别</label>
                                     </div>

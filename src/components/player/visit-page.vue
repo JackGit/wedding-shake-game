@@ -19,8 +19,8 @@
             <div class="card col s12 no-shadow transparent white-text" style="margin-top:0;position:relative;z-index:2">
                 <div class="card-content"><span class="card-title">{{currentRoom.roomName}}</span>
                     <p>游戏正在进行中，您处于旁观模式</p>
-                    <p>男方共参与人数：{{bridePlayers.length}}</p>
-                    <p>女方共参与人数：{{groomPlayers.length}}</p>
+                    <p>男方共参与人数：{{groomPlayers.length}}</p>
+                    <p>女方共参与人数：{{bridePlayers.length}}</p>
                 </div>
             </div>
         </div>
@@ -35,12 +35,12 @@
                 <div class="card col s12 no-shadow">
                     <div class="card-content row">
                         <div class="col s6 teal-text">
-                            <h6 class="center-align text-lighten-3">男方({{bridePlayers.length}}人)</h6>
-                            <h1 class="center-align">{{brideTotal}}</h1>
+                            <h6 class="center-align text-lighten-3">男方({{groomPlayers.length}}人)</h6>
+                            <h1 class="center-align">{{groomTotal}}</h1>
                         </div>
                         <div class="col s6 red-text">
-                            <h6 class="center-align text-lighten-3">女方({{groomPlayers.length}}人)</h6>
-                            <h1 class="center-align">{{groomTotal}}</h1>
+                            <h6 class="center-align text-lighten-3">女方({{bridePlayers.length}}人)</h6>
+                            <h1 class="center-align">{{brideTotal}}</h1>
                         </div>
                     </div>
                 </div>
@@ -58,14 +58,14 @@
                     <li class="collection-item avatar" v-for="player in players">
                         <img :src="player.avatarImageUrl" class="circle">
                         <span class="title">{{player.userName}}<span class="badge">{{player.shakeCount}}</span></span>
-                        <div class="progress" v-if="player.userType === 'BRIDE'">
+                        <div class="progress" v-if="player.userType === 'GROOM'">
                             <div class="determinate" :style="{width: player.shakeCount/200*100 + '%'}"></div>
                         </div>
-                        <div class="progress red lighten-4" v-if="player.userType === 'GROOM'">
+                        <div class="progress red lighten-4" v-if="player.userType === 'BRIDE'">
                             <div class="determinate red" :style="{width: player.shakeCount/200*100 + '%'}"></div>
                         </div>
-                        <p v-if="player.userType === 'BRIDE'">男方</p>
-                        <p v-if="player.userType === 'GROOM'">女方</p>
+                        <p v-if="player.userType === 'GROOM'">男方</p>
+                        <p v-if="player.userType === 'BRIDE'">女方</p>
                     </li>
                 </ul>
             </div>

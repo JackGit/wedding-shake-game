@@ -32,8 +32,8 @@
                         </div>
                         <div class="col s7">
                             <h6>{{currentPlayer.userName}}</h6>
-                            <span class="teal-text text-lighten-2" v-if="currentPlayer.userType === 'BRIDE'">男方宾客</span>
-                            <span class="red-text text-lighten-2" v-if="currentPlayer.userType === 'GROOM'">女方宾客</span>
+                            <span class="teal-text text-lighten-2" v-if="currentPlayer.userType === 'GROOM'">男方宾客</span>
+                            <span class="red-text text-lighten-2" v-if="currentPlayer.userType === 'BRIDE'">女方宾客</span>
                         </div>
                         <div class="col s2">
                             <h5><a v-link="{name:'profile'}"><i class="material-icons fa fa-edit grey-text text-lighten-1"></i></a></h5>
@@ -56,11 +56,7 @@
                         <div class="row">
                             <span class="title red-text text-lighten-2">{{room.roomName}}</span>
                             <p v-if="room.status === 'INIT'">未开始，请等待主持人开始该回合</p>
-                            <p v-if="room.status === 'JOINING'">准备中，宾客们正在加入
-                                <!--<br>男方加入
-                                <span class="teal-text text-lighten-2" style="text-decoration:underline">{{room.bridePlayersCount}}</span>人；女方加入
-                                <span class="red-text text-lighten-2"  style="text-decoration:underline">{{room.groomPlayersCount}}</span>人-->
-                            </p>
+                            <p v-if="room.status === 'JOINING'">准备中，宾客们正在加入</p>
                             <p v-if="room.status === 'PLAYING'">游戏进行中</p>
                             <p v-if="room.status === 'END'">已结束</p>
                         </div>
