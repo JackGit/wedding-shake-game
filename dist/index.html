@@ -103,6 +103,7 @@
             loader.add('fontawesome.css', 'static/font-awesome/font-awesome.min.css');
             loader.add('materialize.css', 'static/materialize/css/materialize.min.css');
             loader.add('player.css', 'static/stylesheets/player.css');
+            loader.add('persist.js', 'static/javascripts/persist-min.js');
             loader.add('socket.io.js', '/socket.io/socket.io.js');
             loader.add('player.bundle.js', 'static/javascripts/player.bundle.js');
             loader.add('image', 'static/images/wedding_pic_08.jpg');
@@ -113,6 +114,7 @@
                 appendStyleTag(r.resources['materialize.css'].data);
                 appendStyleTag(r.resources['player.css'].data);
 
+                eval(r.resources['persist.js'].data);
                 eval(r.resources['socket.io.js'].data);
                 eval(r.resources['player.bundle.js'].data);
 

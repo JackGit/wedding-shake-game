@@ -41,7 +41,7 @@
                 </div>
                 <div class="row">
                     <a class="col s12 waves-effect waves-light btn btn-large red white-text" @click="start()">进入互动</a>
-                </div> -->
+                </div>-->
                 <div class="row">
                     <a href="https://graph.qq.com/oauth2.0/authorize?response_type=code&client_id=101295012&redirect_uri=http%3A%2F%2Fwedding.jackyang.me%2Fqq_login_callback.html&state=test&scope=all" class="col s12 center-align">
                         <img :src="qqLogoImgUrl">

@@ -4,6 +4,18 @@ var api = require('../api/api.js');
 
 Vue.use(Vuex);
 Vue.config.debug = true;
+;
+
+function initPersist() {
+    try {
+        window.persist = new Persist.Store('Wedding Shake Game');
+    } catch(e) {
+        alert('[Fatal Error]: init persist failed');
+        console.log(e);
+    }
+}
+
+initPersist();
 
 module.exports = window.store = new Vuex.Store({
     state: {
@@ -21,7 +33,8 @@ module.exports = window.store = new Vuex.Store({
                 api.adminLogin(user).then(function(data) {
                     if(data.user) {
                         store.state.admin.user = {objectId: data.user.objectId, userName: data.user.userName};
-                        localStorage.adminUserId = data.user.objectId;
+                        //localStorage.adminUserId = data.user.objectId;
+                        persist.set('adminUserId', data.user.objectId);
                         resolve(data.user);
                     } else {
                         reject('no user find');
@@ -33,7 +46,8 @@ module.exports = window.store = new Vuex.Store({
         },
         signout: function(store) {
             store.state.admin.user = {};
-            localStorage.adminUserId = '';
+            //localStorage.adminUserId = '';
+            persist.remove('adminUserId');
         },
         checkAdminUser: function(store, userId) {
             return new Promise(function(resolve, reject) {

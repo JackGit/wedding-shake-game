@@ -6,6 +6,19 @@ Vue.use(Vuex);
 Vue.config.debug = true;
 
 var so;
+var persist;
+
+function initPersist() {
+    try {
+        persist = new Persist.Store('Wedding Shake Game');
+    } catch(e) {
+        alert('[Fatal Error]: init persist failed');
+        console.log(e);
+    }
+}
+
+
+initPersist();
 
 function listenPlayerSocketMessage(type, enable) {
     if(enable) {
@@ -42,7 +55,8 @@ module.exports = window.store = new Vuex.Store({
     state: {
         /* player pages states */
         player: {
-            currentPlayer: localStorage.userJSON ? JSON.parse(localStorage.userJSON) : {},
+            //currentPlayer: localStorage.userJSON ? JSON.parse(localStorage.userJSON) : {},
+            currentPlayer: persist.get('userJSON') ? JSON.parse(persist.get('userJSON')): {},
             currentRoom: {},
             playerList: [],         // player list in current room
             roomList: [],           // room list
@@ -64,27 +78,34 @@ module.exports = window.store = new Vuex.Store({
 
             return new Promise(function(resolve, reject) {
                 api.createUser(user).then(function(data) {
-                    localStorage.userId = data.user.objectId;
-                    localStorage.userJSON = JSON.stringify(data.user);
+                    //localStorage.userId = data.user.objectId;
+                    //localStorage.userJSON = JSON.stringify(data.user);
+                    persist.set('userId', data.user.objectId);
+                    persist.set('userJSON', JSON.stringify(data.user));
                     store.state.player.currentPlayer = data.user;
                     resolve(data.user);
                 }, function(error) {
-                    localStorage.userId = '';
-                    localStorage.userJSON = '';
+                    //localStorage.userId = '';
+                    //localStorage.userJSON = '';
+                    persist.remove('userId');
+                    persist.remove('userJSON');
                     store.state.player.currentPlayer = {};
                     reject(error);
                 });
             });
         },
         signout: function(store) {
-            localStorage.userId = '';
-            localStorage.userJSON = '';
+            //localStorage.userId = '';
+            //localStorage.userJSON = '';
+            persist.remove('userId');
+            persist.remove('userJSON');
             store.state.player.currentPlayer = {};
         },
         updateUserDetails: function(store, user) {
             return new Promise(function(resolve, reject) {
                 api.updateUser(user).then(function(data) {
-                    localStorage.userJSON = JSON.stringify(data.user);
+                    //localStorage.userJSON = JSON.stringify(data.user);
+                    persist.set('userJSON', JSON.stringify(data.user));
                     store.state.player.currentPlayer = data.user;
                     resolve(data.user);
                 }, function(error) {
@@ -95,11 +116,13 @@ module.exports = window.store = new Vuex.Store({
         getUserDetails: function(store, userId) {
             return new Promise(function(resolve, reject) {
                 api.getUser({userId: userId}).then(function(data) {
-                    localStorage.userJSON = JSON.stringify(data.user);
+                    //localStorage.userJSON = JSON.stringify(data.user);
+                    persist.set('userJSON', JSON.stringify(data.user));
                     store.state.player.currentPlayer = data.user;
                     resolve(data.user);
                 }, function(error) {
-                    localStorage.userJSON = '';
+                    //localStorage.userJSON = '';
+                    persist.remove('userJSON');
                     store.state.player.currentPlayer = {};
                     reject(error);
                 });

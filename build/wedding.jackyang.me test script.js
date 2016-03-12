@@ -81,7 +81,7 @@ function shake(user) {
 			clearInterval(seed);
 		else{
 			user.shakeCount ++;
-			console.log(user.userName + ' shake ' + user.shakeCount);
+
 			user.so.push({
 				objectId: user.userId,
 				userId: user.userId,
@@ -96,6 +96,7 @@ function shake(user) {
 
 function updateUser(user) {
 	user.objectId = user.userId;
+	console.log(user.userName + ' update shake ' + user.shakeCount);
 	$.ajax({
 		type: 'POST',
 		url: '/game/user/update',

@@ -124,10 +124,13 @@
 
         route: {
             canActivate: function(transition) {
-                if(!localStorage.adminUserId)
+                //var adminUserId = localStorage.adminUserId;
+                var adminUserId = persist.get('adminUserId');
+
+                if(!adminUserId)
                     transition.redirect({name: 'login'});
                 else {
-                    store.actions.checkAdminUser(localStorage.adminUserId).then(function() {
+                    store.actions.checkAdminUser(adminUserId).then(function() {
                         transition.next();
                     }, function() {
                         transition.redirect({name: 'login'});

@@ -6,6 +6,7 @@
 </head>
 <body>
     <script src="static/javascripts/jquery-2.1.1.min.js"></script>
+    <script src="static/javascripts/persist-min.js"></script>
     <script>
 
         $(document).ready(function() {
@@ -13,6 +14,14 @@
             var paramsString = url.split('?')[1];
             var paramsArray = paramsString.split('&');
             var code = '';
+            var persist;
+
+            try{
+                persist = new Persist.Store('Wedding Shake Game');
+            } catch(e) {
+                alert('[Fatal Error] init persist failed');
+                console.log(e);
+            }
 
             paramsArray.forEach(function(param) {
                 var pair = param.split('=');
@@ -24,8 +33,11 @@
                 if(response.statusCode === 0) {
                     var user = response.user;
                     console.log('qq user login success', user);
-                    localStorage.userId = user.objectId;
-                    localStorage.userJSON = JSON.stringify(user);
+                    //localStorage.userId = user.objectId;
+                    //localStorage.userJSON = JSON.stringify(user);
+                    persist.set('userId', user.objectId);
+                    persist.set('userJSON', JSON.stringify(user));
+
                     window.location.href = 'http://wedding.jackyang.me';
                 } else {
                     console.log('qq user login failed', response.error);
