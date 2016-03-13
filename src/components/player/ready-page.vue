@@ -57,6 +57,7 @@
     var store = require('../../store');
     var Stopwatch = require('timer-stopwatch');
     var Loader = wy.base.Loader;
+    var seedId;
 
     module.exports = {
 
@@ -119,12 +120,27 @@
             store.actions.listenPlayerJoinSocketMessage(true);
             store.actions.listenPlayerLeaveSocketMessage(true);
             store.actions.listenPlayerStatusChangeSocketMessage(true);
+
+            var router = this.$router;
+
+            // 为了防止手机息屏而导致关闭socket连接，从而使user leave room，而导致的状态不一致
+            seedId = setInterval(function() {
+                if(store.state.player.currentPlayer.status !== 'JOINED') {
+                    clearInterval(seedId);
+                    alert('您已离开房间');
+                    router.go({name: 'home'});
+                } else {
+                    store.actions.getUserDetails(store.state.player.currentPlayer.objectId);
+                }
+            }, 5000);
         },
 
         beforeDestroy: function() {
             store.actions.listenPlayerJoinSocketMessage(false);
             store.actions.listenPlayerLeaveSocketMessage(false);
             store.actions.listenPlayerStatusChangeSocketMessage(false);
+
+            clearInterval(seedId);
         },
 
         methods: {
@@ -136,7 +152,7 @@
                 store.actions.leaveRoom(roomId, userId).then(function() {
                     router.go({name: 'home'});
                 }, function() {
-
+                    alert('离开房间失败');
                 });
             },
             start: function() {

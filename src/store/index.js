@@ -165,6 +165,7 @@ module.exports = window.store = new Vuex.Store({
             return new Promise(function(resolve, reject) {
                 api.joinRoom(roomId, user.objectId, user.userType).then(function(data) {
                     store.state.player.currentRoom.objectId = roomId;
+                    store.state.player.currentPlayer = data.user;
                     socket.emit('join', {userId: user.objectId, roomId: roomId});
                     resolve(data);
                 }, function(error) {
