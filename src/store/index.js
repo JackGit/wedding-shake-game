@@ -2,6 +2,9 @@ var Vue = require('vue');
 var Vuex = require('vuex').default;
 var api = require('../api/api.js');
 
+require('es6-promise').polyfill();
+
+
 Vue.use(Vuex);
 Vue.config.debug = true;
 
@@ -73,7 +76,6 @@ module.exports = window.store = new Vuex.Store({
     actions: {
         /* player actions */
         createUser: function(store, user) {
-
             return new Promise(function(resolve, reject) {
                 api.createUser(user).then(function(data) {
                     persist.set('userId', data.user.objectId);
