@@ -162,6 +162,7 @@
                 timer.onDone(function() {
                     shake.stop();
                     store.actions.updateStopwatch(0);
+                    store.actions.updateShakeCount();
                 });
 
                 timer.start();

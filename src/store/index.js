@@ -5,7 +5,6 @@ var api = require('../api/api.js');
 Vue.use(Vuex);
 Vue.config.debug = true;
 
-var so;
 var persist;
 
 function initPersist() {
@@ -55,15 +54,14 @@ module.exports = window.store = new Vuex.Store({
     state: {
         /* player pages states */
         player: {
-            //currentPlayer: localStorage.userJSON ? JSON.parse(localStorage.userJSON) : {},
             currentPlayer: persist.get('userJSON') ? JSON.parse(persist.get('userJSON')): {},
             currentRoom: {},
             playerList: [],         // player list in current room
             roomList: [],           // room list
             shakePage: {
                 STOPWATCH_UNIT: 100,
-                TOTAL_GAME_TIME: 20 * 1000,
-                timeBalance: 20 * 1000,
+                TOTAL_GAME_TIME: 15 * 1000,
+                timeBalance: 15 * 1000,
                 stopwatchString: '00:00.0'
             },
             rankingPage: {
@@ -78,15 +76,11 @@ module.exports = window.store = new Vuex.Store({
 
             return new Promise(function(resolve, reject) {
                 api.createUser(user).then(function(data) {
-                    //localStorage.userId = data.user.objectId;
-                    //localStorage.userJSON = JSON.stringify(data.user);
                     persist.set('userId', data.user.objectId);
                     persist.set('userJSON', JSON.stringify(data.user));
                     store.state.player.currentPlayer = data.user;
                     resolve(data.user);
                 }, function(error) {
-                    //localStorage.userId = '';
-                    //localStorage.userJSON = '';
                     persist.remove('userId');
                     persist.remove('userJSON');
                     store.state.player.currentPlayer = {};
@@ -95,8 +89,6 @@ module.exports = window.store = new Vuex.Store({
             });
         },
         signout: function(store) {
-            //localStorage.userId = '';
-            //localStorage.userJSON = '';
             persist.remove('userId');
             persist.remove('userJSON');
             store.state.player.currentPlayer = {};
@@ -104,7 +96,6 @@ module.exports = window.store = new Vuex.Store({
         updateUserDetails: function(store, user) {
             return new Promise(function(resolve, reject) {
                 api.updateUser(user).then(function(data) {
-                    //localStorage.userJSON = JSON.stringify(data.user);
                     persist.set('userJSON', JSON.stringify(data.user));
                     store.state.player.currentPlayer = data.user;
                     resolve(data.user);
@@ -116,12 +107,10 @@ module.exports = window.store = new Vuex.Store({
         getUserDetails: function(store, userId) {
             return new Promise(function(resolve, reject) {
                 api.getUser({userId: userId}).then(function(data) {
-                    //localStorage.userJSON = JSON.stringify(data.user);
                     persist.set('userJSON', JSON.stringify(data.user));
                     store.state.player.currentPlayer = data.user;
                     resolve(data.user);
                 }, function(error) {
-                    //localStorage.userJSON = '';
                     persist.remove('userJSON');
                     store.state.player.currentPlayer = {};
                     reject(error);
@@ -202,32 +191,18 @@ module.exports = window.store = new Vuex.Store({
                     p.shakeCount = shakeCount;
             });
 
-            if(!so) {
-                // to ensure the latest shake count will be posted to server every 1s
-                so = new wy.base.SteadyOutput({
-                    interval: 1000,
-                    max: 1,
-                    overflow: 'shift'
-                });
-
-                so.register(function(shakeCount) {
-                    console.log('post shakeCount', shakeCount);
-
-                    api.updateUser({
-                        objectId: store.state.player.currentPlayer.objectId,
-                        shakeCount: shakeCount
-                    });
-
-                    socket.emit('shake', {
-                        userId: store.state.player.currentPlayer.objectId,
-                        shakeCount: shakeCount
-                    });
-                });
-
-                so.start();
-            }
-
-            so.push(shakeCount);
+            persist.set('shakeCount', shakeCount);
+            socket.emit('shake', {
+                userId: store.state.player.currentPlayer.objectId,
+                shakeCount: shakeCount
+            });
+        },
+        updateShakeCount: function(store) {
+            var shakeCount = persist.get('shakeCount');
+            api.updateUser({
+                objectId: store.state.player.currentPlayer.objectId,
+                shakeCount: shakeCount * 1
+            });
         },
         updateStopwatch: function(store, balance) {
             var s = '00' + Math.floor(balance / 1000);
