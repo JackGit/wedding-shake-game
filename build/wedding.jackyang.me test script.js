@@ -66,40 +66,22 @@ function startJoin(roomId) {
 }
 
 function startShake() {
-	data.forEach(function(d, index) {
+	data.forEach(function(d) {
 		var user = d;
 		d.so.register(function(user) {
+			console.log(user.userName + ' shakes ' + user.shakeCount );
 			socket.emit('shake', {userId: user.userId, shakeCount: user.shakeCount});
 		});
 		for(var i = 0; i < 150; i ++)
 			d.so.push({
 				objectId: user.userId,
 				userId: user.userId,
+				userName: user.userName,
 				shakeCount: i
 			});
 		d.so.start();
 	});
 }
-
-function shake(user) {
-	var total = random(60, 150);
-	console.log(user.userName + ' started');
-
-	var seed = setInterval(function() {
-		if(user.shakeCount >= total)
-			clearInterval(seed);
-		else{
-			user.shakeCount ++;
-
-			user.so.push({
-				objectId: user.userId,
-				userId: user.userId,
-				shakeCount: user.shakeCount
-			});
-		}
-	}, random(100, 200));
-}
-
 
 
 

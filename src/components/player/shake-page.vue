@@ -61,9 +61,9 @@
                         <h4 class="card-title center-align">游戏结束~</h4>
                         <p>恭喜您！在刚才的<span class="red-text" style="font-size: 1.5em">{{time / 1000}}</span>秒里您一共摇动了<span class="teal-text" style="font-size: 1.5em">{{shakeCount}}</span>次！</p>
                     </div>
-                    <div class="card-content red lighten-3 white-text">
+                    <!--<div class="card-content red lighten-3 white-text">
                         a chart here
-                    </div>
+                    </div>-->
                     <div class="card-content center-align">
                         <a class="waves-effect waves-light btn red lighten-2" v-link="{name: 'ranking', params: {roomId: room.objectId}}">查看排行</a>
                     </div>
@@ -71,6 +71,7 @@
             </div>
         </div>
 
+        <!--
         <div class="section">
             <div class="section-header">
                 <div class="container">
@@ -94,6 +95,7 @@
                 </ul>
             </div>
         </div>
+        -->
     </div>
 </template>
 
@@ -101,7 +103,6 @@
     var store = require('../../store');
     var Stopwatch = require('timer-stopwatch');
     var ShakeJS = require('shake.js'); // threshold = 15, timeout = 100 => 80 times / 10s, for both iphone and android
-    var GAME_TIME = 20 * 1000;
     var shake = null;
     var timer = null;
 
@@ -109,7 +110,7 @@
 
         data: function() {
             return {
-                time: GAME_TIME
+                time: store.state.player.shakePage.TOTAL_GAME_TIME
             };
         },
 
@@ -120,11 +121,11 @@
             room: function() {
                 return store.state.player.currentRoom;
             },
-            players: function() {
+            /*players: function() {
                 return store.state.player.playerList.filter(function(p) {
                     return p.objectId !== store.state.player.currentPlayer.objectId;
                 });
-            },
+            },*/
             shakeCompleted: function() {
                 return store.state.player.shakePage.timeBalance <= 0;
             },
@@ -169,14 +170,14 @@
                 shake.start();
             }
 
-            store.actions.listenPlayerShakeSocketMessage(true);
+            //store.actions.listenPlayerShakeSocketMessage(true);
         },
 
         beforeDestroy: function() {
             shake.stop();
             shake = null;
             window.removeEventListener('shake', store.actions.shake);
-            store.actions.listenPlayerShakeSocketMessage(false);
+            //store.actions.listenPlayerShakeSocketMessage(false);
         },
 
         route: {
