@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0 ">-->
+    <link type="text/css" rel="stylesheet" href="static/font-awesome/font-awesome.min.css">
+    <link type="text/css" rel="stylesheet" href="static/materialize/css/materialize.min.css"  media="screen,projection"/>
+
+    <title>Monitor</title>
+    <style>
+        #d3Container {
+            position: fixed;
+        }
+
+    </style>
+</head>
+<body class="grey lighten-4">
+    <div id="appMask">
+        <svg class="appMaskSpinner" viewBox="0 0 50 50">
+            <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+        </svg>
+    </div>
+
+    <div id="d3Container"></div>
+
+    <script src="static/javascripts/jquery-2.1.1.min.js"></script>
+    <script src="static/javascripts/wy.lib.js"></script>
+    <script src="static/materialize/js/materialize.min.js"></script>
+    <script src="static/javascripts/d3.v3.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+
+
+    <script>
+        // join
+        // leave
+        // grow (shake)
+
+        var so;
+        var socket;
+
+        var w, h, nodes = [], node, vis, force;
+        var count = 0;
+        var id = 0;
+
+        var defs;
+        var circle;
+        var image;
+
+        var imgs = [
+            'http://wedding.jackyang.me/static/images/groom_avatar.jpg',
+            'http://wedding.jackyang.me/static/images/bride_avatar.jpg',
+            'https://avatars3.githubusercontent.com/u/2811378?v=3&s=40',
+            'https://avatars3.githubusercontent.com/u/11800556?v=3&s=192',
+            'https://avatars3.githubusercontent.com/u/7535458?v=3&s=192',
+            'https://avatars1.githubusercontent.com/u/2313263?v=3&s=192',
+            'https://avatars3.githubusercontent.com/u/17906142?v=3&s=192',
+            'https://avatars2.githubusercontent.com/u/5357393?v=3&s=192',
+            'https://avatars0.githubusercontent.com/u/13914742?v=3&s=192',
+            'https://avatars1.githubusercontent.com/u/8717459?v=3&s=192',
+            'https://avatars0.githubusercontent.com/u/16396077?v=3&s=192',
+            'https://avatars2.githubusercontent.com/u/953478?v=3&s=192',
+            'https://avatars3.githubusercontent.com/u/8471550?v=3&s=192',
+            'https://avatars3.githubusercontent.com/u/9475842?v=3&s=192'
+        ];
+
+        var users = [];
+        for(var i = 0; i < 200; i ++) {
+            users.push({
+                userId: 'user_' + i,
+                image: imgs[wy.base.Util.random(0, imgs.length)],
+                shakeCount: 50
+            })
+        }
+
+        $(document).ready(function() {
+            hideMask();
+
+            //initSocket();
+            //initSteadyOutput();
+
+            w = $(window).width();
+            h = $(window).height();
+
+            vis = d3.select("#d3Container")
+                    .append("svg")
+                    .attr("width", w)
+                    .attr("height", h);
+
+            force = d3.layout.force()
+                    .charge(function(d) {return d.shakeCount * d.shakeCount / -24;})
+                    //.charge(function(d) {return d.shakeCount * -4;})
+                    .nodes(nodes)
+                    .links([])
+                    .size([w, h]);
+
+            force.on("tick", function(e) {
+                vis.selectAll(".node")
+                        .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
+            });
+
+
+            id = setInterval(function() {
+                if(count < users.length)
+                    join(count);
+                else
+                    clearInterval(id);
+
+                count ++;
+            }, 10);
+        });
+
+        function initSocket() {
+            socket = io();
+
+            socket.on('join', function(userId) {
+                so.push({type: 'join', data: userId});
+            });
+
+            socket.on('leave', function(userId) {
+                so.push({type: 'leave', data: userId});
+            });
+
+            socket.on('shake', function(message) {
+                so.push({type: 'shake', data: message});
+            });
+
+            socket.on('status-change', function(message) {
+                var roomId = message.roomId;
+                var status = message.status;
+
+                switch(status) {
+                    case 'JOINING':
+                        onSocketMessage(['join', 'leave']);
+                        offSocketMessage(['shake']);
+                        break;
+                    case 'PLAYING':
+                        onSocketMessage(['shake']);
+                        offSocketMessage(['join', 'leave']);
+                        break;
+                    case 'END':
+                        offSocketMessage(['join', 'leave', 'shake']);
+                        break;
+                    default:
+                        break;
+                }
+            });
+        }
+
+        function onSocketMessage(type) {
+            if(typeof type === 'string')
+                type = [type];
+
+            type.forEach(function(t) {
+                socket.on(t, function(message) {
+                    proxyMessageToSteadyOutput(t, message);
+                });
+            })
+        }
+
+        function offSocketMessage(type) {
+            if(typeof type === 'string')
+                type = [type];
+
+            type.forEach(function(t) {
+                socket.off(t);
+            });
+        }
+
+        function proxyMessageToSteadyOutput(type, message) {
+            so.push({type: 'shake', data: message});
+        }
+
+        function initSteadyOutput() {
+            so = new wy.base.SteadyOutput({
+                interval: 100
+            });
+
+            so.register(function(message) {
+                switch(message.type) {
+                    case 'join':
+                        break;
+                    case 'leave':
+                        break;
+                    case 'shake':
+                        break;
+                    case 'status-change':
+                        break;
+                    default:
+                        break;
+                }
+            });
+        }
+
+        function update() {
+            // Restart the layout.
+            force.nodes(nodes).start();
+
+            node = vis
+                    .selectAll(".node")
+                    .data(nodes, function(d) {
+                        return d.id;
+                    });
+
+            var g = node
+                    .enter()
+                    .append("g")
+                    .attr("class", "node")
+                    .call(force.drag);
+
+            defs = g.append("defs")
+                    .append('pattern')
+                    .attr('id', function(d) {return '_' + d.id;})
+                    .attr('patternUnits', 'userSpaceOnUse')
+                    .attr('x', function(d) {return d.shakeCount/-2})
+                    .attr('y', function(d) {return d.shakeCount/-2})
+                    .attr('width', function(d) {return d.shakeCount})
+                    .attr('height', function(d) {return d.shakeCount});
+
+            image = defs
+                    .append('image')
+                    .attr('id', function(d) {return 'img_' + d.id;})
+                    .attr("xlink:href", function(d) {return d.image})
+                    .attr("width", function(d) {return d.shakeCount;})
+                    .attr("height", function(d) {return d.shakeCount;});
+
+            circle = g.append("circle")
+                    .attr('id', function(d) {return 'cir_' + d.id;})
+                    .attr('r', function(d) {return d.shakeCount/2})
+                    .attr('fill', function(d) {return 'url(#_' + d.id + ')'});
+
+            node.exit().remove();
+        }
+
+        function push(u) {
+            nodes.push({
+                id: u.userId,
+                image: u.image,
+                shakeCount: u.shakeCount
+            });
+        }
+
+        function join(id) {
+            var u = users.filter(function(u) {return u.userId === 'user_' + id})[0];
+            push(u);
+            update();
+        }
+
+        function shake(id, count) {
+            var _id;
+
+            for(var i = 0; i < nodes.length; i ++)
+                if(nodes[i].id === 'user_' + id) {
+                    _id = nodes[i].id;
+                    nodes[i].shakeCount = count;
+                }
+
+
+            node.select('#_' + _id)
+                    .attr('x', count/-2)
+                    .attr('y', count/-2)
+                    .attr('width', count)
+                    .attr('height', count);
+
+            node.select('#img_' + _id)
+                    .attr('width', count)
+                    .attr('height', count);
+
+            node.select('#cir_' + _id)
+                    .attr('r', count/2);
+
+            force.start();
+
+        }
+
+        function leave(id) {
+            nodes = nodes.filter(function(n) {
+                return n.id !== 'user_' + id;
+            });
+
+            update();
+        }
+
+        function hideMask() {
+            $('#appMask').hide();
+        }
+
+        function showMask() {
+            $('#appMask').show();
+        }
+
+
+    </script>
+</body>
+</html>
