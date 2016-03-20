@@ -1,6 +1,7 @@
 var Vue = require('vue');
 var Vuex = require('vuex').default;
 var api = require('../api/api.js');
+var Stopwatch = require('timer-stopwatch');
 
 Vue.use(Vuex);
 Vue.config.debug = true;
@@ -41,7 +42,11 @@ module.exports = window.store = new Vuex.Store({
         room: {},
         rankingPlayerList: [],
         playerList: [],
-        show: false
+        show: false,
+        STOPWATCH_UNIT: 100,
+        TOTAL_GAME_TIME: 15 * 1000,
+        timeBalance: 15 * 1000,
+        stopwatchString: '00:00.0'
     },
 
     actions: {
@@ -59,11 +64,11 @@ module.exports = window.store = new Vuex.Store({
                 console.log('store.actions.getRoomPlayers error', error);
             });
         },
-        getRoomRanking: function(store, roomId) {
+        getRoomRankingPlayers: function(store, roomId) {
             api.getRoomRankingPlayerList(roomId).then(function(data) {
                 store.state.rankingPlayerList = data.players;
             }, function(error) {
-                console.log('store.actions.getRoomRanking error', error);
+                console.log('store.actions.getRoomRankingPlayers error', error);
             });
         },
         show: function(store) {
@@ -72,6 +77,34 @@ module.exports = window.store = new Vuex.Store({
         hide: function(store) {
             store.state.show = false;
             PageAPI.clear();
+        },
+        startStopwatch: function(store) {
+            var unit = store.state.STOPWATCH_UNIT;
+            var total = store.state.timeBalance = store.state.TOTAL_GAME_TIME;
+
+            var timer = new Stopwatch(total, {refreshRateMS: unit});
+
+            timer.onTime(function() {
+                if(total > 0)
+                    store.actions.updateStopwatch(total);
+
+                total -= unit;
+            });
+
+            timer.onDone(function() {
+                store.actions.updateStopwatch(0);
+                timer = null;
+            });
+
+            timer.start();
+        },
+        updateStopwatch: function(store, balance) {
+            var s = '00' + Math.floor(balance / 1000);
+            var sStr = s.substring(s.length - 2, s.length);
+            var ss = balance % 1000 / store.state.STOPWATCH_UNIT;
+
+            store.state.timeBalance = balance;
+            store.state.stopwatchString = '00:' + sStr + '.' + ss;
         },
         onJoin: function(store, message) {
             var userId = message.userId;
@@ -131,12 +164,34 @@ module.exports = window.store = new Vuex.Store({
                     store.actions.on('shake');
                     store.actions.off('join');
                     store.actions.off('leave');
+
+                    var timer = new Stopwatch(3000, {refreshRateMS: 1000});
+                    var count = 3;
+
+                    Materialize.toast('您准备好了吗？游戏马上开始！', 1500);
+
+                    timer.onTime(function() {
+                        if(count > 0)
+                            Materialize.toast('倒计时：' + count, 700);
+                        if(count === 0)
+                            Materialize.toast('Go!', 700);
+                        count --;
+                    });
+                    timer.onDone(function() {
+                        store.actions.startStopwatch();
+                    });
+
+                    setTimeout(function() {
+                        timer.start();
+                    }, 2000);
+
                     break;
                 case 'END':
                     store.actions.off('join');
                     store.actions.off('leave');
                     store.actions.off('shake');
-                    store.actions.getRoomRanking(roomId);
+                    store.actions.getRoomDetails(roomId);
+                    store.actions.getRoomRankingPlayers(roomId);
                     break;
                 default:
                     break;

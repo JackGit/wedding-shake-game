@@ -146,8 +146,8 @@
             window.addEventListener('shake', store.actions.shake, false);
 
             /** init timer **/
-            // total, by default would be 20 * 1000
-            // if the first time to get shake page, the total would be 20 * 1000
+            // total, by default would be 15 * 1000
+            // if the first time to get shake page, the total would be 15 * 1000
             // if shake started, time will be counting down until total = 0
             // if shake not done, and user moves to other page, and move back again, and total > 0, will count again
             if(total > 0) {

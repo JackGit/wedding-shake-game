@@ -115,7 +115,6 @@
             loader.load();
 
             store.actions.getRoomList();
-            // store.actions.clearShakeCount(); // if user accidentally refresh the page while shaking, will route to home page, and shakeCount will be cleared. which may lead ranking generated with his shake count as 0
             store.actions.listenPlayerStatusChangeSocketMessage(true);
         },
 

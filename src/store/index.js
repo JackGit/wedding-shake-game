@@ -205,6 +205,8 @@ module.exports = window.store = new Vuex.Store({
                 objectId: store.state.player.currentPlayer.objectId,
                 shakeCount: shakeCount * 1
             });
+
+            persist.remove('shakeCount');
         },
         updateStopwatch: function(store, balance) {
             var s = '00' + Math.floor(balance / 1000);
