@@ -39,6 +39,7 @@ function listenSocketMessage(type, enable) {
 module.exports = window.store = new Vuex.Store({
     state: {
         room: {},
+        rankingPlayerList: [],
         playerList: [],
         show: false
     },
@@ -58,11 +59,19 @@ module.exports = window.store = new Vuex.Store({
                 console.log('store.actions.getRoomPlayers error', error);
             });
         },
+        getRoomRanking: function(store, roomId) {
+            api.getRoomRankingPlayerList(roomId).then(function(data) {
+                store.state.rankingPlayerList = data.players;
+            }, function(error) {
+                console.log('store.actions.getRoomRanking error', error);
+            });
+        },
         show: function(store) {
             store.state.show = true;
         },
         hide: function(store) {
             store.state.show = false;
+            PageAPI.clear();
         },
         onJoin: function(store, message) {
             var userId = message.userId;
@@ -71,8 +80,11 @@ module.exports = window.store = new Vuex.Store({
                         return p.objectId === userId;
                     }).length !== 0;
 
-                if(!exist)
+                if(!exist) {
                     store.state.playerList.push(data.user);
+                    PageAPI.join(data.user);
+                }
+
             }, function(error) {
                 console.log('store.actions.onJoin get user error', error);
             });
@@ -82,13 +94,17 @@ module.exports = window.store = new Vuex.Store({
             store.state.playerList = store.state.playerList.filter(function(player) {
                 return player.objectId !== userId;
             });
+
+            PageAPI.leave(userId);
         },
         onShake: function(store, message) {
             var userId = message.userId,
                 count = message.shakeCount;
+
             for(var i = 0; i < store.state.playerList.length; i ++) {
                 if(store.state.playerList[i].objectId === userId) {
                     store.state.playerList[i].shakeCount = count;
+                    PageAPI.shake(userId, count);
                     break;
                 }
             }
@@ -106,6 +122,7 @@ module.exports = window.store = new Vuex.Store({
                     store.actions.getRoomDetails(roomId);
                     store.actions.getRoomPlayers(roomId);
                     store.actions.hide();
+
                     setTimeout(function() {
                         store.actions.show();
                     }, 1000);
@@ -119,6 +136,7 @@ module.exports = window.store = new Vuex.Store({
                     store.actions.off('join');
                     store.actions.off('leave');
                     store.actions.off('shake');
+                    store.actions.getRoomRanking(roomId);
                     break;
                 default:
                     break;

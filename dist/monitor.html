@@ -8,6 +8,28 @@
 
     <title>Monitor</title>
     <style>
+        body {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+        }
+        #d3Container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 25%;
+            border-right: 1px solid lightgrey;
+        }
+        #app {
+            position: fixed;
+            top: 0;
+            left: 75%;
+            right: 0;
+            bottom: 0;
+        }
         .no-shadow {
             -webkit-box-shadow: none;
             -moz-box-shadow: none;
@@ -94,24 +116,125 @@
             }
         }
     </style>
-</head>
-<body class="grey lighten-4">
-    <div id="appMask">
-        <svg class="appMaskSpinner" viewBox="0 0 50 50">
-            <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
-        </svg>
-    </div>
-
-    <div id="app"></div>
-
-    <script src="static/javascripts/jquery-2.1.1.min.js"></script>
-    <script src="static/javascripts/snabbt.min.js"></script>
-    <script src="static/javascripts/wy.lib.js"></script>
-    <script src="static/materialize/js/materialize.min.js"></script>
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="static/javascripts/monitor.bundle.js"></script>
-
     <script>
+        var svg;
+        var force;
+        var nodes = [];
+        var node;
+        var PageAPI = {
+            init: init,
+            join: join,
+            leave: leave,
+            shake: shake,
+            clear: clear,
+            hideMask: hideMask,
+            showMask: showMask
+        };
+
+        function init() {
+            var $container = $('#d3Container');
+            var w = $container.width();
+            var h = $container.height();
+
+            svg = d3.select("#d3Container")
+                    .append("svg")
+                    .attr("width", w)
+                    .attr("height", h);
+
+            force = d3.layout.force()
+                    .charge(function(d) {return d.size * d.size / -24;})
+                    .nodes(nodes)
+                    .links([])
+                    .size([w, h]);
+
+            force.on("tick", onForceTick);
+        }
+
+        function onForceTick() {
+            svg.selectAll(".node")
+                    .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
+        }
+
+        function updateForce() {
+            force.nodes(nodes).start();
+
+            node = svg
+                    .selectAll(".node")
+                    .data(nodes, function(d) {
+                        return d.objectId;
+                    });
+
+            var g = node
+                    .enter()
+                    .append("g")
+                    .attr("class", "node")
+                    .call(force.drag);
+
+            var pattern = g.append("defs").append('pattern')
+                    .attr('id', function(d) {return 'p' + d.objectId;})
+                    .attr('patternUnits', 'userSpaceOnUse')
+                    .attr('x', function(d) {return d.size/-2})
+                    .attr('y', function(d) {return d.size/-2})
+                    .attr('width', function(d) {return d.size})
+                    .attr('height', function(d) {return d.size});
+
+            var image = pattern.append('image')
+                    .attr('id', function(d) {return 'i' + d.objectId;})
+                    .attr("xlink:href", function(d) {return d.avatarImageUrl})
+                    .attr("width", function(d) {return d.size;})
+                    .attr("height", function(d) {return d.size;});
+
+            var circle = g.append("circle")
+                    .attr('id', function(d) {return 'c' + d.objectId;})
+                    .attr('r', function(d) {return d.size/2})
+                    .attr('fill', function(d) {return 'url(#p' + d.objectId + ')'});
+
+            node.exit().remove();
+        }
+
+        function join(user) {
+
+            nodes.push({
+                objectId: user.objectId,
+                avatarImageUrl: user.avatarImageUrl,
+                size: user.shakeCount + 50
+            });
+
+            updateForce();
+        }
+
+        function leave(objectId) {
+            nodes = nodes.filter(function(n) {
+                return n.objectId !== objectId;
+            });
+
+            updateForce();
+        }
+
+        function shake(objectId, count) {
+            count += 50;
+
+            node.select('#p' + objectId)
+                    .attr('x', count/-2)
+                    .attr('y', count/-2)
+                    .attr('width', count)
+                    .attr('height', count);
+
+            node.select('#i' + objectId)
+                    .attr('width', count)
+                    .attr('height', count);
+
+            node.select('#c' + objectId)
+                    .attr('r', count/2);
+
+            force.start();
+        }
+
+        function clear() {
+            nodes = [];
+            updateForce();
+        }
+
         function hideMask() {
             $('#appMask').hide();
         }
@@ -120,5 +243,25 @@
             $('#appMask').show();
         }
     </script>
+</head>
+<body class="grey lighten-4">
+
+    <div id="appMask">
+        <svg class="appMaskSpinner" viewBox="0 0 50 50">
+            <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+        </svg>
+    </div>
+
+    <div id="app"></div>
+    <div id="d3Container"></div>
+
+    <script src="static/javascripts/jquery-2.1.1.min.js"></script>
+    <script src="static/javascripts/snabbt.min.js"></script>
+    <script src="static/javascripts/wy.lib.js"></script>
+    <script src="static/materialize/js/materialize.min.js"></script>
+    <script src="static/javascripts/d3.v3.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="static/javascripts/monitor.bundle.js"></script>
+
 </body>
 </html>
