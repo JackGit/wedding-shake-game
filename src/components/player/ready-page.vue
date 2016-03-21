@@ -50,7 +50,7 @@
         <div class="section">
             <div class="section-header">
                 <div class="container">
-                    <h6>其他已加入宾客（{{players.length}}）</h6>
+                    <h6>其他已加入宾客（{{players.length - 1}}）</h6>
                 </div>
             </div>
             <div class="section-content">
