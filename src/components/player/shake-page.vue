@@ -42,8 +42,9 @@
             </div>
             <div class="section-content">
                 <div class="card no-shadow">
-                    <div class="card-content">
+                    <div class="card-content center-align">
                         <h4 class="center-align red-text">{{stopwatchString}}<i class="material-icons shake-page-unit fa fa-clock-o"></i></h4>
+                        <img :src="shakeImageUrl" style="border-radius: 50%;width:120px">
                     </div>
                 </div>
             </div>
@@ -110,7 +111,8 @@
 
         data: function() {
             return {
-                time: store.state.player.shakePage.TOTAL_GAME_TIME
+                time: store.state.player.shakePage.TOTAL_GAME_TIME,
+                shakeImageUrl: 'static/images/shake_phone.gif'
             };
         },
 

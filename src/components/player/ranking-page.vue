@@ -51,12 +51,13 @@
         </div>
 
         <div :style="{display: currentRoom.status === 'END' ? '' : 'none'}">
+            <!--
             <ul class="tabs" v-el:tabs>
                 <li class="tab col s6"><a href="#resultTab" class="active">结果</a></li>
                 <li class="tab col s6"><a href="#detailsTab">详细</a></li>
             </ul>
-
-            <div class="section" id="resultTab">
+            -->
+            <!--<div class="section" id="resultTab">
                 <div class="section-header">
                     <div class="container">
                         <h6>结果</h6>
@@ -96,7 +97,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>-->
 
             <div class="section" id="detailsTab">
                 <div class="section-header">
@@ -166,7 +167,7 @@
                         return p2.shakeCount - p1.shakeCount;
                     });
             },
-            bridePlayers: function() {
+            /*bridePlayers: function() {
                 var ranking = store.state.player.currentRoom.ranking || [];
                 var players = [];
 
@@ -207,22 +208,20 @@
                         total += r.shakeCount;
                 });
                 return total;
-            }
+            }*/
         },
 
         ready: function() {
             var loader = new Loader();
             var sliderContainer = this.$els.sliderContainer;
-            /*var imageUrl = window.location.origin.indexOf('jackyang.me') !== -1
-                    ? 'http://wedding.jackyang.me/images/wedding_pic_10.jpg'
-                    : 'static/images/wedding_pic_10.jpg';*/
 
             loader.add('background', 'static/images/wedding_pic_10.jpg', function(r) {
                 applySliderImageTilting(sliderContainer, r.data);
             });
 
             loader.load();
-            $(this.$els.tabs).tabs();
+
+            //$(this.$els.tabs).tabs();
 
             var roomId = this.$route.params.roomId;
             store.actions.getRoomDetails(roomId);

@@ -19,23 +19,48 @@
             <div class="card col s12 no-shadow transparent white-text" style="margin-top:0;position:relative;z-index:2">
                 <div class="card-content">
                     <span class="card-title">游戏规则</span>
-                    <p>主持人宣布开始游戏之后，所有参与的宾客摇动手机，最终哪一方的宾客摇动次数总数多，哪一方就获得胜利</p>
+                    <p>主持人宣布开始游戏之后，请摇动您的手机，摇的次数多的宾客将获得奖励</p>
                 </div>
             </div>
         </div>
 
+        <!--
         <ul class="tabs" v-el:tabs>
             <li class="tab col s6"><a href="#groomTab" :class="currentPlayer.userType === 'GROOM' ? 'active' : ''">男方 ({{groomPlayers.length}}/{{room.roomSize}})</a></li>
             <li class="tab col s6"><a href="#brideTab" :class="currentPlayer.userType === 'BRIDE' ? 'active' : ''">女方 ({{bridePlayers.length}}/{{room.roomSize}})</a></li>
         </ul>
+        -->
 
         <div class="section">
             <div class="section-header">
                 <div class="container">
-                    <h6>已加入的宾客列表</h6>
+                    <h6>我</h6>
                 </div>
             </div>
             <div class="section-content">
+                <ul class="collection no-border">
+                    <li class="collection-item avatar">
+                        <img :src="currentPlayer.avatarImageUrl" class="circle">
+                        <span class="title">{{currentPlayer.userName}}</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-header">
+                <div class="container">
+                    <h6>其他已加入宾客（{{players.length}}）</h6>
+                </div>
+            </div>
+            <div class="section-content">
+                <ul class="collection no-border">
+                    <li class="collection-item avatar" v-for="player in players">
+                        <img :src="player.avatarImageUrl" class="circle">
+                        <span class="title">{{player.userName}}</span>
+                    </li>
+                </ul>
+                <!--
                 <ul class="collection no-border" id="brideTab">
                     <li class="collection-item avatar" v-for="player in bridePlayers">
                         <img :src="player.avatarImageUrl" class="circle">
@@ -48,6 +73,7 @@
                         <span class="title">{{player.userName}}</span>
                     </li>
                 </ul>
+                -->
             </div>
         </div>
     </div>
@@ -68,7 +94,13 @@
             currentPlayer: function() {
                 return store.state.player.currentPlayer;
             },
-            bridePlayers: function() {
+            players: function() {
+                // all other players
+                return store.state.player.playerList.filter(function(player) {
+                    return player.objectId !== store.state.player.currentPlayer.objectId;
+                });
+            },
+            /*bridePlayers: function() {
                 return store.state.player.playerList.filter(function(player) {
                     return player.userType === 'BRIDE';
                 });
@@ -77,7 +109,7 @@
                 return store.state.player.playerList.filter(function(player) {
                     return player.userType === 'GROOM';
                 });
-            },
+            },*/
             status: function() {
                 return store.state.player.currentRoom.status;
             }
@@ -101,16 +133,13 @@
         ready: function() {
             var loader = new Loader();
             var sliderContainer = this.$els.sliderContainer;
-            /*var imageUrl = window.location.origin.indexOf('jackyang.me') !== -1
-                    ? 'http://wedding.jackyang.me/images/wedding_pic_09.jpg'
-                    : 'static/images/wedding_pic_09.jpg';*/
 
             loader.add('background', 'static/images/wedding_pic_09.jpg', function(r) {
                 applySliderImageTilting(sliderContainer, r.data);
             });
 
             loader.load();
-            $(this.$els.tabs).tabs();
+            //$(this.$els.tabs).tabs();
 
             var roomId = store.state.player.currentRoom.objectId;
 
