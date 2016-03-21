@@ -55,7 +55,7 @@
             </div>
             <div class="section-content">
                 <ul class="collection no-border">
-                    <li class="collection-item avatar" v-for="player in players">
+                    <li class="collection-item avatar" v-for="player in players" v-if="player.objectId !== currentPlayer.objectId">
                         <img :src="player.avatarImageUrl" class="circle">
                         <span class="title">{{player.userName}}</span>
                     </li>
@@ -95,10 +95,7 @@
                 return store.state.player.currentPlayer;
             },
             players: function() {
-                // all other players
-                return store.state.player.playerList.filter(function(player) {
-                    return player.objectId !== store.state.player.currentPlayer.objectId;
-                });
+                return store.state.player.playerList;
             },
             /*bridePlayers: function() {
                 return store.state.player.playerList.filter(function(player) {

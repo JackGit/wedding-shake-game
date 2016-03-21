@@ -1,13 +1,13 @@
 <style scoped>
     .win-stamp {
-        width: 40px;
-        position: absolute;
-        top: -5px;
-        right: -5px;
-        -webkit-transform: rotate(30deg);
-        border-radius: 50%;
+        width: 1.4em;
+        vertical-align: middle;
     }
 
+    .ranking-text {
+        font-size: 0.8em;
+        font-style: italic;
+    }
 </style>
 
 <template>
@@ -99,25 +99,56 @@
                 </div>
             </div>-->
 
-            <div class="section" id="detailsTab">
+            <div class="section">
                 <div class="section-header">
                     <div class="container">
-                        <h6>参与宾客列表</h6>
+                        <h6>我的名次</h6>
+                    </div>
+                </div>
+                <div class="section-content">
+                    <ul class="collection no-border">
+                        <li class="collection-item avatar">
+                            <img :src="currentPlayer.avatarImageUrl" class="circle">
+                            <span class="title">{{currentPlayer.userName}}
+                                <span class="ranking-text grey-text"> 第<span class="red-text">{{myRanking}}</span>名</span>
+                                <img v-el:win-stamp v-if="myRankingImgUrl" :src="myRankingImgUrl" class="win-stamp">
+                                <span class="badge">{{myShakeCount}}</span>
+                            </span>
+                            <div class="progress" v-if="currentPlayer.userType === 'GROOM'">
+                                <div class="determinate" :style="{width: myShakeCount/200*100 + '%'}"></div>
+                            </div>
+                            <div class="progress red lighten-4" v-if="currentPlayer.userType === 'BRIDE'">
+                                <div class="determinate red" :style="{width: myShakeCount/200*100 + '%'}"></div>
+                            </div>
+                            <p v-if="currentPlayer.userType === 'GROOM'" class="guest-type-text">男方宾客</p>
+                            <p v-if="currentPlayer.userType === 'BRIDE'" class="guest-type-text">女方宾客</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-header">
+                    <div class="container">
+                        <h6>所有排名</h6>
                     </div>
                 </div>
                 <div class="section-content">
                     <ul class="collection no-border">
                         <li class="collection-item avatar" v-for="player in players">
                             <img :src="player.avatarImageUrl" class="circle">
-                            <span class="title">{{player.userName}}<span class="badge">{{player.shakeCount}}</span></span>
+                            <span class="title">{{player.userName}}
+                                <span class="ranking-text grey-text"> 第<span :class="$index < 3 ? 'red-text' : ''">{{$index + 1}}</span>名</span>
+                                <img v-if="player.rankingImgUrl" :src="player.rankingImgUrl" class="win-stamp">
+                                <span class="badge">{{player.shakeCount}}</span></span>
                             <div class="progress" v-if="player.userType === 'GROOM'">
                                 <div class="determinate" :style="{width: player.shakeCount/200*100 + '%'}"></div>
                             </div>
                             <div class="progress red lighten-4" v-if="player.userType === 'BRIDE'">
                                 <div class="determinate red" :style="{width: player.shakeCount/200*100 + '%'}"></div>
                             </div>
-                            <p v-if="player.playerType === 'GROOM'">男方</p>
-                            <p v-if="player.playerType === 'BRIDE'">女方</p>
+                            <p v-if="player.userType === 'GROOM'" class="guest-type-text">男方宾客</p>
+                            <p v-if="player.userType === 'BRIDE'" class="guest-type-text">女方宾客</p>
                         </li>
                     </ul>
                 </div>
@@ -129,11 +160,15 @@
 <script>
     var store = require('../../store');
     var Loader = wy.base.Loader;
+    var RANKING_IMG_URL = ['static/images/1st_place.png','static/images/2nd_place.png','static/images/3rd_place.png'];
 
     module.exports = {
         data: function() {
             return {
-                winStampImgUrl: 'static/images/win_stamp.jpg'
+                winStampImgUrl: 'static/images/win_stamp.jpg',
+                myRanking: '',
+                myRankingImgUrl: '',
+                myShakeCount: 0
             };
         },
 
@@ -147,25 +182,39 @@
             players: function() {
                 var ranking = store.state.player.currentRoom.ranking || [];
                 var players = [];
+                var that = this;
 
-                ranking.forEach(function(r) {
+                ranking.forEach(function(r, index) {
                     var player = store.state.player.rankingPage.playerList.filter(function(p) {
                         return p.objectId === r.playerId;
                     })[0];
+
+                    if(r.playerId === store.state.player.currentPlayer.objectId) {
+                        that.myShakeCount = r.shakeCount;
+                        that.myRanking = index + 1;
+                        that.myRankingImgUrl = RANKING_IMG_URL[index];
+                    }
+
+
                     // after generate ranking in server side, user.shakeCount will be reset as 0;
                     if(player) {
                         player.shakeCount = r.shakeCount;
+                        if(index < 3) {
+                            player.rankingImgUrl = RANKING_IMG_URL[index];
+                        }
                         players.push(player);
                     }
                 });
 
+                return players;
+                /* already sort in server side
                 if(players.length === 0)
                     return players;
                 else
                     return players.sort(function(p1, p2) {
                         // descend order
                         return p2.shakeCount - p1.shakeCount;
-                    });
+                    });*/
             },
             /*bridePlayers: function() {
                 var ranking = store.state.player.currentRoom.ranking || [];
@@ -222,6 +271,13 @@
             loader.load();
 
             //$(this.$els.tabs).tabs();
+            var animation = wy.base.Animation.applyAnimation($(this.$els.winStamp), {
+                animationName: 'zoomIn',
+                delay: 1000,
+                onAnimationEnd: function() {
+                    animation.revoke();
+                }
+            });
 
             var roomId = this.$route.params.roomId;
             store.actions.getRoomDetails(roomId);

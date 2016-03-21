@@ -213,6 +213,10 @@
         function shake(objectId, count) {
             count += 50;
 
+            for(var i = 0; i < nodes.length; i ++)
+                if(nodes[i].objectId === objectId)
+                    nodes[i].size = count;
+
             node.select('#p' + objectId)
                     .attr('x', count/-2)
                     .attr('y', count/-2)

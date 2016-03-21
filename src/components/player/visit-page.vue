@@ -19,12 +19,12 @@
             <div class="card col s12 no-shadow transparent white-text" style="margin-top:0;position:relative;z-index:2">
                 <div class="card-content"><span class="card-title">{{currentRoom.roomName}}</span>
                     <p>游戏正在进行中，您处于旁观模式</p>
-                    <p>男方共参与人数：{{groomPlayers.length}}</p>
-                    <p>女方共参与人数：{{bridePlayers.length}}</p>
+                    <!--<p>男方共参与人数：{{groomPlayers.length}}</p>
+                    <p>女方共参与人数：{{bridePlayers.length}}</p>-->
                 </div>
             </div>
         </div>
-
+<!--
         <div class="section">
             <div class="section-header">
                 <div class="container">
@@ -46,11 +46,11 @@
                 </div>
             </div>
         </div>
-
+-->
         <div class="section">
             <div class="section-header">
                 <div class="container">
-                    <h6>参与宾客数据</h6>
+                    <h6>参与宾客（{{players.length}}）</h6>
                 </div>
             </div>
             <div class="section-content">
@@ -64,8 +64,8 @@
                         <div class="progress red lighten-4" v-if="player.userType === 'BRIDE'">
                             <div class="determinate red" :style="{width: player.shakeCount/200*100 + '%'}"></div>
                         </div>
-                        <p v-if="player.userType === 'GROOM'">男方</p>
-                        <p v-if="player.userType === 'BRIDE'">女方</p>
+                        <p v-if="player.userType === 'GROOM'" class="guest-type-text">男方宾客</p>
+                        <p v-if="player.userType === 'BRIDE'" class="guest-type-text">女方宾客</p>
                     </li>
                 </ul>
             </div>
@@ -92,7 +92,7 @@
                     return p1.shakeCount < p2.shakeCount;
                 });
             },
-            bridePlayers: function() {
+            /*bridePlayers: function() {
                 return store.state.player.playerList.filter(function(player) {
                     return player.userType === 'BRIDE';
                 });
@@ -117,7 +117,7 @@
                         total += player.shakeCount;
                 });
                 return total;
-            },
+            },*/
             status: function() {
                 return store.state.player.currentRoom.status;
             }
@@ -126,9 +126,6 @@
         ready: function() {
             var loader = new Loader();
             var sliderContainer = this.$els.sliderContainer;
-            /*var imageUrl = window.location.origin.indexOf('jackyang.me') !== -1
-                    ? 'http://wedding.jackyang.me/images/wedding_pic_16.jpg'
-                    : 'static/images/wedding_pic_16.jpg';*/
 
             loader.add('background', 'static/images/wedding_pic_16.jpg', function(r) {
                 applySliderImageTilting(sliderContainer, r.data);

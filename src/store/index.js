@@ -198,6 +198,8 @@ module.exports = window.store = new Vuex.Store({
                 userId: store.state.player.currentPlayer.objectId,
                 shakeCount: shakeCount
             });
+
+            playShakeSound(); // global method
         },
         updateShakeCount: function(store) {
             var shakeCount = persist.get('shakeCount');

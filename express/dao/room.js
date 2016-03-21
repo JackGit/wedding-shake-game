@@ -162,6 +162,11 @@ var roomDAO = {
 
                 playerDAO.clearJoinStatus(roomId);
 
+                // descend order by shakeCount
+                room.ranking = room.ranking.sort(function(p1, p2) {
+                    return p2.shakeCount - p1.shakeCount;
+                });
+
                 return roomDAO.updateRoom(room);
             });
         });

@@ -72,6 +72,10 @@
                 stroke-dashoffset: -124;
             }
         }
+
+        .guest-type-text {
+            font-size: 0.8em;
+        }
     </style>
 </head>
 <body class="grey lighten-4">
@@ -84,20 +88,32 @@
         </svg>
     </div>
 
+    <script src="static/javascripts/modernizr-custom.js"></script>
     <script src="static/javascripts/jquery-2.1.1.min.js"></script>
     <script src="static/javascripts/wy.lib.js"></script>
     <script src="static/materialize/js/materialize.min.js"></script>
     <script>
 
+        var shakeAudio;
+
         $(document).ready(function() {
+            if(!browserCheck())
+                return;
+
             loadResources();
         });
 
+        function browserCheck() {
+            var result = true;
+            if(!Modernizr.websockets) {
+                alert('对不起，您的浏览器不支持该网站');
+                result = false;
+            }
+            return result;
+        }
+
         function loadResources() {
             var loader = new wy.base.Loader();
-            /*var imageUrl = window.location.origin.indexOf('jackyang.me') !== -1
-                    ? 'http://wedding.jackyang.me/images/wedding_pic_08.jpg'
-                    : 'static/images/wedding_pic_08.jpg';*/
 
             // materialize.min.js can't load by Loader, it will coz no waves-effect
             loader.add('fontawesome.css', 'static/font-awesome/font-awesome.min.css');
@@ -106,7 +122,14 @@
             loader.add('persist.js', 'static/javascripts/persist-min.js');
             loader.add('socket.io.js', '/socket.io/socket.io.js');
             loader.add('player.bundle.js', 'static/javascripts/player.bundle.js');
-            loader.add('image', 'static/images/wedding_pic_08.jpg');
+            loader.add('win_img_1', 'static/images/1st_place.png');
+            loader.add('win_img_2', 'static/images/2nd_place.png');
+            loader.add('win_img_3', 'static/images/3rd_place.png');
+            loader.add('shake_audio', 'static/audios/shake_1.wav', {loadType: wy.base.Loader.LOAD_TYPE.AUDIO}, function(r) {
+                shakeAudio = r.data;
+                shakeAudio.loop = false;
+                document.body.appendChild(shakeAudio);
+            });
 
             loader.on('complete', function(r) {
 
@@ -163,6 +186,16 @@
             });
             new Tilting($img, options);
         }
+
+        function playShakeSound() {
+            if(!Modernizr.audio || !shakeAudio)
+                return;
+
+            shakeAudio.currentTime = 0;
+            shakeAudio.pause();
+            shakeAudio.play();
+        }
+
     </script>
 </body>
 </html>
