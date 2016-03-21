@@ -111,7 +111,7 @@
                             <img :src="currentPlayer.avatarImageUrl" class="circle">
                             <span class="title">{{currentPlayer.userName}}
                                 <span class="ranking-text grey-text"> 第<span class="red-text">{{myRanking}}</span>名</span>
-                                <img v-el:win-stamp v-if="myRankingImgUrl" :src="myRankingImgUrl" class="win-stamp">
+                                <img v-if="myRankingImgUrl" :src="myRankingImgUrl" class="win-stamp">
                                 <span class="badge">{{myShakeCount}}</span>
                             </span>
                             <div class="progress" v-if="currentPlayer.userType === 'GROOM'">
@@ -168,11 +168,8 @@
                 winStampImgUrl: 'static/images/win_stamp.jpg',
                 myRanking: '',
                 myRankingImgUrl: '',
-                myShakeCount: 0,
-                hasRanking:
-                    store.state.player.currentRoom.status === 'END' &&
-                    store.state.player.currentRoom.ranking &&
-                    store.state.player.currentRoom.ranking.length > 0
+                myShakeCount: 0
+
             };
         },
 
@@ -182,6 +179,11 @@
             },
             currentRoom: function() {
                 return store.state.player.currentRoom;
+            },
+            hasRanking: function() {
+                return store.state.player.currentRoom.status === 'END' &&
+                    store.state.player.currentRoom.ranking &&
+                    store.state.player.currentRoom.ranking.length > 0
             },
             players: function() {
                 var ranking = store.state.player.currentRoom.ranking || [];
@@ -275,13 +277,6 @@
             loader.load();
 
             //$(this.$els.tabs).tabs();
-            var animation = wy.base.Animation.applyAnimation($(this.$els.winStamp), {
-                animationName: 'zoomIn',
-                delay: 1000,
-                onAnimationEnd: function() {
-                    animation.revoke();
-                }
-            });
 
             var roomId = this.$route.params.roomId;
             store.actions.getRoomDetails(roomId);
