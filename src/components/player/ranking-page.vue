@@ -32,7 +32,7 @@
             </div>
         </div>
 
-        <div class="section" v-if="currentRoom.status === 'PLAYING'">
+        <div class="section" v-if="!hasRanking">
             <div class="section-header">
                 <div class="container">
                     <h6>信息</h6>
@@ -50,7 +50,7 @@
             </div>
         </div>
 
-        <div :style="{display: currentRoom.status === 'END' ? '' : 'none'}">
+        <div v-if="hasRanking">
             <!--
             <ul class="tabs" v-el:tabs>
                 <li class="tab col s6"><a href="#resultTab" class="active">结果</a></li>
@@ -168,7 +168,11 @@
                 winStampImgUrl: 'static/images/win_stamp.jpg',
                 myRanking: '',
                 myRankingImgUrl: '',
-                myShakeCount: 0
+                myShakeCount: 0,
+                hasRanking:
+                    store.state.player.currentRoom.status === 'END' &&
+                    store.state.player.currentRoom.ranking &&
+                    store.state.player.currentRoom.ranking.length > 0
             };
         },
 
